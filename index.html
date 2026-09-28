@@ -24,7 +24,7 @@
             </div>
 
             <!-- 네비게이션 탭 -->
-            <nav class="flex items-center space-x-1">
+            <nav id="mainNav" class="hidden items-center space-x-1">
                 <button onclick="goToDaysList()" id="navDaysBtn" class="px-3 py-1.5 rounded-lg text-xs font-semibold bg-amber-500 text-slate-950 transition flex items-center gap-1.5">
                     <i class="fa-solid fa-calendar-days"></i> 실습 일차
                 </button>
@@ -39,19 +39,44 @@
 
         <!-- 우측 계정 -->
         <div class="flex items-center space-x-3">
-            <!-- 로그인/사용자 프로필 버튼 -->
-            <div id="authContainer">
-                <button onclick="openLoginModal()" class="text-xs bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold px-3 py-1.5 rounded-lg transition flex items-center gap-1.5">
-                    <i class="fa-solid fa-right-to-bracket"></i> 로그인
-                </button>
-            </div>
+            <div id="authContainer"></div>
         </div>
     </header>
 
     <!-- ======================================================== -->
+    <!-- VIEW 0: 비로그인 사용자 전용 로그인 게이트 화면 -->
+    <!-- ======================================================== -->
+    <div id="viewAuthGate" class="flex-1 flex items-center justify-center p-6 bg-slate-950">
+        <div class="bg-slate-900 border border-slate-800 rounded-2xl w-full max-w-sm p-8 shadow-2xl space-y-6 text-center">
+            <div>
+                <span class="text-4xl">🦁</span>
+                <h2 class="text-xl font-bold text-white mt-3 tracking-tight">Lion Judge</h2>
+                <p class="text-xs text-slate-400 mt-1">멋쟁이사자처럼 9기 온라인 실습 포털</p>
+                <div class="mt-4 p-3 bg-slate-950 rounded-xl border border-slate-800 text-[11px] text-slate-400">
+                    <i class="fa-solid fa-lock text-amber-400 mr-1"></i> 교육생 또는 관리자 로그인 후 이용 가능합니다.
+                </div>
+            </div>
+
+            <form onsubmit="handleLoginGate(event)" class="space-y-4 text-left">
+                <div>
+                    <label class="block text-[11px] text-slate-400 mb-1.5 font-medium">아이디</label>
+                    <input type="text" id="gateUsername" required placeholder="아이디를 입력하세요" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2.5 text-xs text-white focus:outline-none focus:border-amber-500 transition">
+                </div>
+                <div>
+                    <label class="block text-[11px] text-slate-400 mb-1.5 font-medium">비밀번호</label>
+                    <input type="password" id="gatePassword" required placeholder="비밀번호를 입력하세요" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2.5 text-xs text-white focus:outline-none focus:border-amber-500 transition">
+                </div>
+                <button type="submit" id="gateLoginBtn" class="w-full bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold py-2.5 rounded-xl text-xs transition shadow-md flex items-center justify-center gap-1.5">
+                    <i class="fa-solid fa-right-to-bracket"></i> 로그인하여 시작하기
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- ======================================================== -->
     <!-- VIEW 1: 일차 선택 그리드 화면 (Home) -->
     <!-- ======================================================== -->
-    <div id="viewDays" class="flex-1 overflow-y-auto p-6 max-w-6xl mx-auto w-full space-y-6">
+    <div id="viewDays" class="hidden flex-1 overflow-y-auto p-6 max-w-6xl mx-auto w-full space-y-6">
         <!-- 과목 필터 탭 -->
         <div class="flex items-center justify-between border-b border-slate-800 pb-3">
             <div class="flex items-center space-x-2">
@@ -423,8 +448,13 @@
 
         window.addEventListener('DOMContentLoaded', async () => {
             updateAuthUI();
-            await fetchLocks();
-            renderDaysGrid();
+            if (!currentUser) {
+                showView('gate');
+            } else {
+                await fetchLocks();
+                showView('days');
+                renderDaysGrid();
+            }
         });
 
         // 서버에서 최신 오픈 상태 가져오기
@@ -446,11 +476,16 @@
 
         // 일차 목록 뷰로 이동
         function goToDaysList() {
+            if (!currentUser) {
+                showView('gate');
+                return;
+            }
             showView('days');
             renderDaysGrid();
         }
 
         function showView(viewName) {
+            const vGate = document.getElementById('viewAuthGate');
             const vDays = document.getElementById('viewDays');
             const vProb = document.getElementById('viewProblem');
             const vStat = document.getElementById('viewStatus');
@@ -458,11 +493,32 @@
             const nDays = document.getElementById('navDaysBtn');
             const nStat = document.getElementById('navStatusBtn');
             const nStats = document.getElementById('navStatsBtn');
+            const mainNav = document.getElementById('mainNav');
 
-            vDays.classList.add('hidden');
-            vProb.classList.add('hidden');
-            vStat.classList.add('hidden');
+            // 비로그인 상태이거나 명시적으로 gate 뷰 요청 시
+            if (!currentUser || viewName === 'gate') {
+                if (vGate) vGate.classList.remove('hidden');
+                if (vDays) vDays.classList.add('hidden');
+                if (vProb) vProb.classList.add('hidden');
+                if (vStat) vStat.classList.add('hidden');
+                if (vStats) vStats.classList.add('hidden');
+                if (mainNav) {
+                    mainNav.classList.add('hidden');
+                    mainNav.classList.remove('flex');
+                }
+                return;
+            }
+
+            if (vGate) vGate.classList.add('hidden');
+            if (vDays) vDays.classList.add('hidden');
+            if (vProb) vProb.classList.add('hidden');
+            if (vStat) vStat.classList.add('hidden');
             if (vStats) vStats.classList.add('hidden');
+
+            if (mainNav) {
+                mainNav.classList.remove('hidden');
+                mainNav.classList.add('flex');
+            }
 
             nDays.className = 'px-3 py-1.5 rounded-lg text-xs font-medium text-slate-300 hover:bg-slate-800 transition flex items-center gap-1.5';
             nStat.className = 'px-3 py-1.5 rounded-lg text-xs font-medium text-slate-300 hover:bg-slate-800 transition flex items-center gap-1.5';
@@ -479,6 +535,10 @@
                 nStat.className = 'px-3 py-1.5 rounded-lg text-xs font-semibold bg-amber-500 text-slate-950 transition flex items-center gap-1.5';
                 loadSubmissions();
             } else if (viewName === 'stats') {
+                if (currentUser.role !== 'admin') {
+                    showView('days');
+                    return;
+                }
                 if (vStats) vStats.classList.remove('hidden');
                 if (nStats) nStats.className = 'px-3 py-1.5 rounded-lg text-xs font-bold bg-amber-500 text-slate-950 transition flex items-center gap-1.5';
                 loadStatsData();
@@ -593,6 +653,10 @@
 
         // 일차 진입
         function openDayProblems(day) {
+            if (!currentUser) {
+                showView('gate');
+                return;
+            }
             selectedDay = day;
             selectedDiff = '하'; // 기본 '하'부터 열기
             showView('problem');
@@ -704,8 +768,13 @@
         // 로그인 UI 업데이트
         function updateAuthUI() {
             const container = document.getElementById('authContainer');
+            const mainNav = document.getElementById('mainNav');
 
             if (currentUser) {
+                if (mainNav) {
+                    mainNav.classList.remove('hidden');
+                    mainNav.classList.add('flex');
+                }
                 const roleBadge = currentUser.role === 'admin' 
                     ? '<span class="bg-rose-500/20 text-rose-400 border border-rose-500/30 px-1.5 py-0.5 rounded text-[10px] font-bold">관리자</span>'
                     : '<span class="bg-blue-500/20 text-blue-400 border border-blue-500/30 px-1.5 py-0.5 rounded text-[10px] font-bold">학생</span>';
@@ -719,11 +788,11 @@
                     </div>
                 `;
             } else {
-                container.innerHTML = `
-                    <button onclick="openLoginModal()" class="text-xs bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold px-3 py-1.5 rounded-lg transition flex items-center gap-1.5">
-                        <i class="fa-solid fa-right-to-bracket"></i> 로그인
-                    </button>
-                `;
+                if (mainNav) {
+                    mainNav.classList.add('hidden');
+                    mainNav.classList.remove('flex');
+                }
+                container.innerHTML = '';
             }
 
             // 관리자 전용 네비게이션 및 정답 카드 가시성 동기화
@@ -742,6 +811,59 @@
                     adminSolCard.classList.remove('hidden');
                 } else {
                     adminSolCard.classList.add('hidden');
+                }
+            }
+        }
+
+        // 중앙 로그인 게이트 폼 제출 처리
+        async function handleLoginGate(e) {
+            e.preventDefault();
+            const btn = document.getElementById('gateLoginBtn');
+            const u = document.getElementById('gateUsername').value.trim();
+            const p = document.getElementById('gatePassword').value.trim();
+
+            if (btn) {
+                btn.disabled = true;
+                btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> 로그인 중...';
+            }
+
+            try {
+                const res = await fetch(`${judgeServerUrl}/api/auth/login`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ username: u, password: p })
+                });
+
+                if (!res.ok) {
+                    const err = await res.json();
+                    alert(err.detail || '아이디 또는 비밀번호가 올바르지 않습니다.');
+                    return;
+                }
+
+                const data = await res.json();
+                currentUser = data.user;
+                localStorage.setItem('current_user', JSON.stringify(currentUser));
+                updateAuthUI();
+                await fetchLocks();
+                showView('days');
+                renderDaysGrid();
+            } catch (err) {
+                if (u === 'admin' && p === 'admin1234') {
+                    currentUser = { username: 'admin', name: '관리자', role: 'admin' };
+                } else if (u === 'student01' && p === 'student1234') {
+                    currentUser = { username: 'student01', name: '홍길동 (학생)', role: 'student' };
+                } else {
+                    alert('아이디 또는 비밀번호가 올바르지 않습니다.');
+                    return;
+                }
+                localStorage.setItem('current_user', JSON.stringify(currentUser));
+                updateAuthUI();
+                showView('days');
+                renderDaysGrid();
+            } finally {
+                if (btn) {
+                    btn.disabled = false;
+                    btn.innerHTML = '<i class="fa-solid fa-right-to-bracket"></i> 로그인하여 시작하기';
                 }
             }
         }
@@ -770,6 +892,7 @@
                 closeLoginModal();
                 updateAuthUI();
                 await fetchLocks();
+                showView('days');
                 renderDaysGrid();
             } catch (err) {
                 if (u === 'admin' && p === 'admin1234') {
@@ -783,6 +906,7 @@
                 localStorage.setItem('current_user', JSON.stringify(currentUser));
                 closeLoginModal();
                 updateAuthUI();
+                showView('days');
                 renderDaysGrid();
             }
         }
@@ -791,7 +915,7 @@
             currentUser = null;
             localStorage.removeItem('current_user');
             updateAuthUI();
-            goToDaysList();
+            showView('gate');
         }
 
         function openLoginModal() { document.getElementById('loginModal').classList.remove('hidden'); }
