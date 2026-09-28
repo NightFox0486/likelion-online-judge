@@ -274,7 +274,7 @@
             </p>
             <div>
                 <label class="block text-xs font-medium text-slate-400 mb-1">엔드포인트 URL:</label>
-                <input type="text" id="judgeServerUrlInput" value="http://localhost:8000" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-amber-500">
+                <input type="text" id="judgeServerUrlInput" value="http://100.104.124.97:8000" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-amber-500">
             </div>
             <div class="flex items-center justify-between pt-2">
                 <button onclick="pingServer()" class="text-xs bg-slate-700 hover:bg-slate-600 text-slate-200 px-3 py-2 rounded-lg transition">연결 테스트</button>
@@ -294,7 +294,7 @@
         let currentDay = 'all';
         let currentDiff = 'all';
         let currentProblem = null;
-        let judgeServerUrl = localStorage.getItem('judge_server_url') || 'http://localhost:8000';
+        let judgeServerUrl = localStorage.getItem('judge_server_url') || 'http://100.104.124.97:8000';
         let currentUser = JSON.parse(localStorage.getItem('current_user') || 'null');
 
         window.addEventListener('DOMContentLoaded', () => {
