@@ -136,8 +136,6 @@
                     </div>
                 </div>
 
-                <h2 id="pTitle" class="text-lg font-bold text-white tracking-tight"></h2>
-
                 <div class="bg-slate-900 p-4 rounded-xl border border-slate-800">
                     <p id="pDesc" class="text-xs text-slate-200 leading-relaxed whitespace-pre-line select-text"></p>
                 </div>
@@ -680,7 +678,6 @@
             if (!prob) return;
             currentProblem = prob;
 
-            document.getElementById('pTitle').textContent = prob.title;
             document.getElementById('pSubjectBadge').textContent = prob.subject;
             document.getElementById('pDayBadge').textContent = `${prob.day}일차`;
             document.getElementById('pDiffBadge').textContent = prob.difficulty;
@@ -938,7 +935,7 @@
                 username: currentUser ? currentUser.username : 'guest',
                 student_name: currentUser ? currentUser.name : '게스트',
                 problem_id: currentProblem.id,
-                problem_title: `[Day ${currentProblem.day}][${currentProblem.difficulty}] ${currentProblem.title}`,
+                problem_title: `${currentProblem.day}일차 [${currentProblem.difficulty}]`,
                 language: currentProblem.subject.toLowerCase(),
                 code: code,
                 expected_output: currentProblem.expected
@@ -966,7 +963,7 @@
                 showJudgeResult(result.status, result.score, result.stdout, result.stderr || result.message);
             } catch (err) {
                 judgeDuration.textContent = '오류';
-                showJudgeResult('SERVER_ERROR', 0, '', '채점 서버 연결 실패. 상단 ⚙️ 설정을 확인하세요.');
+                showJudgeResult('SERVER_ERROR', 0, '', '채점 서버 연결 실패.');
             } finally {
                 submitBtn.disabled = false;
                 submitBtn.innerHTML = '<i class="fa-solid fa-play"></i> 제출 및 채점';
@@ -981,6 +978,9 @@
             if (status === 'ACCEPTED') {
                 badge.className = 'inline-block px-2.5 py-0.5 rounded text-[11px] font-bold bg-emerald-500/20 text-emerald-400 border border-emerald-500/30';
                 badge.textContent = `맞았습니다!! (${score}점)`;
+            } else if (status === 'HARDCODED_REJECTED') {
+                badge.className = 'inline-block px-2.5 py-0.5 rounded text-[11px] font-bold bg-rose-500/20 text-rose-400 border border-rose-500/30';
+                badge.textContent = '단순 출력 감지 (오답)';
             } else if (status === 'WRONG_ANSWER') {
                 badge.className = 'inline-block px-2.5 py-0.5 rounded text-[11px] font-bold bg-rose-500/20 text-rose-400 border border-rose-500/30';
                 badge.textContent = `틀렸습니다 (${score}점)`;
@@ -1025,6 +1025,8 @@
                     let resultBadge = '';
                     if (item.status === 'ACCEPTED') {
                         resultBadge = '<span class="text-emerald-400 font-bold">맞았습니다</span>';
+                    } else if (item.status === 'HARDCODED_REJECTED') {
+                        resultBadge = '<span class="text-rose-400 font-bold">단순 출력 감지</span>';
                     } else if (item.status === 'WRONG_ANSWER') {
                         resultBadge = '<span class="text-rose-400 font-bold">틀렸습니다</span>';
                     } else if (item.status === 'COMPILE_ERROR') {
