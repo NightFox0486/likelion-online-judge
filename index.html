@@ -51,10 +51,6 @@
             <div>
                 <span class="text-4xl">🦁</span>
                 <h2 class="text-xl font-bold text-white mt-3 tracking-tight">Lion Judge</h2>
-                <p class="text-xs text-slate-400 mt-1">멋쟁이사자처럼 9기 온라인 실습 포털</p>
-                <div class="mt-4 p-3 bg-slate-950 rounded-xl border border-slate-800 text-[11px] text-slate-400">
-                    <i class="fa-solid fa-lock text-amber-400 mr-1"></i> 교육생 또는 관리자 로그인 후 이용 가능합니다.
-                </div>
             </div>
 
             <form onsubmit="handleLoginGate(event)" class="space-y-4 text-left">
@@ -67,7 +63,7 @@
                     <input type="password" id="gatePassword" required placeholder="비밀번호를 입력하세요" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2.5 text-xs text-white focus:outline-none focus:border-amber-500 transition">
                 </div>
                 <button type="submit" id="gateLoginBtn" class="w-full bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold py-2.5 rounded-xl text-xs transition shadow-md flex items-center justify-center gap-1.5">
-                    <i class="fa-solid fa-right-to-bracket"></i> 로그인하여 시작하기
+                    <i class="fa-solid fa-right-to-bracket"></i> 로그인
                 </button>
             </form>
         </div>
@@ -86,7 +82,7 @@
                 <button onclick="filterDaysSubject('Web')" class="day-filter-btn bg-slate-900 hover:bg-slate-800 text-slate-300 font-medium px-3 py-1.5 rounded-lg text-xs transition" data-sub="Web">Web (13~16일차)</button>
             </div>
             <div id="adminNotice" class="hidden text-xs text-amber-400 font-semibold flex items-center gap-1.5">
-                <i class="fa-solid fa-user-shield"></i> 관리자 모드: 각 일차별 스위치를 눌러 학생 공개 여부를 제어하세요.
+                <i class="fa-solid fa-user-shield"></i> 관리자 모드
             </div>
         </div>
 
@@ -255,12 +251,9 @@
     <!-- ======================================================== -->
     <div id="viewStats" class="hidden flex-1 overflow-y-auto p-6 max-w-6xl mx-auto w-full space-y-6">
         <div class="flex items-center justify-between pb-3 border-b border-slate-800">
-            <div>
-                <h2 class="text-base font-bold text-white flex items-center gap-2">
-                    <i class="fa-solid fa-chart-pie text-amber-400"></i> 실습 종합 통계 분석
-                </h2>
-                <p class="text-xs text-slate-400 mt-0.5">학생별 실습 완료 비율, 정답률, 시도 횟수 및 취약 구간을 분석합니다.</p>
-            </div>
+            <h2 class="text-base font-bold text-white flex items-center gap-2">
+                <i class="fa-solid fa-chart-pie text-amber-400"></i> 통계 대시보드
+            </h2>
             <button onclick="loadStatsData()" class="text-xs bg-slate-800 hover:bg-slate-700 text-slate-200 px-3 py-1.5 rounded-lg border border-slate-700 transition flex items-center gap-1.5">
                 <i class="fa-solid fa-rotate"></i> 새로고침
             </button>
@@ -274,7 +267,6 @@
                     <i class="fa-solid fa-users text-amber-400"></i>
                 </div>
                 <div class="text-2xl font-bold text-white" id="statTotalStudents">0명</div>
-                <div class="text-[11px] text-slate-500 mt-1">활성 학생 계정</div>
             </div>
 
             <div class="bg-slate-900 border border-slate-800 rounded-2xl p-4">
@@ -303,7 +295,6 @@
                     <i class="fa-solid fa-code-commit text-purple-400"></i>
                 </div>
                 <div class="text-2xl font-bold text-purple-400" id="statTotalSubmissions">0회</div>
-                <div class="text-[11px] text-slate-500 mt-1">누적 코드 제출</div>
             </div>
         </div>
 
@@ -351,7 +342,6 @@
                 <h3 class="text-sm font-bold text-white flex items-center gap-2">
                     <i class="fa-solid fa-triangle-exclamation text-rose-400"></i> 오답 빈도 높은 취약 문제 TOP 5
                 </h3>
-                <p class="text-[11px] text-slate-400">실패율이 높아 보충 설명이 필요한 실습 문제입니다.</p>
                 <div id="vulnerableProblemsList" class="space-y-2 pt-1">
                     <!-- 동적 렌더링 -->
                 </div>
@@ -362,7 +352,6 @@
                 <h3 class="text-sm font-bold text-white flex items-center gap-2">
                     <i class="fa-solid fa-chart-simple text-blue-400"></i> 채점 결과 유형 분포
                 </h3>
-                <p class="text-[11px] text-slate-400">전체 코드 제출 건에 대한 판정 결과 비율입니다.</p>
                 <div id="statusDistributionBars" class="space-y-2.5 pt-1">
                     <!-- 동적 렌더링 -->
                 </div>
@@ -626,10 +615,7 @@
                             ${adminToggleHtml}
                         </div>
 
-                        <h3 class="text-base font-bold text-white mb-1">${d}일차 실습</h3>
-                        <p class="text-xs text-slate-400 mb-4">
-                            ${isUnlocked ? '상 · 중 · 하 3문제 풀이 및 채점' : '실습 시작 시 공개됩니다.'}
-                        </p>
+                        <h3 class="text-base font-bold text-white mb-4">${d}일차 실습</h3>
                     </div>
 
                     <div class="pt-3 border-t border-slate-800/80 flex items-center justify-between">
@@ -649,8 +635,7 @@
                 container.innerHTML = `
                     <div class="col-span-full py-16 text-center space-y-2">
                         <i class="fa-solid fa-lock text-3xl text-slate-600 mb-2"></i>
-                        <h4 class="text-sm font-bold text-slate-400">현재 오픈된 실습이 없습니다.</h4>
-                        <p class="text-xs text-slate-500">강사/관리자가 실습을 시작하면 순차적으로 공개됩니다.</p>
+                        <h4 class="text-sm font-bold text-slate-400">오픈된 실습이 없습니다.</h4>
                     </div>
                 `;
             }
