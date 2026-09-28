@@ -7,7 +7,10 @@ const PROBLEMS = [
     "title": "카페 음료 영수증 결제 금액 계산기 (CafeReceiptCalculator)",
     "desc": "카페 포스기(POS)에서 주문받은 음료의 단가와 수량을 바탕으로 공급가액, 부가세(VAT 10%), 최종 결제 금액을 계산하여 출력하세요.",
     "template": "public class Solution {\n    public static void main(String[] args) {\n        // 여기에 코드를 작성하세요\n        \n    }\n}",
-    "solution": "package day01;\n\npublic class Problem1_CafeReceiptCalculator {\n    public static void main(String[] args) {\n        int americanoPrice = 4500;\n        int americanoQty = 2;\n        int lattePrice = 5000;\n        int latteQty = 3;\n\n        int supplyPrice = (americanoPrice * americanoQty) + (lattePrice * latteQty);\n        double vatRate = 0.1;\n        int vat = (int) (supplyPrice * vatRate);\n        int totalAmount = supplyPrice + vat;\n\n        System.out.println(\"=== 스타카페 주문 영수증 ===\");\n        System.out.printf(\"아메리카노 (%d원 x %d잔): %d원\\n\", americanoPrice, americanoQty, americanoPrice * americanoQty);\n        System.out.printf(\"카페라떼   (%d원 x %d잔): %d원\\n\", lattePrice, latteQty, lattePrice * latteQty);\n        System.out.println(\"---------------------------------\");\n        System.out.printf(\"공급가액: %d원\\n\", supplyPrice);\n        System.out.printf(\"부가세(10%%): %d원\\n\", vat);\n        System.out.printf(\"최종 결제 금액: %d원\\n\", totalAmount);\n    }\n}"
+    "solution": "package day01;\n\npublic class Problem1_CafeReceiptCalculator {\n    public static void main(String[] args) {\n        int americanoPrice = 4500;\n        int americanoQty = 2;\n        int lattePrice = 5000;\n        int latteQty = 3;\n\n        int supplyPrice = (americanoPrice * americanoQty) + (lattePrice * latteQty);\n        double vatRate = 0.1;\n        int vat = (int) (supplyPrice * vatRate);\n        int totalAmount = supplyPrice + vat;\n\n        System.out.println(\"=== 스타카페 주문 영수증 ===\");\n        System.out.printf(\"아메리카노 (%d원 x %d잔): %d원\\n\", americanoPrice, americanoQty, americanoPrice * americanoQty);\n        System.out.printf(\"카페라떼   (%d원 x %d잔): %d원\\n\", lattePrice, latteQty, lattePrice * latteQty);\n        System.out.println(\"---------------------------------\");\n        System.out.printf(\"공급가액: %d원\\n\", supplyPrice);\n        System.out.printf(\"부가세(10%%): %d원\\n\", vat);\n        System.out.printf(\"최종 결제 금액: %d원\\n\", totalAmount);\n    }\n}",
+    "sample_input": "없음 (표준 입력 없음, 기본 변수값 활용)",
+    "sample_output": "=== ��Ÿī�� �ֹ� ������ ===\n�Ƹ޸�ī�� (4500�� x 2��): 9000��\nī���   (5000�� x 3��): 15000��\n---------------------------------\n���ް���: 24000��\n�ΰ���(10%): 2400��\n���� ���� �ݾ�: 26400��",
+    "expected": "=== ��Ÿī�� �ֹ� ������ ===\n�Ƹ޸�ī�� (4500�� x 2��): 9000��\nī���   (5000�� x 3��): 15000��\n---------------------------------\n���ް���: 24000��\n�ΰ���(10%): 2400��\n���� ���� �ݾ�: 26400��"
   },
   {
     "id": "day01_중",
@@ -17,7 +20,10 @@ const PROBLEMS = [
     "title": "편의점 거스름돈 최소 화폐 매수 계산기 (ChangeCalculator)",
     "desc": "손님이 50,000원을 내고 23,700원 상당의 상품을 구매했을 때, 거스름돈(26,300원)을 최소 매수의 지폐 및 동전으로 거슬러 주기 위해 각 화폐 단위별 개수를 산출하세요.",
     "template": "public class Solution {\n    public static void main(String[] args) {\n        // 여기에 코드를 작성하세요\n        \n    }\n}",
-    "solution": "package day01;\n\npublic class Problem2_ChangeCalculator {\n    public static void main(String[] args) {\n        int itemPrice = 23700;\n        int paidAmount = 50000;\n        int change = paidAmount - itemPrice;\n\n        int count10000 = change / 10000;\n        int rem10000 = change % 10000;\n\n        int count5000 = rem10000 / 5000;\n        int rem5000 = rem10000 % 5000;\n\n        int count1000 = rem5000 / 1000;\n        int rem1000 = rem5000 % 1000;\n\n        int count500 = rem1000 / 500;\n        int rem500 = rem1000 % 500;\n\n        int count100 = rem500 / 100;\n\n        System.out.println(\"=== 편의점 거스름돈 계산기 ===\");\n        System.out.printf(\"상품 금액: %,d원\\n\", itemPrice);\n        System.out.printf(\"받은 금액: %,d원\\n\", paidAmount);\n        System.out.printf(\"거스름돈 총액: %,d원\\n\", change);\n        System.out.println(\"---------------------------------\");\n        System.out.printf(\"10,000원권: %d장\\n\", count10000);\n        System.out.printf(\" 5,000원권: %d장\\n\", count5000);\n        System.out.printf(\" 1,000원권: %d장\\n\", count1000);\n        System.out.printf(\"   500원 동전: %d개\\n\", count500);\n        System.out.printf(\"   100원 동전: %d개\\n\", count100);\n    }\n}"
+    "solution": "package day01;\n\npublic class Problem2_ChangeCalculator {\n    public static void main(String[] args) {\n        int itemPrice = 23700;\n        int paidAmount = 50000;\n        int change = paidAmount - itemPrice;\n\n        int count10000 = change / 10000;\n        int rem10000 = change % 10000;\n\n        int count5000 = rem10000 / 5000;\n        int rem5000 = rem10000 % 5000;\n\n        int count1000 = rem5000 / 1000;\n        int rem1000 = rem5000 % 1000;\n\n        int count500 = rem1000 / 500;\n        int rem500 = rem1000 % 500;\n\n        int count100 = rem500 / 100;\n\n        System.out.println(\"=== 편의점 거스름돈 계산기 ===\");\n        System.out.printf(\"상품 금액: %,d원\\n\", itemPrice);\n        System.out.printf(\"받은 금액: %,d원\\n\", paidAmount);\n        System.out.printf(\"거스름돈 총액: %,d원\\n\", change);\n        System.out.println(\"---------------------------------\");\n        System.out.printf(\"10,000원권: %d장\\n\", count10000);\n        System.out.printf(\" 5,000원권: %d장\\n\", count5000);\n        System.out.printf(\" 1,000원권: %d장\\n\", count1000);\n        System.out.printf(\"   500원 동전: %d개\\n\", count500);\n        System.out.printf(\"   100원 동전: %d개\\n\", count100);\n    }\n}",
+    "sample_input": "없음 (표준 입력 없음, 기본 변수값 활용)",
+    "sample_output": "=== ������ �Ž����� ���� ===\n��ǰ �ݾ�: 23,700��\n���� �ݾ�: 50,000��\n�Ž����� �Ѿ�: 26,300��\n---------------------------------\n10,000����: 2��\n 5,000����: 1��\n 1,000����: 1��\n   500�� ����: 0��\n   100�� ����: 3��",
+    "expected": "=== ������ �Ž����� ���� ===\n��ǰ �ݾ�: 23,700��\n���� �ݾ�: 50,000��\n�Ž����� �Ѿ�: 26,300��\n---------------------------------\n10,000����: 2��\n 5,000����: 1��\n 1,000����: 1��\n   500�� ����: 0��\n   100�� ����: 3��"
   },
   {
     "id": "day01_상",
@@ -27,7 +33,10 @@ const PROBLEMS = [
     "title": "영화관 관람료 복합 할인 및 3항 연산자 판별기 (MovieTicketPricing)",
     "desc": "극장 티켓 예매 시 복합 할인 조건(연령별 할인, 조조 할인, 통신사 제휴 할인)을 중첩 삼항 연산자와 논리 연산자를 적용하여 최종 결제 금액을 계산하세요.",
     "template": "public class Solution {\n    public static void main(String[] args) {\n        // 여기에 코드를 작성하세요\n        \n    }\n}",
-    "solution": "package day01;\n\npublic class Problem3_MovieTicketPricing {\n    public static void main(String[] args) {\n        int basePrice = 15000;\n        int age = 17;\n        boolean isMorning = true;\n        boolean hasTelecomDiscount = true;\n\n        double ageDiscountRate = (age >= 65) ? 0.5 : ((age < 19) ? 0.3 : 0.0);\n        int priceAfterAge = basePrice - (int)(basePrice * ageDiscountRate);\n        int priceAfterMorning = isMorning ? (priceAfterAge - 2000) : priceAfterAge;\n        int finalPrice = hasTelecomDiscount ? (int)(priceAfterMorning * 0.9) : priceAfterMorning;\n\n        System.out.println(\"=== CGV 영화 예매 요금 계산서 ===\");\n        System.out.printf(\"기준 요금: %,d원\\n\", basePrice);\n        System.out.printf(\"관람자 나이: %d세 (연령 할인율: %.0f%%)\\n\", age, ageDiscountRate * 100);\n        System.out.printf(\"조조 할인 적용 여부: %s (-2,000원)\\n\", isMorning ? \"적용\" : \"미적용\");\n        System.out.printf(\"통신사 제휴 할인: %s (추가 10%%)\\n\", hasTelecomDiscount ? \"적용\" : \"미적용\");\n        System.out.println(\"---------------------------------\");\n        System.out.printf(\"최종 결제 금액: %,d원\\n\", finalPrice);\n    }\n}"
+    "solution": "package day01;\n\npublic class Problem3_MovieTicketPricing {\n    public static void main(String[] args) {\n        int basePrice = 15000;\n        int age = 17;\n        boolean isMorning = true;\n        boolean hasTelecomDiscount = true;\n\n        double ageDiscountRate = (age >= 65) ? 0.5 : ((age < 19) ? 0.3 : 0.0);\n        int priceAfterAge = basePrice - (int)(basePrice * ageDiscountRate);\n        int priceAfterMorning = isMorning ? (priceAfterAge - 2000) : priceAfterAge;\n        int finalPrice = hasTelecomDiscount ? (int)(priceAfterMorning * 0.9) : priceAfterMorning;\n\n        System.out.println(\"=== CGV 영화 예매 요금 계산서 ===\");\n        System.out.printf(\"기준 요금: %,d원\\n\", basePrice);\n        System.out.printf(\"관람자 나이: %d세 (연령 할인율: %.0f%%)\\n\", age, ageDiscountRate * 100);\n        System.out.printf(\"조조 할인 적용 여부: %s (-2,000원)\\n\", isMorning ? \"적용\" : \"미적용\");\n        System.out.printf(\"통신사 제휴 할인: %s (추가 10%%)\\n\", hasTelecomDiscount ? \"적용\" : \"미적용\");\n        System.out.println(\"---------------------------------\");\n        System.out.printf(\"최종 결제 금액: %,d원\\n\", finalPrice);\n    }\n}",
+    "sample_input": "없음 (표준 입력 없음, 기본 변수값 활용)",
+    "sample_output": "=== CGV ��ȭ ���� ��� ��꼭 ===\n���� ���: 15,000��\n������ ����: 17�� (���� ������: 30%)\n���� ���� ���� ����: ���� (-2,000��)\n��Ż� ���� ����: ���� (�߰� 10%)\n---------------------------------\n���� ���� �ݾ�: 7,650��",
+    "expected": "=== CGV ��ȭ ���� ��� ��꼭 ===\n���� ���: 15,000��\n������ ����: 17�� (���� ������: 30%)\n���� ���� ���� ����: ���� (-2,000��)\n��Ż� ���� ����: ���� (�߰� 10%)\n---------------------------------\n���� ���� �ݾ�: 7,650��"
   },
   {
     "id": "day02_하",
@@ -37,7 +46,10 @@ const PROBLEMS = [
     "title": "자판기 음료 주문 및 잔돈 반환기 (VendingMachine)",
     "desc": "음료 자판기에서 사용자의 메뉴 번호 선택(1: 코카콜라 1,200원, 2: 칠성사이다 1,100원, 3: 레쓰비 800원, 4: 삼다수 600원)을 `switch-case` 문으로 매핑하고, 투입 금액과의 비교를 통해 음료 배출 및 잔돈 반환 로직을 구현하세요.",
     "template": "public class Solution {\n    public static void main(String[] args) {\n        // 여기에 코드를 작성하세요\n        \n    }\n}",
-    "solution": "package day02;\n\npublic class Problem1_VendingMachine {\n    public static void main(String[] args) {\n        int balance = 1500;\n        int menuChoice = 2;\n\n        String menuName;\n        int price;\n\n        switch (menuChoice) {\n            case 1: menuName = \"코카콜라\"; price = 1200; break;\n            case 2: menuName = \"칠성사이다\"; price = 1100; break;\n            case 3: menuName = \"레쓰비 캔커피\"; price = 800; break;\n            case 4: menuName = \"삼다수 생수\"; price = 600; break;\n            default: menuName = \"알 수 없는 메뉴\"; price = 0; break;\n        }\n\n        System.out.println(\"=== 스마트 음료 자판기 ===\");\n        System.out.printf(\"투입 금액: %,d원\\n\", balance);\n        System.out.printf(\"선택 메뉴: %s (가격: %,d원)\\n\", menuName, price);\n\n        if (price == 0) {\n            System.out.println(\"오류: 올바른 메뉴 번호를 입력해주세요.\");\n        } else if (balance >= price) {\n            int change = balance - price;\n            System.out.printf(\">> [%s] 음료가 나왔습니다! 🥤 (잔돈: %,d원 반환)\\n\", menuName, change);\n        } else {\n            int need = price - balance;\n            System.out.printf(\">> 잔액이 부족합니다! (%,d원 부족)\\n\", need);\n        }\n    }\n}"
+    "solution": "package day02;\n\npublic class Problem1_VendingMachine {\n    public static void main(String[] args) {\n        int balance = 1500;\n        int menuChoice = 2;\n\n        String menuName;\n        int price;\n\n        switch (menuChoice) {\n            case 1: menuName = \"코카콜라\"; price = 1200; break;\n            case 2: menuName = \"칠성사이다\"; price = 1100; break;\n            case 3: menuName = \"레쓰비 캔커피\"; price = 800; break;\n            case 4: menuName = \"삼다수 생수\"; price = 600; break;\n            default: menuName = \"알 수 없는 메뉴\"; price = 0; break;\n        }\n\n        System.out.println(\"=== 스마트 음료 자판기 ===\");\n        System.out.printf(\"투입 금액: %,d원\\n\", balance);\n        System.out.printf(\"선택 메뉴: %s (가격: %,d원)\\n\", menuName, price);\n\n        if (price == 0) {\n            System.out.println(\"오류: 올바른 메뉴 번호를 입력해주세요.\");\n        } else if (balance >= price) {\n            int change = balance - price;\n            System.out.printf(\">> [%s] 음료가 나왔습니다! 🥤 (잔돈: %,d원 반환)\\n\", menuName, change);\n        } else {\n            int need = price - balance;\n            System.out.printf(\">> 잔액이 부족합니다! (%,d원 부족)\\n\", need);\n        }\n    }\n}",
+    "sample_input": "없음 (표준 입력 없음, 기본 변수값 활용)",
+    "sample_output": "=== ����Ʈ ���� ���Ǳ� ===\n���� �ݾ�: 1,500��\n���� �޴�: ĥ�����̴� (����: 1,100��)\n>> [ĥ�����̴�] ���ᰡ ���Խ��ϴ�! ? (�ܵ�: 400�� ��ȯ)",
+    "expected": "=== ����Ʈ ���� ���Ǳ� ===\n���� �ݾ�: 1,500��\n���� �޴�: ĥ�����̴� (����: 1,100��)\n>> [ĥ�����̴�] ���ᰡ ���Խ��ϴ�! ? (�ܵ�: 400�� ��ȯ)"
   },
   {
     "id": "day02_중",
@@ -47,7 +59,10 @@ const PROBLEMS = [
     "title": "업앤다운(UP & DOWN) 숫자 맞추기 시뮬레이터 (UpDownGame)",
     "desc": "컴퓨터가 정한 정답 숫자(1~100)를 맞추는 게임입니다. 최대 5회의 기회가 주어지며, 추측 숫자가 작으면 UP, 크면 DOWN을 안내하고, 정답을 맞추면 즉시 반복문(`while`)을 탈출(`break`)하는 시뮬레이터를 작성하세요.",
     "template": "public class Solution {\n    public static void main(String[] args) {\n        // 여기에 코드를 작성하세요\n        \n    }\n}",
-    "solution": "package day02;\n\npublic class Problem2_UpDownGame {\n    public static void main(String[] args) {\n        int answer = 73;\n        int[] guesses = {50, 80, 65, 75, 73};\n\n        int maxAttempts = 5;\n        int attempt = 0;\n        boolean isSuccess = false;\n\n        System.out.println(\"=== 업앤다운(UP & DOWN) 숫자 맞추기 게임 ===\");\n        System.out.printf(\"목표: 1부터 100 사이의 숫자를 맞춰보세요! (최대 %d회 기회)\\n\\n\", maxAttempts);\n\n        while (attempt < maxAttempts) {\n            int currentGuess = guesses[attempt];\n            attempt++;\n\n            System.out.printf(\"[시도 %d/%d] 입력값: %d -> \", attempt, maxAttempts, currentGuess);\n\n            if (currentGuess < answer) {\n                System.out.println(\"🔺 UP! 더 큰 숫자입니다.\");\n            } else if (currentGuess > answer) {\n                System.out.println(\"🔻 DOWN! 더 작은 숫자입니다.\");\n            } else {\n                System.out.println(\"🎯 정답입니다! 축하합니다!\");\n                isSuccess = true;\n                break;\n            }\n        }\n\n        System.out.println(\"---------------------------------\");\n        if (isSuccess) {\n            System.out.printf(\"게임 종료: %d회 시도 만에 승리하셨습니다!\\n\", attempt);\n        } else {\n            System.out.printf(\"게임 종료: 기회를 모두 소진하셨습니다. (정답은 %d였습니다)\\n\", answer);\n        }\n    }\n}"
+    "solution": "package day02;\n\npublic class Problem2_UpDownGame {\n    public static void main(String[] args) {\n        int answer = 73;\n        int[] guesses = {50, 80, 65, 75, 73};\n\n        int maxAttempts = 5;\n        int attempt = 0;\n        boolean isSuccess = false;\n\n        System.out.println(\"=== 업앤다운(UP & DOWN) 숫자 맞추기 게임 ===\");\n        System.out.printf(\"목표: 1부터 100 사이의 숫자를 맞춰보세요! (최대 %d회 기회)\\n\\n\", maxAttempts);\n\n        while (attempt < maxAttempts) {\n            int currentGuess = guesses[attempt];\n            attempt++;\n\n            System.out.printf(\"[시도 %d/%d] 입력값: %d -> \", attempt, maxAttempts, currentGuess);\n\n            if (currentGuess < answer) {\n                System.out.println(\"🔺 UP! 더 큰 숫자입니다.\");\n            } else if (currentGuess > answer) {\n                System.out.println(\"🔻 DOWN! 더 작은 숫자입니다.\");\n            } else {\n                System.out.println(\"🎯 정답입니다! 축하합니다!\");\n                isSuccess = true;\n                break;\n            }\n        }\n\n        System.out.println(\"---------------------------------\");\n        if (isSuccess) {\n            System.out.printf(\"게임 종료: %d회 시도 만에 승리하셨습니다!\\n\", attempt);\n        } else {\n            System.out.printf(\"게임 종료: 기회를 모두 소진하셨습니다. (정답은 %d였습니다)\\n\", answer);\n        }\n    }\n}",
+    "sample_input": "없음 (표준 입력 없음, 기본 변수값 활용)",
+    "sample_output": "=== ���شٿ�(UP & DOWN) ���� ���߱� ���� ===\n��ǥ: 1���� 100 ������ ���ڸ� ���纸����! (�ִ� 5ȸ ��ȸ)\n\n[�õ� 1/5] �Է°�: 50 -> ? UP! �� ū �����Դϴ�.\n[�õ� 2/5] �Է°�: 80 -> ? DOWN! �� ���� �����Դϴ�.\n[�õ� 3/5] �Է°�: 65 -> ? UP! �� ū �����Դϴ�.\n[�õ� 4/5] �Է°�: 75 -> ? DOWN! �� ���� �����Դϴ�.\n[�õ� 5/5] �Է°�: 73 -> ? �����Դϴ�! �����մϴ�!\n---------------------------------\n���� ����: 5ȸ �õ� ���� �¸��ϼ̽��ϴ�!",
+    "expected": "=== ���شٿ�(UP & DOWN) ���� ���߱� ���� ===\n��ǥ: 1���� 100 ������ ���ڸ� ���纸����! (�ִ� 5ȸ ��ȸ)\n\n[�õ� 1/5] �Է°�: 50 -> ? UP! �� ū �����Դϴ�.\n[�õ� 2/5] �Է°�: 80 -> ? DOWN! �� ���� �����Դϴ�.\n[�õ� 3/5] �Է°�: 65 -> ? UP! �� ū �����Դϴ�.\n[�õ� 4/5] �Է°�: 75 -> ? DOWN! �� ���� �����Դϴ�.\n[�õ� 5/5] �Է°�: 73 -> ? �����Դϴ�! �����մϴ�!\n---------------------------------\n���� ����: 5ȸ �õ� ���� �¸��ϼ̽��ϴ�!"
   },
   {
     "id": "day02_상",
@@ -57,7 +72,10 @@ const PROBLEMS = [
     "title": "369 게임 박수 카운터 및 규칙 필터링 (ThreeSixNineGame)",
     "desc": "1부터 50까지 숫자를 순회하면서, 각 숫자의 십의 자리와 일의 자리에 3, 6, 9가 포함된 개수를 세어 박수를 출력합니다. 박수를 치지 않는 숫자는 `continue`로 건너뛰고, 박수가 2번 나오는 숫자(예: 33, 36, 39)는 `\"짝짝!\"`으로 특별 처리하여 총 박수 횟수를 집계하세요.",
     "template": "public class Solution {\n    public static void main(String[] args) {\n        // 여기에 코드를 작성하세요\n        \n    }\n}",
-    "solution": "package day02;\n\npublic class Problem3_ThreeSixNineGame {\n    public static void main(String[] args) {\n        int totalClaps = 0;\n        int doubleClapNumbers = 0;\n\n        System.out.println(\"=== 1부터 50까지 369 게임 시뮬레이션 ===\");\n\n        for (int i = 1; i <= 50; i++) {\n            int tens = i / 10;\n            int units = i % 10;\n            int clapCount = 0;\n\n            if (tens == 3 || tens == 6 || tens == 9) clapCount++;\n            if (units == 3 || units == 6 || units == 9) clapCount++;\n\n            if (clapCount == 0) continue;\n\n            totalClaps += clapCount;\n            if (clapCount == 2) {\n                doubleClapNumbers++;\n                System.out.printf(\"[%2d]: 👏👏 짝짝! (박수 2회)\\n\", i);\n            } else {\n                System.out.printf(\"[%2d]: 👏 짝!\\n\", i);\n            }\n        }\n\n        System.out.println(\"---------------------------------\");\n        System.out.printf(\"1~50 구간 총 박수 횟수: %d회\\n\", totalClaps);\n        System.out.printf(\"박수를 두 번 친 숫자 개수: %d개\\n\", doubleClapNumbers);\n    }\n}"
+    "solution": "package day02;\n\npublic class Problem3_ThreeSixNineGame {\n    public static void main(String[] args) {\n        int totalClaps = 0;\n        int doubleClapNumbers = 0;\n\n        System.out.println(\"=== 1부터 50까지 369 게임 시뮬레이션 ===\");\n\n        for (int i = 1; i <= 50; i++) {\n            int tens = i / 10;\n            int units = i % 10;\n            int clapCount = 0;\n\n            if (tens == 3 || tens == 6 || tens == 9) clapCount++;\n            if (units == 3 || units == 6 || units == 9) clapCount++;\n\n            if (clapCount == 0) continue;\n\n            totalClaps += clapCount;\n            if (clapCount == 2) {\n                doubleClapNumbers++;\n                System.out.printf(\"[%2d]: 👏👏 짝짝! (박수 2회)\\n\", i);\n            } else {\n                System.out.printf(\"[%2d]: 👏 짝!\\n\", i);\n            }\n        }\n\n        System.out.println(\"---------------------------------\");\n        System.out.printf(\"1~50 구간 총 박수 횟수: %d회\\n\", totalClaps);\n        System.out.printf(\"박수를 두 번 친 숫자 개수: %d개\\n\", doubleClapNumbers);\n    }\n}",
+    "sample_input": "없음 (표준 입력 없음, 기본 변수값 활용)",
+    "sample_output": "=== 1���� 50���� 369 ���� �ùķ��̼� ===\n[ 3]: ? ¦!\n[ 6]: ? ¦!\n[ 9]: ? ¦!\n[13]: ? ¦!\n[16]: ? ¦!\n[19]: ? ¦!\n[23]: ? ¦!\n[26]: ? ¦!\n[29]: ? ¦!\n[30]: ? ¦!\n[31]: ? ¦!\n[32]: ? ¦!\n[33]: ?? ¦¦! (�ڼ� 2ȸ)\n[34]: ? ¦!\n[35]: ? ¦!\n[36]: ?? ¦¦! (�ڼ� 2ȸ)\n[37]: ? ¦!\n[38]: ? ¦!\n[39]: ?? ¦¦! (�ڼ� 2ȸ)\n[43]: ? ¦!\n[46]: ? ¦!\n[49]: ? ¦!\n---------------------------------\n1~50 ���� �� �ڼ� Ƚ��: 25ȸ\n�ڼ��� �� �� ģ ���� ����: 3��",
+    "expected": "=== 1���� 50���� 369 ���� �ùķ��̼� ===\n[ 3]: ? ¦!\n[ 6]: ? ¦!\n[ 9]: ? ¦!\n[13]: ? ¦!\n[16]: ? ¦!\n[19]: ? ¦!\n[23]: ? ¦!\n[26]: ? ¦!\n[29]: ? ¦!\n[30]: ? ¦!\n[31]: ? ¦!\n[32]: ? ¦!\n[33]: ?? ¦¦! (�ڼ� 2ȸ)\n[34]: ? ¦!\n[35]: ? ¦!\n[36]: ?? ¦¦! (�ڼ� 2ȸ)\n[37]: ? ¦!\n[38]: ? ¦!\n[39]: ?? ¦¦! (�ڼ� 2ȸ)\n[43]: ? ¦!\n[46]: ? ¦!\n[49]: ? ¦!\n---------------------------------\n1~50 ���� �� �ڼ� Ƚ��: 25ȸ\n�ڼ��� �� �� ģ ���� ����: 3��"
   },
   {
     "id": "day03_하",
@@ -67,7 +85,10 @@ const PROBLEMS = [
     "title": "학생 시험 성적 통계 분석기 (StudentScoreStats)",
     "desc": "학급 학생 10명의 시험 점수 1차원 정수 배열을 순회하여 총점, 학급 평균, 최고 득점, 최저 득점 및 90점 이상 우수 학생 수를 계산하세요.",
     "template": "public class Solution {\n    public static void main(String[] args) {\n        // 여기에 코드를 작성하세요\n        \n    }\n}",
-    "solution": "package day03;\n\npublic class Problem1_StudentScoreStats {\n    public static void main(String[] args) {\n        int[] scores = {85, 92, 78, 64, 99, 88, 72, 95, 81, 90};\n\n        int total = 0;\n        int max = scores[0];\n        int min = scores[0];\n        int honorsCount = 0;\n\n        for (int score : scores) {\n            total += score;\n            if (score > max) max = score;\n            if (score < min) min = score;\n            if (score >= 90) honorsCount++;\n        }\n\n        double average = (double) total / scores.length;\n\n        System.out.println(\"=== 학급 시험 성적 통계 리포트 ===\");\n        System.out.printf(\"총 응시 학생 수: %d명\\n\", scores.length);\n        System.out.printf(\"총점: %d점\\n\", total);\n        System.out.printf(\"학급 평균: %.2f점\\n\", average);\n        System.out.printf(\"최고 득점: %d점\\n\", max);\n        System.out.printf(\"최저 득점: %d점\\n\", min);\n        System.out.printf(\"우수 장학생(90점 이상): %d명\\n\", honorsCount);\n    }\n}"
+    "solution": "package day03;\n\npublic class Problem1_StudentScoreStats {\n    public static void main(String[] args) {\n        int[] scores = {85, 92, 78, 64, 99, 88, 72, 95, 81, 90};\n\n        int total = 0;\n        int max = scores[0];\n        int min = scores[0];\n        int honorsCount = 0;\n\n        for (int score : scores) {\n            total += score;\n            if (score > max) max = score;\n            if (score < min) min = score;\n            if (score >= 90) honorsCount++;\n        }\n\n        double average = (double) total / scores.length;\n\n        System.out.println(\"=== 학급 시험 성적 통계 리포트 ===\");\n        System.out.printf(\"총 응시 학생 수: %d명\\n\", scores.length);\n        System.out.printf(\"총점: %d점\\n\", total);\n        System.out.printf(\"학급 평균: %.2f점\\n\", average);\n        System.out.printf(\"최고 득점: %d점\\n\", max);\n        System.out.printf(\"최저 득점: %d점\\n\", min);\n        System.out.printf(\"우수 장학생(90점 이상): %d명\\n\", honorsCount);\n    }\n}",
+    "sample_input": "없음 (표준 입력 없음, 기본 변수값 활용)",
+    "sample_output": "=== �б� ���� ���� ��� ����Ʈ ===\n�� ���� �л� ��: 10��\n����: 844��\n�б� ���: 84.40��\n�ְ� ����: 99��\n���� ����: 64��\n��� ���л�(90�� �̻�): 4��",
+    "expected": "=== �б� ���� ���� ��� ����Ʈ ===\n�� ���� �л� ��: 10��\n����: 844��\n�б� ���: 84.40��\n�ְ� ����: 99��\n���� ����: 64��\n��� ���л�(90�� �̻�): 4��"
   },
   {
     "id": "day03_중",
@@ -77,7 +98,10 @@ const PROBLEMS = [
     "title": "로또 번호 추첨 및 중복 검사기 (LottoGenerator)",
     "desc": "1부터 45 사이의 난수를 발생시켜 6개의 정수를 배열에 저장하되, 이미 뽑힌 숫자와 중복되지 않도록 검사한 후, 완성된 6개의 번호를 오름차순으로 버블 정렬(Bubble Sort)하여 출력하세요.",
     "template": "public class Solution {\n    public static void main(String[] args) {\n        // 여기에 코드를 작성하세요\n        \n    }\n}",
-    "solution": "package day03;\n\nimport java.util.Random;\n\npublic class Problem2_LottoGenerator {\n    public static void main(String[] args) {\n        int[] lottoNumbers = new int[6];\n        Random rand = new Random(42);\n\n        int count = 0;\n        while (count < 6) {\n            int num = rand.nextInt(45) + 1;\n            boolean isDuplicate = false;\n            for (int i = 0; i < count; i++) {\n                if (lottoNumbers[i] == num) {\n                    isDuplicate = true;\n                    break;\n                }\n            }\n            if (!isDuplicate) {\n                lottoNumbers[count++] = num;\n            }\n        }\n\n        for (int i = 0; i < lottoNumbers.length - 1; i++) {\n            for (int j = 0; j < lottoNumbers.length - 1 - i; j++) {\n                if (lottoNumbers[j] > lottoNumbers[j + 1]) {\n                    int temp = lottoNumbers[j];\n                    lottoNumbers[j] = lottoNumbers[j + 1];\n                    lottoNumbers[j + 1] = temp;\n                }\n            }\n        }\n\n        System.out.print(\"최종 로또 번호 (오름차순): [\");\n        for (int i = 0; i < lottoNumbers.length; i++) {\n            System.out.printf(\"%2d%s\", lottoNumbers[i], (i < 5 ? \", \" : \"]\\n\"));\n        }\n    }\n}"
+    "solution": "package day03;\n\nimport java.util.Random;\n\npublic class Problem2_LottoGenerator {\n    public static void main(String[] args) {\n        int[] lottoNumbers = new int[6];\n        Random rand = new Random(42);\n\n        int count = 0;\n        while (count < 6) {\n            int num = rand.nextInt(45) + 1;\n            boolean isDuplicate = false;\n            for (int i = 0; i < count; i++) {\n                if (lottoNumbers[i] == num) {\n                    isDuplicate = true;\n                    break;\n                }\n            }\n            if (!isDuplicate) {\n                lottoNumbers[count++] = num;\n            }\n        }\n\n        for (int i = 0; i < lottoNumbers.length - 1; i++) {\n            for (int j = 0; j < lottoNumbers.length - 1 - i; j++) {\n                if (lottoNumbers[j] > lottoNumbers[j + 1]) {\n                    int temp = lottoNumbers[j];\n                    lottoNumbers[j] = lottoNumbers[j + 1];\n                    lottoNumbers[j + 1] = temp;\n                }\n            }\n        }\n\n        System.out.print(\"최종 로또 번호 (오름차순): [\");\n        for (int i = 0; i < lottoNumbers.length; i++) {\n            System.out.printf(\"%2d%s\", lottoNumbers[i], (i < 5 ? \", \" : \"]\\n\"));\n        }\n    }\n}",
+    "sample_input": "없음 (표준 입력 없음, 기본 변수값 활용)",
+    "sample_output": "���� �ζ� ��ȣ (��������): [ 1,  4, 19, 26, 36, 45]",
+    "expected": "���� �ζ� ��ȣ (��������): [ 1,  4, 19, 26, 36, 45]"
   },
   {
     "id": "day03_상",
@@ -87,7 +111,10 @@ const PROBLEMS = [
     "title": "영화관 좌석 예약 매트릭스 시스템 (CinemaSeatReservation)",
     "desc": "5행 6열의 2차원 배열(`seats[5][6]`)로 상영관 좌석을 관리합니다 (0: 빈 좌석 `[ O ]`, 1: 예매된 좌석 `[ X ]`). 특정 위치의 좌석 예매 요청을 처리하고, 중복 예약 방지 및 잔여 좌석 수를 산출하여 좌석 배치도를 출력하세요.",
     "template": "public class Solution {\n    public static void main(String[] args) {\n        // 여기에 코드를 작성하세요\n        \n    }\n}",
-    "solution": "package day03;\n\npublic class Problem3_CinemaSeatReservation {\n    public static void main(String[] args) {\n        int[][] seats = {\n            {0, 0, 1, 0, 0, 0},\n            {0, 1, 1, 1, 0, 0},\n            {0, 0, 0, 0, 0, 0},\n            {1, 1, 0, 0, 1, 1},\n            {0, 0, 0, 0, 0, 0}\n        };\n\n        int targetRow = 2; // 3행\n        int targetCol = 3; // 4열\n\n        if (seats[targetRow][targetCol] == 0) {\n            seats[targetRow][targetCol] = 1;\n            System.out.println(\">> ✅ 성공: 좌석이 정상 예매되었습니다!\");\n        } else {\n            System.out.println(\">> ❌ 실패: 이미 예매 완료된 좌석입니다.\");\n        }\n\n        int totalSeats = seats.length * seats[0].length;\n        int reserved = 0;\n        for (int[] row : seats) {\n            for (int s : row) {\n                if (s == 1) reserved++;\n            }\n        }\n        System.out.printf(\"총 좌석: %d석 | 예매: %d석 | 잔여: %d석\\n\",\n                totalSeats, reserved, totalSeats - reserved);\n    }\n}"
+    "solution": "package day03;\n\npublic class Problem3_CinemaSeatReservation {\n    public static void main(String[] args) {\n        int[][] seats = {\n            {0, 0, 1, 0, 0, 0},\n            {0, 1, 1, 1, 0, 0},\n            {0, 0, 0, 0, 0, 0},\n            {1, 1, 0, 0, 1, 1},\n            {0, 0, 0, 0, 0, 0}\n        };\n\n        int targetRow = 2; // 3행\n        int targetCol = 3; // 4열\n\n        if (seats[targetRow][targetCol] == 0) {\n            seats[targetRow][targetCol] = 1;\n            System.out.println(\">> ✅ 성공: 좌석이 정상 예매되었습니다!\");\n        } else {\n            System.out.println(\">> ❌ 실패: 이미 예매 완료된 좌석입니다.\");\n        }\n\n        int totalSeats = seats.length * seats[0].length;\n        int reserved = 0;\n        for (int[] row : seats) {\n            for (int s : row) {\n                if (s == 1) reserved++;\n            }\n        }\n        System.out.printf(\"총 좌석: %d석 | 예매: %d석 | 잔여: %d석\\n\",\n                totalSeats, reserved, totalSeats - reserved);\n    }\n}",
+    "sample_input": "없음 (표준 입력 없음, 기본 변수값 활용)",
+    "sample_output": ">> ? ����: �¼��� ���� ���ŵǾ����ϴ�!\n�� �¼�: 30�� | ����: 9�� | �ܿ�: 21��",
+    "expected": ">> ? ����: �¼��� ���� ���ŵǾ����ϴ�!\n�� �¼�: 30�� | ����: 9�� | �ܿ�: 21��"
   },
   {
     "id": "day04_하",
@@ -97,7 +124,10 @@ const PROBLEMS = [
     "title": "도서관 책 관리 클래스 (Book)",
     "desc": "도서명(`title`), 저자(`author`), 가격(`price`), 대출 여부(`isBorrowed`) 필드를 가진 `Book` 클래스를 설계하고, 생성자 체이닝(`this(...)`)과 대출(`borrowBook`), 반납(`returnBook`) 메서드를 구현하세요.",
     "template": "public class Solution {\n    public static void main(String[] args) {\n        // 여기에 코드를 작성하세요\n        \n    }\n}",
-    "solution": "package day04;\n\nclass Book {\n    private String title;\n    private String author;\n    private int price;\n    private boolean isBorrowed;\n\n    public Book(String title, String author) {\n        this(title, author, 15000);\n    }\n\n    public Book(String title, String author, int price) {\n        this.title = title;\n        this.author = author;\n        this.price = price;\n        this.isBorrowed = false;\n    }\n\n    public void borrowBook() {\n        if (!isBorrowed) {\n            isBorrowed = true;\n            System.out.printf(\"📖 [%s] 도서 대출이 완료되었습니다.\\n\", title);\n        } else {\n            System.out.printf(\"⚠️ [%s] 도서는 이미 대출 중입니다.\\n\", title);\n        }\n    }\n\n    public void returnBook() {\n        if (isBorrowed) {\n            isBorrowed = false;\n            System.out.printf(\"✅ [%s] 도서가 정상 반납되었습니다.\\n\", title);\n        } else {\n            System.out.printf(\"⚠️ [%s] 도서는 대출 상태가 아닙니다.\\n\", title);\n        }\n    }\n\n    public void printInfo() {\n        System.out.printf(\"도서명: %-15s | 저자: %-8s | 가격: %,6d원 | 대출상태: %s\\n\",\n                title, author, price, isBorrowed ? \"대출중\" : \"대출가능\");\n    }\n}\n\npublic class Problem1_BookTest {\n    public static void main(String[] args) {\n        Book b1 = new Book(\"자바의 정석\", \"남궁성\", 30000);\n        Book b2 = new Book(\"어린왕자\", \"생텍쥐페리\");\n        b1.printInfo();\n        b2.printInfo();\n        b1.borrowBook();\n        b1.borrowBook();\n        b1.returnBook();\n    }\n}"
+    "solution": "package day04;\n\nclass Book {\n    private String title;\n    private String author;\n    private int price;\n    private boolean isBorrowed;\n\n    public Book(String title, String author) {\n        this(title, author, 15000);\n    }\n\n    public Book(String title, String author, int price) {\n        this.title = title;\n        this.author = author;\n        this.price = price;\n        this.isBorrowed = false;\n    }\n\n    public void borrowBook() {\n        if (!isBorrowed) {\n            isBorrowed = true;\n            System.out.printf(\"📖 [%s] 도서 대출이 완료되었습니다.\\n\", title);\n        } else {\n            System.out.printf(\"⚠️ [%s] 도서는 이미 대출 중입니다.\\n\", title);\n        }\n    }\n\n    public void returnBook() {\n        if (isBorrowed) {\n            isBorrowed = false;\n            System.out.printf(\"✅ [%s] 도서가 정상 반납되었습니다.\\n\", title);\n        } else {\n            System.out.printf(\"⚠️ [%s] 도서는 대출 상태가 아닙니다.\\n\", title);\n        }\n    }\n\n    public void printInfo() {\n        System.out.printf(\"도서명: %-15s | 저자: %-8s | 가격: %,6d원 | 대출상태: %s\\n\",\n                title, author, price, isBorrowed ? \"대출중\" : \"대출가능\");\n    }\n}\n\npublic class Problem1_BookTest {\n    public static void main(String[] args) {\n        Book b1 = new Book(\"자바의 정석\", \"남궁성\", 30000);\n        Book b2 = new Book(\"어린왕자\", \"생텍쥐페리\");\n        b1.printInfo();\n        b2.printInfo();\n        b1.borrowBook();\n        b1.borrowBook();\n        b1.returnBook();\n    }\n}",
+    "sample_input": "없음 (표준 입력 없음, 기본 변수값 활용)",
+    "sample_output": "������: �ڹ��� ����          | ����: ���ü�      | ����: 30,000�� | �������: ���Ⱑ��\n������: �����            | ����: �������丮    | ����: 15,000�� | �������: ���Ⱑ��\n? [�ڹ��� ����] ���� ������ �Ϸ�Ǿ����ϴ�.\n?? [�ڹ��� ����] ������ �̹� ���� ���Դϴ�.\n? [�ڹ��� ����] ������ ���� �ݳ��Ǿ����ϴ�.",
+    "expected": "������: �ڹ��� ����          | ����: ���ü�      | ����: 30,000�� | �������: ���Ⱑ��\n������: �����            | ����: �������丮    | ����: 15,000�� | �������: ���Ⱑ��\n? [�ڹ��� ����] ���� ������ �Ϸ�Ǿ����ϴ�.\n?? [�ڹ��� ����] ������ �̹� ���� ���Դϴ�.\n? [�ڹ��� ����] ������ ���� �ݳ��Ǿ����ϴ�."
   },
   {
     "id": "day04_중",
@@ -107,7 +137,10 @@ const PROBLEMS = [
     "title": "회원 포인트 적립 시스템 (MemberPointManager)",
     "desc": "쇼핑몰 회원 포인트 적립 시 일반 구매(기본 1%), 이벤트 보너스 구매(배율 지정), 쿠폰팩 일괄 적립(가변인자 `int...`)을 처리할 수 있도록 메서드 오버로딩(Overloading)을 적용하세요.",
     "template": "public class Solution {\n    public static void main(String[] args) {\n        // 여기에 코드를 작성하세요\n        \n    }\n}",
-    "solution": "package day04;\n\nclass MemberPointManager {\n    private String memberName;\n    private int currentPoint;\n\n    public MemberPointManager(String memberName) {\n        this.memberName = memberName;\n        this.currentPoint = 1000;\n    }\n\n    public void addPoints(int purchaseAmount) {\n        int earned = (int)(purchaseAmount * 0.01);\n        this.currentPoint += earned;\n        System.out.printf(\"[%s] 일반 구매(%,d원) -> %,dP 적립 (현재 잔액: %,dP)\\n\",\n                memberName, purchaseAmount, earned, currentPoint);\n    }\n\n    public void addPoints(int purchaseAmount, double eventRate, String eventName) {\n        int earned = (int)(purchaseAmount * eventRate);\n        this.currentPoint += earned;\n        System.out.printf(\"[%s] [%s 이벤트] 구매(%,d원, %.0f%%) -> %,dP 적립 (현재 잔액: %,dP)\\n\",\n                memberName, eventName, purchaseAmount, eventRate * 100, earned, currentPoint);\n    }\n\n    public void addCouponPoints(String reason, int... couponPoints) {\n        int totalCouponEarned = 0;\n        for (int p : couponPoints) totalCouponEarned += p;\n        this.currentPoint += totalCouponEarned;\n        System.out.printf(\"[%s] [%s] 쿠폰 %d장 일괄 적용 -> %,dP 적립 (현재 잔액: %,dP)\\n\",\n                memberName, reason, couponPoints.length, totalCouponEarned, currentPoint);\n    }\n}\n\npublic class Problem2_MemberPointTest {\n    public static void main(String[] args) {\n        MemberPointManager member = new MemberPointManager(\"홍길동\");\n        member.addPoints(50000);\n        member.addPoints(100000, 0.05, \"블랙프라이데이 5배\");\n        member.addCouponPoints(\"생일축하 쿠폰팩\", 1000, 2000, 3000);\n    }\n}"
+    "solution": "package day04;\n\nclass MemberPointManager {\n    private String memberName;\n    private int currentPoint;\n\n    public MemberPointManager(String memberName) {\n        this.memberName = memberName;\n        this.currentPoint = 1000;\n    }\n\n    public void addPoints(int purchaseAmount) {\n        int earned = (int)(purchaseAmount * 0.01);\n        this.currentPoint += earned;\n        System.out.printf(\"[%s] 일반 구매(%,d원) -> %,dP 적립 (현재 잔액: %,dP)\\n\",\n                memberName, purchaseAmount, earned, currentPoint);\n    }\n\n    public void addPoints(int purchaseAmount, double eventRate, String eventName) {\n        int earned = (int)(purchaseAmount * eventRate);\n        this.currentPoint += earned;\n        System.out.printf(\"[%s] [%s 이벤트] 구매(%,d원, %.0f%%) -> %,dP 적립 (현재 잔액: %,dP)\\n\",\n                memberName, eventName, purchaseAmount, eventRate * 100, earned, currentPoint);\n    }\n\n    public void addCouponPoints(String reason, int... couponPoints) {\n        int totalCouponEarned = 0;\n        for (int p : couponPoints) totalCouponEarned += p;\n        this.currentPoint += totalCouponEarned;\n        System.out.printf(\"[%s] [%s] 쿠폰 %d장 일괄 적용 -> %,dP 적립 (현재 잔액: %,dP)\\n\",\n                memberName, reason, couponPoints.length, totalCouponEarned, currentPoint);\n    }\n}\n\npublic class Problem2_MemberPointTest {\n    public static void main(String[] args) {\n        MemberPointManager member = new MemberPointManager(\"홍길동\");\n        member.addPoints(50000);\n        member.addPoints(100000, 0.05, \"블랙프라이데이 5배\");\n        member.addCouponPoints(\"생일축하 쿠폰팩\", 1000, 2000, 3000);\n    }\n}",
+    "sample_input": "없음 (표준 입력 없음, 기본 변수값 활용)",
+    "sample_output": "[ȫ�浿] �Ϲ� ����(50,000��) -> 500P ���� (���� �ܾ�: 1,500P)\n[ȫ�浿] [���������̵��� 5�� �̺�Ʈ] ����(100,000��, 5%) -> 5,000P ���� (���� �ܾ�: 6,500P)\n[ȫ�浿] [�������� ������] ���� 3�� �ϰ� ���� -> 6,000P ���� (���� �ܾ�: 12,500P)",
+    "expected": "[ȫ�浿] �Ϲ� ����(50,000��) -> 500P ���� (���� �ܾ�: 1,500P)\n[ȫ�浿] [���������̵��� 5�� �̺�Ʈ] ����(100,000��, 5%) -> 5,000P ���� (���� �ܾ�: 6,500P)\n[ȫ�浿] [�������� ������] ���� 3�� �ϰ� ���� -> 6,000P ���� (���� �ܾ�: 12,500P)"
   },
   {
     "id": "day04_상",
@@ -117,7 +150,10 @@ const PROBLEMS = [
     "title": "쇼핑몰 장바구니 및 총 결제 관리자 (ShoppingCartManager)",
     "desc": "개별 상품 정보(`CartItem`: 품목명, 단가, 수량) 객체들을 `ShoppingCart` 클래스의 내부 객체 배열로 관리하여, 장바구니 최대 용량 초과 방지, 개별 소계 계산, 전체 결제 총액을 산출하는 객체 간 협력 구조를 작성하세요.",
     "template": "public class Solution {\n    public static void main(String[] args) {\n        // 여기에 코드를 작성하세요\n        \n    }\n}",
-    "solution": "package day04;\n\nclass CartItem {\n    private String itemName;\n    private int unitPrice;\n    private int quantity;\n\n    public CartItem(String itemName, int unitPrice, int quantity) {\n        this.itemName = itemName;\n        this.unitPrice = unitPrice;\n        this.quantity = quantity;\n    }\n\n    public int getItemTotal() { return unitPrice * quantity; }\n\n    @Override\n    public String toString() {\n        return String.format(\"%-12s | 단가: %,6d원 | 수량: %2d개 | 소계: %,7d원\",\n                itemName, unitPrice, quantity, getItemTotal());\n    }\n}\n\nclass ShoppingCart {\n    private String customerName;\n    private CartItem[] items;\n    private int itemCount;\n\n    public ShoppingCart(String customerName, int maxCapacity) {\n        this.customerName = customerName;\n        this.items = new CartItem[maxCapacity];\n        this.itemCount = 0;\n    }\n\n    public boolean addItem(CartItem item) {\n        if (itemCount >= items.length) {\n            System.out.printf(\"[%s 고객님] 장바구니 한도(%d개)를 초과하여 담을 수 없습니다.\\n\", customerName, items.length);\n            return false;\n        }\n        items[itemCount++] = item;\n        return true;\n    }\n\n    public int calculateGrandTotal() {\n        int grandTotal = 0;\n        for (int i = 0; i < itemCount; i++) grandTotal += items[i].getItemTotal();\n        return grandTotal;\n    }\n\n    public void printCartSummary() {\n        System.out.printf(\"=== [%s 고객님의 쇼핑 장바구니 내역] ===\\n\", customerName);\n        for (int i = 0; i < itemCount; i++) System.out.println((i + 1) + \". \" + items[i]);\n        System.out.println(\"-----------------------------------------------------\");\n        System.out.printf(\"총 결제 예정 금액: %,d원\\n\", calculateGrandTotal());\n    }\n}\n\npublic class Problem3_ShoppingCartTest {\n    public static void main(String[] args) {\n        ShoppingCart cart = new ShoppingCart(\"이순신\", 3);\n        cart.addItem(new CartItem(\"무선 마우스\", 25000, 2));\n        cart.addItem(new CartItem(\"기계식 키보드\", 89000, 1));\n        cart.addItem(new CartItem(\"장패드\", 12000, 3));\n        cart.addItem(new CartItem(\"모니터 암\", 45000, 1));\n        cart.printCartSummary();\n    }\n}"
+    "solution": "package day04;\n\nclass CartItem {\n    private String itemName;\n    private int unitPrice;\n    private int quantity;\n\n    public CartItem(String itemName, int unitPrice, int quantity) {\n        this.itemName = itemName;\n        this.unitPrice = unitPrice;\n        this.quantity = quantity;\n    }\n\n    public int getItemTotal() { return unitPrice * quantity; }\n\n    @Override\n    public String toString() {\n        return String.format(\"%-12s | 단가: %,6d원 | 수량: %2d개 | 소계: %,7d원\",\n                itemName, unitPrice, quantity, getItemTotal());\n    }\n}\n\nclass ShoppingCart {\n    private String customerName;\n    private CartItem[] items;\n    private int itemCount;\n\n    public ShoppingCart(String customerName, int maxCapacity) {\n        this.customerName = customerName;\n        this.items = new CartItem[maxCapacity];\n        this.itemCount = 0;\n    }\n\n    public boolean addItem(CartItem item) {\n        if (itemCount >= items.length) {\n            System.out.printf(\"[%s 고객님] 장바구니 한도(%d개)를 초과하여 담을 수 없습니다.\\n\", customerName, items.length);\n            return false;\n        }\n        items[itemCount++] = item;\n        return true;\n    }\n\n    public int calculateGrandTotal() {\n        int grandTotal = 0;\n        for (int i = 0; i < itemCount; i++) grandTotal += items[i].getItemTotal();\n        return grandTotal;\n    }\n\n    public void printCartSummary() {\n        System.out.printf(\"=== [%s 고객님의 쇼핑 장바구니 내역] ===\\n\", customerName);\n        for (int i = 0; i < itemCount; i++) System.out.println((i + 1) + \". \" + items[i]);\n        System.out.println(\"-----------------------------------------------------\");\n        System.out.printf(\"총 결제 예정 금액: %,d원\\n\", calculateGrandTotal());\n    }\n}\n\npublic class Problem3_ShoppingCartTest {\n    public static void main(String[] args) {\n        ShoppingCart cart = new ShoppingCart(\"이순신\", 3);\n        cart.addItem(new CartItem(\"무선 마우스\", 25000, 2));\n        cart.addItem(new CartItem(\"기계식 키보드\", 89000, 1));\n        cart.addItem(new CartItem(\"장패드\", 12000, 3));\n        cart.addItem(new CartItem(\"모니터 암\", 45000, 1));\n        cart.printCartSummary();\n    }\n}",
+    "sample_input": "없음 (표준 입력 없음, 기본 변수값 활용)",
+    "sample_output": "[�̼��� ������] ��ٱ��� �ѵ�(3��)�� �ʰ��Ͽ� ���� �� �����ϴ�.\n=== [�̼��� �������� ���� ��ٱ��� ����] ===\n1. ���� ���콺       | �ܰ�: 25,000�� | ����:  2�� | �Ұ�:  50,000��\n2. ���� Ű����      | �ܰ�: 89,000�� | ����:  1�� | �Ұ�:  89,000��\n3. ���е�          | �ܰ�: 12,000�� | ����:  3�� | �Ұ�:  36,000��\n-----------------------------------------------------\n�� ���� ���� �ݾ�: 175,000��",
+    "expected": "[�̼��� ������] ��ٱ��� �ѵ�(3��)�� �ʰ��Ͽ� ���� �� �����ϴ�.\n=== [�̼��� �������� ���� ��ٱ��� ����] ===\n1. ���� ���콺       | �ܰ�: 25,000�� | ����:  2�� | �Ұ�:  50,000��\n2. ���� Ű����      | �ܰ�: 89,000�� | ����:  1�� | �Ұ�:  89,000��\n3. ���е�          | �ܰ�: 12,000�� | ����:  3�� | �Ұ�:  36,000��\n-----------------------------------------------------\n�� ���� ���� �ݾ�: 175,000��"
   },
   {
     "id": "day05_하",
@@ -127,7 +163,10 @@ const PROBLEMS = [
     "title": "은행 고객 번호 자동 발급기 (CustomerNumberGenerator)",
     "desc": "신규 고객 인스턴스가 생성될 때마다 `static` 정적 변수(`serialCounter`)를 1씩 증가시켜 1001번부터 순차적으로 고유 고객 번호를 자동 부여하는 클래스를 작성하세요.",
     "template": "public class Solution {\n    public static void main(String[] args) {\n        // 여기에 코드를 작성하세요\n        \n    }\n}",
-    "solution": "package day05;\n\nclass BankCustomer {\n    private static int serialCounter = 1000;\n    private int customerId;\n    private String name;\n\n    public BankCustomer(String name) {\n        this.name = name;\n        this.customerId = ++serialCounter;\n    }\n\n    public void printCustomerCard() {\n        System.out.printf(\"고객번호: %d | 고객명: %s\\n\", customerId, name);\n    }\n\n    public static int getTotalIssuedCustomers() {\n        return serialCounter - 1000;\n    }\n}\n\npublic class Problem1_CustomerNumberTest {\n    public static void main(String[] args) {\n        BankCustomer c1 = new BankCustomer(\"김철수\");\n        BankCustomer c2 = new BankCustomer(\"이영희\");\n        BankCustomer c3 = new BankCustomer(\"박민수\");\n\n        c1.printCustomerCard();\n        c2.printCustomerCard();\n        c3.printCustomerCard();\n\n        System.out.printf(\"오늘 발급된 총 신규 고객 수: %d명\\n\", BankCustomer.getTotalIssuedCustomers());\n    }\n}"
+    "solution": "package day05;\n\nclass BankCustomer {\n    private static int serialCounter = 1000;\n    private int customerId;\n    private String name;\n\n    public BankCustomer(String name) {\n        this.name = name;\n        this.customerId = ++serialCounter;\n    }\n\n    public void printCustomerCard() {\n        System.out.printf(\"고객번호: %d | 고객명: %s\\n\", customerId, name);\n    }\n\n    public static int getTotalIssuedCustomers() {\n        return serialCounter - 1000;\n    }\n}\n\npublic class Problem1_CustomerNumberTest {\n    public static void main(String[] args) {\n        BankCustomer c1 = new BankCustomer(\"김철수\");\n        BankCustomer c2 = new BankCustomer(\"이영희\");\n        BankCustomer c3 = new BankCustomer(\"박민수\");\n\n        c1.printCustomerCard();\n        c2.printCustomerCard();\n        c3.printCustomerCard();\n\n        System.out.printf(\"오늘 발급된 총 신규 고객 수: %d명\\n\", BankCustomer.getTotalIssuedCustomers());\n    }\n}",
+    "sample_input": "없음 (표준 입력 없음, 기본 변수값 활용)",
+    "sample_output": "������ȣ: 1001 | ������: ��ö��\n������ȣ: 1002 | ������: �̿���\n������ȣ: 1003 | ������: �ڹμ�\n���� �߱޵� �� �ű� ���� ��: 3��",
+    "expected": "������ȣ: 1001 | ������: ��ö��\n������ȣ: 1002 | ������: �̿���\n������ȣ: 1003 | ������: �ڹμ�\n���� �߱޵� �� �ű� ���� ��: 3��"
   },
   {
     "id": "day05_중",
@@ -137,7 +176,10 @@ const PROBLEMS = [
     "title": "은행 계좌 상속 계층 및 이자/마이너스 한도 (BankAccountHierarchy)",
     "desc": "기본 계좌(`BankAccount`: 입금, 출금, 잔액)를 상속받아 연이자를 지급하는 `SavingsAccount`(적금)와 대출 한도 내에서 마이너스 출금을 허용하는 `MinusAccount`(마이너스통장)를 구현하고 메서드를 오버라이딩하세요.",
     "template": "public class Solution {\n    public static void main(String[] args) {\n        // 여기에 코드를 작성하세요\n        \n    }\n}",
-    "solution": "package day05;\n\nclass BankAccount {\n    protected String accountNumber;\n    protected String owner;\n    protected int balance;\n\n    public BankAccount(String accountNumber, String owner, int balance) {\n        this.accountNumber = accountNumber;\n        this.owner = owner;\n        this.balance = balance;\n    }\n\n    public void deposit(int amount) {\n        this.balance += amount;\n        System.out.printf(\"[%s] %,d원 입금 완료 (잔액: %,d원)\\n\", accountNumber, amount, balance);\n    }\n\n    public boolean withdraw(int amount) {\n        if (balance >= amount) {\n            this.balance -= amount;\n            System.out.printf(\"[%s] %,d원 출금 완료 (잔액: %,d원)\\n\", accountNumber, amount, balance);\n            return true;\n        }\n        System.out.printf(\"[%s] 출금 실패: 잔액 부족\\n\", accountNumber);\n        return false;\n    }\n\n    @Override\n    public String toString() {\n        return String.format(\"[%s] 소유주: %s | 잔액: %,d원\", accountNumber, owner, balance);\n    }\n}\n\nclass SavingsAccount extends BankAccount {\n    private double interestRate;\n\n    public SavingsAccount(String accountNumber, String owner, int balance, double interestRate) {\n        super(accountNumber, owner, balance);\n        this.interestRate = interestRate;\n    }\n\n    public void applyAnnualInterest() {\n        int interest = (int)(this.balance * this.interestRate);\n        this.balance += interest;\n        System.out.printf(\"[%s] 연이자 %,d원 지급 완료 (이율: %.1f%%, 잔액: %,d원)\\n\",\n                accountNumber, interest, interestRate * 100, balance);\n    }\n}\n\nclass MinusAccount extends BankAccount {\n    private int creditLimit;\n\n    public MinusAccount(String accountNumber, String owner, int balance, int creditLimit) {\n        super(accountNumber, owner, balance);\n        this.creditLimit = creditLimit;\n    }\n\n    @Override\n    public boolean withdraw(int amount) {\n        if ((balance + creditLimit) >= amount) {\n            this.balance -= amount;\n            System.out.printf(\"[%s] 마이너스 출금 %,d원 성공 (현재 잔액: %,d원 / 대출한도: %,d원)\\n\",\n                    accountNumber, amount, balance, creditLimit);\n            return true;\n        }\n        System.out.printf(\"[%s] 마이너스 한도 초과 출금 불가!\\n\", accountNumber);\n        return false;\n    }\n}\n\npublic class Problem2_BankAccountHierarchyTest {\n    public static void main(String[] args) {\n        SavingsAccount sa = new SavingsAccount(\"110-123-456\", \"강감찬\", 1000000, 0.04);\n        MinusAccount ma = new MinusAccount(\"220-789-012\", \"을지문덕\", 200000, 3000000);\n\n        sa.applyAnnualInterest();\n        ma.withdraw(1500000);\n        ma.withdraw(2500000);\n    }\n}"
+    "solution": "package day05;\n\nclass BankAccount {\n    protected String accountNumber;\n    protected String owner;\n    protected int balance;\n\n    public BankAccount(String accountNumber, String owner, int balance) {\n        this.accountNumber = accountNumber;\n        this.owner = owner;\n        this.balance = balance;\n    }\n\n    public void deposit(int amount) {\n        this.balance += amount;\n        System.out.printf(\"[%s] %,d원 입금 완료 (잔액: %,d원)\\n\", accountNumber, amount, balance);\n    }\n\n    public boolean withdraw(int amount) {\n        if (balance >= amount) {\n            this.balance -= amount;\n            System.out.printf(\"[%s] %,d원 출금 완료 (잔액: %,d원)\\n\", accountNumber, amount, balance);\n            return true;\n        }\n        System.out.printf(\"[%s] 출금 실패: 잔액 부족\\n\", accountNumber);\n        return false;\n    }\n\n    @Override\n    public String toString() {\n        return String.format(\"[%s] 소유주: %s | 잔액: %,d원\", accountNumber, owner, balance);\n    }\n}\n\nclass SavingsAccount extends BankAccount {\n    private double interestRate;\n\n    public SavingsAccount(String accountNumber, String owner, int balance, double interestRate) {\n        super(accountNumber, owner, balance);\n        this.interestRate = interestRate;\n    }\n\n    public void applyAnnualInterest() {\n        int interest = (int)(this.balance * this.interestRate);\n        this.balance += interest;\n        System.out.printf(\"[%s] 연이자 %,d원 지급 완료 (이율: %.1f%%, 잔액: %,d원)\\n\",\n                accountNumber, interest, interestRate * 100, balance);\n    }\n}\n\nclass MinusAccount extends BankAccount {\n    private int creditLimit;\n\n    public MinusAccount(String accountNumber, String owner, int balance, int creditLimit) {\n        super(accountNumber, owner, balance);\n        this.creditLimit = creditLimit;\n    }\n\n    @Override\n    public boolean withdraw(int amount) {\n        if ((balance + creditLimit) >= amount) {\n            this.balance -= amount;\n            System.out.printf(\"[%s] 마이너스 출금 %,d원 성공 (현재 잔액: %,d원 / 대출한도: %,d원)\\n\",\n                    accountNumber, amount, balance, creditLimit);\n            return true;\n        }\n        System.out.printf(\"[%s] 마이너스 한도 초과 출금 불가!\\n\", accountNumber);\n        return false;\n    }\n}\n\npublic class Problem2_BankAccountHierarchyTest {\n    public static void main(String[] args) {\n        SavingsAccount sa = new SavingsAccount(\"110-123-456\", \"강감찬\", 1000000, 0.04);\n        MinusAccount ma = new MinusAccount(\"220-789-012\", \"을지문덕\", 200000, 3000000);\n\n        sa.applyAnnualInterest();\n        ma.withdraw(1500000);\n        ma.withdraw(2500000);\n    }\n}",
+    "sample_input": "없음 (표준 입력 없음, 기본 변수값 활용)",
+    "sample_output": "[110-123-456] ������ 40,000�� ���� �Ϸ� (����: 4.0%, �ܾ�: 1,040,000��)\n[220-789-012] ���̳ʽ� ��� 1,500,000�� ���� (���� �ܾ�: -1,300,000�� / �����ѵ�: 3,000,000��)\n[220-789-012] ���̳ʽ� �ѵ� �ʰ� ��� �Ұ�!",
+    "expected": "[110-123-456] ������ 40,000�� ���� �Ϸ� (����: 4.0%, �ܾ�: 1,040,000��)\n[220-789-012] ���̳ʽ� ��� 1,500,000�� ���� (���� �ܾ�: -1,300,000�� / �����ѵ�: 3,000,000��)\n[220-789-012] ���̳ʽ� �ѵ� �ʰ� ��� �Ұ�!"
   },
   {
     "id": "day05_상",
@@ -147,7 +189,10 @@ const PROBLEMS = [
     "title": "다형성을 활용한 다중 결제 시스템 (MultiPaymentGateway)",
     "desc": "온라인 쇼핑몰에서 다양한 결제 방식(`CreditCardPayment`, `KakaoPayPayment`)을 부모 추상 클래스 `PaymentMethod`의 참조변수 배열 하나로 묶어 일괄 결제 승인하고, `instanceof` 패턴 매칭으로 신용카드 무이자 할부 혜택을 제공하세요.",
     "template": "public class Solution {\n    public static void main(String[] args) {\n        // 여기에 코드를 작성하세요\n        \n    }\n}",
-    "solution": "package day05;\n\nabstract class PaymentMethod {\n    protected String paymentName;\n\n    public PaymentMethod(String paymentName) {\n        this.paymentName = paymentName;\n    }\n\n    public abstract boolean processPayment(int amount);\n\n    public void printReceipt(int amount) {\n        System.out.printf(\"[%s] 결제 승인 완료: %,d원\\n\", paymentName, amount);\n    }\n}\n\nclass CreditCardPayment extends PaymentMethod {\n    private String cardNumber;\n\n    public CreditCardPayment(String cardNumber) {\n        super(\"신용카드\");\n        this.cardNumber = cardNumber;\n    }\n\n    @Override\n    public boolean processPayment(int amount) {\n        System.out.printf(\"[카드사 승인] 카드번호: %s -> %,d원 결제\\n\", cardNumber, amount);\n        return true;\n    }\n\n    public void issueInstallment(int months) {\n        System.out.printf(\"  -> [카드 혜택] %d개월 무이자 할부 적용\\n\", months);\n    }\n}\n\nclass KakaoPayPayment extends PaymentMethod {\n    private String kakaoId;\n    private int pointBalance;\n\n    public KakaoPayPayment(String kakaoId, int pointBalance) {\n        super(\"카카오페이\");\n        this.kakaoId = kakaoId;\n        this.pointBalance = pointBalance;\n    }\n\n    @Override\n    public boolean processPayment(int amount) {\n        System.out.printf(\"[카카오페이] 계정: %s (잔액: %,d원)\\n\", kakaoId, pointBalance);\n        if (pointBalance >= amount) {\n            pointBalance -= amount;\n            return true;\n        }\n        return false;\n    }\n}\n\npublic class Problem3_MultiPaymentTest {\n    public static void main(String[] args) {\n        PaymentMethod[] payments = {\n            new CreditCardPayment(\"9410-****-****-1234\"),\n            new KakaoPayPayment(\"user@kakao.com\", 50000),\n            new CreditCardPayment(\"5361-****-****-5678\")\n        };\n\n        int orderPrice = 35000;\n        for (PaymentMethod pm : payments) {\n            if (pm.processPayment(orderPrice)) {\n                pm.printReceipt(orderPrice);\n            }\n            if (pm instanceof CreditCardPayment card) {\n                card.issueInstallment(3);\n            }\n        }\n    }\n}"
+    "solution": "package day05;\n\nabstract class PaymentMethod {\n    protected String paymentName;\n\n    public PaymentMethod(String paymentName) {\n        this.paymentName = paymentName;\n    }\n\n    public abstract boolean processPayment(int amount);\n\n    public void printReceipt(int amount) {\n        System.out.printf(\"[%s] 결제 승인 완료: %,d원\\n\", paymentName, amount);\n    }\n}\n\nclass CreditCardPayment extends PaymentMethod {\n    private String cardNumber;\n\n    public CreditCardPayment(String cardNumber) {\n        super(\"신용카드\");\n        this.cardNumber = cardNumber;\n    }\n\n    @Override\n    public boolean processPayment(int amount) {\n        System.out.printf(\"[카드사 승인] 카드번호: %s -> %,d원 결제\\n\", cardNumber, amount);\n        return true;\n    }\n\n    public void issueInstallment(int months) {\n        System.out.printf(\"  -> [카드 혜택] %d개월 무이자 할부 적용\\n\", months);\n    }\n}\n\nclass KakaoPayPayment extends PaymentMethod {\n    private String kakaoId;\n    private int pointBalance;\n\n    public KakaoPayPayment(String kakaoId, int pointBalance) {\n        super(\"카카오페이\");\n        this.kakaoId = kakaoId;\n        this.pointBalance = pointBalance;\n    }\n\n    @Override\n    public boolean processPayment(int amount) {\n        System.out.printf(\"[카카오페이] 계정: %s (잔액: %,d원)\\n\", kakaoId, pointBalance);\n        if (pointBalance >= amount) {\n            pointBalance -= amount;\n            return true;\n        }\n        return false;\n    }\n}\n\npublic class Problem3_MultiPaymentTest {\n    public static void main(String[] args) {\n        PaymentMethod[] payments = {\n            new CreditCardPayment(\"9410-****-****-1234\"),\n            new KakaoPayPayment(\"user@kakao.com\", 50000),\n            new CreditCardPayment(\"5361-****-****-5678\")\n        };\n\n        int orderPrice = 35000;\n        for (PaymentMethod pm : payments) {\n            if (pm.processPayment(orderPrice)) {\n                pm.printReceipt(orderPrice);\n            }\n            if (pm instanceof CreditCardPayment card) {\n                card.issueInstallment(3);\n            }\n        }\n    }\n}",
+    "sample_input": "없음 (표준 입력 없음, 기본 변수값 활용)",
+    "sample_output": "[ī��� ����] ī���ȣ: 9410-****-****-1234 -> 35,000�� ����\n[�ſ�ī��] ���� ���� �Ϸ�: 35,000��\n  -> [ī�� ����] 3���� ������ �Һ� ����\n[īī������] ����: user@kakao.com (�ܾ�: 50,000��)\n[īī������] ���� ���� �Ϸ�: 35,000��\n[ī��� ����] ī���ȣ: 5361-****-****-5678 -> 35,000�� ����\n[�ſ�ī��] ���� ���� �Ϸ�: 35,000��\n  -> [ī�� ����] 3���� ������ �Һ� ����",
+    "expected": "[ī��� ����] ī���ȣ: 9410-****-****-1234 -> 35,000�� ����\n[�ſ�ī��] ���� ���� �Ϸ�: 35,000��\n  -> [ī�� ����] 3���� ������ �Һ� ����\n[īī������] ����: user@kakao.com (�ܾ�: 50,000��)\n[īī������] ���� ���� �Ϸ�: 35,000��\n[ī��� ����] ī���ȣ: 5361-****-****-5678 -> 35,000�� ����\n[�ſ�ī��] ���� ���� �Ϸ�: 35,000��\n  -> [ī�� ����] 3���� ������ �Һ� ����"
   },
   {
     "id": "day06_하",
@@ -157,7 +202,10 @@ const PROBLEMS = [
     "title": "ATM 출금 잔액 부족 예외 처리 (InsufficientBalanceException)",
     "desc": "은행 ATM 기기에서 고객이 요청한 출금액이 계좌 잔액보다 클 경우 사용자 정의 예외 `InsufficientBalanceException`을 발생시키고, `try-catch-finally` 구조로 예외 메시지 출력 및 세션 종료 로그를 항상 실행하도록 구현하세요.",
     "template": "public class Solution {\n    public static void main(String[] args) {\n        // 여기에 코드를 작성하세요\n        \n    }\n}",
-    "solution": "package day06;\n\nclass InsufficientBalanceException extends Exception {\n    public InsufficientBalanceException(int currentBalance, int requestAmount) {\n        super(String.format(\"잔액이 %,d원 부족합니다! (현재 잔액: %,d원, 요청 출금액: %,d원)\",\n                requestAmount - currentBalance, currentBalance, requestAmount));\n    }\n}\n\nclass AtmMachine {\n    private int balance;\n\n    public AtmMachine(int initialBalance) {\n        this.balance = initialBalance;\n    }\n\n    public void withdraw(int amount) throws InsufficientBalanceException {\n        if (amount > balance) {\n            throw new InsufficientBalanceException(balance, amount);\n        }\n        balance -= amount;\n        System.out.printf(\"💸 %,d원 출금 완료! (남은 잔액: %,d원)\\n\", amount, balance);\n    }\n}\n\npublic class Problem1_AtmWithdrawTest {\n    public static void main(String[] args) {\n        AtmMachine atm = new AtmMachine(50000);\n        int[] withdrawRequests = {20000, 40000, 10000};\n\n        for (int amount : withdrawRequests) {\n            try {\n                System.out.printf(\"\\n[출금 요청] %,d원...\\n\", amount);\n                atm.withdraw(amount);\n            } catch (InsufficientBalanceException e) {\n                System.err.println(\"❌ 거래 실패: \" + e.getMessage());\n            } finally {\n                System.out.println(\"  -> [안내] 거래 명세표 출력 및 카드 반환 세션 종료 (항상 실행)\");\n            }\n        }\n    }\n}"
+    "solution": "package day06;\n\nclass InsufficientBalanceException extends Exception {\n    public InsufficientBalanceException(int currentBalance, int requestAmount) {\n        super(String.format(\"잔액이 %,d원 부족합니다! (현재 잔액: %,d원, 요청 출금액: %,d원)\",\n                requestAmount - currentBalance, currentBalance, requestAmount));\n    }\n}\n\nclass AtmMachine {\n    private int balance;\n\n    public AtmMachine(int initialBalance) {\n        this.balance = initialBalance;\n    }\n\n    public void withdraw(int amount) throws InsufficientBalanceException {\n        if (amount > balance) {\n            throw new InsufficientBalanceException(balance, amount);\n        }\n        balance -= amount;\n        System.out.printf(\"💸 %,d원 출금 완료! (남은 잔액: %,d원)\\n\", amount, balance);\n    }\n}\n\npublic class Problem1_AtmWithdrawTest {\n    public static void main(String[] args) {\n        AtmMachine atm = new AtmMachine(50000);\n        int[] withdrawRequests = {20000, 40000, 10000};\n\n        for (int amount : withdrawRequests) {\n            try {\n                System.out.printf(\"\\n[출금 요청] %,d원...\\n\", amount);\n                atm.withdraw(amount);\n            } catch (InsufficientBalanceException e) {\n                System.err.println(\"❌ 거래 실패: \" + e.getMessage());\n            } finally {\n                System.out.println(\"  -> [안내] 거래 명세표 출력 및 카드 반환 세션 종료 (항상 실행)\");\n            }\n        }\n    }\n}",
+    "sample_input": "없음 (표준 입력 없음, 기본 변수값 활용)",
+    "sample_output": "[��� ��û] 20,000��...\n? 20,000�� ��� �Ϸ�! (���� �ܾ�: 30,000��)\n  -> [�ȳ�] �ŷ� ����ǥ ��� �� ī�� ��ȯ ���� ���� (�׻� ����)\n\n[��� ��û] 40,000��...\n  -> [�ȳ�] �ŷ� ����ǥ ��� �� ī�� ��ȯ ���� ���� (�׻� ����)\n\n[��� ��û] 10,000��...\n? 10,000�� ��� �Ϸ�! (���� �ܾ�: 20,000��)\n  -> [�ȳ�] �ŷ� ����ǥ ��� �� ī�� ��ȯ ���� ���� (�׻� ����)",
+    "expected": "[��� ��û] 20,000��...\n? 20,000�� ��� �Ϸ�! (���� �ܾ�: 30,000��)\n  -> [�ȳ�] �ŷ� ����ǥ ��� �� ī�� ��ȯ ���� ���� (�׻� ����)\n\n[��� ��û] 40,000��...\n  -> [�ȳ�] �ŷ� ����ǥ ��� �� ī�� ��ȯ ���� ���� (�׻� ����)\n\n[��� ��û] 10,000��...\n? 10,000�� ��� �Ϸ�! (���� �ܾ�: 20,000��)\n  -> [�ȳ�] �ŷ� ����ǥ ��� �� ī�� ��ȯ ���� ���� (�׻� ����)"
   },
   {
     "id": "day06_중",
@@ -167,7 +215,10 @@ const PROBLEMS = [
     "title": "알림 서비스와 느슨한 결합 (NotificationService - Loose Coupling)",
     "desc": "주문 완료 시 고객에게 알림을 발송하는 `OrderService`가 특정 발송 수단(SMS)에 강하게 결합되지 않도록 `NotificationSender` 인터페이스를 선언하고, 런타임에 SMS에서 카카오 알림톡으로 손쉽게 전환할 수 있는 구조를 작성하세요.",
     "template": "public class Solution {\n    public static void main(String[] args) {\n        // 여기에 코드를 작성하세요\n        \n    }\n}",
-    "solution": "package day06;\n\ninterface NotificationSender {\n    void sendNotification(String recipient, String message);\n}\n\nclass SmsSender implements NotificationSender {\n    @Override\n    public void sendNotification(String recipient, String message) {\n        System.out.printf(\"[SMS 전송] %s 님께 문자 발송: \\\"%s\\\"\\n\", recipient, message);\n    }\n}\n\nclass KakaoTalkSender implements NotificationSender {\n    @Override\n    public void sendNotification(String recipient, String message) {\n        System.out.printf(\"[카카오 알림톡] %s 님께 알림톡 발송: \\\"%s\\\"\\n\", recipient, message);\n    }\n}\n\nclass OrderService {\n    private NotificationSender sender;\n\n    public OrderService(NotificationSender sender) {\n        this.sender = sender;\n    }\n\n    public void setSender(NotificationSender sender) {\n        this.sender = sender;\n    }\n\n    public void completeOrder(String customerName, String itemName) {\n        System.out.printf(\">> [%s] 님의 [%s] 상품 주문이 완료되었습니다.\\n\", customerName, itemName);\n        sender.sendNotification(customerName, itemName + \" 상품이 정상 결제되었습니다. 배송 준비 중입니다.\");\n    }\n}\n\npublic class Problem2_NotificationLooseCouplingTest {\n    public static void main(String[] args) {\n        OrderService orderService = new OrderService(new SmsSender());\n        orderService.completeOrder(\"홍길동\", \"에어팟 프로 2세대\");\n\n        orderService.setSender(new KakaoTalkSender());\n        orderService.completeOrder(\"이순신\", \"LG 그램 16인치\");\n    }\n}"
+    "solution": "package day06;\n\ninterface NotificationSender {\n    void sendNotification(String recipient, String message);\n}\n\nclass SmsSender implements NotificationSender {\n    @Override\n    public void sendNotification(String recipient, String message) {\n        System.out.printf(\"[SMS 전송] %s 님께 문자 발송: \\\"%s\\\"\\n\", recipient, message);\n    }\n}\n\nclass KakaoTalkSender implements NotificationSender {\n    @Override\n    public void sendNotification(String recipient, String message) {\n        System.out.printf(\"[카카오 알림톡] %s 님께 알림톡 발송: \\\"%s\\\"\\n\", recipient, message);\n    }\n}\n\nclass OrderService {\n    private NotificationSender sender;\n\n    public OrderService(NotificationSender sender) {\n        this.sender = sender;\n    }\n\n    public void setSender(NotificationSender sender) {\n        this.sender = sender;\n    }\n\n    public void completeOrder(String customerName, String itemName) {\n        System.out.printf(\">> [%s] 님의 [%s] 상품 주문이 완료되었습니다.\\n\", customerName, itemName);\n        sender.sendNotification(customerName, itemName + \" 상품이 정상 결제되었습니다. 배송 준비 중입니다.\");\n    }\n}\n\npublic class Problem2_NotificationLooseCouplingTest {\n    public static void main(String[] args) {\n        OrderService orderService = new OrderService(new SmsSender());\n        orderService.completeOrder(\"홍길동\", \"에어팟 프로 2세대\");\n\n        orderService.setSender(new KakaoTalkSender());\n        orderService.completeOrder(\"이순신\", \"LG 그램 16인치\");\n    }\n}",
+    "sample_input": "없음 (표준 입력 없음, 기본 변수값 활용)",
+    "sample_output": ">> [ȫ�浿] ���� [������ ���� 2����] ��ǰ �ֹ��� �Ϸ�Ǿ����ϴ�.\n[SMS ����] ȫ�浿 �Բ� ���� �߼�: \"������ ���� 2���� ��ǰ�� ���� �����Ǿ����ϴ�. ��� �غ� ���Դϴ�.\"\n>> [�̼���] ���� [LG �׷� 16��ġ] ��ǰ �ֹ��� �Ϸ�Ǿ����ϴ�.\n[īī�� �˸���] �̼��� �Բ� �˸��� �߼�: \"LG �׷� 16��ġ ��ǰ�� ���� �����Ǿ����ϴ�. ��� �غ� ���Դϴ�.\"",
+    "expected": ">> [ȫ�浿] ���� [������ ���� 2����] ��ǰ �ֹ��� �Ϸ�Ǿ����ϴ�.\n[SMS ����] ȫ�浿 �Բ� ���� �߼�: \"������ ���� 2���� ��ǰ�� ���� �����Ǿ����ϴ�. ��� �غ� ���Դϴ�.\"\n>> [�̼���] ���� [LG �׷� 16��ġ] ��ǰ �ֹ��� �Ϸ�Ǿ����ϴ�.\n[īī�� �˸���] �̼��� �Բ� �˸��� �߼�: \"LG �׷� 16��ġ ��ǰ�� ���� �����Ǿ����ϴ�. ��� �غ� ���Դϴ�.\""
   },
   {
     "id": "day06_상",
@@ -177,7 +228,10 @@ const PROBLEMS = [
     "title": "결제 장애 시 보상/환불 복구 핸들러 (OrderRefundRecovery)",
     "desc": "전자상거래 결제 승인 과정에서 예외가 발생했을 때, 사전에 정의된 보상 트랜잭션 인터페이스(`CompensationHandler`)와 익명 클래스/람다식을 통해 선차감된 포인트 복원 또는 관리자 대기열 등록을 유연하게 처리하세요.",
     "template": "public class Solution {\n    public static void main(String[] args) {\n        // 여기에 코드를 작성하세요\n        \n    }\n}",
-    "solution": "package day06;\n\ninterface CompensationHandler {\n    void compensate(String orderId, int amount, Exception cause);\n}\n\nclass PaymentProcessor {\n    public static void processWithCompensation(String orderId, int amount, Runnable paymentTask, CompensationHandler handler) {\n        try {\n            paymentTask.run();\n        } catch (Exception e) {\n            System.err.println(\"🚨 결제 트랜잭션 오류 발생: \" + e.getMessage());\n            handler.compensate(orderId, amount, e);\n        }\n    }\n}\n\npublic class Problem3_OrderCompensationTest {\n    public static void main(String[] args) {\n        PaymentProcessor.processWithCompensation(\n            \"ORD-2026-001\", 85000,\n            new Runnable() {\n                @Override\n                public void run() {\n                    System.out.println(\"[결제 시도] 신용카드 승인 요청 중...\");\n                    throw new RuntimeException(\"카드사 거절: 일일 결제 한도 초과\");\n                }\n            },\n            new CompensationHandler() {\n                @Override\n                public void compensate(String orderId, int amount, Exception cause) {\n                    System.out.printf(\"  -> [보상 트랜잭션 가동] 주문 [%s] 취소 처리 & 포인트 5,000점 복원 완료!\\n\", orderId);\n                }\n            }\n        );\n    }\n}"
+    "solution": "package day06;\n\ninterface CompensationHandler {\n    void compensate(String orderId, int amount, Exception cause);\n}\n\nclass PaymentProcessor {\n    public static void processWithCompensation(String orderId, int amount, Runnable paymentTask, CompensationHandler handler) {\n        try {\n            paymentTask.run();\n        } catch (Exception e) {\n            System.err.println(\"🚨 결제 트랜잭션 오류 발생: \" + e.getMessage());\n            handler.compensate(orderId, amount, e);\n        }\n    }\n}\n\npublic class Problem3_OrderCompensationTest {\n    public static void main(String[] args) {\n        PaymentProcessor.processWithCompensation(\n            \"ORD-2026-001\", 85000,\n            new Runnable() {\n                @Override\n                public void run() {\n                    System.out.println(\"[결제 시도] 신용카드 승인 요청 중...\");\n                    throw new RuntimeException(\"카드사 거절: 일일 결제 한도 초과\");\n                }\n            },\n            new CompensationHandler() {\n                @Override\n                public void compensate(String orderId, int amount, Exception cause) {\n                    System.out.printf(\"  -> [보상 트랜잭션 가동] 주문 [%s] 취소 처리 & 포인트 5,000점 복원 완료!\\n\", orderId);\n                }\n            }\n        );\n    }\n}",
+    "sample_input": "없음 (표준 입력 없음, 기본 변수값 활용)",
+    "sample_output": "[���� �õ�] �ſ�ī�� ���� ��û ��...\n  -> [���� Ʈ����� ����] �ֹ� [ORD-2026-001] ��� ó�� & ����Ʈ 5,000�� ���� �Ϸ�!",
+    "expected": "[���� �õ�] �ſ�ī�� ���� ��û ��...\n  -> [���� Ʈ����� ����] �ֹ� [ORD-2026-001] ��� ó�� & ����Ʈ 5,000�� ���� �Ϸ�!"
   },
   {
     "id": "day07_하",
@@ -187,7 +241,10 @@ const PROBLEMS = [
     "title": "학생 명단 관리 및 성적순 람다 정렬 (StudentRankingList)",
     "desc": "학생 객체(`Student`: 이름, 점수)들을 `List<Student>`에 저장하고, 람다식(`(s1, s2) -> Integer.compare(s2.getScore(), s1.getScore())`)을 활용하여 성적 내림차순(1등부터)으로 정렬하여 등수와 함께 출력하세요.",
     "template": "public class Solution {\n    public static void main(String[] args) {\n        // 여기에 코드를 작성하세요\n        \n    }\n}",
-    "solution": "package day07;\n\nimport java.util.ArrayList;\nimport java.util.List;\n\nclass Student {\n    private String name;\n    private int score;\n\n    public Student(String name, int score) {\n        this.name = name;\n        this.score = score;\n    }\n\n    public String getName() { return name; }\n    public int getScore() { return score; }\n\n    @Override\n    public String toString() {\n        return String.format(\"%s (%d점)\", name, score);\n    }\n}\n\npublic class Problem1_StudentRankingTest {\n    public static void main(String[] args) {\n        List<Student> students = new ArrayList<>();\n        students.add(new Student(\"김민수\", 82));\n        students.add(new Student(\"이영희\", 95));\n        students.add(new Student(\"박철호\", 74));\n        students.add(new Student(\"정수진\", 91));\n\n        students.sort((s1, s2) -> Integer.compare(s2.getScore(), s1.getScore()));\n\n        System.out.println(\"=== 성적 우수순 랭킹 ===\");\n        for (int i = 0; i < students.size(); i++) {\n            System.out.printf(\"[%d등] %s\\n\", (i + 1), students.get(i));\n        }\n    }\n}"
+    "solution": "package day07;\n\nimport java.util.ArrayList;\nimport java.util.List;\n\nclass Student {\n    private String name;\n    private int score;\n\n    public Student(String name, int score) {\n        this.name = name;\n        this.score = score;\n    }\n\n    public String getName() { return name; }\n    public int getScore() { return score; }\n\n    @Override\n    public String toString() {\n        return String.format(\"%s (%d점)\", name, score);\n    }\n}\n\npublic class Problem1_StudentRankingTest {\n    public static void main(String[] args) {\n        List<Student> students = new ArrayList<>();\n        students.add(new Student(\"김민수\", 82));\n        students.add(new Student(\"이영희\", 95));\n        students.add(new Student(\"박철호\", 74));\n        students.add(new Student(\"정수진\", 91));\n\n        students.sort((s1, s2) -> Integer.compare(s2.getScore(), s1.getScore()));\n\n        System.out.println(\"=== 성적 우수순 랭킹 ===\");\n        for (int i = 0; i < students.size(); i++) {\n            System.out.printf(\"[%d등] %s\\n\", (i + 1), students.get(i));\n        }\n    }\n}",
+    "sample_input": "없음 (표준 입력 없음, 기본 변수값 활용)",
+    "sample_output": "=== ���� ����� ��ŷ ===\n[1��] �̿��� (95��)\n[2��] ������ (91��)\n[3��] ��μ� (82��)\n[4��] ��öȣ (74��)",
+    "expected": "=== ���� ����� ��ŷ ===\n[1��] �̿��� (95��)\n[2��] ������ (91��)\n[3��] ��μ� (82��)\n[4��] ��öȣ (74��)"
   },
   {
     "id": "day07_중",
@@ -197,7 +254,10 @@ const PROBLEMS = [
     "title": "과일 판매 품목 Set 및 판매량 집계 Map (WordFrequencyMap)",
     "desc": "과일 가게의 당일 판매 내역 문자열 리스트에서 중복을 제거한 판매 품목 목록(Set)과 각 품목별 판매 수량(Map)을 집계하고, 가장 많이 팔린 베스트셀러 과일을 찾아 출력하세요.",
     "template": "public class Solution {\n    public static void main(String[] args) {\n        // 여기에 코드를 작성하세요\n        \n    }\n}",
-    "solution": "package day07;\n\nimport java.util.*;\n\npublic class Problem2_WordFrequencyTest {\n    public static void main(String[] args) {\n        List<String> sales = Arrays.asList(\n            \"사과\", \"바나나\", \"사과\", \"딸기\", \"바나나\", \"사과\", \"포도\", \"딸기\", \"수박\"\n        );\n\n        Set<String> uniqueFruits = new HashSet<>(sales);\n        Map<String, Integer> salesCount = new HashMap<>();\n\n        for (String fruit : sales) {\n            salesCount.put(fruit, salesCount.getOrDefault(fruit, 0) + 1);\n        }\n\n        System.out.println(\"=== 과일 가게 판매 현황 분석 ===\");\n        System.out.printf(\"총 판매: %d건 | 고유 품목: %d종\\n\", sales.size(), uniqueFruits.size());\n        salesCount.forEach((fruit, count) -> System.out.printf(\"  - %s: %d개 판매\\n\", fruit, count));\n\n        String topFruit = \"\";\n        int maxSales = 0;\n        for (Map.Entry<String, Integer> entry : salesCount.entrySet()) {\n            if (entry.getValue() > maxSales) {\n                maxSales = entry.getValue();\n                topFruit = entry.getKey();\n            }\n        }\n        System.out.printf(\"\\n>> 👑 베스트셀러: %s (%d개)\\n\", topFruit, maxSales);\n    }\n}"
+    "solution": "package day07;\n\nimport java.util.*;\n\npublic class Problem2_WordFrequencyTest {\n    public static void main(String[] args) {\n        List<String> sales = Arrays.asList(\n            \"사과\", \"바나나\", \"사과\", \"딸기\", \"바나나\", \"사과\", \"포도\", \"딸기\", \"수박\"\n        );\n\n        Set<String> uniqueFruits = new HashSet<>(sales);\n        Map<String, Integer> salesCount = new HashMap<>();\n\n        for (String fruit : sales) {\n            salesCount.put(fruit, salesCount.getOrDefault(fruit, 0) + 1);\n        }\n\n        System.out.println(\"=== 과일 가게 판매 현황 분석 ===\");\n        System.out.printf(\"총 판매: %d건 | 고유 품목: %d종\\n\", sales.size(), uniqueFruits.size());\n        salesCount.forEach((fruit, count) -> System.out.printf(\"  - %s: %d개 판매\\n\", fruit, count));\n\n        String topFruit = \"\";\n        int maxSales = 0;\n        for (Map.Entry<String, Integer> entry : salesCount.entrySet()) {\n            if (entry.getValue() > maxSales) {\n                maxSales = entry.getValue();\n                topFruit = entry.getKey();\n            }\n        }\n        System.out.printf(\"\\n>> 👑 베스트셀러: %s (%d개)\\n\", topFruit, maxSales);\n    }\n}",
+    "sample_input": "없음 (표준 입력 없음, 기본 변수값 활용)",
+    "sample_output": "=== ���� ���� �Ǹ� ��Ȳ �м� ===\n�� �Ǹ�: 9�� | ���� ǰ��: 5��\n  - ����: 1�� �Ǹ�\n  - ����: 1�� �Ǹ�\n  - ���: 3�� �Ǹ�\n  - �ٳ���: 2�� �Ǹ�\n  - ����: 2�� �Ǹ�\n\n>> ? ����Ʈ����: ��� (3��)",
+    "expected": "=== ���� ���� �Ǹ� ��Ȳ �м� ===\n�� �Ǹ�: 9�� | ���� ǰ��: 5��\n  - ����: 1�� �Ǹ�\n  - ����: 1�� �Ǹ�\n  - ���: 3�� �Ǹ�\n  - �ٳ���: 2�� �Ǹ�\n  - ����: 2�� �Ǹ�\n\n>> ? ����Ʈ����: ��� (3��)"
   },
   {
     "id": "day07_상",
@@ -207,7 +267,10 @@ const PROBLEMS = [
     "title": "람다식 & 함수형 인터페이스 기반 상품 필터 파이프라인 (ProductFilterPipeline)",
     "desc": "쇼핑몰 상품 카탈로그(`Product`: 상품명, 카테고리, 가격) 리스트에서 조건별로 유연하게 상품을 필터링할 수 있도록 표준 함수형 인터페이스 `Predicate<Product>`와 `Consumer<Product>`를 활용한 제네릭 필터링 파이프라인 유틸리티를 작성하세요.",
     "template": "public class Solution {\n    public static void main(String[] args) {\n        // 여기에 코드를 작성하세요\n        \n    }\n}",
-    "solution": "package day07;\n\nimport java.util.ArrayList;\nimport java.util.List;\nimport java.util.function.Consumer;\nimport java.util.function.Predicate;\n\nclass Product {\n    private String name;\n    private String category;\n    private int price;\n\n    public Product(String name, String category, int price) {\n        this.name = name;\n        this.category = category;\n        this.price = price;\n    }\n\n    public String getName() { return name; }\n    public String getCategory() { return category; }\n    public int getPrice() { return price; }\n\n    @Override\n    public String toString() {\n        return String.format(\"[%s] %-12s : %,6d원\", category, name, price);\n    }\n}\n\nclass ProductFilter {\n    public static List<Product> filter(List<Product> list, Predicate<Product> condition) {\n        List<Product> result = new ArrayList<>();\n        for (Product p : list) {\n            if (condition.test(p)) result.add(p);\n        }\n        return result;\n    }\n\n    public static void forEach(List<Product> list, Consumer<Product> action) {\n        for (Product p : list) action.accept(p);\n    }\n}\n\npublic class Problem3_ProductFilterPipelineTest {\n    public static void main(String[] args) {\n        List<Product> catalog = List.of(\n            new Product(\"기계식 키보드\", \"전자제품\", 89000),\n            new Product(\"자바 프로그래밍 입문\", \"도서\", 28000),\n            new Product(\"무선 버티컬 마우스\", \"전자제품\", 45000),\n            new Product(\"클린 코드\", \"도서\", 32000),\n            new Product(\"스마트 머그컵\", \"생활용품\", 15000),\n            new Product(\"27인치 4K 모니터\", \"전자제품\", 350000)\n        );\n\n        // 1. 도서 카테고리 필터링\n        System.out.println(\"[도서 카테고리 목록]\");\n        List<Product> books = ProductFilter.filter(catalog, p -> \"도서\".equals(p.getCategory()));\n        ProductFilter.forEach(books, p -> System.out.println(\"📚 \" + p));\n\n        // 2. 10만원 미만 가성비 전자제품 복합 필터링\n        System.out.println(\"\\n[10만원 미만 가성비 전자제품]\");\n        List<Product> budget = ProductFilter.filter(catalog,\n            p -> \"전자제품\".equals(p.getCategory()) && p.getPrice() < 100000);\n        ProductFilter.forEach(budget, p -> System.out.println(\"⚡ \" + p));\n    }\n}"
+    "solution": "package day07;\n\nimport java.util.ArrayList;\nimport java.util.List;\nimport java.util.function.Consumer;\nimport java.util.function.Predicate;\n\nclass Product {\n    private String name;\n    private String category;\n    private int price;\n\n    public Product(String name, String category, int price) {\n        this.name = name;\n        this.category = category;\n        this.price = price;\n    }\n\n    public String getName() { return name; }\n    public String getCategory() { return category; }\n    public int getPrice() { return price; }\n\n    @Override\n    public String toString() {\n        return String.format(\"[%s] %-12s : %,6d원\", category, name, price);\n    }\n}\n\nclass ProductFilter {\n    public static List<Product> filter(List<Product> list, Predicate<Product> condition) {\n        List<Product> result = new ArrayList<>();\n        for (Product p : list) {\n            if (condition.test(p)) result.add(p);\n        }\n        return result;\n    }\n\n    public static void forEach(List<Product> list, Consumer<Product> action) {\n        for (Product p : list) action.accept(p);\n    }\n}\n\npublic class Problem3_ProductFilterPipelineTest {\n    public static void main(String[] args) {\n        List<Product> catalog = List.of(\n            new Product(\"기계식 키보드\", \"전자제품\", 89000),\n            new Product(\"자바 프로그래밍 입문\", \"도서\", 28000),\n            new Product(\"무선 버티컬 마우스\", \"전자제품\", 45000),\n            new Product(\"클린 코드\", \"도서\", 32000),\n            new Product(\"스마트 머그컵\", \"생활용품\", 15000),\n            new Product(\"27인치 4K 모니터\", \"전자제품\", 350000)\n        );\n\n        // 1. 도서 카테고리 필터링\n        System.out.println(\"[도서 카테고리 목록]\");\n        List<Product> books = ProductFilter.filter(catalog, p -> \"도서\".equals(p.getCategory()));\n        ProductFilter.forEach(books, p -> System.out.println(\"📚 \" + p));\n\n        // 2. 10만원 미만 가성비 전자제품 복합 필터링\n        System.out.println(\"\\n[10만원 미만 가성비 전자제품]\");\n        List<Product> budget = ProductFilter.filter(catalog,\n            p -> \"전자제품\".equals(p.getCategory()) && p.getPrice() < 100000);\n        ProductFilter.forEach(budget, p -> System.out.println(\"⚡ \" + p));\n    }\n}",
+    "sample_input": "없음 (표준 입력 없음, 기본 변수값 활용)",
+    "sample_output": "[���� ī�װ��� ���]\n? [����] �ڹ� ���α׷��� �Թ�  : 28,000��\n? [����] Ŭ�� �ڵ�        : 32,000��\n\n[10���� �̸� ������ ������ǰ]\n? [������ǰ] ���� Ű����      : 89,000��\n? [������ǰ] ���� ��Ƽ�� ���콺   : 45,000��",
+    "expected": "[���� ī�װ��� ���]\n? [����] �ڹ� ���α׷��� �Թ�  : 28,000��\n? [����] Ŭ�� �ڵ�        : 32,000��\n\n[10���� �̸� ������ ������ǰ]\n? [������ǰ] ���� Ű����      : 89,000��\n? [������ǰ] ���� ��Ƽ�� ���콺   : 45,000��"
   },
   {
     "id": "day08_하",
@@ -217,7 +280,10 @@ const PROBLEMS = [
     "title": "영업직(SALESMAN) 사원 기본 인적사항 조회",
     "desc": "`EMP` 테이블에서 담당 업무(`JOB`)가 `'SALESMAN'`인 사원들의 사원번호(`EMPNO`), 이름(`ENAME`), 기본급(`SAL`), 커미션(`COMM`)을 조회하세요.",
     "template": "-- 여기에 SQL 쿼리를 작성하세요\nSELECT * FROM EMP;",
-    "solution": "SELECT EMPNO, ENAME, SAL, COMM\nFROM EMP\nWHERE JOB = 'SALESMAN';"
+    "solution": "SELECT EMPNO, ENAME, SAL, COMM\nFROM EMP\nWHERE JOB = 'SALESMAN';",
+    "sample_input": "MySQL DB 스키마 및 레코드",
+    "sample_output": "결과 레코드 집합 (SQL SELECT 조회 결과 테이블 반환)",
+    "expected": "결과 레코드 집합 (SQL SELECT 조회 결과 테이블 반환)"
   },
   {
     "id": "day08_중",
@@ -227,7 +293,10 @@ const PROBLEMS = [
     "title": "핵심 연구/영업 부서 고액 연봉자 다중 정렬 조회",
     "desc": "부서 번호(`DEPTNO`)가 20번(RESEARCH) 또는 30번(SALES)이고, 급여(`SAL`)가 1,500 이상인 사원의 사원번호, 이름, 부서번호, 급여를 조회하세요. 결과는 급여가 높은 순(내림차순)으로 정렬하고, 급여가 동일할 경우 이름 오름차순(A-Z)으로 정렬하세요.",
     "template": "-- 여기에 SQL 쿼리를 작성하세요\nSELECT * FROM EMP;",
-    "solution": "SELECT EMPNO, ENAME, DEPTNO, SAL\nFROM EMP\nWHERE DEPTNO IN (20, 30) AND SAL >= 1500\nORDER BY SAL DESC, ENAME ASC;"
+    "solution": "SELECT EMPNO, ENAME, DEPTNO, SAL\nFROM EMP\nWHERE DEPTNO IN (20, 30) AND SAL >= 1500\nORDER BY SAL DESC, ENAME ASC;",
+    "sample_input": "MySQL DB 스키마 및 레코드",
+    "sample_output": "결과 레코드 집합 (SQL SELECT 조회 결과 테이블 반환)",
+    "expected": "결과 레코드 집합 (SQL SELECT 조회 결과 테이블 반환)"
   },
   {
     "id": "day08_상",
@@ -237,7 +306,10 @@ const PROBLEMS = [
     "title": "유효 인센티브 수령자의 총 보상 산출 및 랭킹 조회",
     "desc": "데이터베이스에서 `NULL`과의 산술 연산은 `NULL`을 반환하므로 주의해야 합니다. 커미션(`COMM`)이 `NULL`이 아니고 0보다 큰 사원 중, 기본급과 커미션을 합산한 총 보상액(`TOTAL_COMP`)이 2,000 이상인 사원을 탐색하여 총 보상액 기준 내림차순 정렬 조회하세요.",
     "template": "-- 여기에 SQL 쿼리를 작성하세요\nSELECT * FROM EMP;",
-    "solution": "SELECT EMPNO, ENAME, SAL, COMM, (SAL + COMM) AS TOTAL_COMP\nFROM EMP\nWHERE COMM IS NOT NULL AND COMM > 0 AND (SAL + COMM) >= 2000\nORDER BY TOTAL_COMP DESC;"
+    "solution": "SELECT EMPNO, ENAME, SAL, COMM, (SAL + COMM) AS TOTAL_COMP\nFROM EMP\nWHERE COMM IS NOT NULL AND COMM > 0 AND (SAL + COMM) >= 2000\nORDER BY TOTAL_COMP DESC;",
+    "sample_input": "MySQL DB 스키마 및 레코드",
+    "sample_output": "결과 레코드 집합 (SQL SELECT 조회 결과 테이블 반환)",
+    "expected": "결과 레코드 집합 (SQL SELECT 조회 결과 테이블 반환)"
   },
   {
     "id": "day09_하",
@@ -247,7 +319,10 @@ const PROBLEMS = [
     "title": "직무별 인원 수 및 평균 급여 집계",
     "desc": "`EMP` 테이블에서 각 담당 업무(`JOB`)별로 사원 수(`EMP_COUNT`)와 평균 급여(`AVG_SAL`)를 집계하세요. 단, 평균 급여는 `ROUND()` 함수를 사용하여 소수점 첫째 자리까지 반올림하세요.",
     "template": "-- 여기에 SQL 쿼리를 작성하세요\nSELECT * FROM EMP;",
-    "solution": "SELECT JOB, COUNT(*) AS EMP_COUNT, ROUND(AVG(SAL), 1) AS AVG_SAL\nFROM EMP\nGROUP BY JOB;"
+    "solution": "SELECT JOB, COUNT(*) AS EMP_COUNT, ROUND(AVG(SAL), 1) AS AVG_SAL\nFROM EMP\nGROUP BY JOB;",
+    "sample_input": "MySQL DB 스키마 및 레코드",
+    "sample_output": "결과 레코드 집합 (SQL SELECT 조회 결과 테이블 반환)",
+    "expected": "결과 레코드 집합 (SQL SELECT 조회 결과 테이블 반환)"
   },
   {
     "id": "day09_중",
@@ -257,7 +332,10 @@ const PROBLEMS = [
     "title": "부서별 고액 총급여 부서 추출 및 급여 통계",
     "desc": "부서별(`DEPTNO`)로 총 급여 합계(`SUM(SAL)`)가 5,000 이상인 부서만을 선별하여, 부서번호, 소속 인원 수(`CNT`), 최고 급여(`MAX_SAL`), 최저 급여(`MIN_SAL`), 총 급여(`TOTAL_SAL`)를 조회하세요.",
     "template": "-- 여기에 SQL 쿼리를 작성하세요\nSELECT * FROM EMP;",
-    "solution": "SELECT DEPTNO, COUNT(*) AS CNT, MAX(SAL) AS MAX_SAL, MIN(SAL) AS MIN_SAL, SUM(SAL) AS TOTAL_SAL\nFROM EMP\nGROUP BY DEPTNO\nHAVING SUM(SAL) >= 5000;"
+    "solution": "SELECT DEPTNO, COUNT(*) AS CNT, MAX(SAL) AS MAX_SAL, MIN(SAL) AS MIN_SAL, SUM(SAL) AS TOTAL_SAL\nFROM EMP\nGROUP BY DEPTNO\nHAVING SUM(SAL) >= 5000;",
+    "sample_input": "MySQL DB 스키마 및 레코드",
+    "sample_output": "결과 레코드 집합 (SQL SELECT 조회 결과 테이블 반환)",
+    "expected": "결과 레코드 집합 (SQL SELECT 조회 결과 테이블 반환)"
   },
   {
     "id": "day09_상",
@@ -267,7 +345,10 @@ const PROBLEMS = [
     "title": "복합 필터링(WHERE vs HAVING)을 적용한 직무별 급여 분석",
     "desc": "SQL 튜닝 및 최적화에서 개별 행 필터링(`WHERE`)과 그룹 집계 후 필터링(`HAVING`)의 역할을 구분하는 것은 매우 중요합니다.\n1. 직무가 `'PRESIDENT'`가 아니고 개별 급여가 1,000 이상인 사원들만을 대상으로 사전 필터링합니다.\n2. 직무별로 그룹화한 뒤, 평균 급여가 2,000 이상인 직무만 선별하세요.\n3. 직무명, 평균 급여(소수점 1자리 반올림), 총 급여를 평균 급여 내림차순으로 정렬하여 조회하세요.",
     "template": "-- 여기에 SQL 쿼리를 작성하세요\nSELECT * FROM EMP;",
-    "solution": "SELECT JOB, ROUND(AVG(SAL), 1) AS AVG_SAL, SUM(SAL) AS TOTAL_SAL\nFROM EMP\nWHERE JOB != 'PRESIDENT' AND SAL >= 1000\nGROUP BY JOB\nHAVING AVG(SAL) >= 2000\nORDER BY AVG_SAL DESC;"
+    "solution": "SELECT JOB, ROUND(AVG(SAL), 1) AS AVG_SAL, SUM(SAL) AS TOTAL_SAL\nFROM EMP\nWHERE JOB != 'PRESIDENT' AND SAL >= 1000\nGROUP BY JOB\nHAVING AVG(SAL) >= 2000\nORDER BY AVG_SAL DESC;",
+    "sample_input": "MySQL DB 스키마 및 레코드",
+    "sample_output": "결과 레코드 집합 (SQL SELECT 조회 결과 테이블 반환)",
+    "expected": "결과 레코드 집합 (SQL SELECT 조회 결과 테이블 반환)"
   },
   {
     "id": "day10_하",
@@ -277,7 +358,10 @@ const PROBLEMS = [
     "title": "사원 및 소속 부서 정보 내부 조인 (INNER JOIN)",
     "desc": "`EMP` 테이블과 `DEPT` 테이블을 `DEPTNO` 외래키/기본키 관계로 결합하여, 사원번호(`EMPNO`), 이름(`ENAME`), 소속 부서명(`DNAME`), 부서 위치(`LOC`)를 조회하세요.",
     "template": "-- 여기에 SQL 쿼리를 작성하세요\nSELECT * FROM EMP;",
-    "solution": "SELECT e.EMPNO, e.ENAME, d.DNAME, d.LOC\nFROM EMP e\nINNER JOIN DEPT d ON e.DEPTNO = d.DEPTNO;"
+    "solution": "SELECT e.EMPNO, e.ENAME, d.DNAME, d.LOC\nFROM EMP e\nINNER JOIN DEPT d ON e.DEPTNO = d.DEPTNO;",
+    "sample_input": "MySQL DB 스키마 및 레코드",
+    "sample_output": "결과 레코드 집합 (SQL SELECT 조회 결과 테이블 반환)",
+    "expected": "결과 레코드 집합 (SQL SELECT 조회 결과 테이블 반환)"
   },
   {
     "id": "day10_중",
@@ -287,7 +371,10 @@ const PROBLEMS = [
     "title": "미배치 부서까지 포함한 부서별 사원 수 집계 (LEFT OUTER JOIN)",
     "desc": "현재 사원이 한 명도 소속되어 있지 않은 40번(`OPERATIONS`) 부서까지 누락 없이 모두 결과에 포함되도록 외부 조인을 사용하고, 각 부서별 실제 사원 수(`COUNT(e.EMPNO)`)를 집계하세요. (`COUNT(*)`를 사용하면 사원이 없는 부서도 1로 카운트되므로 주의)",
     "template": "-- 여기에 SQL 쿼리를 작성하세요\nSELECT * FROM EMP;",
-    "solution": "SELECT d.DEPTNO, d.DNAME, COUNT(e.EMPNO) AS EMP_COUNT\nFROM DEPT d\nLEFT JOIN EMP e ON d.DEPTNO = e.DEPTNO\nGROUP BY d.DEPTNO, d.DNAME\nORDER BY d.DEPTNO;"
+    "solution": "SELECT d.DEPTNO, d.DNAME, COUNT(e.EMPNO) AS EMP_COUNT\nFROM DEPT d\nLEFT JOIN EMP e ON d.DEPTNO = e.DEPTNO\nGROUP BY d.DEPTNO, d.DNAME\nORDER BY d.DEPTNO;",
+    "sample_input": "MySQL DB 스키마 및 레코드",
+    "sample_output": "결과 레코드 집합 (SQL SELECT 조회 결과 테이블 반환)",
+    "expected": "결과 레코드 집합 (SQL SELECT 조회 결과 테이블 반환)"
   },
   {
     "id": "day10_상",
@@ -297,7 +384,10 @@ const PROBLEMS = [
     "title": "사원-관리자 계층(SELF JOIN) 및 급여 등급 비등가 조인(NON-EQUI JOIN)",
     "desc": "하나의 쿼리 안에서 계층 구조와 범위 매핑을 동시에 수행합니다.\n1. `EMP` 테이블을 자기 자신과 조인(`SELF JOIN`)하여 사원의 직속 상사 이름(`MANAGER`)을 매핑하되, 상사가 없는 사원(KING)은 `'최상위관리자'`로 표시하세요 (`IFNULL` 활용).\n2. `SALGRADE` 테이블과 비등가 조인(`BETWEEN s.LOSAL AND s.HISAL`)하여 해당 사원의 급여 등급(`GRADE`)을 매핑하세요.\n3. 급여 등급 높은 순, 급여가 높은 순으로 정렬 조회하세요.",
     "template": "-- 여기에 SQL 쿼리를 작성하세요\nSELECT * FROM EMP;",
-    "solution": "SELECT e.ENAME AS EMPLOYEE, \n       IFNULL(m.ENAME, '최상위관리자') AS MANAGER, \n       e.SAL, \n       s.GRADE\nFROM EMP e\nLEFT JOIN EMP m ON e.MGR = m.EMPNO\nINNER JOIN SALGRADE s ON e.SAL BETWEEN s.LOSAL AND s.HISAL\nORDER BY s.GRADE DESC, e.SAL DESC;"
+    "solution": "SELECT e.ENAME AS EMPLOYEE, \n       IFNULL(m.ENAME, '최상위관리자') AS MANAGER, \n       e.SAL, \n       s.GRADE\nFROM EMP e\nLEFT JOIN EMP m ON e.MGR = m.EMPNO\nINNER JOIN SALGRADE s ON e.SAL BETWEEN s.LOSAL AND s.HISAL\nORDER BY s.GRADE DESC, e.SAL DESC;",
+    "sample_input": "MySQL DB 스키마 및 레코드",
+    "sample_output": "결과 레코드 집합 (SQL SELECT 조회 결과 테이블 반환)",
+    "expected": "결과 레코드 집합 (SQL SELECT 조회 결과 테이블 반환)"
   },
   {
     "id": "day11_하",
@@ -307,7 +397,10 @@ const PROBLEMS = [
     "title": "전체 평균 급여를 초과하는 고연봉 사원 조회 (단일행 서브쿼리)",
     "desc": "회사 전체 사원의 평균 급여(`AVG(SAL)`)보다 높은 급여를 받는 사원의 사원번호, 이름, 급여를 조회하세요. 결과는 급여가 높은 순으로 정렬합니다.",
     "template": "-- 여기에 SQL 쿼리를 작성하세요\nSELECT * FROM EMP;",
-    "solution": "SELECT EMPNO, ENAME, SAL\nFROM EMP\nWHERE SAL > (SELECT AVG(SAL) FROM EMP)\nORDER BY SAL DESC;"
+    "solution": "SELECT EMPNO, ENAME, SAL\nFROM EMP\nWHERE SAL > (SELECT AVG(SAL) FROM EMP)\nORDER BY SAL DESC;",
+    "sample_input": "MySQL DB 스키마 및 레코드",
+    "sample_output": "결과 레코드 집합 (SQL SELECT 조회 결과 테이블 반환)",
+    "expected": "결과 레코드 집합 (SQL SELECT 조회 결과 테이블 반환)"
   },
   {
     "id": "day11_중",
@@ -317,7 +410,10 @@ const PROBLEMS = [
     "title": "각 부서별 최고 급여 수령자 조회 (다중컬럼 서브쿼리)",
     "desc": "각 부서(`DEPTNO`)별로 가장 많은 급여(`MAX(SAL)`)를 받는 사원들의 사원번호, 이름, 부서번호, 급여를 조회하세요. 다중 컬럼 서브쿼리(`(DEPTNO, SAL) IN (...)`)를 활용하여 부서번호 오름차순으로 정렬하세요.",
     "template": "-- 여기에 SQL 쿼리를 작성하세요\nSELECT * FROM EMP;",
-    "solution": "SELECT EMPNO, ENAME, DEPTNO, SAL\nFROM EMP\nWHERE (DEPTNO, SAL) IN (\n    SELECT DEPTNO, MAX(SAL)\n    FROM EMP\n    GROUP BY DEPTNO\n)\nORDER BY DEPTNO;"
+    "solution": "SELECT EMPNO, ENAME, DEPTNO, SAL\nFROM EMP\nWHERE (DEPTNO, SAL) IN (\n    SELECT DEPTNO, MAX(SAL)\n    FROM EMP\n    GROUP BY DEPTNO\n)\nORDER BY DEPTNO;",
+    "sample_input": "MySQL DB 스키마 및 레코드",
+    "sample_output": "결과 레코드 집합 (SQL SELECT 조회 결과 테이블 반환)",
+    "expected": "결과 레코드 집합 (SQL SELECT 조회 결과 테이블 반환)"
   },
   {
     "id": "day11_상",
@@ -327,7 +423,10 @@ const PROBLEMS = [
     "title": "인프라 데이터 정리 및 아카이빙 트랜잭션 (DML + TRANSACTION)",
     "desc": "운영 DB의 테이블 비대화를 방지하기 위해 오래된 로그나 특정 대상(`JOB = 'CLERK'`) 데이터를 별도 아카이브 백업 테이블(`EMP_BACKUP`)로 이관하고 원본에서 삭제하는 작업을 원자적(Atomic) 트랜잭션으로 구성하세요.",
     "template": "-- 여기에 SQL 쿼리를 작성하세요\nSELECT * FROM EMP;",
-    "solution": "START TRANSACTION;\n\nCREATE TABLE IF NOT EXISTS EMP_BACKUP AS \nSELECT * FROM EMP WHERE 1 = 0;\n\nINSERT INTO EMP_BACKUP \nSELECT * FROM EMP WHERE JOB = 'CLERK';\n\nDELETE FROM EMP WHERE JOB = 'CLERK';\n\nCOMMIT;"
+    "solution": "START TRANSACTION;\n\nCREATE TABLE IF NOT EXISTS EMP_BACKUP AS \nSELECT * FROM EMP WHERE 1 = 0;\n\nINSERT INTO EMP_BACKUP \nSELECT * FROM EMP WHERE JOB = 'CLERK';\n\nDELETE FROM EMP WHERE JOB = 'CLERK';\n\nCOMMIT;",
+    "sample_input": "MySQL DB 스키마 및 레코드",
+    "sample_output": "결과 레코드 집합 (SQL SELECT 조회 결과 테이블 반환)",
+    "expected": "결과 레코드 집합 (SQL SELECT 조회 결과 테이블 반환)"
   },
   {
     "id": "day12_하",
@@ -337,7 +436,10 @@ const PROBLEMS = [
     "title": "도서 인벤토리 테이블 생성 (기본 DDL)",
     "desc": "도서관에서 관리할 도서 정보를 저장하는 `TB_BOOK` 테이블을 생성하세요.\n* `ISBN`: 최대 20자 가변문자열, 기본키(`PRIMARY KEY`)\n* `TITLE`: 최대 100자 가변문자열, 필수값(`NOT NULL`)\n* `AUTHOR`: 최대 50자 가변문자열, 필수값(`NOT NULL`)\n* `PRICE`: 정수형, 기본값 0, 필수값(`NOT NULL`)\n* `PUBLISHED_DATE`: 날짜형(`DATE`)",
     "template": "-- 여기에 SQL 쿼리를 작성하세요\nSELECT * FROM EMP;",
-    "solution": "CREATE TABLE TB_BOOK (\n    ISBN VARCHAR(20) PRIMARY KEY,\n    TITLE VARCHAR(100) NOT NULL,\n    AUTHOR VARCHAR(50) NOT NULL,\n    PRICE INT DEFAULT 0 NOT NULL,\n    PUBLISHED_DATE DATE\n);"
+    "solution": "CREATE TABLE TB_BOOK (\n    ISBN VARCHAR(20) PRIMARY KEY,\n    TITLE VARCHAR(100) NOT NULL,\n    AUTHOR VARCHAR(50) NOT NULL,\n    PRICE INT DEFAULT 0 NOT NULL,\n    PUBLISHED_DATE DATE\n);",
+    "sample_input": "MySQL DB 스키마 및 레코드",
+    "sample_output": "결과 레코드 집합 (SQL SELECT 조회 결과 테이블 반환)",
+    "expected": "결과 레코드 집합 (SQL SELECT 조회 결과 테이블 반환)"
   },
   {
     "id": "day12_중",
@@ -347,7 +449,10 @@ const PROBLEMS = [
     "title": "테이블 스키마 수정 및 카테고리 컬럼 추가 (ALTER TABLE)",
     "desc": "`TB_BOOK` 테이블에 도서 분류를 관리하기 위해 `CATEGORY` 컬럼(최대 30자 가변문자열, 기본값 `'일반'`, 필수값 `NOT NULL`)을 추가하세요.",
     "template": "-- 여기에 SQL 쿼리를 작성하세요\nSELECT * FROM EMP;",
-    "solution": "ALTER TABLE TB_BOOK \nADD COLUMN CATEGORY VARCHAR(30) DEFAULT '일반' NOT NULL;"
+    "solution": "ALTER TABLE TB_BOOK \nADD COLUMN CATEGORY VARCHAR(30) DEFAULT '일반' NOT NULL;",
+    "sample_input": "MySQL DB 스키마 및 레코드",
+    "sample_output": "결과 레코드 집합 (SQL SELECT 조회 결과 테이블 반환)",
+    "expected": "결과 레코드 집합 (SQL SELECT 조회 결과 테이블 반환)"
   },
   {
     "id": "day12_상",
@@ -357,7 +462,10 @@ const PROBLEMS = [
     "title": "회원 및 대출 이력 무결성 제약조건 테이블 설계 (FK CASCADE & CHECK)",
     "desc": "회원(`TB_MEMBER`) 정보와 도서 대출 이력을 관리하는 `TB_RENTAL` 테이블을 설계합니다.\n1. `RENTAL_ID`: 자동 증가(`AUTO_INCREMENT`), 기본키\n2. `MEMBER_ID`: `TB_MEMBER`의 `MEMBER_ID`를 참조하는 외래키. 회원 탈퇴 시 관련 대출 이력도 자동 연쇄 삭제(`ON DELETE CASCADE`)되어야 합니다.\n3. `ISBN`: `TB_BOOK`의 `ISBN`을 참조하는 외래키 (`ON DELETE CASCADE`)\n4. `STATUS`: 대출 상태로, `'RENTED'`(대출중), `'RETURNED'`(반납완료), `'OVERDUE'`(연체) 중 하나의 값만 허용하도록 `CHECK` 제약조건을 부여하세요.\n5. `RENTAL_DATE`: 타임스탬프 기본값 현재 시각",
     "template": "-- 여기에 SQL 쿼리를 작성하세요\nSELECT * FROM EMP;",
-    "solution": "CREATE TABLE TB_MEMBER (\n    MEMBER_ID INT PRIMARY KEY,\n    NAME VARCHAR(30) NOT NULL,\n    PHONE VARCHAR(15) UNIQUE NOT NULL\n);\n\nCREATE TABLE TB_RENTAL (\n    RENTAL_ID INT AUTO_INCREMENT PRIMARY KEY,\n    MEMBER_ID INT,\n    ISBN VARCHAR(20),\n    STATUS VARCHAR(10) NOT NULL,\n    RENTAL_DATE TIMESTAMP DEFAULT CURRENT_TIMESTAMP,\n    CONSTRAINT CK_RENTAL_STATUS CHECK (STATUS IN ('RENTED', 'RETURNED', 'OVERDUE')),\n    CONSTRAINT FK_RENTAL_MEMBER FOREIGN KEY (MEMBER_ID) \n        REFERENCES TB_MEMBER(MEMBER_ID) ON DELETE CASCADE,\n    CONSTRAINT FK_RENTAL_BOOK FOREIGN KEY (ISBN) \n        REFERENCES TB_BOOK(ISBN) ON DELETE CASCADE\n);"
+    "solution": "CREATE TABLE TB_MEMBER (\n    MEMBER_ID INT PRIMARY KEY,\n    NAME VARCHAR(30) NOT NULL,\n    PHONE VARCHAR(15) UNIQUE NOT NULL\n);\n\nCREATE TABLE TB_RENTAL (\n    RENTAL_ID INT AUTO_INCREMENT PRIMARY KEY,\n    MEMBER_ID INT,\n    ISBN VARCHAR(20),\n    STATUS VARCHAR(10) NOT NULL,\n    RENTAL_DATE TIMESTAMP DEFAULT CURRENT_TIMESTAMP,\n    CONSTRAINT CK_RENTAL_STATUS CHECK (STATUS IN ('RENTED', 'RETURNED', 'OVERDUE')),\n    CONSTRAINT FK_RENTAL_MEMBER FOREIGN KEY (MEMBER_ID) \n        REFERENCES TB_MEMBER(MEMBER_ID) ON DELETE CASCADE,\n    CONSTRAINT FK_RENTAL_BOOK FOREIGN KEY (ISBN) \n        REFERENCES TB_BOOK(ISBN) ON DELETE CASCADE\n);",
+    "sample_input": "MySQL DB 스키마 및 레코드",
+    "sample_output": "결과 레코드 집합 (SQL SELECT 조회 결과 테이블 반환)",
+    "expected": "결과 레코드 집합 (SQL SELECT 조회 결과 테이블 반환)"
   },
   {
     "id": "day13_하",
@@ -367,7 +475,10 @@ const PROBLEMS = [
     "title": "온라인 쇼핑몰 회원가입 폼 (SignUpForm)",
     "desc": "아이디, 비밀번호, 이메일, 성별(라디오 버튼), 필수 약관 동의(체크박스), 가입 버튼을 포함하는 표준 HTML5 회원가입 폼을 작성하세요.\n\n---",
     "template": "// 여기에 자바스크립트 코드를 작성하세요\n",
-    "solution": ""
+    "solution": "",
+    "sample_input": "없음",
+    "sample_output": "HTML/CSS 렌더링 및 콘솔 실행 결과 확인",
+    "expected": "HTML/CSS 렌더링 및 콘솔 실행 결과 확인"
   },
   {
     "id": "day13_중",
@@ -377,7 +488,10 @@ const PROBLEMS = [
     "title": "시맨틱 태그 기반 카페 메뉴판 (CafeMenuTable)",
     "desc": "웹 표준 시맨틱 태그(`<header>`, `<main>`, `<article>`, `<footer>`)와 구조화된 데이터 표 태그(`<table>`, `<caption>`, `<thead>`, `<tbody>`, `<th scope=\"col\">`)를 활용하여 카페 음료 메뉴판을 마크업하세요.\n\n---",
     "template": "// 여기에 자바스크립트 코드를 작성하세요\n",
-    "solution": ""
+    "solution": "",
+    "sample_input": "없음",
+    "sample_output": "HTML/CSS 렌더링 및 콘솔 실행 결과 확인",
+    "expected": "HTML/CSS 렌더링 및 콘솔 실행 결과 확인"
   },
   {
     "id": "day13_상",
@@ -387,7 +501,10 @@ const PROBLEMS = [
     "title": "웹 접근성(ARIA) 및 정규식 검증 상품 등록 폼 (ProductRegisterForm)",
     "desc": "쇼핑몰 관리자가 상품을 등록할 때,\n* 상품 식별코드에 정규식 패턴(`pattern=\"^[A-Z]{3}-[0-9]{4}$\"`)과 도움말을 `aria-describedby`로 연결\n* 이미지 파일 업로드(`accept=\"image/*\"`)와 멀티파트 인코딩(`enctype=\"multipart/form-data\"`)을 적용하세요.",
     "template": "// 여기에 자바스크립트 코드를 작성하세요\n",
-    "solution": ""
+    "solution": "",
+    "sample_input": "없음",
+    "sample_output": "HTML/CSS 렌더링 및 콘솔 실행 결과 확인",
+    "expected": "HTML/CSS 렌더링 및 콘솔 실행 결과 확인"
   },
   {
     "id": "day14_하",
@@ -397,7 +514,10 @@ const PROBLEMS = [
     "title": "상품 라벨 및 상태 뱃지 디자인 (ProductBadge)",
     "desc": "쇼핑몰 상품에 부착되는 `BEST`, `30% SALE`, `일시품절` 뱃지를 `inline-block`, 테두리 둥글기(`border-radius: 6px`), 적절한 안쪽 여백(`padding`) 및 테마 색상으로 스타일링하세요.\n\n---",
     "template": "// 여기에 자바스크립트 코드를 작성하세요\n",
-    "solution": ""
+    "solution": "",
+    "sample_input": "없음",
+    "sample_output": "HTML/CSS 렌더링 및 콘솔 실행 결과 확인",
+    "expected": "HTML/CSS 렌더링 및 콘솔 실행 결과 확인"
   },
   {
     "id": "day14_중",
@@ -407,7 +527,10 @@ const PROBLEMS = [
     "title": "Flexbox 기반 상품 카드 리스트 (ProductCardFlexbox)",
     "desc": "상품 카드를 Flexbox 구조(`display: flex; flex-direction: column; justify-content: space-between;`)로 배치하고, 하단 가격과 장바구니 버튼을 양끝 정렬(`justify-content: space-between;`) 및 마우스 Hover 시 살짝 떠오르는 애니메이션(`transform: translateY(-4px);`)을 적용하세요.\n\n---",
     "template": "// 여기에 자바스크립트 코드를 작성하세요\n",
-    "solution": ""
+    "solution": "",
+    "sample_input": "없음",
+    "sample_output": "HTML/CSS 렌더링 및 콘솔 실행 결과 확인",
+    "expected": "HTML/CSS 렌더링 및 콘솔 실행 결과 확인"
   },
   {
     "id": "day14_상",
@@ -417,7 +540,10 @@ const PROBLEMS = [
     "title": "반응형 CSS Grid 기획전 상품 갤러리 (ResponsiveProductGrid)",
     "desc": "화면 크기에 따라 1열부터 4열까지 자동으로 열 개수가 유연하게 조절되는 기획전 상품 목록을 `display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 20px;`로 구축하고, 모바일 미디어 쿼리(`@media (max-width: 768px)`)를 작성하세요.",
     "template": "// 여기에 자바스크립트 코드를 작성하세요\n",
-    "solution": ""
+    "solution": "",
+    "sample_input": "없음",
+    "sample_output": "HTML/CSS 렌더링 및 콘솔 실행 결과 확인",
+    "expected": "HTML/CSS 렌더링 및 콘솔 실행 결과 확인"
   },
   {
     "id": "day15_하",
@@ -427,7 +553,10 @@ const PROBLEMS = [
     "title": "재고 있는 상품 필터링 및 이름 추출 (filter & map)",
     "desc": "장바구니 상품 객체 배열에서 품절되지 않고 구매 가능한(`inStock === true`) 상품만 선별(`filter`)하고, 해당 상품들의 이름(`name`)만을 담은 배열을 반환(`map`)하는 함수를 작성하세요.\n\n---",
     "template": "// 여기에 자바스크립트 코드를 작성하세요\n",
-    "solution": ""
+    "solution": "",
+    "sample_input": "없음",
+    "sample_output": "HTML/CSS 렌더링 및 콘솔 실행 결과 확인",
+    "expected": "HTML/CSS 렌더링 및 콘솔 실행 결과 확인"
   },
   {
     "id": "day15_중",
@@ -437,7 +566,10 @@ const PROBLEMS = [
     "title": "특정 상품의 구매 수량 변경 함수 (불변성 유지 업데이트)",
     "desc": "장바구니에서 특정 `id` 상품의 구매 수량(`quantity`)을 갱신하는 함수를 작성하세요. 원본 배열을 직접 수정하지 않고 스프레드 연산자(`...`)와 `map()`을 활용하여 불변성을 유지해야 하며, 최소 수량은 1개 이상으로 보정하세요.\n\n---",
     "template": "// 여기에 자바스크립트 코드를 작성하세요\n",
-    "solution": ""
+    "solution": "",
+    "sample_input": "없음",
+    "sample_output": "HTML/CSS 렌더링 및 콘솔 실행 결과 확인",
+    "expected": "HTML/CSS 렌더링 및 콘솔 실행 결과 확인"
   },
   {
     "id": "day15_상",
@@ -447,7 +579,10 @@ const PROBLEMS = [
     "title": "장바구니 총 주문 금액 및 무료 배송/할인 계산기 (reduce)",
     "desc": "재고가 있는 상품들의 총 상품 금액(소계 합산)을 `reduce()`로 구하고, 쿠폰 할인(기본 10%) 적용 후 실 결제 금액이 50,000원 이상이면 배송비 무료(미만 3,000원) 정책을 적용한 최종 결제 요약 객체를 반환하는 함수를 작성하세요.",
     "template": "// 여기에 자바스크립트 코드를 작성하세요\n",
-    "solution": ""
+    "solution": "",
+    "sample_input": "없음",
+    "sample_output": "HTML/CSS 렌더링 및 콘솔 실행 결과 확인",
+    "expected": "HTML/CSS 렌더링 및 콘솔 실행 결과 확인"
   },
   {
     "id": "day16_하",
@@ -457,7 +592,10 @@ const PROBLEMS = [
     "title": "비동기 상품 상세 조회 함수 (Promise & async/await)",
     "desc": "상품 ID를 받아 지연 시간 후 상품 상세 객체(`{ id, title, price, stock }`)를 비동기로 반환하고, 존재하지 않는 상품 ID(`\"P-ERROR\"`)일 경우 에러를 던지는 비동기 함수를 작성하세요.\n\n---",
     "template": "// 여기에 자바스크립트 코드를 작성하세요\n",
-    "solution": ""
+    "solution": "",
+    "sample_input": "없음",
+    "sample_output": "HTML/CSS 렌더링 및 콘솔 실행 결과 확인",
+    "expected": "HTML/CSS 렌더링 및 콘솔 실행 결과 확인"
   },
   {
     "id": "day16_중",
@@ -467,7 +605,10 @@ const PROBLEMS = [
     "title": "외부 위젯 데이터(환율, 날씨, 공지) 병렬 수합 (Promise.all & Promise.race)",
     "desc": "쇼핑몰 메인 대시보드 구성을 위해 환율, 날씨, 배송공지 3개의 비동기 프로미스를 생성하고:\n1. `Promise.race()`로 가장 먼저 도착한 정보를 화면에 먼저 표시\n2. `Promise.all()`로 3개 위젯 데이터를 일괄 수합하여 종합 대시보드 데이터를 구성하세요.\n\n---",
     "template": "// 여기에 자바스크립트 코드를 작성하세요\n",
-    "solution": ""
+    "solution": "",
+    "sample_input": "없음",
+    "sample_output": "HTML/CSS 렌더링 및 콘솔 실행 결과 확인",
+    "expected": "HTML/CSS 렌더링 및 콘솔 실행 결과 확인"
   },
   {
     "id": "day16_상",
@@ -477,6 +618,9 @@ const PROBLEMS = [
     "title": "쇼핑몰 결제 승인 API 지수 백오프 자동 재시도 래퍼",
     "desc": "결제 대행사(PG) 서버와의 일시적인 통신 순단에 대비하여, 최대 3회까지 지수 지연($100ms, 200ms, 400ms...$)을 두고 자동으로 재호출을 시도하는 고차 비동기 재시도 함수 `requestPaymentWithRetry()`를 구현하세요.",
     "template": "// 여기에 자바스크립트 코드를 작성하세요\n",
-    "solution": ""
+    "solution": "",
+    "sample_input": "없음",
+    "sample_output": "HTML/CSS 렌더링 및 콘솔 실행 결과 확인",
+    "expected": "HTML/CSS 렌더링 및 콘솔 실행 결과 확인"
   }
 ];
