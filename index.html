@@ -440,7 +440,12 @@
         let currentProblem = null;
         let filterSubjectMode = 'all';
 
-        let judgeServerUrl = localStorage.getItem('judge_server_url') || 'http://100.104.124.97:8000';
+        let savedUrl = localStorage.getItem('judge_server_url');
+        if (savedUrl && savedUrl.includes('100.104.124.97')) {
+            localStorage.removeItem('judge_server_url');
+            savedUrl = null;
+        }
+        let judgeServerUrl = savedUrl || (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' ? 'http://192.168.68.55:8000' : '');
         let currentUser = JSON.parse(localStorage.getItem('current_user') || 'null');
 
         // 오픈(Unlock) 상태 (기본 1일차만 오픈)
