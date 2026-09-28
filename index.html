@@ -11,8 +11,6 @@
         ::-webkit-scrollbar { width: 7px; height: 7px; }
         ::-webkit-scrollbar-track { background: #0f172a; }
         ::-webkit-scrollbar-thumb { background: #334155; border-radius: 4px; }
-        .toggle-checkbox:checked { right: 0; border-color: #f59e0b; }
-        .toggle-checkbox:checked + .toggle-label { background-color: #f59e0b; }
     </style>
 </head>
 <body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col font-sans select-none">
@@ -20,21 +18,18 @@
     <!-- 상단 네비게이션 헤더 -->
     <header class="bg-slate-900 border-b border-slate-800 px-6 py-2.5 flex items-center justify-between shadow-sm">
         <div class="flex items-center space-x-6">
-            <div class="flex items-center space-x-2 cursor-pointer" onclick="showView('problem')">
+            <div class="flex items-center space-x-2 cursor-pointer" onclick="goToDaysList()">
                 <span class="text-2xl">🦁</span>
                 <span class="text-base font-bold text-white tracking-wide">Lion Judge</span>
             </div>
 
             <!-- 네비게이션 탭 -->
             <nav class="flex items-center space-x-1">
-                <button onclick="showView('problem')" id="navProblemBtn" class="px-3 py-1.5 rounded-lg text-xs font-semibold bg-amber-500 text-slate-950 transition flex items-center gap-1.5">
-                    <i class="fa-solid fa-code"></i> 문제 풀기
+                <button onclick="goToDaysList()" id="navDaysBtn" class="px-3 py-1.5 rounded-lg text-xs font-semibold bg-amber-500 text-slate-950 transition flex items-center gap-1.5">
+                    <i class="fa-solid fa-calendar-days"></i> 실습 일차
                 </button>
                 <button onclick="showView('status')" id="navStatusBtn" class="px-3 py-1.5 rounded-lg text-xs font-medium text-slate-300 hover:bg-slate-800 transition flex items-center gap-1.5">
                     <i class="fa-solid fa-chart-line"></i> 제출 현황
-                </button>
-                <button onclick="openManageLocksModal()" id="navLockBtn" class="hidden px-3 py-1.5 rounded-lg text-xs font-bold text-amber-400 bg-amber-500/10 hover:bg-amber-500/20 border border-amber-500/30 transition flex items-center gap-1.5">
-                    <i class="fa-solid fa-lock-open"></i> 실습 공개 관리
                 </button>
             </nav>
         </div>
@@ -60,100 +55,88 @@
     </header>
 
     <!-- ======================================================== -->
-    <!-- VIEW 1: 실습 문제 및 코드 채점 뷰 (기본) -->
+    <!-- VIEW 1: 일차 선택 그리드 화면 (Home) -->
     <!-- ======================================================== -->
-    <div id="viewProblem" class="flex-1 flex flex-col overflow-hidden">
-        <!-- 과목 및 일차 필터 바 -->
-        <div class="bg-slate-900/80 border-b border-slate-800 px-6 py-2 flex flex-wrap items-center justify-between gap-3 text-xs">
-            <div class="flex items-center space-x-1.5">
-                <button onclick="filterSubject('all')" class="sub-btn active bg-amber-500 text-slate-950 font-semibold px-2.5 py-1 rounded transition" data-sub="all">전체</button>
-                <button onclick="filterSubject('Java')" class="sub-btn bg-slate-800 hover:bg-slate-700 text-slate-300 px-2.5 py-1 rounded transition" data-sub="Java">Java</button>
-                <button onclick="filterSubject('MySQL')" class="sub-btn bg-slate-800 hover:bg-slate-700 text-slate-300 px-2.5 py-1 rounded transition" data-sub="MySQL">MySQL</button>
-                <button onclick="filterSubject('Web')" class="sub-btn bg-slate-800 hover:bg-slate-700 text-slate-300 px-2.5 py-1 rounded transition" data-sub="Web">Web</button>
+    <div id="viewDays" class="flex-1 overflow-y-auto p-6 max-w-6xl mx-auto w-full space-y-6">
+        <!-- 과목 필터 탭 -->
+        <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+            <div class="flex items-center space-x-2">
+                <button onclick="filterDaysSubject('all')" class="day-filter-btn active bg-amber-500 text-slate-950 font-bold px-3 py-1.5 rounded-lg text-xs transition" data-sub="all">전체 (1~16일차)</button>
+                <button onclick="filterDaysSubject('Java')" class="day-filter-btn bg-slate-900 hover:bg-slate-800 text-slate-300 font-medium px-3 py-1.5 rounded-lg text-xs transition" data-sub="Java">Java (1~7일차)</button>
+                <button onclick="filterDaysSubject('MySQL')" class="day-filter-btn bg-slate-900 hover:bg-slate-800 text-slate-300 font-medium px-3 py-1.5 rounded-lg text-xs transition" data-sub="MySQL">MySQL (8~12일차)</button>
+                <button onclick="filterDaysSubject('Web')" class="day-filter-btn bg-slate-900 hover:bg-slate-800 text-slate-300 font-medium px-3 py-1.5 rounded-lg text-xs transition" data-sub="Web">Web (13~16일차)</button>
             </div>
-
-            <div class="flex items-center space-x-3">
-                <div class="flex items-center space-x-1.5">
-                    <select id="daySelect" onchange="renderProblemList()" class="bg-slate-950 border border-slate-800 rounded px-2 py-1 text-slate-200 focus:outline-none focus:border-amber-500">
-                        <option value="all">전체 일차 (1~16일차)</option>
-                    </select>
-                </div>
-
-                <div class="flex items-center space-x-1">
-                    <button onclick="filterDifficulty('all')" class="diff-btn active bg-slate-700 text-white px-2 py-0.5 rounded" data-diff="all">전체</button>
-                    <button onclick="filterDifficulty('하')" class="diff-btn bg-emerald-950/40 text-emerald-400 border border-emerald-800/60 px-2 py-0.5 rounded" data-diff="하">하</button>
-                    <button onclick="filterDifficulty('중')" class="diff-btn bg-amber-950/40 text-amber-400 border border-amber-800/60 px-2 py-0.5 rounded" data-diff="중">중</button>
-                    <button onclick="filterDifficulty('상')" class="diff-btn bg-rose-950/40 text-rose-400 border border-rose-800/60 px-2 py-0.5 rounded" data-diff="상">상</button>
-                </div>
+            <div id="adminNotice" class="hidden text-xs text-amber-400 font-semibold flex items-center gap-1.5">
+                <i class="fa-solid fa-user-shield"></i> 관리자 모드: 각 일차별 스위치를 눌러 학생 공개 여부를 제어하세요.
             </div>
         </div>
 
-        <!-- 2단 화면 분할: 문제 vs 에디터 -->
+        <!-- 일차 카드 그리드 -->
+        <div id="daysGridContainer" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+            <!-- 자바스크립트로 16개 일차 카드 렌더링 -->
+        </div>
+    </div>
+
+    <!-- ======================================================== -->
+    <!-- VIEW 2: 선택된 일차의 문제 풀이 화면 (문제 본문 + 에디터) -->
+    <!-- ======================================================== -->
+    <div id="viewProblem" class="hidden flex-1 flex flex-col overflow-hidden">
+        <!-- 상단 일차 헤더 및 난이도(상/중/하) 선택 바 -->
+        <div class="bg-slate-900 border-b border-slate-800 px-6 py-2.5 flex items-center justify-between">
+            <div class="flex items-center space-x-4">
+                <button onclick="goToDaysList()" class="text-xs bg-slate-800 hover:bg-slate-700 text-slate-200 px-3 py-1.5 rounded-lg border border-slate-700 transition flex items-center gap-1.5">
+                    <i class="fa-solid fa-arrow-left"></i> 일차 목록
+                </button>
+                <div class="flex items-center space-x-2">
+                    <span id="currentDayBadge" class="bg-amber-500/20 text-amber-400 border border-amber-500/30 text-xs font-bold px-2.5 py-1 rounded-md">
+                        1일차 (Java)
+                    </span>
+                </div>
+            </div>
+
+            <!-- 난이도: 상 / 중 / 하 버튼 -->
+            <div class="flex items-center space-x-2">
+                <span class="text-xs text-slate-400 mr-1">난이도 선택:</span>
+                <button onclick="selectDifficulty('하')" id="diffBtnHa" class="px-3.5 py-1.5 rounded-lg text-xs font-bold transition flex items-center gap-1.5">
+                    <span class="w-2 h-2 rounded-full bg-emerald-400"></span> [하] 초급
+                </button>
+                <button onclick="selectDifficulty('중')" id="diffBtnJung" class="px-3.5 py-1.5 rounded-lg text-xs font-bold transition flex items-center gap-1.5">
+                    <span class="w-2 h-2 rounded-full bg-amber-400"></span> [중] 중급
+                </button>
+                <button onclick="selectDifficulty('상')" id="diffBtnSang" class="px-3.5 py-1.5 rounded-lg text-xs font-bold transition flex items-center gap-1.5">
+                    <span class="w-2 h-2 rounded-full bg-rose-400"></span> [상] 심화
+                </button>
+            </div>
+        </div>
+
+        <!-- 2단 분할: 좌측 문제 본문 vs 우측 코드 에디터 -->
         <div class="flex-1 flex flex-col md:flex-row overflow-hidden">
             <!-- 좌측 문제 본문 -->
-            <div class="w-full md:w-1/2 flex flex-col border-r border-slate-800 bg-slate-900/40">
-                <div class="bg-slate-900/90 p-2.5 border-b border-slate-800 flex items-center justify-between">
-                    <div class="flex items-center space-x-2 w-full">
-                        <i class="fa-solid fa-list-check text-amber-400 text-xs"></i>
-                        <select id="problemSelector" onchange="selectProblem(this.value)" class="w-full bg-slate-950 border border-slate-800 text-xs font-medium rounded px-2.5 py-1.5 text-white focus:outline-none focus:border-amber-500">
-                        </select>
+            <div class="w-full md:w-1/2 flex flex-col border-r border-slate-800 bg-slate-900/40 overflow-y-auto p-6 space-y-4">
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center gap-2">
+                        <span id="pSubjectBadge" class="px-2 py-0.5 rounded text-[11px] font-semibold bg-blue-500/20 text-blue-400 border border-blue-500/30">Java</span>
+                        <span id="pDayBadge" class="px-2 py-0.5 rounded text-[11px] font-semibold bg-slate-800 text-slate-300 border border-slate-700">1일차</span>
+                        <span id="pDiffBadge" class="px-2 py-0.5 rounded text-[11px] font-semibold bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">하</span>
                     </div>
                 </div>
 
-                <!-- 문제 잠금 안내 화면 (잠긴 문제인 경우 표시) -->
-                <div id="lockedProblemOverlay" class="hidden flex-1 flex flex-col items-center justify-center p-8 text-center space-y-3">
-                    <div class="w-14 h-14 rounded-full bg-slate-800 border border-slate-700 flex items-center justify-center text-slate-400 text-2xl">
-                        <i class="fa-solid fa-lock text-amber-500"></i>
-                    </div>
-                    <h3 class="text-base font-bold text-white">비공개 실습 문제입니다</h3>
-                    <p class="text-xs text-slate-400 max-w-xs leading-relaxed">
-                        강사/관리자가 실습 시작 시 오픈하면 자동으로 문제가 공개됩니다.
-                    </p>
-                    <div id="adminUnlockPrompt" class="hidden pt-2">
-                        <button onclick="unlockCurrentProblemFromBanner()" class="text-xs bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold px-3 py-1.5 rounded-lg transition">
-                            <i class="fa-solid fa-lock-open mr-1"></i> 관리자 권한으로 지금 오픈하기
-                        </button>
-                    </div>
+                <h2 id="pTitle" class="text-lg font-bold text-white tracking-tight"></h2>
+
+                <div class="bg-slate-900 p-4 rounded-xl border border-slate-800">
+                    <p id="pDesc" class="text-xs text-slate-200 leading-relaxed whitespace-pre-line select-text"></p>
                 </div>
 
-                <!-- 문제 실제 본문 화면 -->
-                <div class="flex-1 overflow-y-auto p-6 space-y-4" id="problemDetailView">
-                    <div class="flex items-center justify-between">
-                        <div class="flex items-center gap-2">
-                            <span id="pSubjectBadge" class="px-2 py-0.5 rounded text-[11px] font-semibold bg-blue-500/20 text-blue-400 border border-blue-500/30">Java</span>
-                            <span id="pDayBadge" class="px-2 py-0.5 rounded text-[11px] font-semibold bg-slate-800 text-slate-300 border border-slate-700">1일차</span>
-                            <span id="pDiffBadge" class="px-2 py-0.5 rounded text-[11px] font-semibold bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">하</span>
-                            <span id="pAdminLockBadge" class="hidden px-2 py-0.5 rounded text-[11px] font-bold bg-amber-500/20 text-amber-400 border border-amber-500/30">
-                                <i class="fa-solid fa-lock-open mr-1"></i>오픈됨
-                            </span>
-                        </div>
-
-                        <!-- 관리자용 원클릭 잠금 토글 -->
-                        <div id="adminSingleToggle" class="hidden items-center space-x-1.5">
-                            <label class="text-[11px] text-slate-400 cursor-pointer flex items-center gap-1.5">
-                                <input type="checkbox" id="currentProbLockCheck" onchange="toggleCurrentProblemLock(this.checked)" class="accent-amber-500 rounded">
-                                <span>학생에게 공개</span>
-                            </label>
-                        </div>
-                    </div>
-
-                    <h2 id="pTitle" class="text-lg font-bold text-white tracking-tight"></h2>
-
-                    <div class="bg-slate-900 p-4 rounded-xl border border-slate-800">
-                        <p id="pDesc" class="text-xs text-slate-200 leading-relaxed whitespace-pre-line"></p>
-                    </div>
-
-                    <!-- 모범 정답 아코디언 -->
-                    <div class="border border-slate-800 rounded-xl overflow-hidden bg-slate-900/50">
-                        <button onclick="toggleSolution()" class="w-full px-4 py-2 text-left text-xs font-medium text-slate-400 hover:text-slate-200 flex items-center justify-between transition">
-                            <span class="flex items-center gap-1.5">
-                                <i class="fa-solid fa-key text-amber-400"></i> 정답 예시 코드
-                            </span>
-                            <i id="solChevron" class="fa-solid fa-chevron-down text-slate-500 text-xs transition-transform"></i>
-                        </button>
-                        <div id="solutionContainer" class="hidden p-4 bg-slate-950 border-t border-slate-800">
-                            <pre><code id="pSolutionCode" class="code-font text-xs text-amber-300/90 whitespace-pre-wrap select-text"></code></pre>
-                        </div>
+                <!-- 모범 정답 아코디언 -->
+                <div class="border border-slate-800 rounded-xl overflow-hidden bg-slate-900/50">
+                    <button onclick="toggleSolution()" class="w-full px-4 py-2.5 text-left text-xs font-medium text-slate-400 hover:text-slate-200 flex items-center justify-between transition">
+                        <span class="flex items-center gap-1.5">
+                            <i class="fa-solid fa-key text-amber-400"></i> 정답 예시 코드
+                        </span>
+                        <i id="solChevron" class="fa-solid fa-chevron-down text-slate-500 text-xs transition-transform"></i>
+                    </button>
+                    <div id="solutionContainer" class="hidden p-4 bg-slate-950 border-t border-slate-800">
+                        <pre><code id="pSolutionCode" class="code-font text-xs text-amber-300/90 whitespace-pre-wrap select-text"></code></pre>
                     </div>
                 </div>
             </div>
@@ -193,7 +176,7 @@
     </div>
 
     <!-- ======================================================== -->
-    <!-- VIEW 2: 백준 스타일 실시간 제출 현황 (Status View) -->
+    <!-- VIEW 3: 백준 스타일 실시간 제출 현황 (Status View) -->
     <!-- ======================================================== -->
     <div id="viewStatus" class="hidden flex-1 overflow-y-auto p-6 max-w-6xl mx-auto w-full space-y-4">
         <div class="flex items-center justify-between pb-2 border-b border-slate-800">
@@ -222,32 +205,6 @@
                 <tbody id="submissionTableBody" class="divide-y divide-slate-800/80 font-medium">
                 </tbody>
             </table>
-        </div>
-    </div>
-
-    <!-- ======================================================== -->
-    <!-- 관리자 전용: 실습 문제 일차별 공개(Unlock) 관리 모달 -->
-    <!-- ======================================================== -->
-    <div id="manageLocksModal" class="hidden fixed inset-0 bg-black/70 backdrop-blur-xs flex items-center justify-center z-50 p-4">
-        <div class="bg-slate-900 border border-slate-800 rounded-2xl w-full max-w-2xl max-h-[85vh] flex flex-col shadow-2xl overflow-hidden">
-            <div class="bg-slate-850 bg-slate-800/90 px-6 py-3.5 border-b border-slate-800 flex items-center justify-between">
-                <div>
-                    <h3 class="text-sm font-bold text-white flex items-center gap-2">
-                        <i class="fa-solid fa-user-shield text-amber-400"></i> 실습 문제 공개 관리
-                    </h3>
-                    <p class="text-[11px] text-slate-400">체크한 일차/문제만 학생들에게 노출되어 풀 수 있습니다.</p>
-                </div>
-                <button onclick="closeManageLocksModal()" class="text-slate-400 hover:text-white text-lg">&times;</button>
-            </div>
-            
-            <div class="p-6 flex-1 overflow-y-auto space-y-3" id="locksListContainer">
-                <!-- 동적 렌더링: 1~16일차 카드 -->
-            </div>
-
-            <div class="bg-slate-950 px-6 py-3 border-t border-slate-800 flex items-center justify-between text-xs">
-                <span class="text-slate-400" id="unlockedCountText">오픈된 일차: 1일차</span>
-                <button onclick="closeManageLocksModal()" class="bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold px-4 py-1.5 rounded-lg transition">확인 완료</button>
-            </div>
         </div>
     </div>
 
@@ -319,23 +276,22 @@
     <script src="problems.js"></script>
 
     <script>
-        let currentSubject = 'all';
-        let currentDay = 'all';
-        let currentDiff = 'all';
+        let selectedDay = 1;
+        let selectedDiff = '하';
         let currentProblem = null;
+        let filterSubjectMode = 'all';
+
         let judgeServerUrl = localStorage.getItem('judge_server_url') || 'http://100.104.124.97:8000';
         let currentUser = JSON.parse(localStorage.getItem('current_user') || 'null');
 
-        // 오픈(Unlock) 상태 관리 (기본 1일차 오픈)
+        // 오픈(Unlock) 상태 (기본 1일차만 오픈)
         let unlockedDays = JSON.parse(localStorage.getItem('unlocked_days') || '[1]');
-        let unlockedProblems = JSON.parse(localStorage.getItem('unlocked_problems') || '[]');
 
         window.addEventListener('DOMContentLoaded', async () => {
-            initDaySelect();
             updateAuthUI();
             checkServerPing();
             await fetchLocks();
-            renderProblemList();
+            renderDaysGrid();
         });
 
         // 서버에서 최신 오픈 상태 가져오기
@@ -345,49 +301,231 @@
                 if (res.ok) {
                     const data = await res.json();
                     unlockedDays = data.unlocked_days || [1];
-                    unlockedProblems = data.unlocked_problems || [];
                     localStorage.setItem('unlocked_days', JSON.stringify(unlockedDays));
-                    localStorage.setItem('unlocked_problems', JSON.stringify(unlockedProblems));
                 }
-            } catch (e) {
-                // 오프라인 fallback
-            }
+            } catch (e) {}
         }
 
-        function isProblemUnlocked(p) {
-            // 관리자는 항상 모든 문제 열람 가능
+        function isDayUnlocked(day) {
             if (currentUser && currentUser.role === 'admin') return true;
-            // 일차 전체가 열려있거나 개별 문제가 열려있는 경우
-            if (unlockedDays.includes(p.day)) return true;
-            if (unlockedProblems.includes(p.id)) return true;
-            return false;
+            return unlockedDays.includes(day);
+        }
+
+        // 일차 목록 뷰로 이동
+        function goToDaysList() {
+            showView('days');
+            renderDaysGrid();
         }
 
         function showView(viewName) {
-            const viewProb = document.getElementById('viewProblem');
-            const viewStat = document.getElementById('viewStatus');
-            const navProb = document.getElementById('navProblemBtn');
-            const navStat = document.getElementById('navStatusBtn');
+            const vDays = document.getElementById('viewDays');
+            const vProb = document.getElementById('viewProblem');
+            const vStat = document.getElementById('viewStatus');
+            const nDays = document.getElementById('navDaysBtn');
+            const nStat = document.getElementById('navStatusBtn');
 
-            if (viewName === 'problem') {
-                viewProb.classList.remove('hidden');
-                viewStat.classList.add('hidden');
-                navProb.className = 'px-3 py-1.5 rounded-lg text-xs font-semibold bg-amber-500 text-slate-950 transition flex items-center gap-1.5';
-                navStat.className = 'px-3 py-1.5 rounded-lg text-xs font-medium text-slate-300 hover:bg-slate-800 transition flex items-center gap-1.5';
-            } else {
-                viewProb.classList.add('hidden');
-                viewStat.classList.remove('hidden');
-                navProb.className = 'px-3 py-1.5 rounded-lg text-xs font-medium text-slate-300 hover:bg-slate-800 transition flex items-center gap-1.5';
-                navStat.className = 'px-3 py-1.5 rounded-lg text-xs font-semibold bg-amber-500 text-slate-950 transition flex items-center gap-1.5';
+            vDays.classList.add('hidden');
+            vProb.classList.add('hidden');
+            vStat.classList.add('hidden');
+
+            nDays.className = 'px-3 py-1.5 rounded-lg text-xs font-medium text-slate-300 hover:bg-slate-800 transition flex items-center gap-1.5';
+            nStat.className = 'px-3 py-1.5 rounded-lg text-xs font-medium text-slate-300 hover:bg-slate-800 transition flex items-center gap-1.5';
+
+            if (viewName === 'days') {
+                vDays.classList.remove('hidden');
+                nDays.className = 'px-3 py-1.5 rounded-lg text-xs font-semibold bg-amber-500 text-slate-950 transition flex items-center gap-1.5';
+            } else if (viewName === 'problem') {
+                vProb.classList.remove('hidden');
+                nDays.className = 'px-3 py-1.5 rounded-lg text-xs font-semibold bg-amber-500 text-slate-950 transition flex items-center gap-1.5';
+            } else if (viewName === 'status') {
+                vStat.classList.remove('hidden');
+                nStat.className = 'px-3 py-1.5 rounded-lg text-xs font-semibold bg-amber-500 text-slate-950 transition flex items-center gap-1.5';
                 loadSubmissions();
             }
+        }
+
+        // 과목 필터
+        function filterDaysSubject(sub) {
+            filterSubjectMode = sub;
+            document.querySelectorAll('.day-filter-btn').forEach(b => {
+                b.className = b.dataset.sub === sub 
+                    ? 'day-filter-btn active bg-amber-500 text-slate-950 font-bold px-3 py-1.5 rounded-lg text-xs transition'
+                    : 'day-filter-btn bg-slate-900 hover:bg-slate-800 text-slate-300 font-medium px-3 py-1.5 rounded-lg text-xs transition';
+            });
+            renderDaysGrid();
+        }
+
+        // 16개 일차 카드 렌더링
+        function renderDaysGrid() {
+            const container = document.getElementById('daysGridContainer');
+            container.innerHTML = '';
+
+            const isAdmin = currentUser && currentUser.role === 'admin';
+            const adminNotice = document.getElementById('adminNotice');
+            if (isAdmin) adminNotice.classList.remove('hidden');
+            else adminNotice.classList.add('hidden');
+
+            for (let d = 1; d <= 16; d++) {
+                const sub = d <= 7 ? 'Java' : (d <= 12 ? 'MySQL' : 'Web');
+                if (filterSubjectMode !== 'all' && sub !== filterSubjectMode) continue;
+
+                const isUnlocked = isDayUnlocked(d);
+                const isServerUnlocked = unlockedDays.includes(d);
+
+                const card = document.createElement('div');
+                card.className = `relative rounded-2xl border p-5 transition flex flex-col justify-between ${
+                    isUnlocked 
+                        ? 'bg-slate-900/90 border-slate-800 hover:border-amber-500/50 hover:bg-slate-850 cursor-pointer shadow-md'
+                        : 'bg-slate-950/60 border-slate-800/40 opacity-50 cursor-not-allowed'
+                }`;
+
+                // 상단 헤더: 일차 번호 & 관리자 스위치
+                let adminToggleHtml = '';
+                if (isAdmin) {
+                    adminToggleHtml = `
+                        <div class="flex items-center space-x-1.5" onclick="event.stopPropagation()">
+                            <span class="text-[10px] ${isServerUnlocked ? 'text-amber-400 font-bold' : 'text-slate-500'}">
+                                ${isServerUnlocked ? '오픈됨' : '비공개'}
+                            </span>
+                            <label class="relative inline-flex items-center cursor-pointer">
+                                <input type="checkbox" onchange="toggleDayLock(${d}, this.checked)" class="sr-only peer" ${isServerUnlocked ? 'checked' : ''}>
+                                <div class="w-8 h-4 bg-slate-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-3 after:w-3 after:transition-all peer-checked:bg-amber-500"></div>
+                            </label>
+                        </div>
+                    `;
+                }
+
+                let statusBadge = '';
+                if (isUnlocked) {
+                    statusBadge = `<span class="inline-flex items-center gap-1 text-[11px] text-emerald-400 font-semibold bg-emerald-500/10 px-2 py-0.5 rounded border border-emerald-500/20"><i class="fa-solid fa-lock-open text-[9px]"></i> 3문제 오픈</span>`;
+                } else {
+                    statusBadge = `<span class="inline-flex items-center gap-1 text-[11px] text-slate-500 font-medium bg-slate-800/40 px-2 py-0.5 rounded border border-slate-800"><i class="fa-solid fa-lock text-[9px]"></i> 비공개 (준비 중)</span>`;
+                }
+
+                card.innerHTML = `
+                    <div>
+                        <div class="flex items-center justify-between mb-3">
+                            <span class="text-xs font-bold px-2 py-0.5 rounded ${
+                                sub === 'Java' ? 'bg-orange-500/20 text-orange-400 border border-orange-500/30' :
+                                sub === 'MySQL' ? 'bg-sky-500/20 text-sky-400 border border-sky-500/30' :
+                                'bg-purple-500/20 text-purple-400 border border-purple-500/30'
+                            }">${sub}</span>
+                            ${adminToggleHtml}
+                        </div>
+
+                        <h3 class="text-base font-bold text-white mb-1">${d}일차 실습</h3>
+                        <p class="text-xs text-slate-400 mb-4">
+                            ${isUnlocked ? '상 · 중 · 하 3문제 풀이 및 채점' : '실습 시작 시 공개됩니다.'}
+                        </p>
+                    </div>
+
+                    <div class="pt-3 border-t border-slate-800/80 flex items-center justify-between">
+                        ${statusBadge}
+                        ${isUnlocked ? '<span class="text-xs text-amber-400 font-semibold group-hover:translate-x-1 transition">입장하기 →</span>' : ''}
+                    </div>
+                `;
+
+                if (isUnlocked) {
+                    card.onclick = () => openDayProblems(d);
+                }
+
+                container.appendChild(card);
+            }
+        }
+
+        // 일차 진입
+        function openDayProblems(day) {
+            selectedDay = day;
+            selectedDiff = '하'; // 기본 '하'부터 열기
+            showView('problem');
+            renderProblemForDay();
+        }
+
+        // 난이도(하/중/상) 버튼 선택
+        function selectDifficulty(diff) {
+            selectedDiff = diff;
+            renderProblemForDay();
+        }
+
+        function renderProblemForDay() {
+            const sub = selectedDay <= 7 ? 'Java' : (selectedDay <= 12 ? 'MySQL' : 'Web');
+            document.getElementById('currentDayBadge').textContent = `${selectedDay}일차 (${sub})`;
+
+            // 난이도 버튼 UI 활성화 스타일
+            const btnHa = document.getElementById('diffBtnHa');
+            const btnJung = document.getElementById('diffBtnJung');
+            const btnSang = document.getElementById('diffBtnSang');
+
+            const activeStyle = 'bg-amber-500 text-slate-950 font-bold shadow';
+            const inactiveStyle = 'bg-slate-800 hover:bg-slate-700 text-slate-300 font-medium';
+
+            btnHa.className = `px-3.5 py-1.5 rounded-lg text-xs transition flex items-center gap-1.5 ${selectedDiff === '하' ? activeStyle : inactiveStyle}`;
+            btnJung.className = `px-3.5 py-1.5 rounded-lg text-xs transition flex items-center gap-1.5 ${selectedDiff === '중' ? activeStyle : inactiveStyle}`;
+            btnSang.className = `px-3.5 py-1.5 rounded-lg text-xs transition flex items-center gap-1.5 ${selectedDiff === '상' ? activeStyle : inactiveStyle}`;
+
+            // 해당 문제 찾기
+            const prob = PROBLEMS.find(p => p.day === selectedDay && p.difficulty === selectedDiff);
+            if (!prob) return;
+            currentProblem = prob;
+
+            document.getElementById('pTitle').textContent = prob.title;
+            document.getElementById('pSubjectBadge').textContent = prob.subject;
+            document.getElementById('pDayBadge').textContent = `${prob.day}일차`;
+            document.getElementById('pDiffBadge').textContent = prob.difficulty;
+            document.getElementById('pDesc').textContent = prob.desc;
+            document.getElementById('pSolutionCode').textContent = prob.solution || '// 모범 답안 준비 중';
+
+            document.getElementById('editorLang').textContent = `${prob.subject} Editor`;
+            document.getElementById('codeEditor').value = prob.template;
+
+            document.getElementById('solutionContainer').classList.add('hidden');
+            document.getElementById('solChevron').classList.remove('rotate-180');
+            document.getElementById('judgeBadge').classList.add('hidden');
+            document.getElementById('consoleText').textContent = '// Output console';
+            document.getElementById('judgeDuration').textContent = '-';
+        }
+
+        // 관리자 일차 오픈 토글
+        async function toggleDayLock(day, isUnlocked) {
+            if (isUnlocked) {
+                if (!unlockedDays.includes(day)) unlockedDays.push(day);
+            } else {
+                unlockedDays = unlockedDays.filter(d => d !== day);
+            }
+            localStorage.setItem('unlocked_days', JSON.stringify(unlockedDays));
+
+            try {
+                await fetch(`${judgeServerUrl}/api/admin/toggle-day`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ day: day, unlocked: isUnlocked })
+                });
+            } catch (e) {}
+
+            renderDaysGrid();
+        }
+
+        function toggleSolution() {
+            const container = document.getElementById('solutionContainer');
+            const chevron = document.getElementById('solChevron');
+            container.classList.toggle('hidden');
+            chevron.classList.toggle('rotate-180');
+        }
+
+        function resetCode() {
+            if (currentProblem && confirm('기본 템플릿으로 초기화하시겠습니까?')) {
+                document.getElementById('codeEditor').value = currentProblem.template;
+            }
+        }
+
+        function copyCode() {
+            const code = document.getElementById('codeEditor').value;
+            navigator.clipboard.writeText(code).then(() => alert('코드가 복사되었습니다.'));
         }
 
         // 로그인 UI 업데이트
         function updateAuthUI() {
             const container = document.getElementById('authContainer');
-            const navLockBtn = document.getElementById('navLockBtn');
-            const adminSingleToggle = document.getElementById('adminSingleToggle');
 
             if (currentUser) {
                 const roleBadge = currentUser.role === 'admin' 
@@ -402,26 +540,15 @@
                         </button>
                     </div>
                 `;
-
-                if (currentUser.role === 'admin') {
-                    navLockBtn.classList.remove('hidden');
-                    if (adminSingleToggle) adminSingleToggle.classList.remove('hidden');
-                } else {
-                    navLockBtn.classList.add('hidden');
-                    if (adminSingleToggle) adminSingleToggle.classList.add('hidden');
-                }
             } else {
                 container.innerHTML = `
                     <button onclick="openLoginModal()" class="text-xs bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold px-3 py-1.5 rounded-lg transition flex items-center gap-1.5">
                         <i class="fa-solid fa-right-to-bracket"></i> 로그인
                     </button>
                 `;
-                navLockBtn.classList.add('hidden');
-                if (adminSingleToggle) adminSingleToggle.classList.add('hidden');
             }
         }
 
-        // 로그인 처리
         async function handleLogin(e) {
             e.preventDefault();
             const u = document.getElementById('loginUsername').value.trim();
@@ -446,7 +573,7 @@
                 closeLoginModal();
                 updateAuthUI();
                 await fetchLocks();
-                renderProblemList();
+                renderDaysGrid();
             } catch (err) {
                 if (u === 'admin' && p === 'admin1234') {
                     currentUser = { username: 'admin', name: '관리자', role: 'admin' };
@@ -459,7 +586,7 @@
                 localStorage.setItem('current_user', JSON.stringify(currentUser));
                 closeLoginModal();
                 updateAuthUI();
-                renderProblemList();
+                renderDaysGrid();
             }
         }
 
@@ -467,262 +594,11 @@
             currentUser = null;
             localStorage.removeItem('current_user');
             updateAuthUI();
-            renderProblemList();
-            showView('problem');
+            goToDaysList();
         }
 
         function openLoginModal() { document.getElementById('loginModal').classList.remove('hidden'); }
         function closeLoginModal() { document.getElementById('loginModal').classList.add('hidden'); }
-
-        // 일차 초기화
-        function initDaySelect() {
-            const select = document.getElementById('daySelect');
-            for (let i = 1; i <= 16; i++) {
-                const opt = document.createElement('option');
-                opt.value = i;
-                const sub = i <= 7 ? 'Java' : (i <= 12 ? 'MySQL' : 'Web');
-                opt.textContent = `${i}일차 (${sub})`;
-                select.appendChild(opt);
-            }
-        }
-
-        function filterSubject(sub) {
-            currentSubject = sub;
-            document.querySelectorAll('.sub-btn').forEach(b => {
-                b.className = b.dataset.sub === sub 
-                    ? 'sub-btn active bg-amber-500 text-slate-950 font-semibold px-2.5 py-1 rounded transition'
-                    : 'sub-btn bg-slate-800 hover:bg-slate-700 text-slate-300 px-2.5 py-1 rounded transition';
-            });
-            renderProblemList();
-        }
-
-        function filterDifficulty(diff) {
-            currentDiff = diff;
-            document.querySelectorAll('.diff-btn').forEach(b => {
-                const isSelected = b.dataset.diff === diff;
-                if (isSelected) {
-                    b.className = 'diff-btn active bg-slate-700 text-white px-2 py-0.5 rounded';
-                } else {
-                    const d = b.dataset.diff;
-                    if (d === '하') b.className = 'diff-btn bg-emerald-950/40 text-emerald-400 border border-emerald-800/60 px-2 py-0.5 rounded';
-                    else if (d === '중') b.className = 'diff-btn bg-amber-950/40 text-amber-400 border border-amber-800/60 px-2 py-0.5 rounded';
-                    else if (d === '상') b.className = 'diff-btn bg-rose-950/40 text-rose-400 border border-rose-800/60 px-2 py-0.5 rounded';
-                    else b.className = 'diff-btn bg-slate-800 text-slate-400 px-2 py-0.5 rounded';
-                }
-            });
-            renderProblemList();
-        }
-
-        function renderProblemList() {
-            currentDay = document.getElementById('daySelect').value;
-            const selector = document.getElementById('problemSelector');
-            selector.innerHTML = '';
-
-            const filtered = PROBLEMS.filter(p => {
-                if (currentSubject !== 'all' && p.subject !== currentSubject) return false;
-                if (currentDay !== 'all' && p.day !== parseInt(currentDay)) return false;
-                if (currentDiff !== 'all' && p.difficulty !== currentDiff) return false;
-                return true;
-            });
-
-            if (filtered.length === 0) {
-                const opt = document.createElement('option');
-                opt.textContent = '조건에 맞는 문제가 없습니다.';
-                selector.appendChild(opt);
-                return;
-            }
-
-            filtered.forEach(p => {
-                const opt = document.createElement('option');
-                opt.value = p.id;
-                const isUnlocked = isProblemUnlocked(p);
-                const lockPrefix = isUnlocked ? '' : '🔒 [비공개] ';
-                opt.textContent = `${lockPrefix}[${p.day}일차][${p.difficulty}] ${p.title}`;
-                selector.appendChild(opt);
-            });
-
-            selectProblem(filtered[0].id);
-        }
-
-        function selectProblem(probId) {
-            const p = PROBLEMS.find(item => item.id === probId);
-            if (!p) return;
-            currentProblem = p;
-
-            const isUnlocked = isProblemUnlocked(p);
-            const overlay = document.getElementById('lockedProblemOverlay');
-            const detailView = document.getElementById('problemDetailView');
-            const adminUnlockPrompt = document.getElementById('adminUnlockPrompt');
-            const currentProbLockCheck = document.getElementById('currentProbLockCheck');
-            const codeEditor = document.getElementById('codeEditor');
-            const submitBtn = document.getElementById('submitBtn');
-
-            // 관리자인 경우 현재 문제 오픈 체크박스 동기화
-            if (currentUser && currentUser.role === 'admin') {
-                const probOpened = unlockedDays.includes(p.day) || unlockedProblems.includes(p.id);
-                currentProbLockCheck.checked = probOpened;
-            }
-
-            if (!isUnlocked) {
-                // 비공개 상태 (학생에게 잠김)
-                overlay.classList.remove('hidden');
-                detailView.classList.add('hidden');
-                codeEditor.value = '// 비공개 실습 문제입니다. 관리자가 오픈하면 활성화됩니다.';
-                codeEditor.disabled = true;
-                submitBtn.disabled = true;
-                submitBtn.classList.add('opacity-40', 'cursor-not-allowed');
-
-                if (currentUser && currentUser.role === 'admin') {
-                    adminUnlockPrompt.classList.remove('hidden');
-                } else {
-                    adminUnlockPrompt.classList.add('hidden');
-                }
-                return;
-            }
-
-            // 공개 상태 (정상 노출)
-            overlay.classList.add('hidden');
-            detailView.classList.remove('hidden');
-            codeEditor.disabled = false;
-            submitBtn.disabled = false;
-            submitBtn.classList.remove('opacity-40', 'cursor-not-allowed');
-
-            document.getElementById('pTitle').textContent = p.title;
-            document.getElementById('pSubjectBadge').textContent = p.subject;
-            document.getElementById('pDayBadge').textContent = `${p.day}일차`;
-            document.getElementById('pDiffBadge').textContent = p.difficulty;
-            document.getElementById('pDesc').textContent = p.desc;
-            document.getElementById('pSolutionCode').textContent = p.solution || '// 모범 답안 준비 중';
-
-            document.getElementById('editorLang').textContent = `${p.subject} Editor`;
-            codeEditor.value = p.template;
-
-            document.getElementById('solutionContainer').classList.add('hidden');
-            document.getElementById('solChevron').classList.remove('rotate-180');
-            document.getElementById('judgeBadge').classList.add('hidden');
-            document.getElementById('consoleText').textContent = '// Output console';
-            document.getElementById('judgeDuration').textContent = '-';
-        }
-
-        // 관리자 전용: 현재 보고 있는 문제 즉시 오픈/잠금 토글
-        async function toggleCurrentProblemLock(checked) {
-            if (!currentProblem) return;
-            await updateProblemLock(currentProblem.id, checked);
-            renderProblemList();
-        }
-
-        async function unlockCurrentProblemFromBanner() {
-            if (!currentProblem) return;
-            await updateProblemLock(currentProblem.id, true);
-            renderProblemList();
-        }
-
-        // 관리자 실습 공개 관리 모달
-        function openManageLocksModal() {
-            renderLocksManager();
-            document.getElementById('manageLocksModal').classList.remove('hidden');
-        }
-
-        function closeManageLocksModal() {
-            document.getElementById('manageLocksModal').classList.add('hidden');
-            renderProblemList();
-        }
-
-        function renderLocksManager() {
-            const container = document.getElementById('locksListContainer');
-            container.innerHTML = '';
-
-            let unlockedCount = 0;
-
-            for (let d = 1; d <= 16; d++) {
-                const sub = d <= 7 ? 'Java' : (d <= 12 ? 'MySQL' : 'Web');
-                const isDayUnlocked = unlockedDays.includes(d);
-                if (isDayUnlocked) unlockedCount++;
-
-                const card = document.createElement('div');
-                card.className = `p-3.5 rounded-xl border transition flex items-center justify-between ${
-                    isDayUnlocked ? 'bg-amber-500/10 border-amber-500/40' : 'bg-slate-950 border-slate-800'
-                }`;
-
-                card.innerHTML = `
-                    <div class="flex items-center space-x-3">
-                        <span class="w-7 h-7 rounded-lg flex items-center justify-center text-xs font-bold ${
-                            isDayUnlocked ? 'bg-amber-500 text-slate-950' : 'bg-slate-800 text-slate-400'
-                        }">
-                            ${d}
-                        </span>
-                        <div>
-                            <span class="text-xs font-bold text-white">${d}일차 (${sub})</span>
-                            <span class="text-[11px] ml-2 ${isDayUnlocked ? 'text-amber-400' : 'text-slate-500'}">
-                                ${isDayUnlocked ? '🔓 전체 공개 중' : '🔒 비공개'}
-                            </span>
-                        </div>
-                    </div>
-                    <label class="relative inline-flex items-center cursor-pointer">
-                        <input type="checkbox" onchange="toggleDayLock(${d}, this.checked)" class="sr-only peer" ${isDayUnlocked ? 'checked' : ''}>
-                        <div class="w-9 h-5 bg-slate-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-amber-500"></div>
-                    </label>
-                `;
-                container.appendChild(card);
-            }
-
-            document.getElementById('unlockedCountText').textContent = `오픈된 일차: 총 ${unlockedCount} / 16개`;
-        }
-
-        async function toggleDayLock(day, isUnlocked) {
-            if (isUnlocked) {
-                if (!unlockedDays.includes(day)) unlockedDays.push(day);
-            } else {
-                unlockedDays = unlockedDays.filter(d => d !== day);
-            }
-            localStorage.setItem('unlocked_days', JSON.stringify(unlockedDays));
-
-            // 서버에 동기화 요청
-            try {
-                await fetch(`${judgeServerUrl}/api/admin/toggle-day`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ day: day, unlocked: isUnlocked })
-                });
-            } catch (e) {}
-
-            renderLocksManager();
-        }
-
-        async function updateProblemLock(problemId, isUnlocked) {
-            if (isUnlocked) {
-                if (!unlockedProblems.includes(problemId)) unlockedProblems.push(problemId);
-            } else {
-                unlockedProblems = unlockedProblems.filter(pid => pid !== problemId);
-            }
-            localStorage.setItem('unlocked_problems', JSON.stringify(unlockedProblems));
-
-            try {
-                await fetch(`${judgeServerUrl}/api/admin/toggle-problem`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ problem_id: problemId, unlocked: isUnlocked })
-                });
-            } catch (e) {}
-        }
-
-        function toggleSolution() {
-            const container = document.getElementById('solutionContainer');
-            const chevron = document.getElementById('solChevron');
-            container.classList.toggle('hidden');
-            chevron.classList.toggle('rotate-180');
-        }
-
-        function resetCode() {
-            if (currentProblem && confirm('기본 템플릿으로 초기화하시겠습니까?')) {
-                document.getElementById('codeEditor').value = currentProblem.template;
-            }
-        }
-
-        function copyCode() {
-            const code = document.getElementById('codeEditor').value;
-            navigator.clipboard.writeText(code).then(() => alert('코드가 복사되었습니다.'));
-        }
 
         // 채점 및 과제 제출
         async function submitCode() {
@@ -751,7 +627,7 @@
                 username: currentUser ? currentUser.username : 'guest',
                 student_name: currentUser ? currentUser.name : '게스트',
                 problem_id: currentProblem.id,
-                problem_title: `[Day ${currentProblem.day}] ${currentProblem.title}`,
+                problem_title: `[Day ${currentProblem.day}][${currentProblem.difficulty}] ${currentProblem.title}`,
                 language: currentProblem.subject.toLowerCase(),
                 code: code,
                 expected_output: currentProblem.expected
@@ -779,7 +655,7 @@
                 showJudgeResult(result.status, result.score, result.stdout, result.stderr || result.message);
             } catch (err) {
                 judgeDuration.textContent = '오류';
-                showJudgeResult('SERVER_ERROR', 0, '', '채점 서버(라즈베리파이) 연결에 실패했습니다. 상단 ⚙️ 설정을 확인하세요.');
+                showJudgeResult('SERVER_ERROR', 0, '', '채점 서버 연결 실패. 상단 ⚙️ 설정을 확인하세요.');
             } finally {
                 submitBtn.disabled = false;
                 submitBtn.innerHTML = '<i class="fa-solid fa-play"></i> 제출 및 채점';
@@ -815,7 +691,7 @@
             text.textContent = logMsg;
         }
 
-        // 제출 이력 조회
+        // 과제 제출 현황 조회
         async function loadSubmissions() {
             const tbody = document.getElementById('submissionTableBody');
             tbody.innerHTML = '<tr><td colspan="8" class="text-center py-8 text-slate-500">제출 목록을 불러오는 중...</td></tr>';
@@ -885,7 +761,6 @@
 
         function closeCodeModal() { document.getElementById('codeModal').classList.add('hidden'); }
 
-        // 서버 핑 테스트
         async function checkServerPing() {
             const dot = document.getElementById('statusDot');
             const txt = document.getElementById('statusText');
