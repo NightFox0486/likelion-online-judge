@@ -1,0 +1,698 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lion Judge - 멋쟁이사자처럼 9기 온라인 실습 포털</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .code-font { font-family: 'Fira Code', 'Consolas', monospace; }
+        ::-webkit-scrollbar { width: 8px; height: 8px; }
+        ::-webkit-scrollbar-track { background: #1e293b; }
+        ::-webkit-scrollbar-thumb { background: #475569; border-radius: 4px; }
+    </style>
+</head>
+<body class="bg-slate-900 text-slate-100 min-h-screen flex flex-col font-sans">
+
+    <!-- 상단 네비게이션 헤더 -->
+    <header class="bg-slate-800 border-b border-slate-700 px-6 py-3 flex items-center justify-between shadow-md">
+        <div class="flex items-center space-x-6">
+            <div class="flex items-center space-x-3 cursor-pointer" onclick="showView('problem')">
+                <span class="text-2xl">🦁</span>
+                <div>
+                    <h1 class="text-lg font-bold tracking-tight text-white flex items-center gap-2">
+                        Lion Judge <span class="text-xs bg-amber-500/20 text-amber-400 border border-amber-500/30 px-2 py-0.5 rounded-full">클라우드 9기</span>
+                    </h1>
+                    <p class="text-xs text-slate-400">라즈베리 파이 5 샌드박스 연동 온라인 저지</p>
+                </div>
+            </div>
+
+            <!-- 네비게이션 탭 -->
+            <nav class="hidden md:flex items-center space-x-1">
+                <button onclick="showView('problem')" id="navProblemBtn" class="px-3 py-1.5 rounded-lg text-xs font-semibold bg-amber-500 text-slate-950 transition flex items-center gap-1.5">
+                    <i class="fa-solid fa-code"></i> 실습 문제 풀기
+                </button>
+                <button onclick="showView('status')" id="navStatusBtn" class="px-3 py-1.5 rounded-lg text-xs font-medium text-slate-300 hover:bg-slate-700 transition flex items-center gap-1.5">
+                    <i class="fa-solid fa-chart-line"></i> 제출 현황
+                </button>
+                <button onclick="showView('admin')" id="navAdminBtn" class="hidden px-3 py-1.5 rounded-lg text-xs font-bold text-amber-400 hover:bg-slate-700 transition flex items-center gap-1.5 border border-amber-500/40">
+                    <i class="fa-solid fa-user-shield"></i> 관리자 대시보드
+                </button>
+            </nav>
+        </div>
+
+        <!-- 우측 사용자 정보 및 서버 설정 -->
+        <div class="flex items-center space-x-3">
+            <div id="serverStatusBadge" class="hidden sm:flex items-center space-x-2 bg-slate-900 px-3 py-1.5 rounded-lg border border-slate-700 text-xs text-slate-300">
+                <span class="w-2.5 h-2.5 rounded-full bg-rose-500" id="statusDot"></span>
+                <span id="statusText">RPi 연결 대기</span>
+            </div>
+            
+            <button onclick="openServerModal()" class="text-xs bg-slate-700 hover:bg-slate-600 px-2.5 py-1.5 rounded-lg border border-slate-600 transition" title="채점 서버 주소 설정">
+                <i class="fa-solid fa-gear"></i>
+            </button>
+
+            <!-- 로그인/사용자 프로필 버튼 -->
+            <div id="authContainer">
+                <button onclick="openLoginModal()" class="text-xs bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold px-3 py-1.5 rounded-lg transition flex items-center gap-1.5">
+                    <i class="fa-solid fa-right-to-bracket"></i> 로그인
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- ======================================================== -->
+    <!-- VIEW 1: 실습 문제 및 코드 채점 뷰 (기본) -->
+    <!-- ======================================================== -->
+    <div id="viewProblem" class="flex-1 flex flex-col overflow-hidden">
+        <!-- 과목 및 일차 필터 바 -->
+        <div class="bg-slate-800/60 border-b border-slate-700 px-6 py-2.5 flex flex-wrap items-center justify-between gap-3 text-sm">
+            <div class="flex items-center space-x-2">
+                <span class="text-xs text-slate-400 font-medium mr-1">과목:</span>
+                <button onclick="filterSubject('all')" class="sub-btn active bg-amber-500 text-slate-950 font-semibold px-3 py-1 rounded-md text-xs transition" data-sub="all">전체 (48)</button>
+                <button onclick="filterSubject('Java')" class="sub-btn bg-slate-700 hover:bg-slate-600 text-slate-300 px-3 py-1 rounded-md text-xs transition" data-sub="Java">☕ Java (21)</button>
+                <button onclick="filterSubject('MySQL')" class="sub-btn bg-slate-700 hover:bg-slate-600 text-slate-300 px-3 py-1 rounded-md text-xs transition" data-sub="MySQL">🗄️ MySQL (15)</button>
+                <button onclick="filterSubject('Web')" class="sub-btn bg-slate-700 hover:bg-slate-600 text-slate-300 px-3 py-1 rounded-md text-xs transition" data-sub="Web">🌐 Web (12)</button>
+            </div>
+
+            <div class="flex items-center space-x-3">
+                <div class="flex items-center space-x-1.5">
+                    <span class="text-xs text-slate-400">일차:</span>
+                    <select id="daySelect" onchange="renderProblemList()" class="bg-slate-900 border border-slate-700 text-xs rounded-md px-2 py-1 text-slate-200 focus:outline-none focus:border-amber-500">
+                        <option value="all">전체 일차 (1~16일차)</option>
+                    </select>
+                </div>
+
+                <div class="flex items-center space-x-1">
+                    <span class="text-xs text-slate-400 mr-1">난이도:</span>
+                    <button onclick="filterDifficulty('all')" class="diff-btn active bg-slate-600 px-2 py-0.5 rounded text-xs" data-diff="all">전체</button>
+                    <button onclick="filterDifficulty('하')" class="diff-btn bg-emerald-950/60 text-emerald-400 border border-emerald-800 px-2 py-0.5 rounded text-xs" data-diff="하">하</button>
+                    <button onclick="filterDifficulty('중')" class="diff-btn bg-amber-950/60 text-amber-400 border border-amber-800 px-2 py-0.5 rounded text-xs" data-diff="중">중</button>
+                    <button onclick="filterDifficulty('상')" class="diff-btn bg-rose-950/60 text-rose-400 border border-rose-800 px-2 py-0.5 rounded text-xs" data-diff="상">상</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 2단 화면 분할: 문제 vs 에디터 -->
+        <div class="flex-1 flex flex-col md:flex-row overflow-hidden">
+            <!-- 좌측 문제 본문 -->
+            <div class="w-full md:w-1/2 flex flex-col border-r border-slate-700 bg-slate-900/50">
+                <div class="bg-slate-800/40 p-3 border-b border-slate-700 flex items-center justify-between">
+                    <div class="flex items-center space-x-2 w-full">
+                        <i class="fa-solid fa-list-check text-amber-400 text-sm"></i>
+                        <select id="problemSelector" onchange="selectProblem(this.value)" class="w-full bg-slate-900 border border-slate-700 text-sm font-medium rounded-lg px-3 py-1.5 text-white focus:outline-none focus:border-amber-500">
+                        </select>
+                    </div>
+                </div>
+
+                <div class="flex-1 overflow-y-auto p-6 space-y-5" id="problemDetailView">
+                    <div class="flex items-center gap-2">
+                        <span id="pSubjectBadge" class="px-2.5 py-0.5 rounded text-xs font-semibold bg-blue-500/20 text-blue-400 border border-blue-500/30">Java</span>
+                        <span id="pDayBadge" class="px-2.5 py-0.5 rounded text-xs font-semibold bg-slate-800 text-slate-300 border border-slate-700">1일차</span>
+                        <span id="pDiffBadge" class="px-2.5 py-0.5 rounded text-xs font-semibold bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">난이도: 하</span>
+                    </div>
+
+                    <h2 id="pTitle" class="text-xl font-bold text-white tracking-tight">문제 제목</h2>
+
+                    <div class="bg-slate-800/60 p-4 rounded-xl border border-slate-700/80">
+                        <h3 class="text-xs uppercase tracking-wider text-slate-400 font-semibold mb-2">문제 설명</h3>
+                        <p id="pDesc" class="text-sm text-slate-200 leading-relaxed whitespace-pre-line"></p>
+                    </div>
+
+                    <!-- 모범 정답 아코디언 -->
+                    <div class="border border-slate-700 rounded-xl overflow-hidden bg-slate-800/30">
+                        <button onclick="toggleSolution()" class="w-full px-4 py-2.5 text-left text-xs font-medium text-slate-300 hover:text-white flex items-center justify-between bg-slate-800/60 transition">
+                            <span class="flex items-center gap-2">
+                                <i class="fa-solid fa-key text-amber-400"></i> 모범 정답 코드 확인하기
+                            </span>
+                            <i id="solChevron" class="fa-solid fa-chevron-down text-slate-400 text-xs transition-transform"></i>
+                        </button>
+                        <div id="solutionContainer" class="hidden p-4 bg-slate-950 border-t border-slate-800">
+                            <pre><code id="pSolutionCode" class="code-font text-xs text-amber-300/90 whitespace-pre-wrap"></code></pre>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 우측 에디터 및 채점 콘솔 -->
+            <div class="w-full md:w-1/2 flex flex-col bg-slate-950">
+                <div class="bg-slate-800/70 border-b border-slate-700 px-4 py-2 flex items-center justify-between">
+                    <div class="flex items-center space-x-2 text-xs">
+                        <i class="fa-solid fa-code text-slate-400"></i>
+                        <span class="font-medium text-slate-200" id="editorLang">Java Editor</span>
+                    </div>
+                    <div class="flex items-center space-x-2">
+                        <button onclick="resetCode()" class="text-xs bg-slate-700/60 hover:bg-slate-700 text-slate-300 px-2.5 py-1 rounded transition">초기화</button>
+                        <button onclick="copyCode()" class="text-xs bg-slate-700/60 hover:bg-slate-700 text-slate-300 px-2.5 py-1 rounded transition">복사</button>
+                        <button onclick="submitCode()" id="submitBtn" class="text-xs bg-emerald-600 hover:bg-emerald-500 font-bold text-white px-4 py-1 rounded-md shadow transition flex items-center gap-1.5">
+                            <i class="fa-solid fa-play"></i> 제출 및 채점
+                        </button>
+                    </div>
+                </div>
+
+                <div class="flex-1 relative">
+                    <textarea id="codeEditor" spellcheck="false" class="w-full h-full p-4 bg-slate-950 text-slate-100 code-font text-sm leading-relaxed resize-none focus:outline-none placeholder-slate-600"></textarea>
+                </div>
+
+                <!-- 채점 콘솔 창 -->
+                <div class="border-t border-slate-700 bg-slate-900 flex flex-col h-56">
+                    <div class="bg-slate-850 bg-slate-800/80 px-4 py-2 border-b border-slate-700/80 flex items-center justify-between text-xs">
+                        <span class="font-semibold text-slate-300 flex items-center gap-1.5">
+                            <i class="fa-solid fa-terminal text-slate-400"></i> 채점 결과 및 실행 로그
+                        </span>
+                        <span id="judgeDuration" class="text-slate-400">대기 중</span>
+                    </div>
+                    <div class="p-4 flex-1 overflow-y-auto space-y-2" id="consoleOutput">
+                        <div id="judgeBadge" class="hidden inline-block px-3 py-1 rounded-md text-xs font-bold mb-2"></div>
+                        <pre id="consoleText" class="code-font text-xs text-slate-300 whitespace-pre-wrap">준비 완료. 코드를 작성한 후 [제출 및 채점]을 누르세요.</pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ======================================================== -->
+    <!-- VIEW 2: 백준 스타일 실시간 제출 현황 (Status View) -->
+    <!-- ======================================================== -->
+    <div id="viewStatus" class="hidden flex-1 overflow-y-auto p-6 max-w-7xl mx-auto w-full space-y-6">
+        <div class="flex items-center justify-between border-b border-slate-700 pb-4">
+            <div>
+                <h2 class="text-xl font-bold text-white flex items-center gap-2">
+                    <i class="fa-solid fa-list-ol text-amber-400"></i> 과제 제출 현황 (Status)
+                </h2>
+                <p class="text-xs text-slate-400 mt-1">학생들이 제출한 과제와 채점 결과를 실시간으로 확인합니다.</p>
+            </div>
+            <button onclick="loadSubmissions()" class="text-xs bg-slate-700 hover:bg-slate-600 text-slate-200 px-3 py-2 rounded-lg transition flex items-center gap-1.5">
+                <i class="fa-solid fa-rotate"></i> 새로고침
+            </button>
+        </div>
+
+        <!-- 제출 테이블 -->
+        <div class="bg-slate-800/60 border border-slate-700 rounded-xl overflow-hidden shadow-lg">
+            <table class="w-full text-left text-xs">
+                <thead class="bg-slate-800 text-slate-400 uppercase font-semibold border-b border-slate-700">
+                    <tr>
+                        <th class="px-4 py-3">제출 번호</th>
+                        <th class="px-4 py-3">학생명 (아이디)</th>
+                        <th class="px-4 py-3">문제</th>
+                        <th class="px-4 py-3">채점 결과</th>
+                        <th class="px-4 py-3">점수</th>
+                        <th class="px-4 py-3">실행 시간</th>
+                        <th class="px-4 py-3">제출 일시</th>
+                        <th class="px-4 py-3 text-center">소스코드</th>
+                    </tr>
+                </thead>
+                <tbody id="submissionTableBody" class="divide-y divide-slate-700/60 font-medium">
+                    <!-- 동적 렌더링 -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- ======================================================== -->
+    <!-- 소스코드 확인 팝업 모달 (백준 스타일) -->
+    <!-- ======================================================== -->
+    <div id="codeModal" class="hidden fixed inset-0 bg-black/75 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+        <div class="bg-slate-900 border border-slate-700 rounded-2xl w-full max-w-3xl max-h-[85vh] flex flex-col shadow-2xl overflow-hidden">
+            <div class="bg-slate-800 px-6 py-4 border-b border-slate-700 flex items-center justify-between">
+                <div>
+                    <h3 class="text-sm font-bold text-white" id="modalTitle">제출 소스코드 상세</h3>
+                    <p class="text-xs text-slate-400" id="modalSubtitle"></p>
+                </div>
+                <button onclick="closeCodeModal()" class="text-slate-400 hover:text-white text-lg">&times;</button>
+            </div>
+            <div class="p-6 flex-1 overflow-y-auto space-y-4">
+                <div>
+                    <h4 class="text-xs font-semibold text-slate-400 mb-1">제출 코드:</h4>
+                    <pre class="bg-slate-950 p-4 rounded-xl border border-slate-800 text-amber-200 code-font text-xs overflow-x-auto"><code id="modalCode"></code></pre>
+                </div>
+                <div id="modalOutputSection">
+                    <h4 class="text-xs font-semibold text-slate-400 mb-1">실행 출력 로그:</h4>
+                    <pre class="bg-slate-950 p-3 rounded-xl border border-slate-800 text-slate-300 code-font text-xs overflow-x-auto"><code id="modalOutput"></code></pre>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 로그인 모달 -->
+    <div id="loginModal" class="hidden fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+        <div class="bg-slate-800 border border-slate-700 rounded-2xl w-full max-w-sm p-6 shadow-2xl space-y-4">
+            <div class="text-center">
+                <span class="text-3xl">🦁</span>
+                <h3 class="text-lg font-bold text-white mt-2">Lion Judge 로그인</h3>
+                <p class="text-xs text-slate-400 mt-1">관리자 또는 학생 계정으로 로그인하세요.</p>
+            </div>
+
+            <form onsubmit="handleLogin(event)" class="space-y-3">
+                <div>
+                    <label class="block text-xs font-medium text-slate-300 mb-1">아이디</label>
+                    <input type="text" id="loginUsername" required placeholder="admin 또는 student01" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-amber-500">
+                </div>
+                <div>
+                    <label class="block text-xs font-medium text-slate-300 mb-1">비밀번호</label>
+                    <input type="password" id="loginPassword" required placeholder="비밀번호 입력" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-amber-500">
+                </div>
+                <div class="bg-slate-900/60 p-2.5 rounded-lg border border-slate-700/60 text-xs text-slate-400 space-y-1">
+                    <p>🔑 <strong>관리자:</strong> admin / admin1234</p>
+                    <p>🎓 <strong>학&nbsp;&nbsp;&nbsp;생:</strong> student01 / student1234</p>
+                </div>
+                <button type="submit" class="w-full bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold py-2 rounded-lg text-sm transition">로그인</button>
+            </form>
+            <button onclick="closeLoginModal()" class="w-full text-center text-xs text-slate-400 hover:text-slate-300">닫기</button>
+        </div>
+    </div>
+
+    <!-- 채점 서버 설정 모달 -->
+    <div id="serverModal" class="hidden fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+        <div class="bg-slate-800 border border-slate-700 rounded-2xl w-full max-w-md p-6 shadow-2xl space-y-4">
+            <h3 class="text-lg font-bold text-white flex items-center gap-2">
+                <i class="fa-solid fa-server text-amber-400"></i> 라즈베리 파이 채점 서버 연동
+            </h3>
+            <p class="text-xs text-slate-300 leading-relaxed">
+                라즈베리 파이 5에서 실행 중인 FastAPI 채점 서버 URL을 입력하세요.
+            </p>
+            <div>
+                <label class="block text-xs font-medium text-slate-400 mb-1">엔드포인트 URL:</label>
+                <input type="text" id="judgeServerUrlInput" value="http://localhost:8000" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-amber-500">
+            </div>
+            <div class="flex items-center justify-between pt-2">
+                <button onclick="pingServer()" class="text-xs bg-slate-700 hover:bg-slate-600 text-slate-200 px-3 py-2 rounded-lg transition">연결 테스트</button>
+                <div class="space-x-2">
+                    <button onclick="closeServerModal()" class="text-xs bg-slate-700 hover:bg-slate-600 px-3 py-2 rounded-lg text-slate-300">취소</button>
+                    <button onclick="saveServerUrl()" class="text-xs bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold px-4 py-2 rounded-lg transition">저장하기</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 문제 데이터셋 -->
+    <script src="problems.js"></script>
+
+    <script>
+        let currentSubject = 'all';
+        let currentDay = 'all';
+        let currentDiff = 'all';
+        let currentProblem = null;
+        let judgeServerUrl = localStorage.getItem('judge_server_url') || 'http://localhost:8000';
+        let currentUser = JSON.parse(localStorage.getItem('current_user') || 'null');
+
+        window.addEventListener('DOMContentLoaded', () => {
+            initDaySelect();
+            renderProblemList();
+            updateAuthUI();
+            checkServerPing();
+        });
+
+        function showView(viewName) {
+            const viewProb = document.getElementById('viewProblem');
+            const viewStat = document.getElementById('viewStatus');
+            const navProb = document.getElementById('navProblemBtn');
+            const navStat = document.getElementById('navStatusBtn');
+            const navAdmin = document.getElementById('navAdminBtn');
+
+            if (viewName === 'problem') {
+                viewProb.classList.remove('hidden');
+                viewStat.classList.add('hidden');
+                navProb.className = 'px-3 py-1.5 rounded-lg text-xs font-semibold bg-amber-500 text-slate-950 transition flex items-center gap-1.5';
+                navStat.className = 'px-3 py-1.5 rounded-lg text-xs font-medium text-slate-300 hover:bg-slate-700 transition flex items-center gap-1.5';
+            } else {
+                viewProb.classList.add('hidden');
+                viewStat.classList.remove('hidden');
+                navProb.className = 'px-3 py-1.5 rounded-lg text-xs font-medium text-slate-300 hover:bg-slate-700 transition flex items-center gap-1.5';
+                navStat.className = 'px-3 py-1.5 rounded-lg text-xs font-semibold bg-amber-500 text-slate-950 transition flex items-center gap-1.5';
+                loadSubmissions();
+            }
+        }
+
+        // 로그인 UI 업데이트
+        function updateAuthUI() {
+            const container = document.getElementById('authContainer');
+            const navAdmin = document.getElementById('navAdminBtn');
+
+            if (currentUser) {
+                const roleBadge = currentUser.role === 'admin' 
+                    ? '<span class="bg-rose-500/20 text-rose-400 border border-rose-500/30 px-1.5 py-0.5 rounded text-[10px] font-bold">관리자</span>'
+                    : '<span class="bg-blue-500/20 text-blue-400 border border-blue-500/30 px-1.5 py-0.5 rounded text-[10px] font-bold">학생</span>';
+
+                container.innerHTML = `
+                    <div class="flex items-center space-x-2 text-xs">
+                        <span class="text-slate-300">${roleBadge} <strong>${currentUser.name}</strong></span>
+                        <button onclick="handleLogout()" class="text-xs bg-slate-700 hover:bg-slate-600 text-slate-300 px-2.5 py-1 rounded transition">로그아웃</button>
+                    </div>
+                `;
+
+                if (currentUser.role === 'admin') {
+                    navAdmin.classList.remove('hidden');
+                } else {
+                    navAdmin.classList.add('hidden');
+                }
+            } else {
+                container.innerHTML = `
+                    <button onclick="openLoginModal()" class="text-xs bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold px-3 py-1.5 rounded-lg transition flex items-center gap-1.5">
+                        <i class="fa-solid fa-right-to-bracket"></i> 로그인
+                    </button>
+                `;
+                navAdmin.classList.add('hidden');
+            }
+        }
+
+        // 로그인 처리
+        async function handleLogin(e) {
+            e.preventDefault();
+            const u = document.getElementById('loginUsername').value.trim();
+            const p = document.getElementById('loginPassword').value.trim();
+
+            try {
+                const res = await fetch(`${judgeServerUrl}/api/auth/login`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ username: u, password: p })
+                });
+
+                if (!res.ok) {
+                    const err = await res.json();
+                    alert(err.detail || '로그인 실패');
+                    return;
+                }
+
+                const data = await res.json();
+                currentUser = data.user;
+                localStorage.setItem('current_user', JSON.stringify(currentUser));
+                closeLoginModal();
+                updateAuthUI();
+                alert(`반갑습니다, ${currentUser.name}님!`);
+            } catch (err) {
+                // 오프라인 모크 로그인 지원
+                if (u === 'admin' && p === 'admin1234') {
+                    currentUser = { username: 'admin', name: '관리자 강사', role: 'admin' };
+                } else if (u === 'student01' && p === 'student1234') {
+                    currentUser = { username: 'student01', name: '홍길동 (학생)', role: 'student' };
+                } else {
+                    alert('아이디 또는 비밀번호가 올바르지 않습니다.');
+                    return;
+                }
+                localStorage.setItem('current_user', JSON.stringify(currentUser));
+                closeLoginModal();
+                updateAuthUI();
+                alert(`[오프라인 모드] 반갑습니다, ${currentUser.name}님!`);
+            }
+        }
+
+        function handleLogout() {
+            currentUser = null;
+            localStorage.removeItem('current_user');
+            updateAuthUI();
+            showView('problem');
+        }
+
+        function openLoginModal() { document.getElementById('loginModal').classList.remove('hidden'); }
+        function closeLoginModal() { document.getElementById('loginModal').classList.add('hidden'); }
+
+        // 일차 초기화
+        function initDaySelect() {
+            const select = document.getElementById('daySelect');
+            for (let i = 1; i <= 16; i++) {
+                const opt = document.createElement('option');
+                opt.value = i;
+                const sub = i <= 7 ? 'Java' : (i <= 12 ? 'MySQL' : 'Web');
+                opt.textContent = `${i}일차 (${sub})`;
+                select.appendChild(opt);
+            }
+        }
+
+        function filterSubject(sub) {
+            currentSubject = sub;
+            document.querySelectorAll('.sub-btn').forEach(b => {
+                b.className = b.dataset.sub === sub 
+                    ? 'sub-btn active bg-amber-500 text-slate-950 font-semibold px-3 py-1 rounded-md text-xs transition'
+                    : 'sub-btn bg-slate-700 hover:bg-slate-600 text-slate-300 px-3 py-1 rounded-md text-xs transition';
+            });
+            renderProblemList();
+        }
+
+        function filterDifficulty(diff) {
+            currentDiff = diff;
+            document.querySelectorAll('.diff-btn').forEach(b => {
+                if (b.dataset.diff === diff) b.classList.add('ring-2', 'ring-amber-400');
+                else b.classList.remove('ring-2', 'ring-amber-400');
+            });
+            renderProblemList();
+        }
+
+        function renderProblemList() {
+            currentDay = document.getElementById('daySelect').value;
+            const selector = document.getElementById('problemSelector');
+            selector.innerHTML = '';
+
+            const filtered = PROBLEMS.filter(p => {
+                if (currentSubject !== 'all' && p.subject !== currentSubject) return false;
+                if (currentDay !== 'all' && p.day !== parseInt(currentDay)) return false;
+                if (currentDiff !== 'all' && p.difficulty !== currentDiff) return false;
+                return true;
+            });
+
+            if (filtered.length === 0) {
+                const opt = document.createElement('option');
+                opt.textContent = '조건에 맞는 문제가 없습니다.';
+                selector.appendChild(opt);
+                return;
+            }
+
+            filtered.forEach(p => {
+                const opt = document.createElement('option');
+                opt.value = p.id;
+                opt.textContent = `[${p.day}일차][${p.difficulty}] ${p.title}`;
+                selector.appendChild(opt);
+            });
+
+            selectProblem(filtered[0].id);
+        }
+
+        function selectProblem(probId) {
+            const p = PROBLEMS.find(item => item.id === probId);
+            if (!p) return;
+            currentProblem = p;
+
+            document.getElementById('pTitle').textContent = `문제. ${p.title}`;
+            document.getElementById('pSubjectBadge').textContent = p.subject;
+            document.getElementById('pDayBadge').textContent = `${p.day}일차`;
+            document.getElementById('pDiffBadge').textContent = `난이도: ${p.difficulty}`;
+            document.getElementById('pDesc').textContent = p.desc;
+            document.getElementById('pSolutionCode').textContent = p.solution || '// 모범 답안 준비 중';
+
+            document.getElementById('editorLang').textContent = `${p.subject} Code Editor`;
+            document.getElementById('codeEditor').value = p.template;
+
+            document.getElementById('solutionContainer').classList.add('hidden');
+            document.getElementById('solChevron').classList.remove('rotate-180');
+            document.getElementById('judgeBadge').classList.add('hidden');
+            document.getElementById('consoleText').textContent = '준비 완료. 코드를 작성한 후 [제출 및 채점]을 누르세요.';
+            document.getElementById('judgeDuration').textContent = '대기 중';
+        }
+
+        function toggleSolution() {
+            const container = document.getElementById('solutionContainer');
+            const chevron = document.getElementById('solChevron');
+            container.classList.toggle('hidden');
+            chevron.classList.toggle('rotate-180');
+        }
+
+        function resetCode() {
+            if (currentProblem && confirm('기본 템플릿으로 초기화하시겠습니까?')) {
+                document.getElementById('codeEditor').value = currentProblem.template;
+            }
+        }
+
+        function copyCode() {
+            const code = document.getElementById('codeEditor').value;
+            navigator.clipboard.writeText(code).then(() => alert('코드가 클립보드에 복사되었습니다!'));
+        }
+
+        // 채점 및 과제 제출
+        async function submitCode() {
+            if (!currentUser) {
+                if (confirm('로그인하지 않은 상태입니다. 로그인 후 제출하시겠습니까? (확인 누르면 로그인창 표시)')) {
+                    openLoginModal();
+                    return;
+                }
+            }
+
+            const code = document.getElementById('codeEditor').value;
+            if (!code.trim()) {
+                alert('코드를 입력하세요!');
+                return;
+            }
+
+            const btn = document.getElementById('submitBtn');
+            const badge = document.getElementById('judgeBadge');
+            const consoleText = document.getElementById('consoleText');
+            const duration = document.getElementById('judgeDuration');
+
+            btn.disabled = true;
+            btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> 채점 중...`;
+            badge.className = 'inline-block px-3 py-1 rounded-md text-xs font-bold mb-2 bg-amber-500/20 text-amber-400 border border-amber-500/40';
+            badge.textContent = '⏳ 라즈베리 파이 샌드박스 채점 중...';
+            badge.classList.remove('hidden');
+            consoleText.textContent = '라즈베리 파이 5 Docker 샌드박스로 전송하여 컴파일 및 실행 중입니다...';
+
+            const startTime = performance.now();
+
+            try {
+                const response = await fetch(`${judgeServerUrl}/api/judge`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        username: currentUser ? currentUser.username : "guest",
+                        student_name: currentUser ? currentUser.name : "비회원 교육생",
+                        problem_id: currentProblem.id,
+                        problem_title: currentProblem.title,
+                        language: currentProblem.subject.toLowerCase(),
+                        code: code,
+                        expected_output: null
+                    })
+                });
+
+                const data = await response.json();
+                const totalTime = Math.round(performance.now() - startTime);
+                duration.textContent = `${totalTime}ms 소요`;
+
+                if (data.status === 'ACCEPTED') {
+                    badge.className = 'inline-block px-3 py-1 rounded-md text-xs font-bold mb-2 bg-emerald-500/20 text-emerald-400 border border-emerald-500/40';
+                    badge.textContent = '🎉 맞았습니다!! (100점)';
+                    consoleText.textContent = data.stdout || '(출력 결과 없음)';
+                } else if (data.status === 'COMPILE_ERROR') {
+                    badge.className = 'inline-block px-3 py-1 rounded-md text-xs font-bold mb-2 bg-rose-500/20 text-rose-400 border border-rose-500/40';
+                    badge.textContent = '⚠️ 컴파일 에러';
+                    consoleText.textContent = data.stderr;
+                } else if (data.status === 'TIME_LIMIT_EXCEEDED') {
+                    badge.className = 'inline-block px-3 py-1 rounded-md text-xs font-bold mb-2 bg-amber-500/20 text-amber-400 border border-amber-500/40';
+                    badge.textContent = '⏰ 시간 초과';
+                    consoleText.textContent = data.stderr;
+                } else {
+                    badge.className = 'inline-block px-3 py-1 rounded-md text-xs font-bold mb-2 bg-rose-500/20 text-rose-400 border border-rose-500/40';
+                    badge.textContent = '❌ 실행 오류 / 불일치';
+                    consoleText.textContent = (data.stderr || '') + '\n' + (data.stdout || '');
+                }
+
+            } catch (err) {
+                badge.className = 'inline-block px-3 py-1 rounded-md text-xs font-bold mb-2 bg-red-500/20 text-red-400 border border-red-500/40';
+                badge.textContent = '🔌 채점 서버 연결 실패';
+                consoleText.textContent = `라즈베리 파이 채점 서버(${judgeServerUrl})에 연결할 수 없습니다.\n- 라즈베리 파이에서 ./start.sh가 실행 중인지 확인하세요.\n- 에러: ${err.message}`;
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = `<i class="fa-solid fa-play"></i> 제출 및 채점`;
+            }
+        }
+
+        // 백준 스타일 제출 현황 목록 로드
+        async function loadSubmissions() {
+            const tbody = document.getElementById('submissionTableBody');
+            tbody.innerHTML = `<tr><td colspan="8" class="text-center py-8 text-slate-500"><i class="fa-solid fa-spinner fa-spin mr-2"></i>제출 내역을 불러오는 중...</td></tr>`;
+
+            try {
+                const res = await fetch(`${judgeServerUrl}/api/submissions`);
+                const list = await res.json();
+
+                if (list.length === 0) {
+                    tbody.innerHTML = `<tr><td colspan="8" class="text-center py-8 text-slate-500">아직 제출된 과제 내역이 없습니다.</td></tr>`;
+                    return;
+                }
+
+                tbody.innerHTML = '';
+                list.forEach(sub => {
+                    const tr = document.createElement('tr');
+                    tr.className = 'hover:bg-slate-800/40 transition';
+
+                    let statusBadge = '';
+                    if (sub.status === 'ACCEPTED') {
+                        statusBadge = `<span class="text-emerald-400 font-bold"><i class="fa-solid fa-check mr-1"></i>맞았습니다!!</span>`;
+                    } else if (sub.status === 'COMPILE_ERROR') {
+                        statusBadge = `<span class="text-amber-400 font-bold"><i class="fa-solid fa-triangle-exclamation mr-1"></i>컴파일 에러</span>`;
+                    } else if (sub.status === 'TIME_LIMIT_EXCEEDED') {
+                        statusBadge = `<span class="text-amber-500 font-bold"><i class="fa-regular fa-clock mr-1"></i>시간 초과</span>`;
+                    } else {
+                        statusBadge = `<span class="text-rose-400 font-bold"><i class="fa-solid fa-xmark mr-1"></i>틀렸습니다</span>`;
+                    }
+
+                    tr.innerHTML = `
+                        <td class="px-4 py-3 text-slate-400 font-mono">#${sub.id}</td>
+                        <td class="px-4 py-3 text-slate-200">
+                            <strong>${sub.student_name}</strong>
+                            <span class="text-[10px] text-slate-500 block">(${sub.username})</span>
+                        </td>
+                        <td class="px-4 py-3 text-slate-300">${sub.problem_title}</td>
+                        <td class="px-4 py-3">${statusBadge}</td>
+                        <td class="px-4 py-3 font-bold ${sub.score === 100 ? 'text-emerald-400' : 'text-slate-400'}">${sub.score}점</td>
+                        <td class="px-4 py-3 text-slate-400 font-mono">${sub.execution_time_ms} ms</td>
+                        <td class="px-4 py-3 text-slate-400 text-[11px]">${sub.created_at}</td>
+                        <td class="px-4 py-3 text-center">
+                            <button onclick="viewSubmissionCode(${sub.id})" class="text-xs bg-slate-700 hover:bg-slate-600 text-amber-300 px-2.5 py-1 rounded transition">
+                                <i class="fa-solid fa-code mr-1"></i> 코드 보기
+                            </button>
+                        </td>
+                    `;
+                    tbody.appendChild(tr);
+                });
+
+            } catch (err) {
+                tbody.innerHTML = `<tr><td colspan="8" class="text-center py-8 text-rose-400">채점 서버에서 제출 이력을 가져오지 못했습니다. (${err.message})</td></tr>`;
+            }
+        }
+
+        // 소스코드 팝업 모달
+        async function viewSubmissionCode(subId) {
+            try {
+                const res = await fetch(`${judgeServerUrl}/api/submissions/${subId}`);
+                const data = await res.json();
+
+                document.getElementById('modalTitle').textContent = `[#${data.id}] ${data.problem_title} - ${data.student_name} (${data.score}점)`;
+                document.getElementById('modalSubtitle').textContent = `언어: ${data.language} | 제출시각: ${data.created_at} | 실행시간: ${data.execution_time_ms}ms`;
+                document.getElementById('modalCode').textContent = data.code;
+                document.getElementById('modalOutput').textContent = (data.stderr ? `[에러/표준에러]\n${data.stderr}\n\n` : '') + `[표준출력]\n${data.stdout || '(출력 없음)'}`;
+
+                document.getElementById('codeModal').classList.remove('hidden');
+            } catch (err) {
+                alert('코드 정보를 불러오지 못했습니다: ' + err.message);
+            }
+        }
+
+        function closeCodeModal() { document.getElementById('codeModal').classList.add('hidden'); }
+        function openServerModal() {
+            document.getElementById('judgeServerUrlInput').value = judgeServerUrl;
+            document.getElementById('serverModal').classList.remove('hidden');
+        }
+        function closeServerModal() { document.getElementById('serverModal').classList.add('hidden'); }
+        function saveServerUrl() {
+            judgeServerUrl = document.getElementById('judgeServerUrlInput').value.trim();
+            localStorage.setItem('judge_server_url', judgeServerUrl);
+            closeServerModal();
+            checkServerPing();
+        }
+        async function pingServer() {
+            const url = document.getElementById('judgeServerUrlInput').value.trim();
+            try {
+                const res = await fetch(`${url}/`);
+                const data = await res.json();
+                alert(`✅ 서버 연결 성공!\n장비: ${data.device}\n엔진: ${data.engine}`);
+            } catch (e) {
+                alert(`❌ 연결 실패: ${e.message}`);
+            }
+        }
+        async function checkServerPing() {
+            const dot = document.getElementById('statusDot');
+            const text = document.getElementById('statusText');
+            try {
+                const res = await fetch(`${judgeServerUrl}/`, { signal: AbortSignal.timeout(3000) });
+                if (res.ok) {
+                    dot.className = 'w-2.5 h-2.5 rounded-full bg-emerald-500';
+                    text.textContent = 'RPi 5 온라인';
+                }
+            } catch {
+                dot.className = 'w-2.5 h-2.5 rounded-full bg-rose-500';
+                text.textContent = 'RPi 오프라인';
+            }
+        }
+    </script>
+</body>
+</html>
