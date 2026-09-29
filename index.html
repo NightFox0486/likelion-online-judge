@@ -109,18 +109,10 @@
                 </div>
             </div>
 
-            <!-- 난이도: 상 / 중 / 하 버튼 -->
-            <div class="flex items-center space-x-2">
-                <span class="text-xs text-slate-400 mr-1">난이도 선택:</span>
-                <button onclick="selectDifficulty('하')" id="diffBtnHa" class="px-3.5 py-1.5 rounded-lg text-xs font-bold transition flex items-center gap-1.5">
-                    <span class="w-2 h-2 rounded-full bg-emerald-400"></span> [하] 초급
-                </button>
-                <button onclick="selectDifficulty('중')" id="diffBtnJung" class="px-3.5 py-1.5 rounded-lg text-xs font-bold transition flex items-center gap-1.5">
-                    <span class="w-2 h-2 rounded-full bg-amber-400"></span> [중] 중급
-                </button>
-                <button onclick="selectDifficulty('상')" id="diffBtnSang" class="px-3.5 py-1.5 rounded-lg text-xs font-bold transition flex items-center gap-1.5">
-                    <span class="w-2 h-2 rounded-full bg-rose-400"></span> [상] 심화
-                </button>
+            <!-- 문제 선택 바 (동적 렌더링) -->
+            <div class="flex items-center space-x-2 overflow-x-auto max-w-full">
+                <span class="text-xs text-slate-400 mr-1 flex-shrink-0">문제 선택:</span>
+                <div id="problemTabsContainer" class="flex items-center space-x-1.5"></div>
             </div>
         </div>
 
@@ -604,8 +596,9 @@
                 }
 
                 let statusBadge = '';
+                const dayProbCount = PROBLEMS.filter(p => p.day === d).length;
                 if (isUnlocked) {
-                    statusBadge = `<span class="inline-flex items-center gap-1 text-[11px] text-emerald-400 font-semibold bg-emerald-500/10 px-2 py-0.5 rounded border border-emerald-500/20"><i class="fa-solid fa-lock-open text-[9px]"></i> 3문제 오픈</span>`;
+                    statusBadge = `<span class="inline-flex items-center gap-1 text-[11px] text-emerald-400 font-semibold bg-emerald-500/10 px-2 py-0.5 rounded border border-emerald-500/20"><i class="fa-solid fa-lock-open text-[9px]"></i> ${dayProbCount}문제 오픈</span>`;
                 } else {
                     statusBadge = `<span class="inline-flex items-center gap-1 text-[11px] text-slate-500 font-medium bg-slate-800/40 px-2 py-0.5 rounded border border-slate-800"><i class="fa-solid fa-lock text-[9px]"></i> 비공개 (준비 중)</span>`;
                 }
@@ -654,37 +647,51 @@
                 return;
             }
             selectedDay = day;
-            selectedDiff = '하'; // 기본 '하'부터 열기
+            const dayProblems = PROBLEMS.filter(p => p.day === selectedDay);
+            currentProblem = dayProblems.length > 0 ? dayProblems[0] : null;
             showView('problem');
-            renderProblemForDay();
+            renderProblemTabsForDay();
+            renderCurrentProblemDetails();
         }
 
-        // 난이도(하/중/상) 버튼 선택
-        function selectDifficulty(diff) {
-            selectedDiff = diff;
-            renderProblemForDay();
+        // 문제 선택 탭 렌더링
+        function renderProblemTabsForDay() {
+            const container = document.getElementById('problemTabsContainer');
+            if (!container) return;
+            container.innerHTML = '';
+
+            const dayProblems = PROBLEMS.filter(p => p.day === selectedDay);
+            if (dayProblems.length === 0) return;
+
+            if (!currentProblem || currentProblem.day !== selectedDay) {
+                currentProblem = dayProblems[0];
+            }
+
+            dayProblems.forEach((prob, idx) => {
+                const isSelected = currentProblem && currentProblem.id === prob.id;
+                const dotColor = prob.difficulty === '하' ? 'bg-emerald-400' : (prob.difficulty === '중' ? 'bg-amber-400' : 'bg-rose-400');
+                const activeStyle = 'bg-amber-500 text-slate-950 font-bold shadow';
+                const inactiveStyle = 'bg-slate-800 hover:bg-slate-700 text-slate-300 font-medium';
+
+                const btn = document.createElement('button');
+                btn.className = `px-3 py-1.5 rounded-lg text-xs transition flex items-center gap-1.5 flex-shrink-0 ${isSelected ? activeStyle : inactiveStyle}`;
+                btn.innerHTML = `<span class="w-2 h-2 rounded-full ${isSelected ? 'bg-slate-950' : dotColor}"></span> [${prob.difficulty}] ${idx + 1}번`;
+                btn.title = prob.title;
+                btn.onclick = () => {
+                    currentProblem = prob;
+                    renderProblemTabsForDay();
+                    renderCurrentProblemDetails();
+                };
+                container.appendChild(btn);
+            });
         }
 
-        function renderProblemForDay() {
+        // 현재 문제 상세 정보 렌더링
+        function renderCurrentProblemDetails() {
+            if (!currentProblem) return;
+            const prob = currentProblem;
             const sub = selectedDay <= 7 ? 'Java' : (selectedDay <= 12 ? 'MySQL' : 'Web');
             document.getElementById('currentDayBadge').textContent = `${selectedDay}일차 (${sub})`;
-
-            // 난이도 버튼 UI 활성화 스타일
-            const btnHa = document.getElementById('diffBtnHa');
-            const btnJung = document.getElementById('diffBtnJung');
-            const btnSang = document.getElementById('diffBtnSang');
-
-            const activeStyle = 'bg-amber-500 text-slate-950 font-bold shadow';
-            const inactiveStyle = 'bg-slate-800 hover:bg-slate-700 text-slate-300 font-medium';
-
-            btnHa.className = `px-3.5 py-1.5 rounded-lg text-xs transition flex items-center gap-1.5 ${selectedDiff === '하' ? activeStyle : inactiveStyle}`;
-            btnJung.className = `px-3.5 py-1.5 rounded-lg text-xs transition flex items-center gap-1.5 ${selectedDiff === '중' ? activeStyle : inactiveStyle}`;
-            btnSang.className = `px-3.5 py-1.5 rounded-lg text-xs transition flex items-center gap-1.5 ${selectedDiff === '상' ? activeStyle : inactiveStyle}`;
-
-            // 해당 문제 찾기
-            const prob = PROBLEMS.find(p => p.day === selectedDay && p.difficulty === selectedDiff);
-            if (!prob) return;
-            currentProblem = prob;
 
             document.getElementById('pSubjectBadge').textContent = prob.subject;
             document.getElementById('pDayBadge').textContent = `${prob.day}일차`;

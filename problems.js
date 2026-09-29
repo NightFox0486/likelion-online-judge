@@ -1,11 +1,24 @@
 const PROBLEMS = [
     {
-        "id": "day01_하",
+        "id": "day01_하1",
+        "day": 1,
+        "subject": "Java",
+        "difficulty": "하",
+        "title": "두 정수의 사칙연산 및 몫·나머지 계산기 (SimpleArithmetic)",
+        "desc": "두 개의 정수 A와 B를 입력받아, 두 수의 덧셈(A+B), 뺄셈(A-B), 곱셈(A*B), 나눗셈의 몫(A/B), 나눗셈의 나머지(A%B)를 계산하여 서식에 맞게 한 줄씩 출력하세요.\n\n[입력]\n첫째 줄에 두 정수 A와 B가 공백으로 구분되어 주어집니다. (단, B는 0이 아님)\n(예: 20 6)",
+        "template": "import java.util.Scanner;\n\npublic class Solution {\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        // 여기에 코드를 작성하세요\n        \n    }\n}",
+        "solution": "import java.util.Scanner;\n\npublic class Solution {\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        int a = sc.nextInt();\n        int b = sc.nextInt();\n\n        System.out.println(\"덧셈: \" + (a + b));\n        System.out.println(\"뺄셈: \" + (a - b));\n        System.out.println(\"곱셈: \" + (a * b));\n        System.out.println(\"몫: \" + (a / b));\n        System.out.println(\"나머지: \" + (a % b));\n    }\n}",
+        "sample_input": "20 6",
+        "sample_output": "덧셈: 26\n뺄셈: 14\n곱셈: 120\n몫: 3\n나머지: 2",
+        "expected": "덧셈: 26\n뺄셈: 14\n곱셈: 120\n몫: 3\n나머지: 2"
+    },
+    {
+        "id": "day01_하2",
         "day": 1,
         "subject": "Java",
         "difficulty": "하",
         "title": "카페 음료 영수증 결제 금액 계산기 (CafeReceiptCalculator)",
-        "desc": "카페 포스기(POS)에서 주문받은 음료의 단가와 수량을 입력받아 공급가액, 부가세(VAT 10%), 최종 결제 금액을 계산하여 출력하세요.\n\n[입력]\n첫째 줄에 아메리카노 단가와 수량, 카페라떼 단가와 수량이 공백으로 구분되어 주어집니다.\n(예: 4500 2 5000 3)",
+        "desc": "카페 포스기(POS)에서 주문받은 음료의 단가와 수량을 입력받아 공급가액, 부가세(VAT 10%), 최종 결제 금액을 계산하여 출력하세요.\n(부가세는 공급가액의 10%이며, (int)로 명시적 형변환합니다.)\n\n[입력]\n첫째 줄에 아메리카노 단가와 수량, 카페라떼 단가와 수량이 공백으로 구분되어 주어집니다.\n(예: 4500 2 5000 3)",
         "template": "import java.util.Scanner;\n\npublic class Solution {\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        // 여기에 코드를 작성하세요\n        \n    }\n}",
         "solution": "import java.util.Scanner;\n\npublic class Solution {\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        int americanoPrice = sc.nextInt();\n        int americanoQty = sc.nextInt();\n        int lattePrice = sc.nextInt();\n        int latteQty = sc.nextInt();\n\n        int supplyPrice = (americanoPrice * americanoQty) + (lattePrice * latteQty);\n        int vat = (int) (supplyPrice * 0.1);\n        int totalAmount = supplyPrice + vat;\n\n        System.out.println(\"=== 스타카페 주문 영수증 ===\");\n        System.out.printf(\"아메리카노 (%d원 x %d잔): %d원\\n\", americanoPrice, americanoQty, americanoPrice * americanoQty);\n        System.out.printf(\"카페라떼   (%d원 x %d잔): %d원\\n\", lattePrice, latteQty, lattePrice * latteQty);\n        System.out.println(\"---------------------------------\");\n        System.out.printf(\"공급가액: %d원\\n\", supplyPrice);\n        System.out.printf(\"부가세(10%%): %d원\\n\", vat);\n        System.out.printf(\"최종 결제 금액: %d원\\n\", totalAmount);\n    }\n}",
         "sample_input": "4500 2 5000 3",
@@ -13,7 +26,7 @@ const PROBLEMS = [
         "expected": "=== 스타카페 주문 영수증 ===\n아메리카노 (4500원 x 2잔): 9000원\n카페라떼   (5000원 x 3잔): 15000원\n---------------------------------\n공급가액: 24000원\n부가세(10%): 2400원\n최종 결제 금액: 26400원"
     },
     {
-        "id": "day01_중",
+        "id": "day01_중1",
         "day": 1,
         "subject": "Java",
         "difficulty": "중",
@@ -24,6 +37,19 @@ const PROBLEMS = [
         "sample_input": "23700 50000",
         "sample_output": "=== 편의점 거스름돈 계산기 ===\n상품 금액: 23,700원\n받은 금액: 50,000원\n거스름돈 총액: 26,300원\n---------------------------------\n10,000원권: 2장\n 5,000원권: 1장\n 1,000원권: 1장\n   500원 동전: 0개\n   100원 동전: 3개",
         "expected": "=== 편의점 거스름돈 계산기 ===\n상품 금액: 23,700원\n받은 금액: 50,000원\n거스름돈 총액: 26,300원\n---------------------------------\n10,000원권: 2장\n 5,000원권: 1장\n 1,000원권: 1장\n   500원 동전: 0개\n   100원 동전: 3개"
+    },
+    {
+        "id": "day01_중2",
+        "day": 1,
+        "subject": "Java",
+        "difficulty": "중",
+        "title": "테마파크 입장료 및 우대 혜택 판별기 (ThemeParkPricing)",
+        "desc": "테마파크 기준 요금, 입장객 나이, 우대 대상 여부(1: 우대, 0: 일반), 연간회원권 보유 여부(1: 보유, 0: 일반)를 입력받아 조건에 맞는 최종 입장료를 계산하세요.\n- 연간회원권 보유(1): 무료 입장 (할인율 100%)\n- 연간회원이 아닐 때:\n  * 우대 대상(1)이거나 65세 이상 경로: 50% 할인\n  * 13세 미만 어린이: 30% 할인\n  * 그 외 일반 고객: 할인 없음 (0%)\n\n[입력]\n기준요금 나이 우대여부(1/0) 연간회원여부(1/0)\n(예: 40000 10 0 0)",
+        "template": "import java.util.Scanner;\n\npublic class Solution {\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        // 여기에 코드를 작성하세요\n        \n    }\n}",
+        "solution": "import java.util.Scanner;\n\npublic class Solution {\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        int basePrice = sc.nextInt();\n        int age = sc.nextInt();\n        boolean isSpecial = sc.nextInt() == 1;\n        boolean hasPass = sc.nextInt() == 1;\n\n        double discountRate = hasPass ? 1.0 : ((isSpecial || age >= 65) ? 0.5 : (age < 13 ? 0.3 : 0.0));\n        int finalPrice = basePrice - (int)(basePrice * discountRate);\n\n        System.out.println(\"=== 에버드림 테마파크 티켓 발권기 ===\");\n        System.out.printf(\"기준 요금: %,d원\\n\", basePrice);\n        System.out.printf(\"입장객 나이: %d세\\n\", age);\n        System.out.printf(\"우대 혜택 적용: %s\\n\", isSpecial ? \"적용 (우대 대상)\" : \"미적용\");\n        System.out.printf(\"연간 회원 여부: %s\\n\", hasPass ? \"연간회원 (무료)\" : \"일반 고객\");\n        System.out.println(\"---------------------------------\");\n        System.out.printf(\"최종 결제 금액: %,d원 (할인율: %.0f%%)\\n\", finalPrice, discountRate * 100);\n    }\n}",
+        "sample_input": "40000 10 0 0",
+        "sample_output": "=== 에버드림 테마파크 티켓 발권기 ===\n기준 요금: 40,000원\n입장객 나이: 10세\n우대 혜택 적용: 미적용\n연간 회원 여부: 일반 고객\n---------------------------------\n최종 결제 금액: 28,000원 (할인율: 30%)",
+        "expected": "=== 에버드림 테마파크 티켓 발권기 ===\n기준 요금: 40,000원\n입장객 나이: 10세\n우대 혜택 적용: 미적용\n연간 회원 여부: 일반 고객\n---------------------------------\n최종 결제 금액: 28,000원 (할인율: 30%)"
     },
     {
         "id": "day01_상",
@@ -551,12 +577,12 @@ const PROBLEMS = [
         "subject": "Web",
         "difficulty": "하",
         "title": "재고 있는 상품 필터링 및 이름 추출 (filter & map)",
-        "desc": "장바구니 상품 객체 배열에서 품절되지 않고 구매 가능한(`inStock === true`) 상품만 선별(`filter`)하고, 해당 상품들의 이름(`name`)만을 담은 배열을 반환(`map`)하는 함수를 작성하세요.\n\n---",
-        "template": "// 여기에 자바스크립트 코드를 작성하세요\n",
-        "solution": "",
-        "sample_input": "없음",
-        "sample_output": "HTML/CSS 렌더링 및 콘솔 실행 결과 확인",
-        "expected": "HTML/CSS 렌더링 및 콘솔 실행 결과 확인"
+        "desc": "장바구니 상품 목록에서 품절되지 않고 구매 가능한(inStock === true) 상품만 선별(filter)하고, 해당 상품들의 이름(name) 배열을 출력하세요.\n\n[입력]\n첫째 줄에 상품 수 N이 주어집니다.\n둘째 줄부터 N개 줄에 걸쳐 '상품명 가격 수량 재고여부(true/false)'가 공백으로 구분되어 주어집니다.\n(예:\n5\n무선마우스 25000 2 true\n기계식키보드 89000 1 false\n게이밍헤드셋 54000 1 true\n장패드 12000 3 true\nUSB허브 18000 1 false)",
+        "template": "const fs = require('fs');\nconst lines = fs.readFileSync(0, 'utf-8').trim().split('\\n').map(l => l.trim()).filter(Boolean);\nif (lines.length === 0) process.exit(0);\n\n// 여기에 코드를 작성하세요\n",
+        "solution": "const fs = require('fs');\nconst lines = fs.readFileSync(0, 'utf-8').trim().split('\\n').map(l => l.trim()).filter(Boolean);\nif (lines.length === 0) process.exit(0);\n\nconst n = parseInt(lines[0], 10);\nconst cart = [];\nfor (let i = 1; i <= n; i++) {\n    const [name, price, quantity, inStock] = lines[i].split(/\\s+/);\n    cart.push({\n        name,\n        price: Number(price),\n        quantity: Number(quantity),\n        inStock: inStock === 'true'\n    });\n}\n\nconst availableNames = cart.filter(item => item.inStock).map(item => item.name);\nconsole.log(availableNames);",
+        "sample_input": "5\n무선마우스 25000 2 true\n기계식키보드 89000 1 false\n게이밍헤드셋 54000 1 true\n장패드 12000 3 true\nUSB허브 18000 1 false",
+        "sample_output": "[ '무선마우스', '게이밍헤드셋', '장패드' ]",
+        "expected": "[ '무선마우스', '게이밍헤드셋', '장패드' ]"
     },
     {
         "id": "day15_중",
@@ -564,12 +590,12 @@ const PROBLEMS = [
         "subject": "Web",
         "difficulty": "중",
         "title": "특정 상품의 구매 수량 변경 함수 (불변성 유지 업데이트)",
-        "desc": "장바구니에서 특정 `id` 상품의 구매 수량(`quantity`)을 갱신하는 함수를 작성하세요. 원본 배열을 직접 수정하지 않고 스프레드 연산자(`...`)와 `map()`을 활용하여 불변성을 유지해야 하며, 최소 수량은 1개 이상으로 보정하세요.\n\n---",
-        "template": "// 여기에 자바스크립트 코드를 작성하세요\n",
-        "solution": "",
-        "sample_input": "없음",
-        "sample_output": "HTML/CSS 렌더링 및 콘솔 실행 결과 확인",
-        "expected": "HTML/CSS 렌더링 및 콘솔 실행 결과 확인"
+        "desc": "장바구니 상품 목록과 수량을 변경할 상품의 ID 및 새 수량이 주어집니다. 원본 배열을 변형하지 않고 스프레드 연산자(...)와 map()을 활용하여 불변성을 유지하며 수량을 갱신(최소 1개 이상 유지)한 뒤, 변경된 상품 객체와 전체 장바구니 상품들의 총 수량을 출력하세요.\n\n[입력]\n첫째 줄에 상품 수 N, 변경 대상 상품ID, 새 수량이 공백으로 주어집니다.\n둘째 줄부터 N개 줄에 '상품ID 상품명 기존수량'이 주어집니다.\n(예:\n3 p-01 5\np-01 무선마우스 2\np-02 기계식키보드 1\np-03 게이밍헤드셋 3)",
+        "template": "const fs = require('fs');\nconst lines = fs.readFileSync(0, 'utf-8').trim().split('\\n').map(l => l.trim()).filter(Boolean);\nif (lines.length === 0) process.exit(0);\n\n// 여기에 코드를 작성하세요\n",
+        "solution": "const fs = require('fs');\nconst lines = fs.readFileSync(0, 'utf-8').trim().split('\\n').map(l => l.trim()).filter(Boolean);\nif (lines.length === 0) process.exit(0);\n\nconst [nStr, targetId, newQtyStr] = lines[0].split(/\\s+/);\nconst n = parseInt(nStr, 10);\nconst newQty = parseInt(newQtyStr, 10);\n\nconst cart = [];\nfor (let i = 1; i <= n; i++) {\n    const [id, name, qty] = lines[i].split(/\\s+/);\n    cart.push({ id, name, quantity: parseInt(qty, 10) });\n}\n\nconst updatedCart = cart.map(item => {\n    if (item.id === targetId) {\n        return { ...item, quantity: Math.max(1, newQty) };\n    }\n    return item;\n});\n\nconst updatedItem = updatedCart.find(item => item.id === targetId);\nconst totalQty = updatedCart.reduce((sum, item) => sum + item.quantity, 0);\n\nconsole.log('수량 변경 완료:', updatedItem);\nconsole.log(`장바구니 총 담긴 수량: ${totalQty}개`);",
+        "sample_input": "3 p-01 5\np-01 무선마우스 2\np-02 기계식키보드 1\np-03 게이밍헤드셋 3",
+        "sample_output": "수량 변경 완료: { id: 'p-01', name: '무선마우스', quantity: 5 }\n장바구니 총 담긴 수량: 9개",
+        "expected": "수량 변경 완료: { id: 'p-01', name: '무선마우스', quantity: 5 }\n장바구니 총 담긴 수량: 9개"
     },
     {
         "id": "day15_상",
@@ -577,12 +603,12 @@ const PROBLEMS = [
         "subject": "Web",
         "difficulty": "상",
         "title": "장바구니 총 주문 금액 및 무료 배송/할인 계산기 (reduce)",
-        "desc": "재고가 있는 상품들의 총 상품 금액(소계 합산)을 `reduce()`로 구하고, 쿠폰 할인(기본 10%) 적용 후 실 결제 금액이 50,000원 이상이면 배송비 무료(미만 3,000원) 정책을 적용한 최종 결제 요약 객체를 반환하는 함수를 작성하세요.",
-        "template": "// 여기에 자바스크립트 코드를 작성하세요\n",
-        "solution": "",
-        "sample_input": "없음",
-        "sample_output": "HTML/CSS 렌더링 및 콘솔 실행 결과 확인",
-        "expected": "HTML/CSS 렌더링 및 콘솔 실행 결과 확인"
+        "desc": "장바구니에 담긴 상품 수 N과 각 상품의 정보(이름, 단가, 수량, 재고여부), 그리고 쿠폰 할인율(%)이 주어집니다.\n1. 재고가 있는(inStock === true) 상품들의 소계(단가 * 수량)를 reduce()로 구합니다.\n2. 쿠폰 할인 금액을 차감합니다.\n3. 할인 적용 후 실 결제액이 50,000원 이상이면 배송비 무료(0원), 미만이면 배송비 3,000원을 부과합니다.\n4. 최종 결제 요약 리포트를 출력하세요.\n\n[입력]\n첫째 줄에 상품 수 N과 쿠폰 할인율(%)이 공백으로 주어집니다.\n둘째 줄부터 N개 줄에 '상품명 단가 수량 재고여부(true/false)'가 주어집니다.\n(예:\n3 10\n무선마우스 25000 2 true\n장패드 12000 1 true\n기계식키보드 89000 1 false)",
+        "template": "const fs = require('fs');\nconst lines = fs.readFileSync(0, 'utf-8').trim().split('\\n').map(l => l.trim()).filter(Boolean);\nif (lines.length === 0) process.exit(0);\n\n// 여기에 코드를 작성하세요\n",
+        "solution": "const fs = require('fs');\nconst lines = fs.readFileSync(0, 'utf-8').trim().split('\\n').map(l => l.trim()).filter(Boolean);\nif (lines.length === 0) process.exit(0);\n\nconst [nStr, discountRateStr] = lines[0].split(/\\s+/);\nconst n = parseInt(nStr, 10);\nconst discountRate = parseFloat(discountRateStr) / 100.0;\n\nconst cart = [];\nfor (let i = 1; i <= n; i++) {\n    const [name, price, qty, inStock] = lines[i].split(/\\s+/);\n    cart.push({\n        name,\n        price: parseInt(price, 10),\n        quantity: parseInt(qty, 10),\n        inStock: inStock === 'true'\n    });\n}\n\nconst availableItems = cart.filter(item => item.inStock);\nconst subtotal = availableItems.reduce((sum, item) => sum + (item.price * item.quantity), 0);\nconst discountAmount = Math.floor(subtotal * discountRate);\nconst afterDiscount = subtotal - discountAmount;\nconst shippingFee = afterDiscount >= 50000 ? 0 : 3000;\nconst finalAmount = afterDiscount + shippingFee;\n\nconsole.log('=== 장바구니 결제 요약 리포트 ===');\nconsole.log(`구매 상품 수: ${availableItems.length}종`);\nconsole.log(`상품 공급가액: ${subtotal.toLocaleString()}원`);\nconsole.log(`쿠폰 할인액: ${discountAmount.toLocaleString()}원`);\nconsole.log(`배송비: ${shippingFee.toLocaleString()}원 (${shippingFee === 0 ? '5만원 이상 무료배송' : '기본 배송비 부과'})`);\nconsole.log(`최종 결제 금액: ${finalAmount.toLocaleString()}원`);",
+        "sample_input": "3 10\n무선마우스 25000 2 true\n장패드 12000 1 true\n기계식키보드 89000 1 false",
+        "sample_output": "=== 장바구니 결제 요약 리포트 ===\n구매 상품 수: 2종\n상품 공급가액: 62,000원\n쿠폰 할인액: 6,200원\n배송비: 0원 (5만원 이상 무료배송)\n최종 결제 금액: 55,800원",
+        "expected": "=== 장바구니 결제 요약 리포트 ===\n구매 상품 수: 2종\n상품 공급가액: 62,000원\n쿠폰 할인액: 6,200원\n배송비: 0원 (5만원 이상 무료배송)\n최종 결제 금액: 55,800원"
     },
     {
         "id": "day16_하",
@@ -590,12 +616,12 @@ const PROBLEMS = [
         "subject": "Web",
         "difficulty": "하",
         "title": "비동기 상품 상세 조회 함수 (Promise & async/await)",
-        "desc": "상품 ID를 받아 지연 시간 후 상품 상세 객체(`{ id, title, price, stock }`)를 비동기로 반환하고, 존재하지 않는 상품 ID(`\"P-ERROR\"`)일 경우 에러를 던지는 비동기 함수를 작성하세요.\n\n---",
-        "template": "// 여기에 자바스크립트 코드를 작성하세요\n",
-        "solution": "",
-        "sample_input": "없음",
-        "sample_output": "HTML/CSS 렌더링 및 콘솔 실행 결과 확인",
-        "expected": "HTML/CSS 렌더링 및 콘솔 실행 결과 확인"
+        "desc": "상품 ID와 응답 지연 시간(ms)을 입력받아 Promise와 async/await 기반으로 비동기 상품 조회를 시뮬레이션하세요.\n- 상품 ID가 'P-ERROR'인 경우 '존재하지 않는 상품 번호입니다.' 에러를 발생시키고 catch 블록에서 에러 메시지를 출력합니다.\n- 그 외 정상 상품 ID인 경우 상품 상세 정보를 출력합니다.\n\n[입력]\n상품 ID와 지연시간(ms)이 공백으로 주어집니다.\n(예: P-1004 50)",
+        "template": "const fs = require('fs');\nconst input = fs.readFileSync(0, 'utf-8').trim();\nif (!input) process.exit(0);\n\n// 여기에 코드를 작성하세요\n",
+        "solution": "const fs = require('fs');\nconst input = fs.readFileSync(0, 'utf-8').trim();\nif (!input) process.exit(0);\n\nconst [productId, delayMsStr] = input.split(/\\s+/);\nconst delayMs = parseInt(delayMsStr, 10) || 50;\n\nfunction fetchProductDetail(id, delay) {\n    return new Promise((resolve, reject) => {\n        setTimeout(() => {\n            if (id === 'P-ERROR') {\n                reject(new Error('존재하지 않는 상품 번호입니다.'));\n            } else {\n                resolve({\n                    id,\n                    name: '2026 최신형 태블릿 PC',\n                    price: 680000,\n                    stock: 15\n                });\n            }\n        }, delay);\n    });\n}\n\nasync function main() {\n    try {\n        const product = await fetchProductDetail(productId, delayMs);\n        console.log(`[상품 조회 완료] ID: ${product.id} | 상품명: ${product.name} | 가격: ${product.price.toLocaleString()}원 | 재고: ${product.stock}개`);\n    } catch (err) {\n        console.log(`❌ [조회 실패] 에러: ${err.message}`);\n    }\n}\n\nmain();",
+        "sample_input": "P-1004 50",
+        "sample_output": "[상품 조회 완료] ID: P-1004 | 상품명: 2026 최신형 태블릿 PC | 가격: 680,000원 | 재고: 15개",
+        "expected": "[상품 조회 완료] ID: P-1004 | 상품명: 2026 최신형 태블릿 PC | 가격: 680,000원 | 재고: 15개"
     },
     {
         "id": "day16_중",
@@ -603,12 +629,12 @@ const PROBLEMS = [
         "subject": "Web",
         "difficulty": "중",
         "title": "외부 위젯 데이터(환율, 날씨, 공지) 병렬 수합 (Promise.all & Promise.race)",
-        "desc": "쇼핑몰 메인 대시보드 구성을 위해 환율, 날씨, 배송공지 3개의 비동기 프로미스를 생성하고:\n1. `Promise.race()`로 가장 먼저 도착한 정보를 화면에 먼저 표시\n2. `Promise.all()`로 3개 위젯 데이터를 일괄 수합하여 종합 대시보드 데이터를 구성하세요.\n\n---",
-        "template": "// 여기에 자바스크립트 코드를 작성하세요\n",
-        "solution": "",
-        "sample_input": "없음",
-        "sample_output": "HTML/CSS 렌더링 및 콘솔 실행 결과 확인",
-        "expected": "HTML/CSS 렌더링 및 콘솔 실행 결과 확인"
+        "desc": "쇼핑몰 메인 대시보드 구성을 위해 환율(USD), 날씨(기온), 배송공지 3개 위젯의 응답 지연 시간(ms)이 주어집니다.\n1. Promise.race()로 가장 빠르게 도착한 위젯 정보를 화면에 먼저 출력하세요.\n2. Promise.all()로 3개 위젯 데이터를 모두 수합하여 대시보드 종합 정보를 출력하세요.\n\n[입력]\n환율 지연시간, 날씨 지연시간, 공지 지연시간(ms)이 공백으로 주어집니다.\n(예: 120 80 150)",
+        "template": "const fs = require('fs');\nconst input = fs.readFileSync(0, 'utf-8').trim();\nif (!input) process.exit(0);\n\n// 여기에 코드를 작성하세요\n",
+        "solution": "const fs = require('fs');\nconst input = fs.readFileSync(0, 'utf-8').trim();\nif (!input) process.exit(0);\n\nconst [rateDelay, weatherDelay, noticeDelay] = input.split(/\\s+/).map(Number);\n\nconst fetchRate = new Promise(res => setTimeout(() => res({ type: '환율', delay: rateDelay, val: '1,350.5원/USD' }), rateDelay));\nconst fetchWeather = new Promise(res => setTimeout(() => res({ type: '날씨', delay: weatherDelay, val: '22°C (맑음)' }), weatherDelay));\nconst fetchNotice = new Promise(res => setTimeout(() => res({ type: '공지', delay: noticeDelay, val: '당일 출고 정상 진행' }), noticeDelay));\n\nconst allWidgets = [fetchRate, fetchWeather, fetchNotice];\n\nasync function run() {\n    const fastest = await Promise.race(allWidgets);\n    console.log(`⚡ [가장 빠른 응답] ${fastest.type} 위젯 (${fastest.delay}ms)`);\n\n    const [rate, weather, notice] = await Promise.all(allWidgets);\n    console.log('📊 === 대시보드 종합 데이터 ===');\n    console.log(`- 환율: ${rate.val}`);\n    console.log(`- 날씨: ${weather.val}`);\n    console.log(`- 공지: ${notice.val}`);\n}\n\nrun();",
+        "sample_input": "120 80 150",
+        "sample_output": "⚡ [가장 빠른 응답] 날씨 위젯 (80ms)\n📊 === 대시보드 종합 데이터 ===\n- 환율: 1,350.5원/USD\n- 날씨: 22°C (맑음)\n- 공지: 당일 출고 정상 진행",
+        "expected": "⚡ [가장 빠른 응답] 날씨 위젯 (80ms)\n📊 === 대시보드 종합 데이터 ===\n- 환율: 1,350.5원/USD\n- 날씨: 22°C (맑음)\n- 공지: 당일 출고 정상 진행"
     },
     {
         "id": "day16_상",
@@ -616,11 +642,11 @@ const PROBLEMS = [
         "subject": "Web",
         "difficulty": "상",
         "title": "쇼핑몰 결제 승인 API 지수 백오프 자동 재시도 래퍼",
-        "desc": "결제 대행사(PG) 서버와의 일시적인 통신 순단에 대비하여, 최대 3회까지 지수 지연($100ms, 200ms, 400ms...$)을 두고 자동으로 재호출을 시도하는 고차 비동기 재시도 함수 `requestPaymentWithRetry()`를 구현하세요.",
-        "template": "// 여기에 자바스크립트 코드를 작성하세요\n",
-        "solution": "",
-        "sample_input": "없음",
-        "sample_output": "HTML/CSS 렌더링 및 콘솔 실행 결과 확인",
-        "expected": "HTML/CSS 렌더링 및 콘솔 실행 결과 확인"
+        "desc": "결제 대행사(PG) 서버와의 일시적 통신 장애에 대비하여 지수 백오프 기반 재시도 함수를 구현하세요.\n- 최대 재시도 횟수 M, 정상 승인되는 회차 K, 결제 금액이 주어집니다.\n- 1차부터 K-1차까지는 일시적 통신 오류가 발생하고, 각 시도마다 baseDelay(50ms) * 2^(attempt-1) 시간 동안 대기 후 재시도합니다.\n- K차 시도에 도달하면 승인 번호(APPR-2026-9981)와 함께 결제 성공을 출력하고, M회를 초과하면 최종 실패를 출력하세요.\n\n[입력]\n최대 재시도 횟수 M, 성공 회차 K, 결제 금액이 공백으로 주어집니다.\n(예: 3 3 50000)",
+        "template": "const fs = require('fs');\nconst input = fs.readFileSync(0, 'utf-8').trim();\nif (!input) process.exit(0);\n\n// 여기에 코드를 작성하세요\n",
+        "solution": "const fs = require('fs');\nconst input = fs.readFileSync(0, 'utf-8').trim();\nif (!input) process.exit(0);\n\nconst [maxRetriesStr, succeedAtStr, amountStr] = input.split(/\\s+/);\nconst maxRetries = parseInt(maxRetriesStr, 10);\nconst succeedAt = parseInt(succeedAtStr, 10);\nconst amount = parseInt(amountStr, 10);\n\nconst baseDelayMs = 50;\n\nasync function mockPayment(attempt) {\n    if (attempt < succeedAt) {\n        throw new Error('결제 게이트웨이 응답 지연');\n    }\n    return { approvalNo: 'APPR-2026-9981', amount };\n}\n\nasync function requestPaymentWithRetry(paymentFn, maxRetries, baseDelayMs) {\n    let attempt = 0;\n    while (attempt < maxRetries) {\n        try {\n            attempt++;\n            console.log(`[결제 승인 통신 시도 ${attempt}/${maxRetries}]...`);\n            return await paymentFn(attempt);\n        } catch (error) {\n            console.log(`  ⚠️ 일시적 오류: ${error.message}`);\n            if (attempt >= maxRetries) {\n                throw new Error(`최대 재시도(${maxRetries}회) 초과로 최종 결제 실패`);\n            }\n            const delay = baseDelayMs * Math.pow(2, attempt - 1);\n            console.log(`  ⏳ ${delay}ms 대기 후 재시도합니다...`);\n            await new Promise(res => setTimeout(res, delay));\n        }\n    }\n}\n\nasync function main() {\n    try {\n        const res = await requestPaymentWithRetry(mockPayment, maxRetries, baseDelayMs);\n        console.log(`✅ [결제 최종 성공] ${res.amount.toLocaleString()}원 승인 완료 (승인번호: ${res.approvalNo})`);\n    } catch (err) {\n        console.log(`❌ [결제 최종 실패] ${err.message}`);\n    }\n}\n\nmain();",
+        "sample_input": "3 3 50000",
+        "sample_output": "[결제 승인 통신 시도 1/3]...\n  ⚠️ 일시적 오류: 결제 게이트웨이 응답 지연\n  ⏳ 50ms 대기 후 재시도합니다...\n[결제 승인 통신 시도 2/3]...\n  ⚠️ 일시적 오류: 결제 게이트웨이 응답 지연\n  ⏳ 100ms 대기 후 재시도합니다...\n[결제 승인 통신 시도 3/3]...\n✅ [결제 최종 성공] 50,000원 승인 완료 (승인번호: APPR-2026-9981)",
+        "expected": "[결제 승인 통신 시도 1/3]...\n  ⚠️ 일시적 오류: 결제 게이트웨이 응답 지연\n  ⏳ 50ms 대기 후 재시도합니다...\n[결제 승인 통신 시도 2/3]...\n  ⚠️ 일시적 오류: 결제 게이트웨이 응답 지연\n  ⏳ 100ms 대기 후 재시도합니다...\n[결제 승인 통신 시도 3/3]...\n✅ [결제 최종 성공] 50,000원 승인 완료 (승인번호: APPR-2026-9981)"
     }
 ];
