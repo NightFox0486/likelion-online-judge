@@ -3,6 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
     <title>Lion Judge</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -453,15 +456,15 @@
                 <span class="text-3xl">🔐</span>
                 <h3 class="text-base font-bold text-white">비밀번호 변경</h3>
                 <p id="pwChangeNotice" class="text-xs text-slate-400">
-                    <span id="pwChangeUserName" class="text-amber-400 font-bold"></span> 학생님, 초기 비밀번호(0000)로 로그인하셨습니다.<br>
-                    안전한 학습을 위해 <strong class="text-white">새로운 비밀번호</strong>를 설정해주세요.
+                    <span id="pwChangeUserName" class="text-amber-400 font-bold"></span> 님, 초기 비밀번호로 로그인하셨습니다.<br>
+                    안전한 이용을 위해 <strong class="text-white">새로운 비밀번호</strong>를 설정해주세요.
                 </p>
             </div>
 
             <form onsubmit="handleChangePassword(event)" class="space-y-3 pt-2">
                 <div>
                     <label class="block text-[11px] text-slate-400 mb-1 font-medium">현재 비밀번호</label>
-                    <input type="password" id="pwCurrent" required value="0000" placeholder="현재 비밀번호" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2 text-xs text-white focus:outline-none focus:border-amber-500">
+                    <input type="password" id="pwCurrent" required value="" placeholder="현재 비밀번호" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2 text-xs text-white focus:outline-none focus:border-amber-500">
                 </div>
                 <div>
                     <label class="block text-[11px] text-slate-400 mb-1 font-medium">새 비밀번호 (4자 이상)</label>
@@ -483,7 +486,7 @@
     </div>
 
     <!-- 문제 데이터셋 -->
-    <script src="problems.js?v=20260929_clean_v6"></script>
+    <script src="problems.js?v=20260929_clean_v7"></script>
 
     <script>
         let selectedDay = 1;
