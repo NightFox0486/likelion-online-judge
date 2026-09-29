@@ -994,6 +994,9 @@
             if (status === 'ACCEPTED') {
                 badge.className = 'inline-block px-2.5 py-0.5 rounded text-[11px] font-bold bg-emerald-500/20 text-emerald-400 border border-emerald-500/30';
                 badge.textContent = `맞았습니다!! (${score}점)`;
+            } else if (status === 'PARTIAL') {
+                badge.className = 'inline-block px-2.5 py-0.5 rounded text-[11px] font-bold bg-amber-500/20 text-amber-400 border border-amber-500/30';
+                badge.textContent = `부분 성공 (${score}점)`;
             } else if (status === 'HARDCODED_REJECTED') {
                 badge.className = 'inline-block px-2.5 py-0.5 rounded text-[11px] font-bold bg-rose-500/20 text-rose-400 border border-rose-500/30';
                 badge.textContent = '단순 출력 감지 (오답)';
@@ -1041,6 +1044,8 @@
                     let resultBadge = '';
                     if (item.status === 'ACCEPTED') {
                         resultBadge = '<span class="text-emerald-400 font-bold">맞았습니다</span>';
+                    } else if (item.status === 'PARTIAL') {
+                        resultBadge = `<span class="text-amber-400 font-bold">부분 점수 (${item.score}점)</span>`;
                     } else if (item.status === 'HARDCODED_REJECTED') {
                         resultBadge = '<span class="text-rose-400 font-bold">단순 출력 감지</span>';
                     } else if (item.status === 'WRONG_ANSWER') {
@@ -1208,6 +1213,7 @@
 
             const statusMap = [
                 { key: 'ACCEPTED', label: '맞았습니다 (ACCEPTED)', color: 'bg-emerald-500', textColor: 'text-emerald-400' },
+                { key: 'PARTIAL', label: '부분 성공 (PARTIAL)', color: 'bg-amber-500', textColor: 'text-amber-400' },
                 { key: 'WRONG_ANSWER', label: '틀렸습니다 (WRONG)', color: 'bg-rose-500', textColor: 'text-rose-400' },
                 { key: 'COMPILE_ERROR', label: '컴파일 에러', color: 'bg-amber-500', textColor: 'text-amber-400' },
                 { key: 'TIME_LIMIT_EXCEEDED', label: '시간 초과', color: 'bg-purple-500', textColor: 'text-purple-400' }
