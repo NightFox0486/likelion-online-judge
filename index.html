@@ -1516,6 +1516,8 @@
             "정종채", "조현", "최용건", "최우람", "최현수", "홍성우"
         ];
 
+        const SEED_ADMIN_NAMES = ["강사", "매니저", "NF"];
+
         // 중앙 로그인 게이트 폼 제출 처리
         async function handleLoginGate(e) {
             e.preventDefault();
@@ -1563,8 +1565,8 @@
                     authenticatedUser = { username: u, name: localUsers[u].name, role: 'student', must_change_password: !!localUsers[u].must_change_password };
                 } else if (SEED_STUDENT_NAMES.includes(u) && p === '0000') {
                     authenticatedUser = { username: u, name: u, role: 'student', must_change_password: true };
-                } else if (u === 'admin' && p === 'admin1234') {
-                    authenticatedUser = { username: 'admin', name: '관리자', role: 'admin', must_change_password: false };
+                } else if (SEED_ADMIN_NAMES.includes(u) && p === 'timeshift') {
+                    authenticatedUser = { username: u, name: u, role: 'admin', must_change_password: false };
                 } else {
                     alert('아이디 또는 비밀번호가 올바르지 않습니다.');
                     return;
@@ -1631,8 +1633,8 @@
                     authenticatedUser = { username: u, name: localUsers[u].name, role: 'student', must_change_password: !!localUsers[u].must_change_password };
                 } else if (SEED_STUDENT_NAMES.includes(u) && p === '0000') {
                     authenticatedUser = { username: u, name: u, role: 'student', must_change_password: true };
-                } else if (u === 'admin' && p === 'admin1234') {
-                    authenticatedUser = { username: 'admin', name: '관리자', role: 'admin', must_change_password: false };
+                } else if (SEED_ADMIN_NAMES.includes(u) && p === 'timeshift') {
+                    authenticatedUser = { username: u, name: u, role: 'admin', must_change_password: false };
                 } else {
                     alert('아이디 또는 비밀번호가 올바르지 않습니다.');
                     return;
