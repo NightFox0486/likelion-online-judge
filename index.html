@@ -490,8 +490,44 @@
         </div>
     </div>
 
+    <!-- 비밀번호 변경 모달 (최초 로그인 강제 또는 헤더에서 호출) -->
+    <div id="changePasswordModal" class="hidden fixed inset-0 bg-black/85 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+        <div class="bg-slate-900 border border-slate-800 rounded-2xl w-full max-w-sm p-6 shadow-2xl space-y-4">
+            <div class="text-center space-y-1">
+                <span class="text-3xl">🔐</span>
+                <h3 class="text-base font-bold text-white">비밀번호 변경</h3>
+                <p id="pwChangeNotice" class="text-xs text-slate-400">
+                    <span id="pwChangeUserName" class="text-amber-400 font-bold"></span> 학생님, 초기 비밀번호(0000)로 로그인하셨습니다.<br>
+                    안전한 학습을 위해 <strong class="text-white">새로운 비밀번호</strong>를 설정해주세요.
+                </p>
+            </div>
+
+            <form onsubmit="handleChangePassword(event)" class="space-y-3 pt-2">
+                <div>
+                    <label class="block text-[11px] text-slate-400 mb-1 font-medium">현재 비밀번호</label>
+                    <input type="password" id="pwCurrent" required value="0000" placeholder="현재 비밀번호" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2 text-xs text-white focus:outline-none focus:border-amber-500">
+                </div>
+                <div>
+                    <label class="block text-[11px] text-slate-400 mb-1 font-medium">새 비밀번호 (4자 이상)</label>
+                    <input type="password" id="pwNew" required placeholder="새 비밀번호 입력" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2 text-xs text-white focus:outline-none focus:border-amber-500">
+                </div>
+                <div>
+                    <label class="block text-[11px] text-slate-400 mb-1 font-medium">새 비밀번호 확인</label>
+                    <input type="password" id="pwConfirm" required placeholder="새 비밀번호 다시 입력" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2 text-xs text-white focus:outline-none focus:border-amber-500">
+                </div>
+                <div id="pwErrorMsg" class="hidden text-xs text-rose-400 text-center font-medium bg-rose-500/10 py-1.5 px-2 rounded-lg border border-rose-500/20"></div>
+                <div class="pt-2 flex items-center gap-2">
+                    <button type="button" id="btnCancelPwChange" onclick="closeChangePasswordModal()" class="hidden flex-1 bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold py-2.5 rounded-xl text-xs transition">취소</button>
+                    <button type="submit" id="btnSubmitPwChange" class="flex-1 bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold py-2.5 rounded-xl text-xs transition shadow-md flex items-center justify-center gap-1.5">
+                        <i class="fa-solid fa-check"></i> 비밀번호 변경하고 시작하기
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
     <!-- 문제 데이터셋 -->
-    <script src="problems.js?v=20260929_clean_v3"></script>
+    <script src="problems.js?v=20260929_pwchange_v4"></script>
 
     <script>
         let selectedDay = 1;
@@ -516,8 +552,14 @@
                 showView('gate');
             } else {
                 await fetchLocks();
-                showView('days');
-                renderDaysGrid();
+                if (currentUser.must_change_password) {
+                    showView('days');
+                    renderDaysGrid();
+                    openChangePasswordModal(false);
+                } else {
+                    showView('days');
+                    renderDaysGrid();
+                }
             }
         });
 
@@ -1347,6 +1389,9 @@
                 container.innerHTML = `
                     <div class="flex items-center space-x-2 text-xs">
                         <span class="text-slate-300">${roleBadge} <strong>${currentUser.name}</strong></span>
+                        <button onclick="openChangePasswordModal(true)" class="text-slate-500 hover:text-amber-400 ml-1.5" title="비밀번호 변경">
+                            <i class="fa-solid fa-key"></i>
+                        </button>
                         <button onclick="handleLogout()" class="text-slate-500 hover:text-rose-400 ml-1" title="로그아웃">
                             <i class="fa-solid fa-arrow-right-from-bracket"></i>
                         </button>
@@ -1464,6 +1509,13 @@
             }
         }
 
+        const SEED_STUDENT_NAMES = [
+            "강동현", "강지찬", "권기호", "김건우", "김광수", "김기범",
+            "김남빈", "김현석", "김효중", "라정우", "박은혜", "백승우",
+            "엄성욱", "오민석", "유제철", "이준경", "이채민", "이현호",
+            "정종채", "조현", "최용건", "최우람", "최현수", "홍성우"
+        ];
+
         // 중앙 로그인 게이트 폼 제출 처리
         async function handleLoginGate(e) {
             e.preventDefault();
@@ -1494,22 +1546,42 @@
                 localStorage.setItem('current_user', JSON.stringify(currentUser));
                 updateAuthUI();
                 await fetchLocks();
-                showView('days');
-                renderDaysGrid();
+
+                if (currentUser.must_change_password || p === '0000') {
+                    showView('days');
+                    renderDaysGrid();
+                    openChangePasswordModal(false);
+                } else {
+                    showView('days');
+                    renderDaysGrid();
+                }
             } catch (err) {
                 const localUsers = JSON.parse(localStorage.getItem('local_students') || '{}');
+                let authenticatedUser = null;
+
                 if (localUsers[u] && localUsers[u].password === p) {
-                    currentUser = { username: u, name: localUsers[u].name, role: 'student' };
+                    authenticatedUser = { username: u, name: localUsers[u].name, role: 'student', must_change_password: !!localUsers[u].must_change_password };
+                } else if (SEED_STUDENT_NAMES.includes(u) && p === '0000') {
+                    authenticatedUser = { username: u, name: u, role: 'student', must_change_password: true };
                 } else if (u === 'admin' && p === 'admin1234') {
-                    currentUser = { username: 'admin', name: '관리자', role: 'admin' };
+                    authenticatedUser = { username: 'admin', name: '관리자', role: 'admin', must_change_password: false };
                 } else {
                     alert('아이디 또는 비밀번호가 올바르지 않습니다.');
                     return;
                 }
+
+                currentUser = authenticatedUser;
                 localStorage.setItem('current_user', JSON.stringify(currentUser));
                 updateAuthUI();
-                showView('days');
-                renderDaysGrid();
+
+                if (currentUser.must_change_password || p === '0000') {
+                    showView('days');
+                    renderDaysGrid();
+                    openChangePasswordModal(false);
+                } else {
+                    showView('days');
+                    renderDaysGrid();
+                }
             } finally {
                 if (btn) {
                     btn.disabled = false;
@@ -1542,23 +1614,164 @@
                 closeLoginModal();
                 updateAuthUI();
                 await fetchLocks();
-                showView('days');
-                renderDaysGrid();
+
+                if (currentUser.must_change_password || p === '0000') {
+                    showView('days');
+                    renderDaysGrid();
+                    openChangePasswordModal(false);
+                } else {
+                    showView('days');
+                    renderDaysGrid();
+                }
             } catch (err) {
                 const localUsers = JSON.parse(localStorage.getItem('local_students') || '{}');
+                let authenticatedUser = null;
+
                 if (localUsers[u] && localUsers[u].password === p) {
-                    currentUser = { username: u, name: localUsers[u].name, role: 'student' };
+                    authenticatedUser = { username: u, name: localUsers[u].name, role: 'student', must_change_password: !!localUsers[u].must_change_password };
+                } else if (SEED_STUDENT_NAMES.includes(u) && p === '0000') {
+                    authenticatedUser = { username: u, name: u, role: 'student', must_change_password: true };
                 } else if (u === 'admin' && p === 'admin1234') {
-                    currentUser = { username: 'admin', name: '관리자', role: 'admin' };
+                    authenticatedUser = { username: 'admin', name: '관리자', role: 'admin', must_change_password: false };
                 } else {
                     alert('아이디 또는 비밀번호가 올바르지 않습니다.');
                     return;
                 }
+
+                currentUser = authenticatedUser;
                 localStorage.setItem('current_user', JSON.stringify(currentUser));
                 closeLoginModal();
                 updateAuthUI();
+
+                if (currentUser.must_change_password || p === '0000') {
+                    showView('days');
+                    renderDaysGrid();
+                    openChangePasswordModal(false);
+                } else {
+                    showView('days');
+                    renderDaysGrid();
+                }
+            }
+        }
+
+        // ========================================================
+        // 비밀번호 변경 모달 제어
+        // ========================================================
+        let isPwChangeVoluntary = false;
+
+        function openChangePasswordModal(voluntary = false) {
+            if (!currentUser) return;
+            isPwChangeVoluntary = voluntary;
+            const modal = document.getElementById('changePasswordModal');
+            const uName = document.getElementById('pwChangeUserName');
+            const notice = document.getElementById('pwChangeNotice');
+            const cancelBtn = document.getElementById('btnCancelPwChange');
+            const errBox = document.getElementById('pwErrorMsg');
+
+            if (uName) uName.textContent = currentUser.name;
+            if (errBox) { errBox.classList.add('hidden'); errBox.textContent = ''; }
+
+            if (voluntary) {
+                if (notice) notice.innerHTML = `<span class="text-amber-400 font-bold">${currentUser.name}</span> 님의 새로운 비밀번호를 설정해주세요.`;
+                if (cancelBtn) cancelBtn.classList.remove('hidden');
+                document.getElementById('pwCurrent').value = '';
+            } else {
+                if (notice) notice.innerHTML = `<span class="text-amber-400 font-bold">${currentUser.name}</span> 학생님, 초기 비밀번호(0000)로 로그인하셨습니다.<br>안전한 학습을 위해 <strong class="text-white">새로운 비밀번호</strong>를 설정해주세요.`;
+                if (cancelBtn) cancelBtn.classList.add('hidden');
+                document.getElementById('pwCurrent').value = '0000';
+            }
+
+            document.getElementById('pwNew').value = '';
+            document.getElementById('pwConfirm').value = '';
+            modal.classList.remove('hidden');
+        }
+
+        function closeChangePasswordModal() {
+            if (!isPwChangeVoluntary) {
+                alert('보안을 위해 비밀번호를 반드시 변경해야 실습을 시작할 수 있습니다.');
+                return;
+            }
+            document.getElementById('changePasswordModal').classList.add('hidden');
+        }
+
+        async function handleChangePassword(e) {
+            e.preventDefault();
+            if (!currentUser) return;
+
+            const currP = document.getElementById('pwCurrent').value.trim();
+            const newP = document.getElementById('pwNew').value.trim();
+            const confirmP = document.getElementById('pwConfirm').value.trim();
+            const errBox = document.getElementById('pwErrorMsg');
+            const submitBtn = document.getElementById('btnSubmitPwChange');
+
+            function showError(msg) {
+                if (errBox) {
+                    errBox.textContent = msg;
+                    errBox.classList.remove('hidden');
+                } else {
+                    alert(msg);
+                }
+            }
+
+            if (newP !== confirmP) {
+                showError('새 비밀번호와 확인 비밀번호가 일치하지 않습니다.');
+                return;
+            }
+            if (newP.length < 4) {
+                showError('새 비밀번호는 최소 4자 이상이어야 합니다.');
+                return;
+            }
+            if (newP === '0000') {
+                showError('초기 비밀번호(0000)와 다른 비밀번호를 설정해주세요.');
+                return;
+            }
+
+            if (submitBtn) {
+                submitBtn.disabled = true;
+                submitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> 변경 중...';
+            }
+
+            try {
+                const res = await fetch(`${judgeServerUrl}/api/auth/change-password`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        username: currentUser.username,
+                        current_password: currP,
+                        new_password: newP
+                    })
+                });
+
+                if (!res.ok) {
+                    const err = await res.json();
+                    showError(err.detail || '비밀번호 변경 실패');
+                    return;
+                }
+
+                currentUser.must_change_password = false;
+                localStorage.setItem('current_user', JSON.stringify(currentUser));
+                document.getElementById('changePasswordModal').classList.add('hidden');
+                alert(`비밀번호가 성공적으로 변경되었습니다!\n환영합니다, ${currentUser.name} 학생님.`);
                 showView('days');
                 renderDaysGrid();
+            } catch (err) {
+                let localUsers = JSON.parse(localStorage.getItem('local_students') || '{}');
+                if (localUsers[currentUser.username]) {
+                    localUsers[currentUser.username].password = newP;
+                    localUsers[currentUser.username].must_change_password = false;
+                    localStorage.setItem('local_students', JSON.stringify(localUsers));
+                }
+                currentUser.must_change_password = false;
+                localStorage.setItem('current_user', JSON.stringify(currentUser));
+                document.getElementById('changePasswordModal').classList.add('hidden');
+                alert(`비밀번호가 성공적으로 변경되었습니다!\n환영합니다, ${currentUser.name} 학생님.`);
+                showView('days');
+                renderDaysGrid();
+            } finally {
+                if (submitBtn) {
+                    submitBtn.disabled = false;
+                    submitBtn.innerHTML = '<i class="fa-solid fa-check"></i> 변경 완료하고 시작';
+                }
             }
         }
 
