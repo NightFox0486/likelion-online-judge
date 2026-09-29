@@ -483,7 +483,7 @@
     </div>
 
     <!-- 문제 데이터셋 -->
-    <script src="problems.js?v=20260929_clean_v5"></script>
+    <script src="problems.js?v=20260929_clean_v6"></script>
 
     <script>
         let selectedDay = 1;
@@ -491,12 +491,8 @@
         let currentProblem = null;
         let filterSubjectMode = 'all';
 
-        let savedUrl = localStorage.getItem('judge_server_url');
-        if (savedUrl && savedUrl.includes('100.104.124.97')) {
-            localStorage.removeItem('judge_server_url');
-            savedUrl = null;
-        }
-        let judgeServerUrl = savedUrl || (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' ? 'http://192.168.68.55:8000' : '');
+        localStorage.removeItem('judge_server_url');
+        const judgeServerUrl = '';
         let currentUser = JSON.parse(localStorage.getItem('current_user') || 'null');
 
         // 오픈(Unlock) 상태 (기본 1일차만 오픈)
@@ -1378,7 +1374,8 @@
             "강동현", "강지찬", "권기호", "김건우", "김광수", "김기범",
             "김남빈", "김현석", "김효중", "라정우", "박은혜", "백승우",
             "엄성욱", "오민석", "유제철", "이준경", "이채민", "이현호",
-            "정종채", "조현", "최용건", "최우람", "최현수", "홍성우"
+            "정종채", "조현", "최용건", "최우람", "최현수", "홍성우",
+            "test", "테스트학생"
         ];
 
         const SEED_ADMIN_NAMES = ["강사", "매니저", "NF"];
@@ -1414,7 +1411,7 @@
                 updateAuthUI();
                 await fetchLocks();
 
-                if (currentUser.must_change_password || p === '0000') {
+                if (currentUser.must_change_password || p === '0000' || p === 'timeshift') {
                     showView('days');
                     renderDaysGrid();
                     openChangePasswordModal(false);
@@ -1427,11 +1424,11 @@
                 let authenticatedUser = null;
 
                 if (localUsers[u] && localUsers[u].password === p) {
-                    authenticatedUser = { username: u, name: localUsers[u].name, role: 'student', must_change_password: !!localUsers[u].must_change_password };
+                    authenticatedUser = { username: u, name: localUsers[u].name, role: (SEED_ADMIN_NAMES.includes(u) ? 'admin' : 'student'), must_change_password: !!localUsers[u].must_change_password };
                 } else if (SEED_STUDENT_NAMES.includes(u) && p === '0000') {
-                    authenticatedUser = { username: u, name: u, role: 'student', must_change_password: true };
+                    authenticatedUser = { username: u, name: (u === 'test' ? '테스트학생' : u), role: 'student', must_change_password: true };
                 } else if (SEED_ADMIN_NAMES.includes(u) && p === 'timeshift') {
-                    authenticatedUser = { username: u, name: u, role: 'admin', must_change_password: false };
+                    authenticatedUser = { username: u, name: u, role: 'admin', must_change_password: true };
                 } else {
                     alert('아이디 또는 비밀번호가 올바르지 않습니다.');
                     return;
@@ -1441,7 +1438,7 @@
                 localStorage.setItem('current_user', JSON.stringify(currentUser));
                 updateAuthUI();
 
-                if (currentUser.must_change_password || p === '0000') {
+                if (currentUser.must_change_password || p === '0000' || p === 'timeshift') {
                     showView('days');
                     renderDaysGrid();
                     openChangePasswordModal(false);
@@ -1482,7 +1479,7 @@
                 updateAuthUI();
                 await fetchLocks();
 
-                if (currentUser.must_change_password || p === '0000') {
+                if (currentUser.must_change_password || p === '0000' || p === 'timeshift') {
                     showView('days');
                     renderDaysGrid();
                     openChangePasswordModal(false);
@@ -1495,11 +1492,11 @@
                 let authenticatedUser = null;
 
                 if (localUsers[u] && localUsers[u].password === p) {
-                    authenticatedUser = { username: u, name: localUsers[u].name, role: 'student', must_change_password: !!localUsers[u].must_change_password };
+                    authenticatedUser = { username: u, name: localUsers[u].name, role: (SEED_ADMIN_NAMES.includes(u) ? 'admin' : 'student'), must_change_password: !!localUsers[u].must_change_password };
                 } else if (SEED_STUDENT_NAMES.includes(u) && p === '0000') {
-                    authenticatedUser = { username: u, name: u, role: 'student', must_change_password: true };
+                    authenticatedUser = { username: u, name: (u === 'test' ? '테스트학생' : u), role: 'student', must_change_password: true };
                 } else if (SEED_ADMIN_NAMES.includes(u) && p === 'timeshift') {
-                    authenticatedUser = { username: u, name: u, role: 'admin', must_change_password: false };
+                    authenticatedUser = { username: u, name: u, role: 'admin', must_change_password: true };
                 } else {
                     alert('아이디 또는 비밀번호가 올바르지 않습니다.');
                     return;
@@ -1510,7 +1507,7 @@
                 closeLoginModal();
                 updateAuthUI();
 
-                if (currentUser.must_change_password || p === '0000') {
+                if (currentUser.must_change_password || p === '0000' || p === 'timeshift') {
                     showView('days');
                     renderDaysGrid();
                     openChangePasswordModal(false);
@@ -1519,7 +1516,7 @@
                     renderDaysGrid();
                 }
             }
-        }
+
 
         // ========================================================
         // 비밀번호 변경 모달 제어
@@ -1538,14 +1535,18 @@
             if (uName) uName.textContent = currentUser.name;
             if (errBox) { errBox.classList.add('hidden'); errBox.textContent = ''; }
 
+            const isAdmin = currentUser.role === 'admin' || currentUser.username === '강사' || currentUser.username === '매니저' || currentUser.username === 'NF';
+            const defaultPw = isAdmin ? 'timeshift' : '0000';
+            const roleTitle = isAdmin ? '관리자님' : '학생님';
+
             if (voluntary) {
                 if (notice) notice.innerHTML = `<span class="text-amber-400 font-bold">${currentUser.name}</span> 님의 새로운 비밀번호를 설정해주세요.`;
                 if (cancelBtn) cancelBtn.classList.remove('hidden');
                 document.getElementById('pwCurrent').value = '';
             } else {
-                if (notice) notice.innerHTML = `<span class="text-amber-400 font-bold">${currentUser.name}</span> 학생님, 초기 비밀번호(0000)로 로그인하셨습니다.<br>안전한 학습을 위해 <strong class="text-white">새로운 비밀번호</strong>를 설정해주세요.`;
+                if (notice) notice.innerHTML = `<span class="text-amber-400 font-bold">${currentUser.name}</span> ${roleTitle}, 초기 비밀번호(${defaultPw})로 로그인하셨습니다.<br>안전한 이용을 위해 <strong class="text-white">새로운 비밀번호</strong>를 설정해주세요.`;
                 if (cancelBtn) cancelBtn.classList.add('hidden');
-                document.getElementById('pwCurrent').value = '0000';
+                document.getElementById('pwCurrent').value = defaultPw;
             }
 
             document.getElementById('pwNew').value = '';
@@ -1588,8 +1589,8 @@
                 showError('새 비밀번호는 최소 4자 이상이어야 합니다.');
                 return;
             }
-            if (newP === '0000') {
-                showError('초기 비밀번호(0000)와 다른 비밀번호를 설정해주세요.');
+            if (newP === '0000' || newP === 'timeshift') {
+                showError('초기 비밀번호와 다른 비밀번호를 설정해주세요.');
                 return;
             }
 
@@ -1618,7 +1619,7 @@
                 currentUser.must_change_password = false;
                 localStorage.setItem('current_user', JSON.stringify(currentUser));
                 document.getElementById('changePasswordModal').classList.add('hidden');
-                alert(`비밀번호가 성공적으로 변경되었습니다!\n환영합니다, ${currentUser.name} 학생님.`);
+                alert(`비밀번호가 성공적으로 변경되었습니다!\n환영합니다, ${currentUser.name} 님.`);
                 showView('days');
                 renderDaysGrid();
             } catch (err) {
@@ -1631,7 +1632,7 @@
                 currentUser.must_change_password = false;
                 localStorage.setItem('current_user', JSON.stringify(currentUser));
                 document.getElementById('changePasswordModal').classList.add('hidden');
-                alert(`비밀번호가 성공적으로 변경되었습니다!\n환영합니다, ${currentUser.name} 학생님.`);
+                alert(`비밀번호가 성공적으로 변경되었습니다!\n환영합니다, ${currentUser.name} 님.`);
                 showView('days');
                 renderDaysGrid();
             } finally {
