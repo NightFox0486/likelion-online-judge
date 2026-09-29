@@ -704,7 +704,7 @@
 
             dayProblems.forEach((prob, idx) => {
                 const isSelected = currentProblem && currentProblem.id === prob.id;
-                const dotColor = prob.difficulty === '하' ? 'bg-emerald-400' : (prob.difficulty === '중' ? 'bg-amber-400' : 'bg-rose-400');
+                const dotColor = prob.difficulty === '하' ? 'bg-emerald-400' : (prob.difficulty === '중' ? 'bg-amber-400' : (prob.difficulty === '상' ? 'bg-rose-400' : 'bg-purple-400 animate-pulse'));
                 const activeStyle = 'bg-amber-500 text-slate-950 font-bold shadow';
                 const inactiveStyle = 'bg-slate-800 hover:bg-slate-700 text-slate-300 font-medium';
 
@@ -1189,7 +1189,18 @@
 
             document.getElementById('pSubjectBadge').textContent = prob.subject;
             document.getElementById('pDayBadge').textContent = `${prob.day}일차`;
-            document.getElementById('pDiffBadge').textContent = prob.difficulty;
+            
+            const diffBadge = document.getElementById('pDiffBadge');
+            diffBadge.textContent = prob.difficulty;
+            if (prob.difficulty === '하') {
+                diffBadge.className = 'px-2 py-0.5 rounded text-[11px] font-semibold bg-emerald-500/20 text-emerald-400 border border-emerald-500/30';
+            } else if (prob.difficulty === '중') {
+                diffBadge.className = 'px-2 py-0.5 rounded text-[11px] font-semibold bg-amber-500/20 text-amber-400 border border-amber-500/30';
+            } else if (prob.difficulty === '상') {
+                diffBadge.className = 'px-2 py-0.5 rounded text-[11px] font-semibold bg-rose-500/20 text-rose-400 border border-rose-500/30';
+            } else {
+                diffBadge.className = 'px-2.5 py-0.5 rounded text-[11px] font-bold bg-gradient-to-r from-purple-500/20 to-pink-500/20 text-purple-300 border border-purple-500/40 shadow-sm';
+            }
             document.getElementById('pDesc').textContent = prob.desc;
             document.getElementById('sampleInput').textContent = prob.sample_input || '없음';
             document.getElementById('sampleOutput').textContent = prob.sample_output || '(출력 결과 없음)';

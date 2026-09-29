@@ -73,6 +73,20 @@ const PROBLEMS = [
         "hint": "1. 4개 입력값을 순서대로 받습니다: 기준요금, 나이, 조조할인여부(1/0), 통신사할인여부(1/0)\n2. 1단계 (나이 할인율 판별):\n   double ageDiscountRate = (age >= 65) ? 0.5 : ((age < 19) ? 0.3 : 0.0);\n   int priceAfterAge = basePrice - (int)(basePrice * ageDiscountRate);\n3. 2단계 (조조 2,000원 차감):\n   int priceAfterMorning = isMorning ? (priceAfterAge - 2000) : priceAfterAge;\n4. 3단계 (통신사 제휴 10% 추가 할인):\n   int finalPrice = hasTelecomDiscount ? (int)(priceAfterMorning * 0.9) : priceAfterMorning;"
     },
     {
+        "id": "day01_도전",
+        "day": 1,
+        "subject": "Java",
+        "difficulty": "도전",
+        "title": "24시간제 스마트 알람 시계 및 날짜 오버플로우 시뮬레이터 (TimeOverflowCalculator)",
+        "desc": "현재 시각(시 H: 0~23, 분 M: 0~59)과 추가할 타이머 시간(분 단위 D: 0~100,000분)이 주어집니다.\n타이머가 완료된 시점의 최종 시각(시, 분)과 함께, 추가 시간 동안 자정(00:00)을 몇 번 통과했는지(경과 일수)를 계산하세요.\n(조건문 if를 사용하지 않고 오직 산술 연산자 +, /, % 및 삼항 연산자만으로 24시간 순환을 구현하세요.)\n\n[입력]\n시(H) 분(M) 추가분(D)\n(예: 14 30 1800)",
+        "template": "import java.util.Scanner;\n\npublic class Solution {\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        // 여기에 코드를 작성하세요\n        \n    }\n}",
+        "solution": "import java.util.Scanner;\n\npublic class Solution {\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        int h = sc.nextInt();\n        int m = sc.nextInt();\n        int d = sc.nextInt();\n\n        int totalMinutesFromMidnight = (h * 60) + m + d;\n        int daysPassed = totalMinutesFromMidnight / (24 * 60);\n        int remainingMinutes = totalMinutesFromMidnight % (24 * 60);\n\n        int finalH = remainingMinutes / 60;\n        int finalM = remainingMinutes % 60;\n\n        int addHours = d / 60;\n        int addMinutes = d % 60;\n\n        System.out.println(\"=== 스마트 타이머 오버플로우 계산기 ===\");\n        System.out.printf(\"설정 시각: %d시 %d분\\n\", h, m);\n        System.out.printf(\"타이머 추가 시간: %,d분 (%d시간 %d분)\\n\", d, addHours, addMinutes);\n        System.out.println(\"---------------------------------\");\n        System.out.printf(\"경과 일수: +%d일 경과\\n\", daysPassed);\n        System.out.printf(\"최종 알람 시각: %02d시 %02d분 (24시간제)\\n\", finalH, finalM);\n    }\n}",
+        "sample_input": "14 30 1800",
+        "sample_output": "=== 스마트 타이머 오버플로우 계산기 ===\n설정 시각: 14시 30분\n타이머 추가 시간: 1,800분 (30시간 0분)\n---------------------------------\n경과 일수: +1일 경과\n최종 알람 시각: 20시 30분 (24시간제)",
+        "expected": "=== 스마트 타이머 오버플로우 계산기 ===\n설정 시각: 14시 30분\n타이머 추가 시간: 1,800분 (30시간 0분)\n---------------------------------\n경과 일수: +1일 경과\n최종 알람 시각: 20시 30분 (24시간제)",
+        "hint": "1. 기준점을 자정(00:00)으로 환산하면 계산이 단순해집니다: `int totalMinutesFromMidnight = (h * 60) + m + d;`\n2. 하루는 24 * 60 = 1440분입니다. 따라서 경과 일수는 `totalMinutes / 1440`, 최종 남은 분은 `totalMinutes % 1440`입니다.\n3. `%02d` 서식 문자를 사용하면 1자리 숫자 앞을 0으로 채워 2자리(예: 09시 05분)로 깔끔하게 출력할 수 있습니다."
+    },
+    {
         "id": "day02_하1",
         "day": 2,
         "subject": "Java",
@@ -141,6 +155,20 @@ const PROBLEMS = [
         "sample_output": "=== 369 게임 진행 결과 ===\n1 2 짝 4 5 짝 7 8 짝 10 11 12 짝 14 15 짝 17 18 짝 20 21 22 짝 24 25 짝 27 28 짝 짝 짝 짝 짝짝 짝 짝\n---------------------------------\n1부터 35까지 총 박수 횟수: 16회",
         "expected": "=== 369 게임 진행 결과 ===\n1 2 짝 4 5 짝 7 8 짝 10 11 12 짝 14 15 짝 17 18 짝 20 21 22 짝 24 25 짝 27 28 짝 짝 짝 짝 짝짝 짝 짝\n---------------------------------\n1부터 35까지 총 박수 횟수: 16회",
         "hint": "1. 1부터 N까지 for문으로 순회합니다.\n2. 각 숫자 `temp`를 `while (temp > 0)`로 자리수(`temp % 10`)마다 3, 6, 9인지 확인하고 `temp /= 10`으로 줄여나갑니다.\n3. `clapCount`가 1 이상이면 박수 개수만큼 '짝'을 이어붙이고 `totalClaps`에 합산합니다."
+    },
+    {
+        "id": "day02_도전",
+        "day": 2,
+        "subject": "Java",
+        "difficulty": "도전",
+        "title": "소수(Prime Number) 판별 및 N번째 소수 탐색기 (PrimeFinder)",
+        "desc": "양의 정수 N(1~1,000)을 입력받아, 2부터 시작하여 N번째 소수(Prime Number)를 찾아내고, 해당 소수까지 도달하는 동안 거쳐간 소수의 총 개수와 합성수(1 제외 소수가 아닌 수)의 총 개수를 집계하세요.\n(효율적인 탐색을 위해 2부터 제곱근 sqrt(num)까지만 나누어 떨어지는지 검사하는 최적화 알고리즘을 적용하세요.)\n\n[입력]\n찾고자 하는 소수의 순번 N\n(예: 10)",
+        "template": "import java.util.Scanner;\n\npublic class Solution {\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        // 여기에 코드를 작성하세요\n        \n    }\n}",
+        "solution": "import java.util.Scanner;\n\npublic class Solution {\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        int targetN = sc.nextInt();\n\n        int primeCount = 0;\n        int compositeCount = 0;\n        int currentNum = 2;\n        int lastPrime = 2;\n\n        while (primeCount < targetN) {\n            boolean isPrime = true;\n            for (int i = 2; i * i <= currentNum; i++) {\n                if (currentNum % i == 0) {\n                    isPrime = false;\n                    break;\n                }\n            }\n\n            if (isPrime) {\n                primeCount++;\n                lastPrime = currentNum;\n            } else {\n                compositeCount++;\n            }\n\n            if (primeCount == targetN) break;\n            currentNum++;\n        }\n\n        System.out.println(\"=== N번째 소수 탐색 시뮬레이터 ===\");\n        System.out.printf(\"탐색 목표: %d번째 소수\\n\", targetN);\n        System.out.println(\"---------------------------------\");\n        System.out.printf(\"%d번째 소수: %d\\n\", targetN, lastPrime);\n        System.out.printf(\"2부터 %d까지 소수 개수: %d개\\n\", lastPrime, primeCount);\n        System.out.printf(\"2부터 %d까지 합성수 개수: %d개\\n\", lastPrime, compositeCount);\n    }\n}",
+        "sample_input": "10",
+        "sample_output": "=== N번째 소수 탐색 시뮬레이터 ===\n탐색 목표: 10번째 소수\n---------------------------------\n10번째 소수: 29\n2부터 29까지 소수 개수: 10개\n2부터 29까지 합성수 개수: 18개",
+        "expected": "=== N번째 소수 탐색 시뮬레이터 ===\n탐색 목표: 10번째 소수\n---------------------------------\n10번째 소수: 29\n2부터 29까지 소수 개수: 10개\n2부터 29까지 합성수 개수: 18개",
+        "hint": "1. 어떤 수 k가 소수인지 검사할 때, 2부터 k-1까지 모두 나눌 필요 없이 `i * i <= k` 까지만 나누어 떨어지는지 검사하면 시간 복잡도를 O(√N)으로 획기적으로 줄일 수 있습니다.\n2. while문으로 `primeCount < targetN`인 동안 순차 탐색하며 카운터를 갱신합니다."
     },
     {
         "id": "day03_하1",
@@ -213,6 +241,20 @@ const PROBLEMS = [
         "hint": "1. 4x5 2차원 배열을 순회하며 빈 좌석(0)의 개수를 셉니다.\n2. 각 행별로 연속된 0의 개수(`consecutive`)를 세다가 1을 만나면 0으로 리셋합니다.\n3. `consecutive >= k`가 되는 행을 리스트에 담아 서식에 맞춰 출력합니다."
     },
     {
+        "id": "day03_도전",
+        "day": 3,
+        "subject": "Java",
+        "difficulty": "도전",
+        "title": "N x N 달팽이(소용돌이) 배열 채우기 및 대각선 합계 (SpiralMatrix)",
+        "desc": "홀수 N(3, 5, 7 중 하나)을 입력받아, N x N 크기의 2차원 배열에 1부터 N^2까지의 숫자를 시계 방향 소용돌이(우 -> 하 -> 좌 -> 상) 형태로 채워 넣으세요.\n- 채워진 2차원 배열을 서식에 맞게 출력하세요.\n- 중심(Center) 좌표(1부터 시작하는 행, 열)의 원소 값과 주 대각선(X자 대각선)에 위치한 모든 원소들의 총합을 계산하여 출력하세요.\n\n[입력]\n홀수 N (3, 5, 7)\n(예: 5)",
+        "template": "import java.util.Scanner;\n\npublic class Solution {\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        // 여기에 코드를 작성하세요\n        \n    }\n}",
+        "solution": "import java.util.Scanner;\n\npublic class Solution {\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        int n = sc.nextInt();\n        int[][] matrix = new int[n][n];\n\n        // 우, 하, 좌, 상 방향 벡터\n        int[] dr = {0, 1, 0, -1};\n        int[] dc = {1, 0, -1, 0};\n\n        int r = 0, c = 0, dir = 0;\n        for (int val = 1; val <= n * n; val++) {\n            matrix[r][c] = val;\n            int nr = r + dr[dir];\n            int nc = c + dc[dir];\n\n            if (nr < 0 || nr >= n || nc < 0 || nc >= n || matrix[nr][nc] != 0) {\n                dir = (dir + 1) % 4;\n                nr = r + dr[dir];\n                nc = c + dc[dir];\n            }\n            r = nr;\n            c = nc;\n        }\n\n        System.out.printf(\"=== %dx%d 달팽이 소용돌이 배열 ===\\n\", n, n);\n        for (int i = 0; i < n; i++) {\n            for (int j = 0; j < n; j++) {\n                System.out.printf(\"%2d\", matrix[i][j]);\n                if (j < n - 1) System.out.print(\" \");\n            }\n            System.out.println();\n        }\n\n        int centerR = n / 2;\n        int centerC = n / 2;\n        int centerVal = matrix[centerR][centerC];\n\n        int diagonalSum = 0;\n        for (int i = 0; i < n; i++) {\n            diagonalSum += matrix[i][i];\n            if (i != n - 1 - i) {\n                diagonalSum += matrix[i][n - 1 - i];\n            }\n        }\n\n        System.out.println(\"---------------------------------\");\n        System.out.printf(\"중심 좌표 (%d행 %d열) 원소: %d\\n\", centerR + 1, centerC + 1, centerVal);\n        System.out.printf(\"대각선(X자) 원소 합계: %d\\n\", diagonalSum);\n    }\n}",
+        "sample_input": "5",
+        "sample_output": "=== 5x5 달팽이 소용돌이 배열 ===\n 1  2  3  4  5\n16 17 18 19  6\n15 24 25 20  7\n14 23 22 21  8\n13 12 11 10  9\n---------------------------------\n중심 좌표 (3행 3열) 원소: 25\n대각선(X자) 원소 합계: 133",
+        "expected": "=== 5x5 달팽이 소용돌이 배열 ===\n 1  2  3  4  5\n16 17 18 19  6\n15 24 25 20  7\n14 23 22 21  8\n13 12 11 10  9\n---------------------------------\n중심 좌표 (3행 3열) 원소: 25\n대각선(X자) 원소 합계: 133",
+        "hint": "1. 방향 벡터 `dr = {0, 1, 0, -1}`, `dc = {1, 0, -1, 0}`를 선언합니다.\n2. 다음 위치가 배열 범위를 벗어나거나 이미 숫자가 채워진 경우 `dir = (dir + 1) % 4`로 방향을 90도 회전합니다.\n3. X자 대각선 합 계산 시 중심 원소가 두 번 더해지지 않도록 중복 처리를 주의합니다."
+    },
+    {
         "id": "day04_하1",
         "day": 4,
         "subject": "Java",
@@ -267,6 +309,20 @@ const PROBLEMS = [
         "sample_output": "=== 물류 창고 재고 현황판 ===\n[출고 완료] 노트북 5개 출고 성공 (남은 재고: 5개)\n[출고 실패] 무선마우스 출고 불가: 재고 부족 (현재 재고: 5개, 요청: 8개)\n---------------------------------\n코드: P01 | 품명: 노트북 | 단가: 1,200,000원 | 재고: 5개 | 재고 평가액: 6,000,000원\n코드: P02 | 품명: 무선마우스 | 단가: 30,000원 | 재고: 5개 | 재고 평가액: 150,000원\n---------------------------------\n창고 총 재고 평가액: 6,150,000원",
         "expected": "=== 물류 창고 재고 현황판 ===\n[출고 완료] 노트북 5개 출고 성공 (남은 재고: 5개)\n[출고 실패] 무선마우스 출고 불가: 재고 부족 (현재 재고: 5개, 요청: 8개)\n---------------------------------\n코드: P01 | 품명: 노트북 | 단가: 1,200,000원 | 재고: 5개 | 재고 평가액: 6,000,000원\n코드: P02 | 품명: 무선마우스 | 단가: 30,000원 | 재고: 5개 | 재고 평가액: 150,000원\n---------------------------------\n창고 총 재고 평가액: 6,150,000원",
         "hint": "1. Item 클래스에 code, name, price, stock 속성을 두고 releaseStock(int qty) 메서드로 출고 가능 여부를 if문으로 검사합니다.\n2. 출고 성공 시에는 stock에서 qty를 차감하고, 부족 시 차감하지 않고 에러를 출력합니다.\n3. 단가 * 재고수는 금액이 커질 수 있으므로 long 형변환을 고려합니다."
+    },
+    {
+        "id": "day04_도전",
+        "day": 4,
+        "subject": "Java",
+        "difficulty": "도전",
+        "title": "객체 간 상호작용 및 은행 계좌 이체 트랜잭션 관리자 (BankTransactionManager)",
+        "desc": "두 명의 예금주 계좌 객체(A 계좌, B 계좌)를 생성하고, A 계좌에서 B 계좌로 일정 금액을 송금하는 이체(transfer) 트랜잭션 메서드를 구현하세요.\n- 송금 시 이체 수수료(송금액의 1%, 최소 500원)가 출금 계좌에서 추가로 차감됩니다.\n- 출금 계좌의 잔액이 (송금액 + 수수료)보다 부족할 경우 트랜잭션 전체가 롤백(취소)되어 양쪽 계좌 잔액이 전혀 변동되지 않아야 합니다.\n- 이체 성공 시 양쪽 계좌 잔액을 갱신하고 거래 결과를 상세히 출력하세요.\n\n[입력]\n출금계좌주 출금계좌잔액 입금계좌주 입금계좌잔액 이체희망액\n(예: 홍길동 50000 이영희 20000 30000)",
+        "template": "import java.util.Scanner;\n\nclass Account {\n    // 계좌 필드, 입금, 출금, 이체(transfer) 메서드를 작성하세요\n}\n\npublic class Solution {\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        // 여기에 코드를 작성하세요\n        \n    }\n}",
+        "solution": "import java.util.Scanner;\n\nclass Account {\n    String owner;\n    int balance;\n\n    public Account(String owner, int balance) {\n        this.owner = owner;\n        this.balance = balance;\n    }\n\n    public boolean transferTo(Account target, int amount) {\n        int fee = Math.max(500, (int) (amount * 0.01));\n        int totalNeeded = amount + fee;\n\n        if (this.balance < totalNeeded) {\n            int shortage = totalNeeded - this.balance;\n            System.out.printf(\"[이체 실패] 잔액 부족으로 이체 트랜잭션이 취소되었습니다. (부족액: %,d원)\\n\", shortage);\n            return false;\n        }\n\n        this.balance -= totalNeeded;\n        target.balance += amount;\n\n        System.out.printf(\"[이체 요청] %s -> %s (송금액: %,d원 | 이체 수수료: %,d원)\\n\",\n                this.owner, target.owner, amount, fee);\n        System.out.println(\">> 이체 트랜잭션 승인 완료!\");\n        return true;\n    }\n}\n\npublic class Solution {\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        String senderName = sc.next();\n        int senderBal = sc.nextInt();\n        String receiverName = sc.next();\n        int receiverBal = sc.nextInt();\n        int transferAmt = sc.nextInt();\n\n        Account sender = new Account(senderName, senderBal);\n        Account receiver = new Account(receiverName, receiverBal);\n\n        System.out.println(\"=== 은행 계좌 간 이체 트랜잭션 시스템 ===\");\n        boolean success = sender.transferTo(receiver, transferAmt);\n        System.out.println(\"---------------------------------\");\n        int fee = Math.max(500, (int) (transferAmt * 0.01));\n        int deducted = success ? (transferAmt + fee) : 0;\n        int received = success ? transferAmt : 0;\n\n        System.out.printf(\"[출금 계좌] 예금주: %s | 차감액: %,d원 | 최종 잔액: %,d원\\n\",\n                sender.owner, deducted, sender.balance);\n        System.out.printf(\"[입금 계좌] 예금주: %s | 수취액: %,d원 | 최종 잔액: %,d원\\n\",\n                receiver.owner, received, receiver.balance);\n    }\n}",
+        "sample_input": "홍길동 50000 이영희 20000 30000",
+        "sample_output": "=== 은행 계좌 간 이체 트랜잭션 시스템 ===\n[이체 요청] 홍길동 -> 이영희 (송금액: 30,000원 | 이체 수수료: 500원)\n>> 이체 트랜잭션 승인 완료!\n---------------------------------\n[출금 계좌] 예금주: 홍길동 | 차감액: 30,500원 | 최종 잔액: 19,500원\n[입금 계좌] 예금주: 이영희 | 수취액: 30,000원 | 최종 잔액: 50,000원",
+        "expected": "=== 은행 계좌 간 이체 트랜잭션 시스템 ===\n[이체 요청] 홍길동 -> 이영희 (송금액: 30,000원 | 이체 수수료: 500원)\n>> 이체 트랜잭션 승인 완료!\n---------------------------------\n[출금 계좌] 예금주: 홍길동 | 차감액: 30,500원 | 최종 잔액: 19,500원\n[입금 계좌] 예금주: 이영희 | 수취액: 30,000원 | 최종 잔액: 50,000원",
+        "hint": "1. 메서드의 매개변수로 다른 객체(`Account target`)의 참조를 전달받아 객체 간 메시지 전송(협력)을 구현합니다.\n2. 수수료 = `Math.max(500, (int) (amount * 0.01))` 로 1%와 500원 중 큰 값을 적용합니다.\n3. 출금 계좌의 잔액이 충분할 때만 `this.balance -= (amount + fee)` 및 `target.balance += amount`를 수행하여 트랜잭션 원자성을 보장합니다."
     },
     {
         "id": "day05_하1",
@@ -325,6 +381,20 @@ const PROBLEMS = [
         "hint": "1. `Hero` 추상 클래스에 공통 속성을 정의하고, `skillAttack()`을 추상 메서드로 선언합니다.\n2. 자식 클래스에서 직업별 스킬 배율(전사 1.5배, 마법사 2.0배)을 오버라이딩합니다.\n3. 총 피해량을 누적 계산하여 잔여 체력(`Math.max(0, bossHp - totalDamage)`)을 구합니다."
     },
     {
+        "id": "day05_도전",
+        "day": 5,
+        "subject": "Java",
+        "difficulty": "도전",
+        "title": "턴제 RPG 전투 시뮬레이션 및 다형성 스킬 체인 (TurnBasedRpgBattle)",
+        "desc": "전사(Warrior, 고정 피해 200), 도적(Rogue, 연속 2타 150*2=300), 힐러(Healer, 고정 피해 80)로 구성된 영웅 파티가 체력 H의 레이드 보스를 공격합니다.\n- 매 턴마다 3명의 영웅이 다형성 배열을 통해 순서대로 공격합니다 (1턴 파티 총 피해: 200 + 300 + 80 = 580 DMG).\n- 각 턴이 종료될 때마다 보스의 잔여 체력(최소 0)을 갱신 및 출력합니다.\n- 보스의 체력이 0 이하가 되면 전투를 즉시 종료하고 토벌 소요 턴 수와 전원 생존 메시지를 출력하세요.\n\n[입력]\n보스 초기 체력 H (정수)\n(예: 1500)",
+        "template": "import java.util.Scanner;\n\nabstract class Hero {\n    String job;\n    public Hero(String job) { this.job = job; }\n    abstract int attack();\n}\n\npublic class Solution {\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        // 여기에 코드를 작성하세요\n        \n    }\n}",
+        "solution": "import java.util.Scanner;\n\nabstract class Hero {\n    String job;\n    public Hero(String job) { this.job = job; }\n    abstract int attack();\n}\n\nclass Warrior extends Hero {\n    public Warrior() { super(\"전사\"); }\n    @Override int attack() { return 200; }\n}\n\nclass Rogue extends Hero {\n    public Rogue() { super(\"도적\"); }\n    @Override int attack() { return 300; } // 150 * 2\n}\n\nclass Healer extends Hero {\n    public Healer() { super(\"힐러\"); }\n    @Override int attack() { return 80; }\n}\n\npublic class Solution {\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        int bossHp = sc.nextInt();\n\n        Hero[] party = { new Warrior(), new Rogue(), new Healer() };\n\n        System.out.println(\"=== 던전 레이드 턴제 전투 시뮬레이션 ===\");\n        System.out.printf(\"보스 체력: %,d HP | 파티 인원: %d명\\n\", bossHp, party.length);\n        System.out.println(\"---------------------------------\");\n\n        int turn = 0;\n        int currentHp = bossHp;\n\n        while (currentHp > 0) {\n            turn++;\n            int turnDamage = 0;\n            for (Hero h : party) {\n                turnDamage += h.attack();\n            }\n\n            currentHp = Math.max(0, currentHp - turnDamage);\n            System.out.printf(\"[%d턴] 파티 총 공격: %,d 데미지 -> 보스 잔여 체력: %,d HP\\n\", turn, turnDamage, currentHp);\n        }\n\n        System.out.println(\"---------------------------------\");\n        System.out.printf(\"전투 승리! [%d턴] 만에 보스를 토벌하였습니다.\\n\", turn);\n        System.out.println(\"생존 영웅: 전사, 도적, 힐러 (전원 생존)\");\n    }\n}",
+        "sample_input": "1500",
+        "sample_output": "=== 던전 레이드 턴제 전투 시뮬레이션 ===\n보스 체력: 1,500 HP | 파티 인원: 3명\n---------------------------------\n[1턴] 파티 총 공격: 580 데미지 -> 보스 잔여 체력: 920 HP\n[2턴] 파티 총 공격: 580 데미지 -> 보스 잔여 체력: 340 HP\n[3턴] 파티 총 공격: 580 데미지 -> 보스 잔여 체력: 0 HP\n---------------------------------\n전투 승리! [3턴] 만에 보스를 토벌하였습니다.\n생존 영웅: 전사, 도적, 힐러 (전원 생존)",
+        "expected": "=== 던전 레이드 턴제 전투 시뮬레이션 ===\n보스 체력: 1,500 HP | 파티 인원: 3명\n---------------------------------\n[1턴] 파티 총 공격: 580 데미지 -> 보스 잔여 체력: 920 HP\n[2턴] 파티 총 공격: 580 데미지 -> 보스 잔여 체력: 340 HP\n[3턴] 파티 총 공격: 580 데미지 -> 보스 잔여 체력: 0 HP\n---------------------------------\n전투 승리! [3턴] 만에 보스를 토벌하였습니다.\n생존 영웅: 전사, 도적, 힐러 (전원 생존)",
+        "hint": "1. `Hero[] party = { new Warrior(), new Rogue(), new Healer() };` 다형성 배열을 선언합니다.\n2. while문 안에서 `currentHp > 0`인 동안 턴을 증가시키며 파티원들의 공격력을 합산 차감합니다.\n3. `Math.max(0, currentHp - turnDamage)`로 음수 체력을 방지합니다."
+    },
+    {
         "id": "day06_하1",
         "day": 6,
         "subject": "Java",
@@ -381,6 +451,20 @@ const PROBLEMS = [
         "hint": "1. `class DeliveryOrder implements Payable, Shippable`로 여러 인터페이스를 다중 구현할 수 있습니다.\n2. 생성자 내부에서 15,000원 미만인 경우 `throw new InvalidOrderException(...)`을 던집니다.\n3. main 함수에서 try-catch로 예외를 포착하여 안전하게 주문 흐름을 제어합니다."
     },
     {
+        "id": "day06_도전",
+        "day": 6,
+        "subject": "Java",
+        "difficulty": "도전",
+        "title": "결제 실패 시 보상 트랜잭션 및 복구 재시도 엔진 (PaymentCompensationEngine)",
+        "desc": "외부 결제 PG사 API 호출 시 발생하는 일시적 통신 장애 `NetworkTimeoutException`을 처리하는 결제 재시도 엔진을 작성하세요.\n- 결제 에러 유형(PG_TIMEOUT 또는 LIMIT_EXCEEDED), 주문 금액, 사용된 결제 포인트를 입력받습니다.\n- PG_TIMEOUT인 경우 최대 3회까지 재시도를 수행합니다.\n- 3회 연속 실패 시 재시도를 중단하고, 사용된 포인트를 안전하게 원상 복구하는 '보상 트랜잭션(Compensating Transaction)'을 가동하여 롤백 메시지를 출력하세요.\n\n[입력]\n에러유형 주문금액 사용포인트\n(예: PG_TIMEOUT 50000 5000)",
+        "template": "import java.util.Scanner;\n\nclass NetworkTimeoutException extends Exception {\n    public NetworkTimeoutException(String msg) { super(msg); }\n}\n\npublic class Solution {\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        // 여기에 코드를 작성하세요\n        \n    }\n}",
+        "solution": "import java.util.Scanner;\n\nclass NetworkTimeoutException extends Exception {\n    public NetworkTimeoutException(String msg) { super(msg); }\n}\n\npublic class Solution {\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        String errorType = sc.next();\n        int amount = sc.nextInt();\n        int point = sc.nextInt();\n\n        System.out.println(\"=== 결제 게이트웨이 복구 엔진 ===\");\n        System.out.printf(\"주문 금액: %,d원 | 사용 포인트: %,d원\\n\", amount, point);\n\n        int maxRetries = 3;\n        boolean paymentSuccess = false;\n\n        for (int attempt = 1; attempt <= maxRetries; attempt++) {\n            try {\n                if (\"PG_TIMEOUT\".equals(errorType)) {\n                    throw new NetworkTimeoutException(\"PG사 응답 시간 초과\");\n                }\n                paymentSuccess = true;\n                break;\n            } catch (NetworkTimeoutException e) {\n                if (attempt < maxRetries) {\n                    System.out.printf(\"[%d차 시도 실패] NetworkTimeoutException 감지 -> %d회차 재시도...\\n\", attempt, attempt);\n                } else {\n                    System.out.printf(\"[%d차 시도 실패] NetworkTimeoutException 감지 -> 재시도 한도 초과!\\n\", attempt);\n                }\n            }\n        }\n\n        System.out.println(\"---------------------------------\");\n        if (!paymentSuccess) {\n            System.out.printf(\"[보상 트랜잭션 가동] 결제 실패로 사용된 포인트 %,dP를 원상 복구합니다.\\n\", point);\n            System.out.println(\"최종 결제 결과: 트랜잭션 롤백 완료\");\n        } else {\n            System.out.println(\"최종 결제 결과: 결제 정상 승인 완료\");\n        }\n    }\n}",
+        "sample_input": "PG_TIMEOUT 50000 5000",
+        "sample_output": "=== 결제 게이트웨이 복구 엔진 ===\n주문 금액: 50,000원 | 사용 포인트: 5,000원\n[1차 시도 실패] NetworkTimeoutException 감지 -> 1회차 재시도...\n[2차 시도 실패] NetworkTimeoutException 감지 -> 2회차 재시도...\n[3차 시도 실패] NetworkTimeoutException 감지 -> 재시도 한도 초과!\n---------------------------------\n[보상 트랜잭션 가동] 결제 실패로 사용된 포인트 5,000P를 원상 복구합니다.\n최종 결제 결과: 트랜잭션 롤백 완료",
+        "expected": "=== 결제 게이트웨이 복구 엔진 ===\n주문 금액: 50,000원 | 사용 포인트: 5,000원\n[1차 시도 실패] NetworkTimeoutException 감지 -> 1회차 재시도...\n[2차 시도 실패] NetworkTimeoutException 감지 -> 2회차 재시도...\n[3차 시도 실패] NetworkTimeoutException 감지 -> 재시도 한도 초과!\n---------------------------------\n[보상 트랜잭션 가동] 결제 실패로 사용된 포인트 5,000P를 원상 복구합니다.\n최종 결제 결과: 트랜잭션 롤백 완료",
+        "hint": "1. 실무 금융/이커머스 결제 아키텍처의 필수 패턴인 '재시도(Retry)'와 '보상 트랜잭션(Saga Compensating Transaction)' 모델입니다.\n2. for 루프 내부에서 try-catch를 감싸 일시적 예외 발생 시 회차를 증가시키며 재시도합니다.\n3. 최종 실패 시에는 이미 차감된 포인트를 되돌려주는 롤백 로직을 안전하게 실행합니다."
+    },
+    {
         "id": "day07_하1",
         "day": 7,
         "subject": "Java",
@@ -435,6 +519,20 @@ const PROBLEMS = [
         "sample_output": "=== Stream API 상품 데이터 분석 보고서 ===\n전체 상품 수: 5개\n---------------------------------\n[전자기기 카테고리 분석]\n- 해당 상품 수: 3개\n- 총 금액 합계: 1,334,000원\n- 평균 단가: 444,666.67원\n---------------------------------\n[50,000원 이상 프리미엄 상품 수]: 2개",
         "expected": "=== Stream API 상품 데이터 분석 보고서 ===\n전체 상품 수: 5개\n---------------------------------\n[전자기기 카테고리 분석]\n- 해당 상품 수: 3개\n- 총 금액 합계: 1,334,000원\n- 평균 단가: 444,666.67원\n---------------------------------\n[50,000원 이상 프리미엄 상품 수]: 2개",
         "hint": "1. `products.stream().filter(p -> \"전자기기\".equals(p.category)).toList()`로 특정 조건 객체만 수집합니다.\n2. `mapToInt(p -> p.price)`로 기본형 IntStream으로 변환 후 `.sum()` 또는 `.average()`를 호출합니다.\n3. `.filter(p -> p.price >= 50000).count()`로 조건에 일치하는 요소의 개수를 빠르게 집계합니다."
+    },
+    {
+        "id": "day07_도전",
+        "day": 7,
+        "subject": "Java",
+        "difficulty": "도전",
+        "title": "대용량 로그 스트림 파이프라인 및 복합 그룹핑 집계 (LogStreamAnalyzer)",
+        "desc": "웹 서버 접속 로그 N건(HTTP 상태코드, 엔드포인트 URL, 응답시간 ms)을 입력받아 Stream API만으로 다음을 산출하세요.\n- 1) 4xx/5xx 에러 응답(상태코드 >= 400)의 개수 및 에러율(%)\n- 2) 가장 많이 호출된 상위 엔드포인트 Top 1과 호출 횟수\n- 3) 정상 응답(200번대)의 평균 응답 시간(ms, 소수점 둘째 자리)\n\n[입력]\n첫째 줄: 로그 건수 N\n둘째 줄부터 N개 줄: 상태코드 URL 응답시간\n(예:\n6\n200 /api/login 45\n200 /api/products 120\n404 /favicon.ico 10\n500 /api/checkout 350\n200 /api/products 85\n200 /api/products 95)",
+        "template": "import java.util.Scanner;\nimport java.util.ArrayList;\nimport java.util.List;\nimport java.util.Map;\nimport java.util.stream.Collectors;\n\nclass LogEntry {\n    int status;\n    String url;\n    int duration;\n    public LogEntry(int status, String url, int duration) {\n        this.status = status;\n        this.url = url;\n        this.duration = duration;\n    }\n}\n\npublic class Solution {\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        // 여기에 Stream API를 활용하여 작성하세요\n        \n    }\n}",
+        "solution": "import java.util.Scanner;\nimport java.util.ArrayList;\nimport java.util.List;\nimport java.util.Map;\nimport java.util.stream.Collectors;\n\nclass LogEntry {\n    int status;\n    String url;\n    int duration;\n\n    public LogEntry(int status, String url, int duration) {\n        this.status = status;\n        this.url = url;\n        this.duration = duration;\n    }\n}\n\npublic class Solution {\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        int n = sc.nextInt();\n        List<LogEntry> logs = new ArrayList<>();\n        for (int i = 0; i < n; i++) {\n            logs.add(new LogEntry(sc.nextInt(), sc.next(), sc.nextInt()));\n        }\n\n        long errorCount = logs.stream()\n                .filter(l -> l.status >= 400)\n                .count();\n\n        long successCount = n - errorCount;\n        double errorRate = ((double) errorCount / n) * 100;\n\n        Map<String, Long> urlCounts = logs.stream()\n                .collect(Collectors.groupingBy(l -> l.url, Collectors.counting()));\n\n        Map.Entry<String, Long> topUrl = urlCounts.entrySet().stream()\n                .max(Map.Entry.comparingByValue())\n                .orElse(null);\n\n        double avgSuccessDuration = logs.stream()\n                .filter(l -> l.status >= 200 && l.status < 300)\n                .mapToInt(l -> l.duration)\n                .average()\n                .orElse(0.0);\n\n        System.out.println(\"=== 서버 접속 로그 스트림 분석 보고서 ===\");\n        System.out.printf(\"총 수집 로그: %d건\\n\", n);\n        System.out.println(\"---------------------------------\");\n        System.out.printf(\"[응답 상태 분석] 정상(2xx): %d건 | 에러(4xx/5xx): %d건 (에러율: %.1f%%)\\n\",\n                successCount, errorCount, errorRate);\n        if (topUrl != null) {\n            System.out.printf(\"[최다 호출 엔드포인트] %s (%d회 호출)\\n\", topUrl.getKey(), topUrl.getValue());\n        }\n        System.out.printf(\"[정상 응답 평균 처리시간] %.2fms\\n\", avgSuccessDuration);\n    }\n}",
+        "sample_input": "6\n200 /api/login 45\n200 /api/products 120\n404 /favicon.ico 10\n500 /api/checkout 350\n200 /api/products 85\n200 /api/products 95",
+        "sample_output": "=== 서버 접속 로그 스트림 분석 보고서 ===\n총 수집 로그: 6건\n---------------------------------\n[응답 상태 분석] 정상(2xx): 4건 | 에러(4xx/5xx): 2건 (에러율: 33.3%)\n[최다 호출 엔드포인트] /api/products (3회 호출)\n[정상 응답 평균 처리시간] 86.25ms",
+        "expected": "=== 서버 접속 로그 스트림 분석 보고서 ===\n총 수집 로그: 6건\n---------------------------------\n[응답 상태 분석] 정상(2xx): 4건 | 에러(4xx/5xx): 2건 (에러율: 33.3%)\n[최다 호출 엔드포인트] /api/products (3회 호출)\n[정상 응답 평균 처리시간] 86.25ms",
+        "hint": "1. `Collectors.groupingBy(l -> l.url, Collectors.counting())`으로 URL별 호출 빈도 Map을 원라인으로 생성합니다.\n2. `urlCounts.entrySet().stream().max(Map.Entry.comparingByValue())`로 가장 빈도가 높은 엔트리를 찾습니다.\n3. `filter(l -> l.status >= 200 && l.status < 300).mapToInt(l -> l.duration).average()`로 평균을 구합니다."
     },
     {
         "id": "day08_하1",
@@ -507,6 +605,20 @@ const PROBLEMS = [
         "hint": "1. 데이터베이스에서 NULL과의 산술 연산 결과는 항상 NULL이 되므로 `COMM IS NOT NULL` 조건이 중요합니다.\n2. 수식 계산 컬럼에 `AS TOTAL_COMP` 별칭(Alias)을 부여할 수 있습니다.\n3. WHERE 절에서는 SELECT 절의 별칭을 직접 사용할 수 없으므로 `(SAL + COMM) >= 2000` 수식을 직접 조건식에 작성합니다."
     },
     {
+        "id": "day08_도전",
+        "day": 8,
+        "subject": "MySQL",
+        "difficulty": "도전",
+        "title": "윈도우 함수 기반 전사 급여 랭킹 및 누적 급여 합계 집계 (DENSE_RANK & 누적합)",
+        "desc": "윈도우 함수(`OVER()`)를 활용하여 전사 모든 사원의 사원번호(`EMPNO`), 이름(`ENAME`), 급여(`SAL`), 전사 급여 순위(`SAL_RANK`), 그리고 급여가 높은 사원부터 현재 사원까지의 누적 급여 합계(`CUMULATIVE_SAL`)를 조회하세요.\n- 순위는 동점자가 있을 때 순위를 건너뛰지 않는 `DENSE_RANK() OVER (ORDER BY SAL DESC)`를 사용하세요.\n- 누적 합계는 `SUM(SAL) OVER (ORDER BY SAL DESC, EMPNO ASC)`를 사용하세요.",
+        "template": "-- 윈도우 함수를 활용한 고급 랭킹 쿼리를 작성하세요\nSELECT * FROM EMP;",
+        "solution": "SELECT \n    EMPNO, \n    ENAME, \n    SAL,\n    DENSE_RANK() OVER (ORDER BY SAL DESC) AS SAL_RANK,\n    SUM(SAL) OVER (ORDER BY SAL DESC, EMPNO ASC) AS CUMULATIVE_SAL\nFROM EMP\nORDER BY SAL_RANK ASC, EMPNO ASC;",
+        "sample_input": "MySQL EMP 테이블",
+        "sample_output": "EMPNO | ENAME  | SAL  | SAL_RANK | CUMULATIVE_SAL\n------+--------+------+----------+---------------\n 7839 | KING   | 5000 |        1 |           5000\n 7788 | SCOTT  | 3000 |        2 |           8000\n 7902 | FORD   | 3000 |        2 |          11000\n 7566 | JONES  | 2975 |        3 |          13975\n ...",
+        "expected": "EMPNO | ENAME  | SAL  | SAL_RANK | CUMULATIVE_SAL\n------+--------+------+----------+---------------\n 7839 | KING   | 5000 |        1 |           5000\n 7788 | SCOTT  | 3000 |        2 |           8000\n 7902 | FORD   | 3000 |        2 |          11000\n 7566 | JONES  | 2975 |        3 |          13975\n ...",
+        "hint": "1. MySQL 8.0+ 윈도우 함수는 GROUP BY 없이도 행별 집계 및 순위를 계산합니다.\n2. `DENSE_RANK() OVER (ORDER BY SAL DESC)`는 1등, 2등, 2등, 3등 순으로 순위를 매깁니다.\n3. `SUM(SAL) OVER (ORDER BY SAL DESC, EMPNO ASC)`는 순서대로 급여를 누적 집계합니다."
+    },
+    {
         "id": "day09_하1",
         "day": 9,
         "subject": "MySQL",
@@ -561,6 +673,20 @@ const PROBLEMS = [
         "sample_output": "JOB     | CNT | AVG_SAL | TOTAL_SAL\n--------+-----+---------+----------\nANALYST |   2 |  3000.0 |      6000\nMANAGER |   3 |  2758.3 |      8275",
         "expected": "JOB     | CNT | AVG_SAL | TOTAL_SAL\n--------+-----+---------+----------\nANALYST |   2 |  3000.0 |      6000\nMANAGER |   3 |  2758.3 |      8275",
         "hint": "1. 개별 행 필터링은 `WHERE` 절에, 그룹 집계 후 필터링은 `HAVING` 절에 분리하여 배치합니다.\n2. `WHERE JOB != 'PRESIDENT' AND SAL >= 1000`\n3. `HAVING AVG(SAL) >= 2000` 순서로 작성합니다."
+    },
+    {
+        "id": "day09_도전",
+        "day": 9,
+        "subject": "MySQL",
+        "difficulty": "도전",
+        "title": "CASE WHEN 기반 부서별 직무 배치 인원수 교차 피벗(PIVOT) 집계",
+        "desc": "데이터 분석 및 리포팅에서 널리 쓰이는 SQL 피벗(Cross Tabulation) 기법을 사용하여, 부서번호(`DEPTNO`)별로 5개 직무(`CLERK`, `SALESMAN`, `MANAGER`, `ANALYST`, `PRESIDENT`)에 속한 인원 수와 부서 총 사원 수(`TOTAL_COUNT`)를 한 행에 가로로 펼쳐 출력하세요.\n- `CASE WHEN JOB = 'CLERK' THEN 1 ELSE 0 END`와 `SUM()` 함수를 조합하세요.\n- 결과는 부서번호 오름차순으로 정렬하세요.",
+        "template": "-- 피벗 집계 쿼리를 작성하세요\nSELECT DEPTNO FROM EMP GROUP BY DEPTNO;",
+        "solution": "SELECT \n    DEPTNO,\n    SUM(CASE WHEN JOB = 'CLERK' THEN 1 ELSE 0 END) AS CLERK_CNT,\n    SUM(CASE WHEN JOB = 'SALESMAN' THEN 1 ELSE 0 END) AS SALESMAN_CNT,\n    SUM(CASE WHEN JOB = 'MANAGER' THEN 1 ELSE 0 END) AS MANAGER_CNT,\n    SUM(CASE WHEN JOB = 'ANALYST' THEN 1 ELSE 0 END) AS ANALYST_CNT,\n    SUM(CASE WHEN JOB = 'PRESIDENT' THEN 1 ELSE 0 END) AS PRESIDENT_CNT,\n    COUNT(*) AS TOTAL_COUNT\nFROM EMP\nGROUP BY DEPTNO\nORDER BY DEPTNO ASC;",
+        "sample_input": "MySQL EMP 테이블",
+        "sample_output": "DEPTNO | CLERK_CNT | SALESMAN_CNT | MANAGER_CNT | ANALYST_CNT | PRESIDENT_CNT | TOTAL_COUNT\n-------+-----------+--------------+-------------+-------------+---------------+------------\n    10 |         1 |            0 |           1 |           0 |             1 |           3\n    20 |         2 |            0 |           1 |           2 |             0 |           5\n    30 |         1 |            4 |           1 |           0 |             0 |           6",
+        "expected": "DEPTNO | CLERK_CNT | SALESMAN_CNT | MANAGER_CNT | ANALYST_CNT | PRESIDENT_CNT | TOTAL_COUNT\n-------+-----------+--------------+-------------+-------------+---------------+------------\n    10 |         1 |            0 |           1 |           0 |             1 |           3\n    20 |         2 |            0 |           1 |           2 |             0 |           5\n    30 |         1 |            4 |           1 |           0 |             0 |           6",
+        "hint": "1. RDBMS에서 행을 열로 회전시키는 PIVOT은 `SUM(CASE WHEN 조건 THEN 1 ELSE 0 END)` 패턴으로 구현합니다.\n2. `GROUP BY DEPTNO`를 적용하면 각 부서별로 직무별 인원수가 열(컬럼)로 분리 집계됩니다."
     },
     {
         "id": "day10_하1",
@@ -619,6 +745,20 @@ const PROBLEMS = [
         "hint": "1. `INNER JOIN SALGRADE S ON E.SAL BETWEEN S.LOSAL AND S.HISAL` 처럼 범위 비교를 통한 비등가 조인을 작성합니다.\n2. 조인 후 `WHERE S.GRADE >= 3`으로 원하는 등급만 선별합니다."
     },
     {
+        "id": "day10_도전",
+        "day": 10,
+        "subject": "MySQL",
+        "difficulty": "도전",
+        "title": "재귀 CTE(WITH RECURSIVE) 기반 조직도 계층 트리 및 탐색 경로(PATH) 조회",
+        "desc": "최고 경영자(`KING`, `MGR IS NULL`)부터 말단 사원까지 이어지는 상하 조직 계층 구조를 `WITH RECURSIVE` 재귀 쿼리로 모델링하세요.\n- 사원번호(`EMPNO`), 이름(`ENAME`), 직속상사번호(`MGR`), 조직 계층 레벨(`LVL`, KING은 1, 직속 부하는 2 ...), 그리고 루트부터 현재 사원까지의 보고 경로(`HIERARCHY_PATH`, 예: `KING > BLAKE > ALLEN`)를 계층 및 사원번호 순으로 출력하세요.",
+        "template": "-- 재귀 CTE 쿼리를 작성하세요\nWITH RECURSIVE EMP_TREE AS (\n    SELECT ...\n)\nSELECT * FROM EMP_TREE;",
+        "solution": "WITH RECURSIVE EMP_TREE AS (\n    -- Anchor Member: 최고 관리자 (KING)\n    SELECT \n        EMPNO, \n        ENAME, \n        MGR, \n        1 AS LVL,\n        CAST(ENAME AS CHAR(200)) AS HIERARCHY_PATH\n    FROM EMP\n    WHERE MGR IS NULL\n    \n    UNION ALL\n    \n    -- Recursive Member: 부하 사원 재귀 탐색\n    SELECT \n        E.EMPNO, \n        E.ENAME, \n        E.MGR, \n        T.LVL + 1 AS LVL,\n        CONCAT(T.HIERARCHY_PATH, ' > ', E.ENAME) AS HIERARCHY_PATH\n    FROM EMP E\n    INNER JOIN EMP_TREE T ON E.MGR = T.EMPNO\n)\nSELECT EMPNO, ENAME, MGR, LVL, HIERARCHY_PATH\nFROM EMP_TREE\nORDER BY LVL ASC, EMPNO ASC;",
+        "sample_input": "MySQL EMP 테이블",
+        "sample_output": "EMPNO | ENAME  | MGR  | LVL | HIERARCHY_PATH\n------+--------+------+-----+---------------------------\n 7839 | KING   | NULL |   1 | KING\n 7566 | JONES  | 7839 |   2 | KING > JONES\n 7698 | BLAKE  | 7839 |   2 | KING > BLAKE\n 7782 | CLARK  | 7839 |   2 | KING > CLARK\n 7499 | ALLEN  | 7698 |   3 | KING > BLAKE > ALLEN\n ...",
+        "expected": "EMPNO | ENAME  | MGR  | LVL | HIERARCHY_PATH\n------+--------+------+-----+---------------------------\n 7839 | KING   | NULL |   1 | KING\n 7566 | JONES  | 7839 |   2 | KING > JONES\n 7698 | BLAKE  | 7839 |   2 | KING > BLAKE\n 7782 | CLARK  | 7839 |   2 | KING > CLARK\n 7499 | ALLEN  | 7698 |   3 | KING > BLAKE > ALLEN\n ...",
+        "hint": "1. `WITH RECURSIVE 이름 AS (...)` 문법으로 재귀 공통 테이블 식을 정의합니다.\n2. Anchor Member는 재귀의 시작점(`WHERE MGR IS NULL`)입니다.\n3. Recursive Member는 `INNER JOIN EMP_TREE T ON E.MGR = T.EMPNO`로 이전 단계의 결과를 참조합니다."
+    },
+    {
         "id": "day11_하1",
         "day": 11,
         "subject": "MySQL",
@@ -675,6 +815,20 @@ const PROBLEMS = [
         "hint": "1. FROM 절에 인라인 뷰(Inline View) 서브쿼리를 두어 부서별 평균 급여 테이블을 생성하고 이를 EMP와 조인합니다.\n2. `WHERE E.SAL > D_AVG.AVG_SAL` 조건을 부여하여 부서 평균을 넘는 사원만 선별합니다."
     },
     {
+        "id": "day11_도전",
+        "day": 11,
+        "subject": "MySQL",
+        "difficulty": "도전",
+        "title": "부서별 급여 Top 2 사원 선별 인라인 뷰 서브쿼리 (ROW_NUMBER & PARTITION)",
+        "desc": "각 부서(`DEPTNO`)별로 급여가 가장 높은 1위 사원과 2위 사원만을 선별하는 고급 인라인 뷰 서브쿼리를 작성하세요.\n- 서브쿼리 내에서 `ROW_NUMBER() OVER (PARTITION BY DEPTNO ORDER BY SAL DESC, EMPNO ASC)`를 사용하여 부서별 급여 순위(`DEPT_RANK`)를 부여합니다.\n- 메인 쿼리에서 `DEPT_RANK <= 2`인 사원만을 필터링하고, 부서번호 오름차순, 부서 내 순위 오름차순으로 정렬하여 부서번호, 사원번호, 이름, 직무, 급여, 부서 내 순위를 조회하세요.",
+        "template": "-- 인라인 뷰 서브쿼리를 작성하세요\nSELECT * FROM (SELECT ...) T WHERE ...;",
+        "solution": "SELECT \n    T.DEPTNO, \n    T.EMPNO, \n    T.ENAME, \n    T.JOB, \n    T.SAL, \n    T.DEPT_RANK\nFROM (\n    SELECT \n        DEPTNO, \n        EMPNO, \n        ENAME, \n        JOB, \n        SAL,\n        ROW_NUMBER() OVER (PARTITION BY DEPTNO ORDER BY SAL DESC, EMPNO ASC) AS DEPT_RANK\n    FROM EMP\n) T\nWHERE T.DEPT_RANK <= 2\nORDER BY T.DEPTNO ASC, T.DEPT_RANK ASC;",
+        "sample_input": "MySQL EMP 테이블",
+        "sample_output": "DEPTNO | EMPNO | ENAME | JOB       | SAL  | DEPT_RANK\n-------+-------+-------+-----------+------+----------\n    10 |  7839 | KING  | PRESIDENT | 5000 |         1\n    10 |  7782 | CLARK | MANAGER   | 2450 |         2\n    20 |  7788 | SCOTT | ANALYST   | 3000 |         1\n    20 |  7902 | FORD  | ANALYST   | 3000 |         2\n    30 |  7698 | BLAKE | MANAGER   | 2850 |         1\n    30 |  7499 | ALLEN | SALESMAN  | 1600 |         2",
+        "expected": "DEPTNO | EMPNO | ENAME | JOB       | SAL  | DEPT_RANK\n-------+-------+-------+-----------+------+----------\n    10 |  7839 | KING  | PRESIDENT | 5000 |         1\n    10 |  7782 | CLARK | MANAGER   | 2450 |         2\n    20 |  7788 | SCOTT | ANALYST   | 3000 |         1\n    20 |  7902 | FORD  | ANALYST   | 3000 |         2\n    30 |  7698 | BLAKE | MANAGER   | 2850 |         1\n    30 |  7499 | ALLEN | SALESMAN  | 1600 |         2",
+        "hint": "1. `PARTITION BY DEPTNO`는 그룹별로 순위를 독립적으로 다시 1부터 매기도록 파티션을 나눕니다.\n2. WHERE 절에서는 윈도우 함수를 직접 쓸 수 없으므로 반드시 `FROM (SELECT ...) T` 형태의 인라인 뷰 서브쿼리로 감싼 후 `WHERE T.DEPT_RANK <= 2`를 적용해야 합니다."
+    },
+    {
         "id": "day12_하1",
         "day": 12,
         "subject": "MySQL",
@@ -729,6 +883,20 @@ const PROBLEMS = [
         "sample_output": "Query OK, 0 rows affected (참조 무결성 테이블 생성 완료)",
         "expected": "Query OK, 0 rows affected (참조 무결성 테이블 생성 완료)",
         "hint": "1. 외래키 옵션으로 `ON DELETE CASCADE`를 지정하면 부모 레코드 삭제 시 자식 레코드도 자동 삭제됩니다.\n2. `ON DELETE RESTRICT`는 자식 데이터가 존재할 때 부모 데이터 삭제를 차단하여 무결성을 보호합니다.\n3. `CHECK (조건식)`을 통해 음수 가격이나 0 이하 수량 입력 방지 규칙을 적용합니다."
+    },
+    {
+        "id": "day12_도전",
+        "day": 12,
+        "subject": "MySQL",
+        "difficulty": "도전",
+        "title": "사원-프로젝트 N:M 매핑 엔티티 및 복합 제약조건 DDL (PROJECT_MEMBER)",
+        "desc": "기업 프로젝트 관리 시스템을 위해 신규 프로젝트(`PROJECT`) 테이블과 사원-프로젝트 참여 매핑 테이블(`PROJECT_MEMBER`)을 생성하는 DDL을 작성하세요.\n1. `PROJECT` 테이블: `PROJ_ID INT AUTO_INCREMENT PRIMARY KEY`, `PROJ_NAME VARCHAR(100) NOT NULL UNIQUE`, `BUDGET DECIMAL(12,2) DEFAULT 0.00`\n2. `PROJECT_MEMBER` 테이블:\n   - `EMPNO INT NOT NULL`, `PROJ_ID INT NOT NULL`\n   - `ROLE VARCHAR(50) NOT NULL DEFAULT 'MEMBER'`\n   - `HOURS_PER_WEEK INT NOT NULL CHECK (HOURS_PER_WEEK BETWEEN 1 AND 40)`\n   - 복합 기본키: `PRIMARY KEY (EMPNO, PROJ_ID)`\n   - 외래키 1: `EMPNO`는 `EMP(EMPNO)` 참조, 사원 삭제 시 `ON DELETE CASCADE`\n   - 외래키 2: `PROJ_ID`는 `PROJECT(PROJ_ID)` 참조, 프로젝트 삭제 시 `ON DELETE CASCADE`",
+        "template": "-- 2개의 CREATE TABLE 문을 작성하세요\nCREATE TABLE PROJECT (\n);\nCREATE TABLE PROJECT_MEMBER (\n);",
+        "solution": "CREATE TABLE PROJECT (\n    PROJ_ID INT AUTO_INCREMENT PRIMARY KEY,\n    PROJ_NAME VARCHAR(100) NOT NULL UNIQUE,\n    BUDGET DECIMAL(12,2) DEFAULT 0.00\n);\n\nCREATE TABLE PROJECT_MEMBER (\n    EMPNO INT NOT NULL,\n    PROJ_ID INT NOT NULL,\n    ROLE VARCHAR(50) NOT NULL DEFAULT 'MEMBER',\n    HOURS_PER_WEEK INT NOT NULL CHECK (HOURS_PER_WEEK BETWEEN 1 AND 40),\n    PRIMARY KEY (EMPNO, PROJ_ID),\n    CONSTRAINT FK_PM_EMP FOREIGN KEY (EMPNO) REFERENCES EMP(EMPNO) ON DELETE CASCADE,\n    CONSTRAINT FK_PM_PROJ FOREIGN KEY (PROJ_ID) REFERENCES PROJECT(PROJ_ID) ON DELETE CASCADE\n);",
+        "sample_input": "DDL 실행",
+        "sample_output": "Query OK, 0 rows affected (N:M 매핑 테이블 생성 완료)",
+        "expected": "Query OK, 0 rows affected (N:M 매핑 테이블 생성 완료)",
+        "hint": "1. 실무 RDBMS에서 N:M 다대다 관계는 중간 연결 매핑 테이블을 생성하여 1:N, M:1 관계로 해소합니다.\n2. `PRIMARY KEY (EMPNO, PROJ_ID)` 처럼 두 컬럼을 묶어 복합 기본키(Composite PK)를 지정하면 동일 사원이 같은 프로젝트에 중복 배정되는 것을 원천 차단합니다."
     },
     {
         "id": "day13_하1",
@@ -801,6 +969,20 @@ const PROBLEMS = [
         "hint": "1. `aria-describedby=\"id\"`는 스크린 리더가 입력 필드에 포커스되었을 때 도움말 텍스트를 함께 음성으로 읽어주도록 연계합니다.\n2. 파일 업로드가 포함된 폼은 반드시 `enctype=\"multipart/form-data\"`를 선언해야 합니다.\n3. `pattern=\"...\"` 속성으로 정규식 포맷 클라이언트 유효성 검사를 수행합니다."
     },
     {
+        "id": "day13_도전",
+        "day": 13,
+        "subject": "Web",
+        "difficulty": "도전",
+        "title": "HTML5 Canvas 서명 패드 및 접근성 전자계약 폼 (CanvasSignaturePad)",
+        "desc": "온라인 근로 계약서 작성을 위한 전자 서명 폼을 마크업하세요.\n- 계약자 이름 입력 필드(`<input type=\"text\" required>`)\n- 전자 서명을 그릴 수 있는 그래픽 영역(`<canvas id=\"signature-pad\" width=\"400\" height=\"150\" role=\"img\" aria-label=\"전자 서명 입력 캔버스\">`)\n- '서명 초기화' 버튼과 '계약 체결 완료' 제출 버튼\n- 모든 컨트롤에 WAI-ARIA 접근성 라벨을 충실히 반영하세요.",
+        "template": "<!-- Canvas 서명 패드 마크업을 작성하세요 -->\n",
+        "solution": "<form action=\"/api/contract/sign\" method=\"POST\">\n    <h2>온라인 전자 근로계약서 체결</h2>\n    <div>\n        <label for=\"signer-name\">서명자 성명:</label>\n        <input type=\"text\" id=\"signer-name\" name=\"signerName\" required aria-required=\"true\">\n    </div>\n    <div style=\"margin: 16px 0;\">\n        <label id=\"sig-label\">본인 자필 전자 서명 (마우스 또는 터치로 서명):</label>\n        <div style=\"border: 2px dashed #94a3b8; border-radius: 8px; width: 400px;\">\n            <canvas id=\"signature-pad\" width=\"400\" height=\"150\" role=\"img\" aria-labelledby=\"sig-label\"></canvas>\n        </div>\n        <button type=\"button\" id=\"btn-clear-sig\" aria-label=\"작성된 서명 지우기\">서명 초기화</button>\n    </div>\n    <div>\n        <label>\n            <input type=\"checkbox\" name=\"agreeTerms\" required aria-required=\"true\">\n            위 계약서의 모든 조항을 성실히 이행할 것을 서약합니다 (필수)\n        </label>\n    </div>\n    <button type=\"submit\">전자계약 체결 완료</button>\n</form>",
+        "sample_input": "HTML 렌더링",
+        "sample_output": "Canvas 서명 영역 및 전자서명 폼 UI 확인",
+        "expected": "Canvas 서명 영역 및 전자서명 폼 UI 확인",
+        "hint": "1. `<canvas>` 요소는 자바스크립트로 2D 그래픽이나 서명 궤적을 렌더링하는 데 사용됩니다.\n2. 스크린 리더 사용자를 위해 `role=\"img\"`와 `aria-labelledby=\"라벨id\"`를 선언하여 캔버스의 용도를 명확히 전달합니다."
+    },
+    {
         "id": "day14_하1",
         "day": 14,
         "subject": "Web",
@@ -855,6 +1037,20 @@ const PROBLEMS = [
         "sample_output": "화면 폭에 맞춰 열 개수가 변하는 Grid 갤러리 확인",
         "expected": "화면 폭에 맞춰 열 개수가 변하는 Grid 갤러리 확인",
         "hint": "1. `repeat(auto-fit, minmax(220px, 1fr))`은 최소 220px을 보장하면서 남는 여백을 1fr 비율로 균등 분할하여 자동으로 줄바꿈해 줍니다.\n2. `@media (max-width: 600px)` 미디어 쿼리로 모바일 해상도에서 1열 전체 너비로 전환합니다."
+    },
+    {
+        "id": "day14_도전",
+        "day": 14,
+        "subject": "Web",
+        "difficulty": "도전",
+        "title": "CSS Grid Area 기반 모던 관리자 대시보드 레이아웃 (DashboardGridArea)",
+        "desc": "데스크톱에서는 좌측 고정 사이드바(240px) + 우측 3단(헤더, 메인, 푸터) 구조를 이루고, 모바일(`max-width: 768px`)에서는 세로 1열 스택 구조로 자동 전환되는 관리자 대시보드 레이아웃을 `grid-template-areas` 기법으로 작성하세요.\n- 데스크톱 영역: `\"sidebar header\" \"sidebar main\" \"sidebar footer\"`\n- 모바일 영역: `\"header\" \"sidebar\" \"main\" \"footer\"`\n- CSS 변수(`--primary-bg`, `--card-bg`)를 선언하여 유지보수성을 극대화하세요.",
+        "template": "<style>\n/* Grid Area 대시보드 CSS를 작성하세요 */\n</style>\n",
+        "solution": "<style>\n:root {\n    --primary-bg: #0f172a;\n    --sidebar-bg: #1e293b;\n    --card-bg: #334155;\n    --text-color: #f8fafc;\n}\n.dashboard-layout {\n    display: grid;\n    grid-template-columns: 240px 1fr;\n    grid-template-rows: 60px 1fr 50px;\n    grid-template-areas:\n        \"sidebar header\"\n        \"sidebar main\"\n        \"sidebar footer\";\n    min-height: 100vh;\n    color: var(--text-color);\n    background-color: var(--primary-bg);\n}\n.dash-header  { grid-area: header; background-color: var(--sidebar-bg); padding: 16px; border-bottom: 1px solid #475569; }\n.dash-sidebar { grid-area: sidebar; background-color: var(--sidebar-bg); padding: 20px; border-right: 1px solid #475569; }\n.dash-main    { grid-area: main; padding: 24px; background-color: var(--primary-bg); }\n.dash-footer  { grid-area: footer; background-color: var(--sidebar-bg); padding: 12px; text-align: center; font-size: 12px; }\n\n@media (max-width: 768px) {\n    .dashboard-layout {\n        grid-template-columns: 1fr;\n        grid-template-rows: auto;\n        grid-template-areas:\n            \"header\"\n            \"sidebar\"\n            \"main\"\n            \"footer\";\n    }\n}\n</style>\n<div class=\"dashboard-layout\">\n    <header class=\"dash-header\">헤더 네비게이션</header>\n    <aside class=\"dash-sidebar\">사이드바 메뉴</aside>\n    <main class=\"dash-main\">대시보드 메인 콘텐츠 분석 그래프</main>\n    <footer class=\"dash-footer\">&copy; 2026 Admin Dashboard</footer>\n</div>",
+        "sample_input": "CSS 렌더링",
+        "sample_output": "반응형 Grid Area 대시보드 레이아웃 확인",
+        "expected": "반응형 Grid Area 대시보드 레이아웃 확인",
+        "hint": "1. `grid-template-areas`는 레이아웃의 영역 배치를 시각적으로 직관적이게 네이밍하여 설계하는 모던 CSS Grid 기법입니다.\n2. 미디어 쿼리 내부에서 영역 배치 문자열만 재선언해주면 HTML 변경 없이 반응형 전환이 완성됩니다."
     },
     {
         "id": "day15_하1",
@@ -927,6 +1123,20 @@ const PROBLEMS = [
         "hint": "1. `subtotal`을 계산한 후 쿠폰 종류에 따라 고정 금액 또는 비율 할인을 계산합니다.\n2. 할인액이 원금을 초과하지 않도록 `Math.min(discount, subtotal)` 처리를 해줍니다.\n3. 할인 후 금액이 50,000원 이상이면 삼항 연산자로 배송비 0원(무료)을 적용합니다."
     },
     {
+        "id": "day15_도전",
+        "day": 15,
+        "subject": "Web",
+        "difficulty": "도전",
+        "title": "LRU(Least Recently Used) 페이지 교체 캐시 알고리즘 구현 (LruCache)",
+        "desc": "최대 용량 `capacity`를 갖는 LRU 캐시 자료구조를 자바스크립트로 구현하세요.\n- `Map`의 삽입 순서 보장 특성을 활용합니다.\n- `PUT key value`: 캐시에 키-값을 저장합니다. 이미 존재하는 키라면 값을 갱신하고 가장 최근 사용(MRU) 위치로 이동합니다. 용량이 가득 찼다면 가장 오래 사용되지 않은(LRU) 첫 번째 항목을 제거(Evict)한 후 저장합니다.\n- `GET key`: 캐시에서 값을 조회하고 해당 항목을 가장 최근 사용 위치로 갱신합니다. (없으면 -1 출력)\n\n[입력]\n첫째 줄: 캐시용량C 명령어수N\n둘째 줄부터 N개 줄: 명령어(PUT key value 또는 GET key)\n(예:\n2 5\nPUT 1 10\nPUT 2 20\nGET 1\nPUT 3 30\nGET 2)",
+        "template": "const fs = require('fs');\nconst lines = fs.readFileSync(0, 'utf-8').trim().split('\\n').map(l => l.trim()).filter(Boolean);\nif (lines.length === 0) process.exit(0);\n\n// 여기에 LRU Cache 클래스와 실행 로직을 작성하세요\n",
+        "solution": "const fs = require('fs');\nconst lines = fs.readFileSync(0, 'utf-8').trim().split('\\n').map(l => l.trim()).filter(Boolean);\nif (lines.length === 0) process.exit(0);\n\nclass LRUCache {\n    constructor(capacity) {\n        this.capacity = capacity;\n        this.cache = new Map();\n    }\n\n    get(key) {\n        if (!this.cache.has(key)) return -1;\n        const val = this.cache.get(key);\n        this.cache.delete(key);\n        this.cache.set(key, val);\n        return val;\n    }\n\n    put(key, val) {\n        if (this.cache.has(key)) {\n            this.cache.delete(key);\n        } else if (this.cache.size >= this.capacity) {\n            const oldestKey = this.cache.keys().next().value;\n            this.cache.delete(oldestKey);\n        }\n        this.cache.set(key, val);\n    }\n}\n\nconst [capStr, nStr] = lines[0].split(/\\s+/);\nconst lru = new LRUCache(parseInt(capStr, 10));\nconst n = parseInt(nStr, 10);\n\nconsole.log(`=== LRU 캐시 시뮬레이터 (용량: ${capStr}) ===`);\nfor (let i = 1; i <= n; i++) {\n    const parts = lines[i].split(/\\s+/);\n    const cmd = parts[0];\n    if (cmd === 'PUT') {\n        lru.put(parts[1], parts[2]);\n        console.log(`PUT ${parts[1]}=${parts[2]} -> 캐시상태: [${Array.from(lru.cache.keys()).join(', ')}]`);\n    } else if (cmd === 'GET') {\n        const res = lru.get(parts[1]);\n        console.log(`GET ${parts[1]} -> ${res}`);\n    }\n}",
+        "sample_input": "2 5\nPUT 1 10\nPUT 2 20\nGET 1\nPUT 3 30\nGET 2",
+        "sample_output": "=== LRU 캐시 시뮬레이터 (용량: 2) ===\nPUT 1=10 -> 캐시상태: [1]\nPUT 2=20 -> 캐시상태: [1, 2]\nGET 1 -> 10\nPUT 3=30 -> 캐시상태: [1, 3]\nGET 2 -> -1",
+        "expected": "=== LRU 캐시 시뮬레이터 (용량: 2) ===\nPUT 1=10 -> 캐시상태: [1]\nPUT 2=20 -> 캐시상태: [1, 2]\nGET 1 -> 10\nPUT 3=30 -> 캐시상태: [1, 3]\nGET 2 -> -1",
+        "hint": "1. 자바스크립트의 `Map` 객체는 키의 삽입 순서를 엄격하게 보존합니다.\n2. `delete(key)` 후 다시 `set(key, value)`를 호출하면 해당 키가 Map의 가장 끝(가장 최근)으로 이동합니다.\n3. 가장 오래된 첫 번째 키는 `map.keys().next().value`로 O(1)에 바로 추출할 수 있습니다."
+    },
+    {
         "id": "day16_하1",
         "day": 16,
         "subject": "Web",
@@ -981,6 +1191,20 @@ const PROBLEMS = [
         "sample_output": "수량 변경 시 실시간 품목 금액 및 총액 갱신 확인",
         "expected": "수량 변경 시 실시간 품목 금액 및 총액 갱신 확인",
         "hint": "1. 상태 중심 렌더링 패턴: 데이터를 변경하고 `render()` 함수를 다시 호출하여 UI를 데이터와 일치시킵니다.\n2. 동적으로 생성되는 버튼들에 개별 리스너를 달지 않고 부모 컨테이너에 이벤트 위임(`cartItemsContainer.addEventListener('click', ...)` + `e.target.dataset.id`)을 적용합니다."
+    },
+    {
+        "id": "day16_도전",
+        "day": 16,
+        "subject": "Web",
+        "difficulty": "도전",
+        "title": "Proxy 기반 미니 반응형 상태 관리 엔진 (MiniReactiveStore)",
+        "desc": "Vue.js 3나 MobX의 핵심 원리인 `Proxy` 기반의 초경량 반응형 상태 관리 함수 `createReactiveStore(initialState)`를 구현하세요.\n- 상태 객체의 속성값을 변경할 때마다 사전에 등록된 구독자(`subscribe(callback)`) 리스너들이 자동으로 감지되어 UI를 실시간 리렌더링하도록 작성하세요.",
+        "template": "<div id=\"reactive-app\">\n    <button id=\"btn-inc\">1 증가</button>\n    <div id=\"render-output\"></div>\n</div>\n<script>\n// Proxy 기반 상태 관리자 작성\n</script>",
+        "solution": "<div id=\"reactive-app\">\n    <button id=\"btn-inc\">1 증가</button>\n    <div id=\"render-output\"></div>\n</div>\n<script>\nfunction createReactiveStore(initialState) {\n    const listeners = [];\n    \n    const handler = {\n        set(target, prop, value) {\n            target[prop] = value;\n            listeners.forEach(fn => fn(target));\n            return true;\n        }\n    };\n\n    const state = new Proxy(initialState, handler);\n\n    return {\n        state,\n        subscribe(fn) {\n            listeners.push(fn);\n            fn(state); // 초기 1회 즉시 실행\n        }\n    };\n}\n\nconst store = createReactiveStore({ count: 0, user: '홍길동' });\nconst output = document.getElementById('render-output');\nconst btnInc = document.getElementById('btn-inc');\n\nstore.subscribe((state) => {\n    output.innerHTML = `현재 카운트: <strong>${state.count}</strong> (작성자: ${state.user})`;\n});\n\nbtnInc.addEventListener('click', () => {\n    store.state.count++; // 상태 변경 시 자동으로 subscribe 리스너가 호출되어 UI 갱신\n});\n</script>",
+        "sample_input": "Proxy 상태 변경 인터랙션",
+        "sample_output": "Proxy set 감지 및 UI 자동 렌더링 확인",
+        "expected": "Proxy set 감지 및 UI 자동 렌더링 확인",
+        "hint": "1. `new Proxy(target, { set(target, prop, val) { ... } })`는 객체의 속성 할당 연산을 가로챕니다(Intercept).\n2. 속성 변경 감지 즉시 `listeners.forEach(fn => fn(target))`를 실행함으로써 현대 프론트엔드 프레임워크의 반응성(Reactivity)을 구현할 수 있습니다."
     }
 ];
 
