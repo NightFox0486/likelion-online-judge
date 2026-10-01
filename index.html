@@ -1158,12 +1158,163 @@
     }
 };
 
-        function renderTopicSyntaxGuide(day, subject) {
-            const guide = TOPIC_SYNTAX_GUIDES[day];
+        // 문제별 맞춤형 핵심 신규 문법 & 팁 데이터셋 (이전 단계 대비 새로 추가된 문법 설명)
+        const PROBLEM_SYNTAX_GUIDES = {
+            "day01_하1": {
+                title: "1일차 [하1] 기본 자료형, Scanner 표준 입력 & 연산자 우선순위",
+                subject: "Java",
+                badge: "입출력 & 사칙연산",
+                items: [
+                    [
+                        "import java.util.Scanner;",
+                        "키보드 입력을 처리하기 위한 자바 기본 유틸리티 클래스를 현재 파일에 불러옵니다."
+                    ],
+                    [
+                        "Scanner sc = new Scanner(System.in);",
+                        "표준 입력 스트림(System.in)으로부터 값을 읽어들일 Scanner 객체 `sc`를 생성합니다."
+                    ],
+                    [
+                        "int a = sc.nextInt();",
+                        "공백(스페이스) 또는 줄바꿈(엔터)을 기준으로 입력 버퍼에서 다음 정수를 읽어옵니다."
+                    ],
+                    [
+                        "+  -  *  /  %",
+                        "자바 5대 산술 연산자: `/`는 나눗셈의 '몫', `%`는 나눗셈의 '나머지'를 구합니다."
+                    ],
+                    [
+                        "System.out.println(\"덧셈: \" + (a + b));",
+                        "문자열 이어붙이기(+)보다 덧셈이 먼저 수행되도록 소괄호 `(a + b)`로 감싸 연산자 우선순위를 지정합니다."
+                    ]
+                ]
+            },
+            "day01_하2": {
+                title: "1일차 [하2] ✨ 새로 추가된 문법: 명시적 형변환(Casting) & printf 서식",
+                subject: "Java",
+                badge: "형변환 & 서식출력",
+                items: [
+                    [
+                        "(int) (실수 계산식)",
+                        "명시적 형변환(Casting): 부가세 10% 계산 시 `supplyPrice * 0.1`은 double 실수형이 되므로, 소수점을 버리고 정수(int)로 저장하기 위해 `(int)`를 앞에 붙입니다."
+                    ],
+                    [
+                        "System.out.printf(\"서식문자열\", 값1, 값2...);",
+                        "println 대신 서식 지정자를 사용하여 원하는 포맷으로 문자열과 변수를 깔끔하게 조합 출력합니다."
+                    ],
+                    [
+                        "%d  /  \\n",
+                        "`%d`는 10진수 정수를 출력할 위치를 지정하고, `\\n`은 출력 후 다음 줄로 줄바꿈합니다."
+                    ],
+                    [
+                        "%%",
+                        "printf 서식 문자열 안에서 `%` 기호 자체를 일반 문자로 출력하려면 `%%` 처럼 두 번 연속 작성해야 합니다."
+                    ]
+                ]
+            },
+            "day01_중1": {
+                title: "1일차 [중1] ✨ 새로 추가된 문법 & 기법: 연쇄 몫/나머지 분해 & 천단위 콤마(%,d)",
+                subject: "Java",
+                badge: "연쇄분해 & 천단위콤마",
+                items: [
+                    [
+                        "연쇄 몫(/)과 나머지(%) 분해 패턴",
+                        "가장 큰 화폐 단위(10,000원)부터 몫(`/`)으로 장수를 구하고, 나머지(`%`)를 다음 단위(5,000원)로 넘겨주는 알고리즘 패턴입니다."
+                    ],
+                    [
+                        "int count10000 = change / 10000;\nint rem10000 = change % 10000;",
+                        "단위별 화폐 매수와 다음 단계로 넘길 잔여 금액을 연쇄적으로 산출하는 핵심 테크닉입니다."
+                    ],
+                    [
+                        "System.out.printf(\"%,d원\\n\", itemPrice);",
+                        "`%,d` 서식: 정수 포맷 `%d` 사이에 쉼표(`,`)를 추가하면 `23700`을 자동으로 `23,700`처럼 3자리마다 콤마를 찍어 출력합니다."
+                    ]
+                ]
+            },
+            "day01_중2": {
+                title: "1일차 [중2] ✨ 새로 추가된 문법: 비교 연산자 boolean 변환 & 삼항 연산자",
+                subject: "Java",
+                badge: "삼항연산 & 논리조합",
+                items: [
+                    [
+                        "boolean isSpecial = sc.nextInt() == 1;",
+                        "비교 연산자(`==`)를 사용하여 입력값이 1이면 `true`, 0이면 `false`인 논리형(boolean) 변수에 즉시 결과를 저장합니다."
+                    ],
+                    [
+                        "조건식 ? 참일때값 : 거짓일때값",
+                        "삼항 연산자: if 제어문을 아직 배우지 않은 상태에서 한 줄로 조건에 따라 다른 값을 선택·대입하는 연산자입니다."
+                    ],
+                    [
+                        "(isSpecial || age >= 65)",
+                        "논리 OR 연산자(`||`): 우대 대상이거나 65세 이상 중 어느 하나라도 참이면 전체가 참이 되는 복합 조건을 구성합니다."
+                    ],
+                    [
+                        "finalPrice = basePrice - (int)(basePrice * discountRate);",
+                        "할인율을 적용하여 정수형 최종 결제 금액을 계산하는 공식입니다."
+                    ]
+                ]
+            },
+            "day01_상": {
+                title: "1일차 [상] ✨ 새로 추가된 문법: 중첩 삼항 연산자(Nested Ternary) & 단계별 파이프라인 연산",
+                subject: "Java",
+                badge: "중첩 삼항 & 다단계 연산",
+                items: [
+                    [
+                        "double rate = (age >= 65) ? 0.5 : ((age < 19) ? 0.3 : 0.0);",
+                        "중첩 삼항 연산자: 삼항 연산자의 '거짓' 위치에 또 다른 삼항 연산자를 체이닝하여 3단계 이상의 다중 조건을 판별합니다."
+                    ],
+                    [
+                        "단계별 누적 상태 변경 (Pipeline Calculation)",
+                        "1단계(나이 할인 금액) ➔ 2단계(조조 정액 2,000원 감면) ➔ 3단계(통신사 10% 추가 할인) 순으로 이전 연산 결과를 순차적으로 가공하는 파이프라인 기법입니다."
+                    ],
+                    [
+                        "int finalPrice = hasTel ? (int)(priceAfterMorning * 0.9) : priceAfterMorning;",
+                        "추가 제휴 할인 여부에 따라 이전 단계 가격에서 10%를 최종 감면합니다."
+                    ]
+                ]
+            },
+            "day01_도전": {
+                title: "1일차 [도전] ✨ 새로 추가된 문법: 8비트 마스킹(&), 비트 시프트(<<), 비트 세팅(|), 2진수 서식",
+                subject: "Java",
+                badge: "비트 마스킹 & 2진수",
+                items: [
+                    [
+                        "public static final int FLAG_CPU = 1 << 0;",
+                        "비트 왼쪽 시프트(`<<`): `1 << 0`(1), `1 << 1`(2), `1 << 4`(16), `1 << 7`(128) 처럼 2의 거듭제곱 단위의 고유 2진수 비트 플래그를 생성합니다."
+                    ],
+                    [
+                        "boolean isCpu = (statusCode & FLAG_CPU) != 0;",
+                        "비트 AND 마스킹(`&`): 특정 비트 자리가 1로 켜져 있는지(ON) 꺼져 있는지(OFF) 2진수 단위로 검출합니다."
+                    ],
+                    [
+                        "int newCode = statusCode | FLAG_ISOL;",
+                        "비트 OR 연산자(`|`): 기존 상태 코드에 128(비트 7: 긴급 격리) 플래그를 켜서 새로운 격리 상태 코드를 합성합니다."
+                    ],
+                    [
+                        "String.format(\"%8s\", Integer.toBinaryString(code)).replace(' ', '0')",
+                        "정수를 2진수 문자열로 변환한 뒤 앞자리를 0으로 채워 항상 8자리 고정 바이너리(예: `00010001`)로 출력합니다."
+                    ],
+                    [
+                        "healthScore = (healthScore < 0) ? 0 : healthScore;",
+                        "삼항 연산자 클램핑: 음수로 내려갈 수 있는 수치를 최소 0점으로 제한하는 하한선 보정 기법입니다."
+                    ]
+                ]
+            }
+        };
+
+        function renderTopicSyntaxGuide(prob) {
             const titleEl = document.getElementById('syntaxGuideTitle');
             const badgeEl = document.getElementById('syntaxSubjectBadge');
             const gridEl = document.getElementById('syntaxGuideGrid');
             if (!gridEl) return;
+
+            // 1. 문제별 맞춤 가이드가 있으면 우선 적용
+            let guide = (prob && prob.id && PROBLEM_SYNTAX_GUIDES[prob.id]) ? PROBLEM_SYNTAX_GUIDES[prob.id] : null;
+            let isProblemSpecific = !!guide;
+
+            // 2. 문제별 가이드가 없으면 일차별 기본 가이드 폴백
+            if (!guide) {
+                const dayKey = prob ? String(prob.day) : String(selectedDay);
+                guide = TOPIC_SYNTAX_GUIDES[dayKey];
+            }
 
             if (!guide) {
                 document.getElementById('topicSyntaxGuideCard').classList.add('hidden');
@@ -1173,23 +1324,28 @@
             document.getElementById('topicSyntaxGuideCard').classList.remove('hidden');
             if (titleEl) titleEl.textContent = guide.title;
             if (badgeEl) {
-                badgeEl.textContent = guide.subject;
-                if (guide.subject === 'Java') {
-                    badgeEl.className = 'text-[10px] px-2 py-0.5 rounded font-mono font-semibold bg-orange-500/10 text-orange-300 border border-orange-500/30';
-                } else if (guide.subject === 'MySQL') {
-                    badgeEl.className = 'text-[10px] px-2 py-0.5 rounded font-mono font-semibold bg-sky-500/10 text-sky-300 border border-sky-500/30';
+                if (isProblemSpecific) {
+                    badgeEl.textContent = guide.badge || '✨ 새로 추가된 문법';
+                    badgeEl.className = 'text-[10px] px-2 py-0.5 rounded font-mono font-bold bg-amber-500/20 text-amber-300 border border-amber-500/40';
                 } else {
-                    badgeEl.className = 'text-[10px] px-2 py-0.5 rounded font-mono font-semibold bg-purple-500/10 text-purple-300 border border-purple-500/30';
+                    badgeEl.textContent = guide.subject || 'Java';
+                    if (guide.subject === 'Java') {
+                        badgeEl.className = 'text-[10px] px-2 py-0.5 rounded font-mono font-semibold bg-orange-500/10 text-orange-300 border border-orange-500/30';
+                    } else if (guide.subject === 'MySQL') {
+                        badgeEl.className = 'text-[10px] px-2 py-0.5 rounded font-mono font-semibold bg-sky-500/10 text-sky-300 border border-sky-500/30';
+                    } else {
+                        badgeEl.className = 'text-[10px] px-2 py-0.5 rounded font-mono font-semibold bg-purple-500/10 text-purple-300 border border-purple-500/30';
+                    }
                 }
             }
 
             gridEl.innerHTML = '';
             guide.items.forEach(([code, desc]) => {
                 const itemDiv = document.createElement('div');
-                itemDiv.className = 'bg-slate-900 p-2.5 rounded-lg border border-slate-800';
+                itemDiv.className = 'bg-slate-900/90 p-2.5 rounded-lg border border-slate-800/90 space-y-1';
                 itemDiv.innerHTML = `
-                    <div class="font-mono text-amber-300 font-bold text-xs select-text">${code.replace(/</g, '&lt;').replace(/>/g, '&gt;')}</div>
-                    <p class="text-slate-400 mt-1 select-text">${desc}</p>
+                    <div class="font-mono text-amber-300 font-bold text-xs select-text whitespace-pre-wrap">${code.replace(/</g, '&lt;').replace(/>/g, '&gt;')}</div>
+                    <p class="text-slate-300 text-[11px] leading-relaxed select-text">${desc}</p>
                 `;
                 gridEl.appendChild(itemDiv);
             });
@@ -1222,7 +1378,7 @@
 
             // 힌트 내용 세팅
             document.getElementById('pHintText').textContent = prob.hint || '문제를 꼼꼼히 읽고 예제 입출력 서식을 맞춰 작성해 보세요.';
-            renderTopicSyntaxGuide(selectedDay, prob.subject);
+            renderTopicSyntaxGuide(prob);
 
             // 정답 예시 코드는 오직 관리자(admin)에게만 노출
             const adminSolCard = document.getElementById('adminSolutionCard');
