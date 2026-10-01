@@ -1,5 +1,6 @@
 // 멋쟁이사자처럼 9기 전체 16일차 실습 문제 데이터셋 (2시간 맞춤형 70제)
-// 각 일차별 상/중/하 난이도 필수 포함 및 초보자 힌트 탑재
+// 각 일차별 상/중/하/도전 난이도 필수 포함 및 초보자 힌트 탑재
+// 1일차 10개 테스트케이스 & 3개 예제 입출력 고도화 완료
 
 const PROBLEMS = [
     {
@@ -10,11 +11,77 @@ const PROBLEMS = [
         "title": "두 정수의 사칙연산 및 몫·나머지 계산기 (SimpleArithmetic)",
         "desc": "두 개의 정수 A와 B를 입력받아, 두 수의 덧셈(A+B), 뺄셈(A-B), 곱셈(A*B), 나눗셈의 몫(A/B), 나눗셈의 나머지(A%B)를 계산하여 서식에 맞게 한 줄씩 출력하세요.\n\n[입력]\n첫째 줄에 두 정수 A와 B가 공백으로 구분되어 주어집니다. (단, B는 0이 아님)\n(예: 20 6)",
         "template": "import java.util.Scanner;\n\npublic class Solution {\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        // 여기에 코드를 작성하세요\n        \n    }\n}",
-        "solution": "import java.util.Scanner;\n\npublic class Solution {\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        int a = sc.nextInt();\n        int b = sc.nextInt();\n\n        System.out.println(\"덧셈: \" + (a + b));\n        System.out.println(\"뺄셈: \" + (a - b));\n        System.out.println(\"곱셈: \" + (a * b));\n        System.out.println(\"몫: \" + (a / b));\n        System.out.println(\"나머지: \" + (a % b));\n    }\n}",
+        "solution": "import java.util.Scanner;\n\npublic class Solution {\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        int a = sc.nextInt();\n        int b = sc.nextInt();\n\n        System.out.println(\"덧셈: \" + (a + b));\n        System.out.println(\"뺄셈: \" + (a - b));\n        System.out.println(\"곱셈: \" + (a * b));\n        System.out.println(\"몫: \" + (a / b));\n        System.out.println(\"나머지: \" + (a % b));\n    }\n}\n",
         "sample_input": "20 6",
-        "sample_output": "덧셈: 26\n뺄셈: 14\n곱셈: 120\n몫: 3\n나머지: 2",
-        "expected": "덧셈: 26\n뺄셈: 14\n곱셈: 120\n몫: 3\n나머지: 2",
-        "hint": "1. import java.util.Scanner; : 키보드 입력을 처리하기 위해 자바 기본 제공 Scanner 라이브러리를 불러옵니다.\n2. Scanner sc = new Scanner(System.in); : 입력 도구 객체를 생성합니다.\n3. int a = sc.nextInt(); int b = sc.nextInt(); : 공백으로 구분된 두 정수를 차례대로 읽어 변수에 대입합니다.\n4. 나눗셈의 몫은 / 연산자, 나머지는 % 연산자를 사용합니다.\n5. System.out.println(\"덧셈: \" + (a + b)); 처럼 괄호 (a + b)로 묶어주어야 문자열 이어붙이기가 아닌 덧셈 계산이 올바르게 수행됩니다."
+        "sample_output": "덧셈: 26\r\n뺄셈: 14\r\n곱셈: 120\r\n몫: 3\r\n나머지: 2",
+        "expected": "덧셈: 26\r\n뺄셈: 14\r\n곱셈: 120\r\n몫: 3\r\n나머지: 2",
+        "hint": "1. import java.util.Scanner; : 키보드 입력을 처리하기 위해 자바 기본 제공 Scanner 라이브러리를 불러옵니다.\n2. Scanner sc = new Scanner(System.in); : 입력 도구 객체를 생성합니다.\n3. int a = sc.nextInt(); int b = sc.nextInt(); : 공백으로 구분된 두 정수를 차례대로 읽어 변수에 대입합니다.\n4. 나눗셈의 몫은 / 연산자, 나머지는 % 연산자를 사용합니다.\n5. System.out.println(\"덧셈: \" + (a + b)); 처럼 괄호 (a + b)로 묶어주어야 문자열 이어붙이기가 아닌 덧셈 계산이 올바르게 수행됩니다.",
+        "testcases": [
+            {
+                "input": "20 6",
+                "expected": "덧셈: 26\r\n뺄셈: 14\r\n곱셈: 120\r\n몫: 3\r\n나머지: 2",
+                "is_hidden": false
+            },
+            {
+                "input": "100 25",
+                "expected": "덧셈: 125\r\n뺄셈: 75\r\n곱셈: 2500\r\n몫: 4\r\n나머지: 0",
+                "is_hidden": false
+            },
+            {
+                "input": "7 3",
+                "expected": "덧셈: 10\r\n뺄셈: 4\r\n곱셈: 21\r\n몫: 2\r\n나머지: 1",
+                "is_hidden": false
+            },
+            {
+                "input": "15 4",
+                "expected": "덧셈: 19\r\n뺄셈: 11\r\n곱셈: 60\r\n몫: 3\r\n나머지: 3",
+                "is_hidden": true
+            },
+            {
+                "input": "1 1",
+                "expected": "덧셈: 2\r\n뺄셈: 0\r\n곱셈: 1\r\n몫: 1\r\n나머지: 0",
+                "is_hidden": true
+            },
+            {
+                "input": "999 10",
+                "expected": "덧셈: 1009\r\n뺄셈: 989\r\n곱셈: 9990\r\n몫: 99\r\n나머지: 9",
+                "is_hidden": true
+            },
+            {
+                "input": "50 7",
+                "expected": "덧셈: 57\r\n뺄셈: 43\r\n곱셈: 350\r\n몫: 7\r\n나머지: 1",
+                "is_hidden": true
+            },
+            {
+                "input": "1234 56",
+                "expected": "덧셈: 1290\r\n뺄셈: 1178\r\n곱셈: 69104\r\n몫: 22\r\n나머지: 2",
+                "is_hidden": true
+            },
+            {
+                "input": "80 8",
+                "expected": "덧셈: 88\r\n뺄셈: 72\r\n곱셈: 640\r\n몫: 10\r\n나머지: 0",
+                "is_hidden": true
+            },
+            {
+                "input": "2000000 3",
+                "expected": "덧셈: 2000003\r\n뺄셈: 1999997\r\n곱셈: 6000000\r\n몫: 666666\r\n나머지: 2",
+                "is_hidden": true
+            }
+        ],
+        "samples": [
+            {
+                "input": "20 6",
+                "output": "덧셈: 26\r\n뺄셈: 14\r\n곱셈: 120\r\n몫: 3\r\n나머지: 2"
+            },
+            {
+                "input": "100 25",
+                "output": "덧셈: 125\r\n뺄셈: 75\r\n곱셈: 2500\r\n몫: 4\r\n나머지: 0"
+            },
+            {
+                "input": "7 3",
+                "output": "덧셈: 10\r\n뺄셈: 4\r\n곱셈: 21\r\n몫: 2\r\n나머지: 1"
+            }
+        ]
     },
     {
         "id": "day01_하2",
@@ -24,11 +91,77 @@ const PROBLEMS = [
         "title": "카페 음료 영수증 결제 금액 계산기 (CafeReceiptCalculator)",
         "desc": "카페 포스기(POS)에서 주문받은 음료의 단가와 수량을 입력받아 공급가액, 부가세(VAT 10%), 최종 결제 금액을 계산하여 출력하세요.\n(부가세는 공급가액의 10%이며, (int)로 명시적 형변환합니다.)\n\n[입력]\n첫째 줄에 아메리카노 단가와 수량, 카페라떼 단가와 수량이 공백으로 구분되어 주어집니다.\n(예: 4500 2 5000 3)",
         "template": "import java.util.Scanner;\n\npublic class Solution {\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        // 여기에 코드를 작성하세요\n        \n    }\n}",
-        "solution": "import java.util.Scanner;\n\npublic class Solution {\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        int americanoPrice = sc.nextInt();\n        int americanoQty = sc.nextInt();\n        int lattePrice = sc.nextInt();\n        int latteQty = sc.nextInt();\n\n        int supplyPrice = (americanoPrice * americanoQty) + (lattePrice * latteQty);\n        int vat = (int) (supplyPrice * 0.1);\n        int totalAmount = supplyPrice + vat;\n\n        System.out.println(\"=== 스타카페 주문 영수증 ===\");\n        System.out.printf(\"아메리카노 (%d원 x %d잔): %d원\\n\", americanoPrice, americanoQty, americanoPrice * americanoQty);\n        System.out.printf(\"카페라떼   (%d원 x %d잔): %d원\\n\", lattePrice, latteQty, lattePrice * latteQty);\n        System.out.println(\"---------------------------------\");\n        System.out.printf(\"공급가액: %d원\\n\", supplyPrice);\n        System.out.printf(\"부가세(10%%): %d원\\n\", vat);\n        System.out.printf(\"최종 결제 금액: %d원\\n\", totalAmount);\n    }\n}",
+        "solution": "import java.util.Scanner;\n\npublic class Solution {\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        int americanoPrice = sc.nextInt();\n        int americanoQty = sc.nextInt();\n        int lattePrice = sc.nextInt();\n        int latteQty = sc.nextInt();\n\n        int supplyPrice = (americanoPrice * americanoQty) + (lattePrice * latteQty);\n        int vat = (int) (supplyPrice * 0.1);\n        int totalAmount = supplyPrice + vat;\n\n        System.out.println(\"=== 스타카페 주문 영수증 ===\");\n        System.out.printf(\"아메리카노 (%d원 x %d잔): %d원\\n\", americanoPrice, americanoQty, americanoPrice * americanoQty);\n        System.out.printf(\"카페라떼   (%d원 x %d잔): %d원\\n\", lattePrice, latteQty, lattePrice * latteQty);\n        System.out.println(\"---------------------------------\");\n        System.out.printf(\"공급가액: %d원\\n\", supplyPrice);\n        System.out.printf(\"부가세(10%%): %d원\\n\", vat);\n        System.out.printf(\"최종 결제 금액: %d원\\n\", totalAmount);\n    }\n}\n",
         "sample_input": "4500 2 5000 3",
-        "sample_output": "=== 스타카페 주문 영수증 ===\n아메리카노 (4500원 x 2잔): 9000원\n카페라떼   (5000원 x 3잔): 15000원\n---------------------------------\n공급가액: 24000원\n부가세(10%): 2400원\n최종 결제 금액: 26400원",
-        "expected": "=== 스타카페 주문 영수증 ===\n아메리카노 (4500원 x 2잔): 9000원\n카페라떼   (5000원 x 3잔): 15000원\n---------------------------------\n공급가액: 24000원\n부가세(10%): 2400원\n최종 결제 금액: 26400원",
-        "hint": "1. 4개의 정수를 sc.nextInt()로 순서대로 입력받습니다:\n   int americanoPrice = sc.nextInt(); int americanoQty = sc.nextInt();\n   int lattePrice = sc.nextInt(); int latteQty = sc.nextInt();\n2. 부가세는 공급가액의 10%이며, 소수점을 버리고 정수로 변환하기 위해 (int) (supplyPrice * 0.1) 형태로 명시적 형변환을 적용합니다.\n3. System.out.printf() 서식 출력에서 % 기호 자체를 출력할 때는 %% 로 두 번 작성해야 합니다."
+        "sample_output": "=== 스타카페 주문 영수증 ===\r\n아메리카노 (4500원 x 2잔): 9000원\n카페라떼   (5000원 x 3잔): 15000원\n---------------------------------\r\n공급가액: 24000원\n부가세(10%): 2400원\n최종 결제 금액: 26400원",
+        "expected": "=== 스타카페 주문 영수증 ===\r\n아메리카노 (4500원 x 2잔): 9000원\n카페라떼   (5000원 x 3잔): 15000원\n---------------------------------\r\n공급가액: 24000원\n부가세(10%): 2400원\n최종 결제 금액: 26400원",
+        "hint": "1. 4개의 정수를 sc.nextInt()로 순서대로 입력받습니다:\n   int americanoPrice = sc.nextInt(); int americanoQty = sc.nextInt();\n   int lattePrice = sc.nextInt(); int latteQty = sc.nextInt();\n2. 부가세는 공급가액의 10%이며, 소수점을 버리고 정수로 변환하기 위해 (int) (supplyPrice * 0.1) 형태로 명시적 형변환을 적용합니다.\n3. System.out.printf() 서식 출력에서 % 기호 자체를 출력할 때는 %% 로 두 번 작성해야 합니다.",
+        "testcases": [
+            {
+                "input": "4500 2 5000 3",
+                "expected": "=== 스타카페 주문 영수증 ===\r\n아메리카노 (4500원 x 2잔): 9000원\n카페라떼   (5000원 x 3잔): 15000원\n---------------------------------\r\n공급가액: 24000원\n부가세(10%): 2400원\n최종 결제 금액: 26400원",
+                "is_hidden": false
+            },
+            {
+                "input": "3000 1 4000 2",
+                "expected": "=== 스타카페 주문 영수증 ===\r\n아메리카노 (3000원 x 1잔): 3000원\n카페라떼   (4000원 x 2잔): 8000원\n---------------------------------\r\n공급가액: 11000원\n부가세(10%): 1100원\n최종 결제 금액: 12100원",
+                "is_hidden": false
+            },
+            {
+                "input": "5000 0 6000 1",
+                "expected": "=== 스타카페 주문 영수증 ===\r\n아메리카노 (5000원 x 0잔): 0원\n카페라떼   (6000원 x 1잔): 6000원\n---------------------------------\r\n공급가액: 6000원\n부가세(10%): 600원\n최종 결제 금액: 6600원",
+                "is_hidden": false
+            },
+            {
+                "input": "4000 5 5500 0",
+                "expected": "=== 스타카페 주문 영수증 ===\r\n아메리카노 (4000원 x 5잔): 20000원\n카페라떼   (5500원 x 0잔): 0원\n---------------------------------\r\n공급가액: 20000원\n부가세(10%): 2000원\n최종 결제 금액: 22000원",
+                "is_hidden": true
+            },
+            {
+                "input": "1500 10 2000 5",
+                "expected": "=== 스타카페 주문 영수증 ===\r\n아메리카노 (1500원 x 10잔): 15000원\n카페라떼   (2000원 x 5잔): 10000원\n---------------------------------\r\n공급가액: 25000원\n부가세(10%): 2500원\n최종 결제 금액: 27500원",
+                "is_hidden": true
+            },
+            {
+                "input": "4800 3 5300 2",
+                "expected": "=== 스타카페 주문 영수증 ===\r\n아메리카노 (4800원 x 3잔): 14400원\n카페라떼   (5300원 x 2잔): 10600원\n---------------------------------\r\n공급가액: 25000원\n부가세(10%): 2500원\n최종 결제 금액: 27500원",
+                "is_hidden": true
+            },
+            {
+                "input": "3500 1 4500 1",
+                "expected": "=== 스타카페 주문 영수증 ===\r\n아메리카노 (3500원 x 1잔): 3500원\n카페라떼   (4500원 x 1잔): 4500원\n---------------------------------\r\n공급가액: 8000원\n부가세(10%): 800원\n최종 결제 금액: 8800원",
+                "is_hidden": true
+            },
+            {
+                "input": "10000 1 12000 1",
+                "expected": "=== 스타카페 주문 영수증 ===\r\n아메리카노 (10000원 x 1잔): 10000원\n카페라떼   (12000원 x 1잔): 12000원\n---------------------------------\r\n공급가액: 22000원\n부가세(10%): 2200원\n최종 결제 금액: 24200원",
+                "is_hidden": true
+            },
+            {
+                "input": "2500 4 3500 4",
+                "expected": "=== 스타카페 주문 영수증 ===\r\n아메리카노 (2500원 x 4잔): 10000원\n카페라떼   (3500원 x 4잔): 14000원\n---------------------------------\r\n공급가액: 24000원\n부가세(10%): 2400원\n최종 결제 금액: 26400원",
+                "is_hidden": true
+            },
+            {
+                "input": "5000 10 6000 10",
+                "expected": "=== 스타카페 주문 영수증 ===\r\n아메리카노 (5000원 x 10잔): 50000원\n카페라떼   (6000원 x 10잔): 60000원\n---------------------------------\r\n공급가액: 110000원\n부가세(10%): 11000원\n최종 결제 금액: 121000원",
+                "is_hidden": true
+            }
+        ],
+        "samples": [
+            {
+                "input": "4500 2 5000 3",
+                "output": "=== 스타카페 주문 영수증 ===\r\n아메리카노 (4500원 x 2잔): 9000원\n카페라떼   (5000원 x 3잔): 15000원\n---------------------------------\r\n공급가액: 24000원\n부가세(10%): 2400원\n최종 결제 금액: 26400원"
+            },
+            {
+                "input": "3000 1 4000 2",
+                "output": "=== 스타카페 주문 영수증 ===\r\n아메리카노 (3000원 x 1잔): 3000원\n카페라떼   (4000원 x 2잔): 8000원\n---------------------------------\r\n공급가액: 11000원\n부가세(10%): 1100원\n최종 결제 금액: 12100원"
+            },
+            {
+                "input": "5000 0 6000 1",
+                "output": "=== 스타카페 주문 영수증 ===\r\n아메리카노 (5000원 x 0잔): 0원\n카페라떼   (6000원 x 1잔): 6000원\n---------------------------------\r\n공급가액: 6000원\n부가세(10%): 600원\n최종 결제 금액: 6600원"
+            }
+        ]
     },
     {
         "id": "day01_중1",
@@ -38,11 +171,77 @@ const PROBLEMS = [
         "title": "편의점 거스름돈 최소 화폐 매수 계산기 (ChangeCalculator)",
         "desc": "손님이 낸 금액과 상품 금액을 입력받아, 거스름돈을 최소 매수의 화폐(10,000원, 5,000원, 1,000원, 500원, 100원)로 거슬러 주기 위한 단위별 개수를 산출하세요.\n\n[입력]\n첫째 줄에 상품 금액과 손님이 낸 금액이 공백으로 주어집니다.\n(예: 23700 50000)",
         "template": "import java.util.Scanner;\n\npublic class Solution {\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        // 여기에 코드를 작성하세요\n        \n    }\n}",
-        "solution": "import java.util.Scanner;\n\npublic class Solution {\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        int itemPrice = sc.nextInt();\n        int paidAmount = sc.nextInt();\n        int change = paidAmount - itemPrice;\n\n        int count10000 = change / 10000;\n        int rem10000 = change % 10000;\n        int count5000 = rem10000 / 5000;\n        int rem5000 = rem10000 % 5000;\n        int count1000 = rem5000 / 1000;\n        int rem1000 = rem5000 % 1000;\n        int count500 = rem1000 / 500;\n        int rem500 = rem1000 % 500;\n        int count100 = rem500 / 100;\n\n        System.out.println(\"=== 편의점 거스름돈 계산기 ===\");\n        System.out.printf(\"상품 금액: %,d원\\n\", itemPrice);\n        System.out.printf(\"받은 금액: %,d원\\n\", paidAmount);\n        System.out.printf(\"거스름돈 총액: %,d원\\n\", change);\n        System.out.println(\"---------------------------------\");\n        System.out.printf(\"10,000원권: %d장\\n\", count10000);\n        System.out.printf(\" 5,000원권: %d장\\n\", count5000);\n        System.out.printf(\" 1,000원권: %d장\\n\", count1000);\n        System.out.printf(\"   500원 동전: %d개\\n\", count500);\n        System.out.printf(\"   100원 동전: %d개\\n\", count100);\n    }\n}",
+        "solution": "import java.util.Scanner;\n\npublic class Solution {\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        int itemPrice = sc.nextInt();\n        int paidAmount = sc.nextInt();\n        int change = paidAmount - itemPrice;\n\n        int count10000 = change / 10000;\n        int rem10000 = change % 10000;\n        int count5000 = rem10000 / 5000;\n        int rem5000 = rem10000 % 5000;\n        int count1000 = rem5000 / 1000;\n        int rem1000 = rem5000 % 1000;\n        int count500 = rem1000 / 500;\n        int rem500 = rem1000 % 500;\n        int count100 = rem500 / 100;\n\n        System.out.println(\"=== 편의점 거스름돈 계산기 ===\");\n        System.out.printf(\"상품 금액: %,d원\\n\", itemPrice);\n        System.out.printf(\"받은 금액: %,d원\\n\", paidAmount);\n        System.out.printf(\"거스름돈 총액: %,d원\\n\", change);\n        System.out.println(\"---------------------------------\");\n        System.out.printf(\"10,000원권: %d장\\n\", count10000);\n        System.out.printf(\" 5,000원권: %d장\\n\", count5000);\n        System.out.printf(\" 1,000원권: %d장\\n\", count1000);\n        System.out.printf(\"   500원 동전: %d개\\n\", count500);\n        System.out.printf(\"   100원 동전: %d개\\n\", count100);\n    }\n}\n",
         "sample_input": "23700 50000",
-        "sample_output": "=== 편의점 거스름돈 계산기 ===\n상품 금액: 23,700원\n받은 금액: 50,000원\n거스름돈 총액: 26,300원\n---------------------------------\n10,000원권: 2장\n 5,000원권: 1장\n 1,000원권: 1장\n   500원 동전: 0개\n   100원 동전: 3개",
-        "expected": "=== 편의점 거스름돈 계산기 ===\n상품 금액: 23,700원\n받은 금액: 50,000원\n거스름돈 총액: 26,300원\n---------------------------------\n10,000원권: 2장\n 5,000원권: 1장\n 1,000원권: 1장\n   500원 동전: 0개\n   100원 동전: 3개",
-        "hint": "1. 거스름돈 총액 = 받은 금액 - 상품 금액 (change = paidAmount - itemPrice)\n2. 가장 큰 단위 화폐(10,000원)부터 몫(/)으로 장수를 구하고, 나머지(%)를 다음 단위로 넘겨주는 연쇄 계산을 작성합니다:\n   - int count10000 = change / 10000;\n   - int rem10000 = change % 10000;\n   - int count5000 = rem10000 / 5000; (이하 1000원, 500원, 100원 반복)\n3. 3자리마다 콤마를 찍으려면 printf(\"%,d원\\n\", itemPrice)의 %,d 서식을 사용하세요."
+        "sample_output": "=== 편의점 거스름돈 계산기 ===\r\n상품 금액: 23,700원\n받은 금액: 50,000원\n거스름돈 총액: 26,300원\n---------------------------------\r\n10,000원권: 2장\n 5,000원권: 1장\n 1,000원권: 1장\n   500원 동전: 0개\n   100원 동전: 3개",
+        "expected": "=== 편의점 거스름돈 계산기 ===\r\n상품 금액: 23,700원\n받은 금액: 50,000원\n거스름돈 총액: 26,300원\n---------------------------------\r\n10,000원권: 2장\n 5,000원권: 1장\n 1,000원권: 1장\n   500원 동전: 0개\n   100원 동전: 3개",
+        "hint": "1. 거스름돈 총액 = 받은 금액 - 상품 금액 (change = paidAmount - itemPrice)\n2. 가장 큰 단위 화폐(10,000원)부터 몫(/)으로 장수를 구하고, 나머지(%)를 다음 단위로 넘겨주는 연쇄 계산을 작성합니다:\n   - int count10000 = change / 10000;\n   - int rem10000 = change % 10000;\n   - int count5000 = rem10000 / 5000; (이하 1000원, 500원, 100원 반복)\n3. 3자리마다 콤마를 찍으려면 printf(\"%,d원\\n\", itemPrice)의 %,d 서식을 사용하세요.",
+        "testcases": [
+            {
+                "input": "23700 50000",
+                "expected": "=== 편의점 거스름돈 계산기 ===\r\n상품 금액: 23,700원\n받은 금액: 50,000원\n거스름돈 총액: 26,300원\n---------------------------------\r\n10,000원권: 2장\n 5,000원권: 1장\n 1,000원권: 1장\n   500원 동전: 0개\n   100원 동전: 3개",
+                "is_hidden": false
+            },
+            {
+                "input": "14300 20000",
+                "expected": "=== 편의점 거스름돈 계산기 ===\r\n상품 금액: 14,300원\n받은 금액: 20,000원\n거스름돈 총액: 5,700원\n---------------------------------\r\n10,000원권: 0장\n 5,000원권: 1장\n 1,000원권: 0장\n   500원 동전: 1개\n   100원 동전: 2개",
+                "is_hidden": false
+            },
+            {
+                "input": "5000 5000",
+                "expected": "=== 편의점 거스름돈 계산기 ===\r\n상품 금액: 5,000원\n받은 금액: 5,000원\n거스름돈 총액: 0원\n---------------------------------\r\n10,000원권: 0장\n 5,000원권: 0장\n 1,000원권: 0장\n   500원 동전: 0개\n   100원 동전: 0개",
+                "is_hidden": false
+            },
+            {
+                "input": "1200 10000",
+                "expected": "=== 편의점 거스름돈 계산기 ===\r\n상품 금액: 1,200원\n받은 금액: 10,000원\n거스름돈 총액: 8,800원\n---------------------------------\r\n10,000원권: 0장\n 5,000원권: 1장\n 1,000원권: 3장\n   500원 동전: 1개\n   100원 동전: 3개",
+                "is_hidden": true
+            },
+            {
+                "input": "48500 50000",
+                "expected": "=== 편의점 거스름돈 계산기 ===\r\n상품 금액: 48,500원\n받은 금액: 50,000원\n거스름돈 총액: 1,500원\n---------------------------------\r\n10,000원권: 0장\n 5,000원권: 0장\n 1,000원권: 1장\n   500원 동전: 1개\n   100원 동전: 0개",
+                "is_hidden": true
+            },
+            {
+                "input": "1900 5000",
+                "expected": "=== 편의점 거스름돈 계산기 ===\r\n상품 금액: 1,900원\n받은 금액: 5,000원\n거스름돈 총액: 3,100원\n---------------------------------\r\n10,000원권: 0장\n 5,000원권: 0장\n 1,000원권: 3장\n   500원 동전: 0개\n   100원 동전: 1개",
+                "is_hidden": true
+            },
+            {
+                "input": "36200 100000",
+                "expected": "=== 편의점 거스름돈 계산기 ===\r\n상품 금액: 36,200원\n받은 금액: 100,000원\n거스름돈 총액: 63,800원\n---------------------------------\r\n10,000원권: 6장\n 5,000원권: 0장\n 1,000원권: 3장\n   500원 동전: 1개\n   100원 동전: 3개",
+                "is_hidden": true
+            },
+            {
+                "input": "700 1000",
+                "expected": "=== 편의점 거스름돈 계산기 ===\r\n상품 금액: 700원\n받은 금액: 1,000원\n거스름돈 총액: 300원\n---------------------------------\r\n10,000원권: 0장\n 5,000원권: 0장\n 1,000원권: 0장\n   500원 동전: 0개\n   100원 동전: 3개",
+                "is_hidden": true
+            },
+            {
+                "input": "85400 90000",
+                "expected": "=== 편의점 거스름돈 계산기 ===\r\n상품 금액: 85,400원\n받은 금액: 90,000원\n거스름돈 총액: 4,600원\n---------------------------------\r\n10,000원권: 0장\n 5,000원권: 0장\n 1,000원권: 4장\n   500원 동전: 1개\n   100원 동전: 1개",
+                "is_hidden": true
+            },
+            {
+                "input": "3500 50000",
+                "expected": "=== 편의점 거스름돈 계산기 ===\r\n상품 금액: 3,500원\n받은 금액: 50,000원\n거스름돈 총액: 46,500원\n---------------------------------\r\n10,000원권: 4장\n 5,000원권: 1장\n 1,000원권: 1장\n   500원 동전: 1개\n   100원 동전: 0개",
+                "is_hidden": true
+            }
+        ],
+        "samples": [
+            {
+                "input": "23700 50000",
+                "output": "=== 편의점 거스름돈 계산기 ===\r\n상품 금액: 23,700원\n받은 금액: 50,000원\n거스름돈 총액: 26,300원\n---------------------------------\r\n10,000원권: 2장\n 5,000원권: 1장\n 1,000원권: 1장\n   500원 동전: 0개\n   100원 동전: 3개"
+            },
+            {
+                "input": "14300 20000",
+                "output": "=== 편의점 거스름돈 계산기 ===\r\n상품 금액: 14,300원\n받은 금액: 20,000원\n거스름돈 총액: 5,700원\n---------------------------------\r\n10,000원권: 0장\n 5,000원권: 1장\n 1,000원권: 0장\n   500원 동전: 1개\n   100원 동전: 2개"
+            },
+            {
+                "input": "5000 5000",
+                "output": "=== 편의점 거스름돈 계산기 ===\r\n상품 금액: 5,000원\n받은 금액: 5,000원\n거스름돈 총액: 0원\n---------------------------------\r\n10,000원권: 0장\n 5,000원권: 0장\n 1,000원권: 0장\n   500원 동전: 0개\n   100원 동전: 0개"
+            }
+        ]
     },
     {
         "id": "day01_중2",
@@ -52,11 +251,77 @@ const PROBLEMS = [
         "title": "테마파크 입장료 및 우대 혜택 판별기 (ThemeParkPricing)",
         "desc": "테마파크 기준 요금, 입장객 나이, 우대 대상 여부(1: 우대, 0: 일반), 연간회원권 보유 여부(1: 보유, 0: 일반)를 입력받아 조건에 맞는 최종 입장료를 계산하세요.\n- 연간회원권 보유(1): 무료 입장 (할인율 100%)\n- 연간회원이 아닐 때:\n  * 우대 대상(1)이거나 65세 이상 경로: 50% 할인\n  * 13세 미만 어린이: 30% 할인\n  * 그 외 일반 고객: 할인 없음 (0%)\n\n[입력]\n기준요금 나이 우대여부(1/0) 연간회원여부(1/0)\n(예: 40000 10 0 0)",
         "template": "import java.util.Scanner;\n\npublic class Solution {\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        // 여기에 코드를 작성하세요\n        \n    }\n}",
-        "solution": "import java.util.Scanner;\n\npublic class Solution {\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        int basePrice = sc.nextInt();\n        int age = sc.nextInt();\n        boolean isSpecial = sc.nextInt() == 1;\n        boolean hasPass = sc.nextInt() == 1;\n\n        double discountRate = hasPass ? 1.0 : ((isSpecial || age >= 65) ? 0.5 : (age < 13 ? 0.3 : 0.0));\n        int finalPrice = basePrice - (int)(basePrice * discountRate);\n\n        System.out.println(\"=== 에버드림 테마파크 티켓 발권기 ===\");\n        System.out.printf(\"기준 요금: %,d원\\n\", basePrice);\n        System.out.printf(\"입장객 나이: %d세\\n\", age);\n        System.out.printf(\"우대 혜택 적용: %s\\n\", isSpecial ? \"적용 (우대 대상)\" : \"미적용\");\n        System.out.printf(\"연간 회원 여부: %s\\n\", hasPass ? \"연간회원 (무료)\" : \"일반 고객\");\n        System.out.println(\"---------------------------------\");\n        System.out.printf(\"최종 결제 금액: %,d원 (할인율: %.0f%%)\\n\", finalPrice, discountRate * 100);\n    }\n}",
+        "solution": "import java.util.Scanner;\n\npublic class Solution {\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        int basePrice = sc.nextInt();\n        int age = sc.nextInt();\n        boolean isSpecial = sc.nextInt() == 1;\n        boolean hasPass = sc.nextInt() == 1;\n\n        double discountRate = hasPass ? 1.0 : ((isSpecial || age >= 65) ? 0.5 : (age < 13 ? 0.3 : 0.0));\n        int finalPrice = basePrice - (int)(basePrice * discountRate);\n\n        System.out.println(\"=== 에버드림 테마파크 티켓 발권기 ===\");\n        System.out.printf(\"기준 요금: %,d원\\n\", basePrice);\n        System.out.printf(\"입장객 나이: %d세\\n\", age);\n        System.out.printf(\"우대 혜택 적용: %s\\n\", isSpecial ? \"적용 (우대 대상)\" : \"미적용\");\n        System.out.printf(\"연간 회원 여부: %s\\n\", hasPass ? \"연간회원 (무료)\" : \"일반 고객\");\n        System.out.println(\"---------------------------------\");\n        System.out.printf(\"최종 결제 금액: %,d원 (할인율: %.0f%%)\\n\", finalPrice, discountRate * 100);\n    }\n}\n",
         "sample_input": "40000 10 0 0",
-        "sample_output": "=== 에버드림 테마파크 티켓 발권기 ===\n기준 요금: 40,000원\n입장객 나이: 10세\n우대 혜택 적용: 미적용\n연간 회원 여부: 일반 고객\n---------------------------------\n최종 결제 금액: 28,000원 (할인율: 30%)",
-        "expected": "=== 에버드림 테마파크 티켓 발권기 ===\n기준 요금: 40,000원\n입장객 나이: 10세\n우대 혜택 적용: 미적용\n연간 회원 여부: 일반 고객\n---------------------------------\n최종 결제 금액: 28,000원 (할인율: 30%)",
-        "hint": "1. 4개 입력값을 순서대로 받습니다: 기준요금(int), 나이(int), 우대여부(int), 연간회원여부(int)\n2. 0 또는 1로 주어지는 우대 및 회원 여부를 논리형(boolean)으로 변환하면 가독성이 좋습니다:\n   boolean isSpecial = sc.nextInt() == 1;\n   boolean hasPass = sc.nextInt() == 1;\n3. 조건문(if)을 아직 배우지 않은 1일차이므로 삼항 연산자 (조건 ? 참 : 거짓)를 중첩하여 할인율을 계산합니다:\n   double discountRate = hasPass ? 1.0 : ((isSpecial || age >= 65) ? 0.5 : (age < 13 ? 0.3 : 0.0));\n4. 최종 금액 = basePrice - (int)(basePrice * discountRate)"
+        "sample_output": "=== 에버드림 테마파크 티켓 발권기 ===\r\n기준 요금: 40,000원\n입장객 나이: 10세\n우대 혜택 적용: 미적용\n연간 회원 여부: 일반 고객\n---------------------------------\r\n최종 결제 금액: 28,000원 (할인율: 30%)",
+        "expected": "=== 에버드림 테마파크 티켓 발권기 ===\r\n기준 요금: 40,000원\n입장객 나이: 10세\n우대 혜택 적용: 미적용\n연간 회원 여부: 일반 고객\n---------------------------------\r\n최종 결제 금액: 28,000원 (할인율: 30%)",
+        "hint": "1. 4개 입력값을 순서대로 받습니다: 기준요금(int), 나이(int), 우대여부(int), 연간회원여부(int)\n2. 0 또는 1로 주어지는 우대 및 회원 여부를 논리형(boolean)으로 변환하면 가독성이 좋습니다:\n   boolean isSpecial = sc.nextInt() == 1;\n   boolean hasPass = sc.nextInt() == 1;\n3. 조건문(if)을 아직 배우지 않은 1일차이므로 삼항 연산자 (조건 ? 참 : 거짓)를 중첩하여 할인율을 계산합니다:\n   double discountRate = hasPass ? 1.0 : ((isSpecial || age >= 65) ? 0.5 : (age < 13 ? 0.3 : 0.0));\n4. 최종 금액 = basePrice - (int)(basePrice * discountRate)",
+        "testcases": [
+            {
+                "input": "40000 10 0 0",
+                "expected": "=== 에버드림 테마파크 티켓 발권기 ===\r\n기준 요금: 40,000원\n입장객 나이: 10세\n우대 혜택 적용: 미적용\n연간 회원 여부: 일반 고객\n---------------------------------\r\n최종 결제 금액: 28,000원 (할인율: 30%)",
+                "is_hidden": false
+            },
+            {
+                "input": "50000 70 0 0",
+                "expected": "=== 에버드림 테마파크 티켓 발권기 ===\r\n기준 요금: 50,000원\n입장객 나이: 70세\n우대 혜택 적용: 미적용\n연간 회원 여부: 일반 고객\n---------------------------------\r\n최종 결제 금액: 25,000원 (할인율: 50%)",
+                "is_hidden": false
+            },
+            {
+                "input": "60000 25 0 1",
+                "expected": "=== 에버드림 테마파크 티켓 발권기 ===\r\n기준 요금: 60,000원\n입장객 나이: 25세\n우대 혜택 적용: 미적용\n연간 회원 여부: 연간회원 (무료)\n---------------------------------\r\n최종 결제 금액: 0원 (할인율: 100%)",
+                "is_hidden": false
+            },
+            {
+                "input": "45000 30 1 0",
+                "expected": "=== 에버드림 테마파크 티켓 발권기 ===\r\n기준 요금: 45,000원\n입장객 나이: 30세\n우대 혜택 적용: 적용 (우대 대상)\n연간 회원 여부: 일반 고객\n---------------------------------\r\n최종 결제 금액: 22,500원 (할인율: 50%)",
+                "is_hidden": true
+            },
+            {
+                "input": "55000 28 0 0",
+                "expected": "=== 에버드림 테마파크 티켓 발권기 ===\r\n기준 요금: 55,000원\n입장객 나이: 28세\n우대 혜택 적용: 미적용\n연간 회원 여부: 일반 고객\n---------------------------------\r\n최종 결제 금액: 55,000원 (할인율: 0%)",
+                "is_hidden": true
+            },
+            {
+                "input": "30000 12 1 0",
+                "expected": "=== 에버드림 테마파크 티켓 발권기 ===\r\n기준 요금: 30,000원\n입장객 나이: 12세\n우대 혜택 적용: 적용 (우대 대상)\n연간 회원 여부: 일반 고객\n---------------------------------\r\n최종 결제 금액: 15,000원 (할인율: 50%)",
+                "is_hidden": true
+            },
+            {
+                "input": "40000 65 0 0",
+                "expected": "=== 에버드림 테마파크 티켓 발권기 ===\r\n기준 요금: 40,000원\n입장객 나이: 65세\n우대 혜택 적용: 미적용\n연간 회원 여부: 일반 고객\n---------------------------------\r\n최종 결제 금액: 20,000원 (할인율: 50%)",
+                "is_hidden": true
+            },
+            {
+                "input": "50000 13 0 0",
+                "expected": "=== 에버드림 테마파크 티켓 발권기 ===\r\n기준 요금: 50,000원\n입장객 나이: 13세\n우대 혜택 적용: 미적용\n연간 회원 여부: 일반 고객\n---------------------------------\r\n최종 결제 금액: 50,000원 (할인율: 0%)",
+                "is_hidden": true
+            },
+            {
+                "input": "70000 64 0 0",
+                "expected": "=== 에버드림 테마파크 티켓 발권기 ===\r\n기준 요금: 70,000원\n입장객 나이: 64세\n우대 혜택 적용: 미적용\n연간 회원 여부: 일반 고객\n---------------------------------\r\n최종 결제 금액: 70,000원 (할인율: 0%)",
+                "is_hidden": true
+            },
+            {
+                "input": "80000 75 1 1",
+                "expected": "=== 에버드림 테마파크 티켓 발권기 ===\r\n기준 요금: 80,000원\n입장객 나이: 75세\n우대 혜택 적용: 적용 (우대 대상)\n연간 회원 여부: 연간회원 (무료)\n---------------------------------\r\n최종 결제 금액: 0원 (할인율: 100%)",
+                "is_hidden": true
+            }
+        ],
+        "samples": [
+            {
+                "input": "40000 10 0 0",
+                "output": "=== 에버드림 테마파크 티켓 발권기 ===\r\n기준 요금: 40,000원\n입장객 나이: 10세\n우대 혜택 적용: 미적용\n연간 회원 여부: 일반 고객\n---------------------------------\r\n최종 결제 금액: 28,000원 (할인율: 30%)"
+            },
+            {
+                "input": "50000 70 0 0",
+                "output": "=== 에버드림 테마파크 티켓 발권기 ===\r\n기준 요금: 50,000원\n입장객 나이: 70세\n우대 혜택 적용: 미적용\n연간 회원 여부: 일반 고객\n---------------------------------\r\n최종 결제 금액: 25,000원 (할인율: 50%)"
+            },
+            {
+                "input": "60000 25 0 1",
+                "output": "=== 에버드림 테마파크 티켓 발권기 ===\r\n기준 요금: 60,000원\n입장객 나이: 25세\n우대 혜택 적용: 미적용\n연간 회원 여부: 연간회원 (무료)\n---------------------------------\r\n최종 결제 금액: 0원 (할인율: 100%)"
+            }
+        ]
     },
     {
         "id": "day01_상",
@@ -66,25 +331,157 @@ const PROBLEMS = [
         "title": "영화관 관람료 복합 할인 및 3항 연산자 판별기 (MovieTicketPricing)",
         "desc": "기준 요금, 관람자 나이, 조조 할인 여부(1 또는 0), 통신사 제휴 할인 여부(1 또는 0)를 입력받아 조건에 맞는 최종 예매 금액을 계산하세요.\n- 나이 할인: 65세 이상 50%, 19세 미만 30%\n- 조조 할인: 2,000원 차감\n- 통신사 할인: 추가 10% 감면\n\n[입력]\n기준요금, 나이, 조조할인여부(1/0), 통신사할인여부(1/0)가 공백으로 주어집니다.\n(예: 15000 17 1 1)",
         "template": "import java.util.Scanner;\n\npublic class Solution {\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        // 여기에 코드를 작성하세요\n        \n    }\n}",
-        "solution": "import java.util.Scanner;\n\npublic class Solution {\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        int basePrice = sc.nextInt();\n        int age = sc.nextInt();\n        boolean isMorning = sc.nextInt() == 1;\n        boolean hasTelecomDiscount = sc.nextInt() == 1;\n\n        double ageDiscountRate = (age >= 65) ? 0.5 : ((age < 19) ? 0.3 : 0.0);\n        int priceAfterAge = basePrice - (int)(basePrice * ageDiscountRate);\n        int priceAfterMorning = isMorning ? (priceAfterAge - 2000) : priceAfterAge;\n        int finalPrice = hasTelecomDiscount ? (int)(priceAfterMorning * 0.9) : priceAfterMorning;\n\n        System.out.println(\"=== CGV 영화 예매 요금 계산서 ===\");\n        System.out.printf(\"기준 요금: %,d원\\n\", basePrice);\n        System.out.printf(\"관람자 나이: %d세 (연령 할인율: %.0f%%)\\n\", age, ageDiscountRate * 100);\n        System.out.printf(\"조조 할인 적용 여부: %s (-2,000원)\\n\", isMorning ? \"적용\" : \"미적용\");\n        System.out.printf(\"통신사 제휴 할인: %s (추가 10%%)\\n\", hasTelecomDiscount ? \"적용\" : \"미적용\");\n        System.out.println(\"---------------------------------\");\n        System.out.printf(\"최종 결제 금액: %,d원\\n\", finalPrice);\n    }\n}",
+        "solution": "import java.util.Scanner;\n\npublic class Solution {\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        int basePrice = sc.nextInt();\n        int age = sc.nextInt();\n        boolean isMorning = sc.nextInt() == 1;\n        boolean hasTelecomDiscount = sc.nextInt() == 1;\n\n        double ageDiscountRate = (age >= 65) ? 0.5 : ((age < 19) ? 0.3 : 0.0);\n        int priceAfterAge = basePrice - (int)(basePrice * ageDiscountRate);\n        int priceAfterMorning = isMorning ? (priceAfterAge - 2000) : priceAfterAge;\n        int finalPrice = hasTelecomDiscount ? (int)(priceAfterMorning * 0.9) : priceAfterMorning;\n\n        System.out.println(\"=== CGV 영화 예매 요금 계산서 ===\");\n        System.out.printf(\"기준 요금: %,d원\\n\", basePrice);\n        System.out.printf(\"관람자 나이: %d세 (연령 할인율: %.0f%%)\\n\", age, ageDiscountRate * 100);\n        System.out.printf(\"조조 할인 적용 여부: %s (-2,000원)\\n\", isMorning ? \"적용\" : \"미적용\");\n        System.out.printf(\"통신사 제휴 할인: %s (추가 10%%)\\n\", hasTelecomDiscount ? \"적용\" : \"미적용\");\n        System.out.println(\"---------------------------------\");\n        System.out.printf(\"최종 결제 금액: %,d원\\n\", finalPrice);\n    }\n}\n",
         "sample_input": "15000 17 1 1",
-        "sample_output": "=== CGV 영화 예매 요금 계산서 ===\n기준 요금: 15,000원\n관람자 나이: 17세 (연령 할인율: 30%)\n조조 할인 적용 여부: 적용 (-2,000원)\n통신사 제휴 할인: 적용 (추가 10%)\n---------------------------------\n최종 결제 금액: 7,650원",
-        "expected": "=== CGV 영화 예매 요금 계산서 ===\n기준 요금: 15,000원\n관람자 나이: 17세 (연령 할인율: 30%)\n조조 할인 적용 여부: 적용 (-2,000원)\n통신사 제휴 할인: 적용 (추가 10%)\n---------------------------------\n최종 결제 금액: 7,650원",
-        "hint": "1. 4개 입력값을 순서대로 받습니다: 기준요금, 나이, 조조할인여부(1/0), 통신사할인여부(1/0)\n2. 1단계 (나이 할인율 판별):\n   double ageDiscountRate = (age >= 65) ? 0.5 : ((age < 19) ? 0.3 : 0.0);\n   int priceAfterAge = basePrice - (int)(basePrice * ageDiscountRate);\n3. 2단계 (조조 2,000원 차감):\n   int priceAfterMorning = isMorning ? (priceAfterAge - 2000) : priceAfterAge;\n4. 3단계 (통신사 제휴 10% 추가 할인):\n   int finalPrice = hasTelecomDiscount ? (int)(priceAfterMorning * 0.9) : priceAfterMorning;"
+        "sample_output": "=== CGV 영화 예매 요금 계산서 ===\r\n기준 요금: 15,000원\n관람자 나이: 17세 (연령 할인율: 30%)\n조조 할인 적용 여부: 적용 (-2,000원)\n통신사 제휴 할인: 적용 (추가 10%)\n---------------------------------\r\n최종 결제 금액: 7,650원",
+        "expected": "=== CGV 영화 예매 요금 계산서 ===\r\n기준 요금: 15,000원\n관람자 나이: 17세 (연령 할인율: 30%)\n조조 할인 적용 여부: 적용 (-2,000원)\n통신사 제휴 할인: 적용 (추가 10%)\n---------------------------------\r\n최종 결제 금액: 7,650원",
+        "hint": "1. 4개 입력값을 순서대로 받습니다: 기준요금, 나이, 조조할인여부(1/0), 통신사할인여부(1/0)\n2. 1단계 (나이 할인율 판별):\n   double ageDiscountRate = (age >= 65) ? 0.5 : ((age < 19) ? 0.3 : 0.0);\n   int priceAfterAge = basePrice - (int)(basePrice * ageDiscountRate);\n3. 2단계 (조조 2,000원 차감):\n   int priceAfterMorning = isMorning ? (priceAfterAge - 2000) : priceAfterAge;\n4. 3단계 (통신사 제휴 10% 추가 할인):\n   int finalPrice = hasTelecomDiscount ? (int)(priceAfterMorning * 0.9) : priceAfterMorning;",
+        "testcases": [
+            {
+                "input": "15000 17 1 1",
+                "expected": "=== CGV 영화 예매 요금 계산서 ===\r\n기준 요금: 15,000원\n관람자 나이: 17세 (연령 할인율: 30%)\n조조 할인 적용 여부: 적용 (-2,000원)\n통신사 제휴 할인: 적용 (추가 10%)\n---------------------------------\r\n최종 결제 금액: 7,650원",
+                "is_hidden": false
+            },
+            {
+                "input": "14000 25 0 0",
+                "expected": "=== CGV 영화 예매 요금 계산서 ===\r\n기준 요금: 14,000원\n관람자 나이: 25세 (연령 할인율: 0%)\n조조 할인 적용 여부: 미적용 (-2,000원)\n통신사 제휴 할인: 미적용 (추가 10%)\n---------------------------------\r\n최종 결제 금액: 14,000원",
+                "is_hidden": false
+            },
+            {
+                "input": "16000 70 0 1",
+                "expected": "=== CGV 영화 예매 요금 계산서 ===\r\n기준 요금: 16,000원\n관람자 나이: 70세 (연령 할인율: 50%)\n조조 할인 적용 여부: 미적용 (-2,000원)\n통신사 제휴 할인: 적용 (추가 10%)\n---------------------------------\r\n최종 결제 금액: 7,200원",
+                "is_hidden": false
+            },
+            {
+                "input": "15000 18 1 0",
+                "expected": "=== CGV 영화 예매 요금 계산서 ===\r\n기준 요금: 15,000원\n관람자 나이: 18세 (연령 할인율: 30%)\n조조 할인 적용 여부: 적용 (-2,000원)\n통신사 제휴 할인: 미적용 (추가 10%)\n---------------------------------\r\n최종 결제 금액: 8,500원",
+                "is_hidden": true
+            },
+            {
+                "input": "15000 19 0 1",
+                "expected": "=== CGV 영화 예매 요금 계산서 ===\r\n기준 요금: 15,000원\n관람자 나이: 19세 (연령 할인율: 0%)\n조조 할인 적용 여부: 미적용 (-2,000원)\n통신사 제휴 할인: 적용 (추가 10%)\n---------------------------------\r\n최종 결제 금액: 13,500원",
+                "is_hidden": true
+            },
+            {
+                "input": "15000 64 1 0",
+                "expected": "=== CGV 영화 예매 요금 계산서 ===\r\n기준 요금: 15,000원\n관람자 나이: 64세 (연령 할인율: 0%)\n조조 할인 적용 여부: 적용 (-2,000원)\n통신사 제휴 할인: 미적용 (추가 10%)\n---------------------------------\r\n최종 결제 금액: 13,000원",
+                "is_hidden": true
+            },
+            {
+                "input": "15000 65 1 1",
+                "expected": "=== CGV 영화 예매 요금 계산서 ===\r\n기준 요금: 15,000원\n관람자 나이: 65세 (연령 할인율: 50%)\n조조 할인 적용 여부: 적용 (-2,000원)\n통신사 제휴 할인: 적용 (추가 10%)\n---------------------------------\r\n최종 결제 금액: 4,950원",
+                "is_hidden": true
+            },
+            {
+                "input": "12000 10 0 1",
+                "expected": "=== CGV 영화 예매 요금 계산서 ===\r\n기준 요금: 12,000원\n관람자 나이: 10세 (연령 할인율: 30%)\n조조 할인 적용 여부: 미적용 (-2,000원)\n통신사 제휴 할인: 적용 (추가 10%)\n---------------------------------\r\n최종 결제 금액: 7,560원",
+                "is_hidden": true
+            },
+            {
+                "input": "18000 35 1 0",
+                "expected": "=== CGV 영화 예매 요금 계산서 ===\r\n기준 요금: 18,000원\n관람자 나이: 35세 (연령 할인율: 0%)\n조조 할인 적용 여부: 적용 (-2,000원)\n통신사 제휴 할인: 미적용 (추가 10%)\n---------------------------------\r\n최종 결제 금액: 16,000원",
+                "is_hidden": true
+            },
+            {
+                "input": "20000 80 1 1",
+                "expected": "=== CGV 영화 예매 요금 계산서 ===\r\n기준 요금: 20,000원\n관람자 나이: 80세 (연령 할인율: 50%)\n조조 할인 적용 여부: 적용 (-2,000원)\n통신사 제휴 할인: 적용 (추가 10%)\n---------------------------------\r\n최종 결제 금액: 7,200원",
+                "is_hidden": true
+            }
+        ],
+        "samples": [
+            {
+                "input": "15000 17 1 1",
+                "output": "=== CGV 영화 예매 요금 계산서 ===\r\n기준 요금: 15,000원\n관람자 나이: 17세 (연령 할인율: 30%)\n조조 할인 적용 여부: 적용 (-2,000원)\n통신사 제휴 할인: 적용 (추가 10%)\n---------------------------------\r\n최종 결제 금액: 7,650원"
+            },
+            {
+                "input": "14000 25 0 0",
+                "output": "=== CGV 영화 예매 요금 계산서 ===\r\n기준 요금: 14,000원\n관람자 나이: 25세 (연령 할인율: 0%)\n조조 할인 적용 여부: 미적용 (-2,000원)\n통신사 제휴 할인: 미적용 (추가 10%)\n---------------------------------\r\n최종 결제 금액: 14,000원"
+            },
+            {
+                "input": "16000 70 0 1",
+                "output": "=== CGV 영화 예매 요금 계산서 ===\r\n기준 요금: 16,000원\n관람자 나이: 70세 (연령 할인율: 50%)\n조조 할인 적용 여부: 미적용 (-2,000원)\n통신사 제휴 할인: 적용 (추가 10%)\n---------------------------------\r\n최종 결제 금액: 7,200원"
+            }
+        ]
     },
     {
         "id": "day01_도전",
         "day": 1,
         "subject": "Java",
         "difficulty": "도전",
-        "title": "24시간제 스마트 알람 시계 및 날짜 오버플로우 시뮬레이터 (TimeOverflowCalculator)",
-        "desc": "현재 시각(시 H: 0~23, 분 M: 0~59)과 추가할 타이머 시간(분 단위 D: 0~100,000분)이 주어집니다.\n타이머가 완료된 시점의 최종 시각(시, 분)과 함께, 추가 시간 동안 자정(00:00)을 몇 번 통과했는지(경과 일수)를 계산하세요.\n(조건문 if를 사용하지 않고 오직 산술 연산자 +, /, % 및 삼항 연산자만으로 24시간 순환을 구현하세요.)\n\n[입력]\n시(H) 분(M) 추가분(D)\n(예: 14 30 1800)",
-        "template": "import java.util.Scanner;\n\npublic class Solution {\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        // 여기에 코드를 작성하세요\n        \n    }\n}",
-        "solution": "import java.util.Scanner;\n\npublic class Solution {\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        int h = sc.nextInt();\n        int m = sc.nextInt();\n        int d = sc.nextInt();\n\n        int totalMinutesFromMidnight = (h * 60) + m + d;\n        int daysPassed = totalMinutesFromMidnight / (24 * 60);\n        int remainingMinutes = totalMinutesFromMidnight % (24 * 60);\n\n        int finalH = remainingMinutes / 60;\n        int finalM = remainingMinutes % 60;\n\n        int addHours = d / 60;\n        int addMinutes = d % 60;\n\n        System.out.println(\"=== 스마트 타이머 오버플로우 계산기 ===\");\n        System.out.printf(\"설정 시각: %d시 %d분\\n\", h, m);\n        System.out.printf(\"타이머 추가 시간: %,d분 (%d시간 %d분)\\n\", d, addHours, addMinutes);\n        System.out.println(\"---------------------------------\");\n        System.out.printf(\"경과 일수: +%d일 경과\\n\", daysPassed);\n        System.out.printf(\"최종 알람 시각: %02d시 %02d분 (24시간제)\\n\", finalH, finalM);\n    }\n}",
-        "sample_input": "14 30 1800",
-        "sample_output": "=== 스마트 타이머 오버플로우 계산기 ===\n설정 시각: 14시 30분\n타이머 추가 시간: 1,800분 (30시간 0분)\n---------------------------------\n경과 일수: +1일 경과\n최종 알람 시각: 20시 30분 (24시간제)",
-        "expected": "=== 스마트 타이머 오버플로우 계산기 ===\n설정 시각: 14시 30분\n타이머 추가 시간: 1,800분 (30시간 0분)\n---------------------------------\n경과 일수: +1일 경과\n최종 알람 시각: 20시 30분 (24시간제)",
-        "hint": "1. 기준점을 자정(00:00)으로 환산하면 계산이 단순해집니다: `int totalMinutesFromMidnight = (h * 60) + m + d;`\n2. 하루는 24 * 60 = 1440분입니다. 따라서 경과 일수는 `totalMinutes / 1440`, 최종 남은 분은 `totalMinutes % 1440`입니다.\n3. `%02d` 서식 문자를 사용하면 1자리 숫자 앞을 0으로 채워 2자리(예: 09시 05분)로 깔끔하게 출력할 수 있습니다."
+        "title": "8비트 서버 인프라 상태 플래그 마스킹 & 가중치 헬스체크 엔진 (ServerStatusMasking)",
+        "desc": "클라우드 인프라 관제 시스템에서는 8비트(0~255) 1바이트 정수 코드 하나에 서버의 세부 장애 상태들을 비트 플래그로 압축하여 관리합니다.\n입력받은 8비트 정수 상태 코드에 대해 비트 마스킹(&)을 수행하여 장애 항목을 파악하고, 각 장애별 위험 가중치 점수를 합산하여 시스템 건전성 점수(100점 만점)와 상태 등급을 산출하세요.\n\n[8비트 장애 플래그 정의]\n- Bit 0 (1): CPU 과부하 (위험 감점: -25점)\n- Bit 1 (2): 메모리 고갈 (위험 감점: -25점)\n- Bit 2 (4): 디스크 용량 부족 (위험 감점: -20점)\n- Bit 3 (8): 네트워크 패킷 손실 (위험 감점: -15점)\n- Bit 4 (16): 데이터베이스 락 (위험 감점: -30점)\n- Bit 5 (32): 전원 공급 불안정 (위험 감점: -40점)\n\n[건전성 점수 및 종합 등급 판정]\n- 기본 점수: 100점\n- 최종 건전성 점수 = 100 - (발생한 장애들의 감점 총합). 단, 0점 미만으로 내려가면 0점으로 보정.\n- 종합 상태 등급:\n  * 80점 이상: 정상 (HEALTHY)\n  * 50점 이상 80점 미만: 주의 (WARNING)\n  * 50점 미만: 위험 (CRITICAL)\n\n[치명적 복합 장애 자동 격리 (비트 OR 연산)]\n- 조건: CPU 과부하(1)와 DB 락(16)이 동시에 발생했거나, 또는 전원 불안정(32)이 발생한 경우\n- 조치: 비트 7 (128 / 1 << 7 = 긴급 격리 페일오버 플래그)을 비트 OR(|) 연산으로 켜서 새로운 상태 코드를 생성하고 격리 조치 발령.\n\n[입력]\n첫째 줄에 0 이상 255 이하의 정수 상태 코드가 주어집니다.\n(예: 17)",
+        "template": "import java.util.Scanner;\n\npublic class Solution {\n    public static final int FLAG_CPU   = 1 << 0; // 1 (감점 25)\n    public static final int FLAG_MEM   = 1 << 1; // 2 (감점 25)\n    public static final int FLAG_DISK  = 1 << 2; // 4 (감점 20)\n    public static final int FLAG_NET   = 1 << 3; // 8 (감점 15)\n    public static final int FLAG_DB    = 1 << 4; // 16 (감점 30)\n    public static final int FLAG_PWR   = 1 << 5; // 32 (감점 40)\n    public static final int FLAG_ISOL  = 1 << 7; // 128 (격리 플래그)\n\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        // 여기에 코드를 작성하세요\n        \n    }\n}",
+        "solution": "import java.util.Scanner;\n\npublic class Solution {\n    public static final int FLAG_CPU   = 1 << 0; // 1 (감점 25)\n    public static final int FLAG_MEM   = 1 << 1; // 2 (감점 25)\n    public static final int FLAG_DISK  = 1 << 2; // 4 (감점 20)\n    public static final int FLAG_NET   = 1 << 3; // 8 (감점 15)\n    public static final int FLAG_DB    = 1 << 4; // 16 (감점 30)\n    public static final int FLAG_PWR   = 1 << 5; // 32 (감점 40)\n    public static final int FLAG_ISOL  = 1 << 7; // 128 (격리 플래그)\n\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        int statusCode = sc.nextInt();\n\n        boolean isCpu = (statusCode & FLAG_CPU) != 0;\n        boolean isMem = (statusCode & FLAG_MEM) != 0;\n        boolean isDisk = (statusCode & FLAG_DISK) != 0;\n        boolean isNet = (statusCode & FLAG_NET) != 0;\n        boolean isDb = (statusCode & FLAG_DB) != 0;\n        boolean isPwr = (statusCode & FLAG_PWR) != 0;\n\n        int penalty = (isCpu ? 25 : 0)\n                    + (isMem ? 25 : 0)\n                    + (isDisk ? 20 : 0)\n                    + (isNet ? 15 : 0)\n                    + (isDb ? 30 : 0)\n                    + (isPwr ? 40 : 0);\n\n        int healthScore = 100 - penalty;\n        healthScore = (healthScore < 0) ? 0 : healthScore;\n\n        String grade = (healthScore >= 80) ? \"정상 (HEALTHY)\" : ((healthScore >= 50) ? \"주의 (WARNING)\" : \"위험 (CRITICAL)\");\n\n        boolean needsIsolation = (isCpu && isDb) || isPwr;\n        int newStatusCode = needsIsolation ? (statusCode | FLAG_ISOL) : statusCode;\n\n        String binInitial = String.format(\"%8s\", Integer.toBinaryString(statusCode)).replace(' ', '0');\n        String binNew = String.format(\"%8s\", Integer.toBinaryString(newStatusCode)).replace(' ', '0');\n\n        System.out.println(\"=== 클라우드 인프라 8비트 관제 엔진 ===\");\n        System.out.printf(\"초기 상태 코드: %d (2진수: %s)\\n\", statusCode, binInitial);\n        System.out.printf(\"- CPU 과부하 (1): %s\\n\", isCpu ? \"감지 (감점 -25)\" : \"정상\");\n        System.out.printf(\"- 메모리 고갈 (2): %s\\n\", isMem ? \"감지 (감점 -25)\" : \"정상\");\n        System.out.printf(\"- 디스크 부족 (4): %s\\n\", isDisk ? \"감지 (감점 -20)\" : \"정상\");\n        System.out.printf(\"- 네트워크 손실 (8): %s\\n\", isNet ? \"감지 (감점 -15)\" : \"정상\");\n        System.out.printf(\"- DB 락 (16): %s\\n\", isDb ? \"감지 (감점 -30)\" : \"정상\");\n        System.out.printf(\"- 전원 불안정 (32): %s\\n\", isPwr ? \"감지 (감점 -40)\" : \"정상\");\n        System.out.println(\"----------------------------------------\");\n        System.out.printf(\"시스템 건전성 점수: %d점 / 100점\\n\", healthScore);\n        System.out.printf(\"종합 상태 등급: %s\\n\", grade);\n        System.out.printf(\"긴급 페일오버 격리: %s\\n\", needsIsolation ? String.format(\"발령 (신규 코드: %d / %s)\", newStatusCode, binNew) : \"미발령 (정상 유지)\");\n    }\n}\n",
+        "sample_input": "17",
+        "sample_output": "=== 클라우드 인프라 8비트 관제 엔진 ===\r\n초기 상태 코드: 17 (2진수: 00010001)\n- CPU 과부하 (1): 감지 (감점 -25)\n- 메모리 고갈 (2): 정상\n- 디스크 부족 (4): 정상\n- 네트워크 손실 (8): 정상\n- DB 락 (16): 감지 (감점 -30)\n- 전원 불안정 (32): 정상\n----------------------------------------\r\n시스템 건전성 점수: 45점 / 100점\n종합 상태 등급: 위험 (CRITICAL)\n긴급 페일오버 격리: 발령 (신규 코드: 145 / 10010001)",
+        "expected": "=== 클라우드 인프라 8비트 관제 엔진 ===\r\n초기 상태 코드: 17 (2진수: 00010001)\n- CPU 과부하 (1): 감지 (감점 -25)\n- 메모리 고갈 (2): 정상\n- 디스크 부족 (4): 정상\n- 네트워크 손실 (8): 정상\n- DB 락 (16): 감지 (감점 -30)\n- 전원 불안정 (32): 정상\n----------------------------------------\r\n시스템 건전성 점수: 45점 / 100점\n종합 상태 등급: 위험 (CRITICAL)\n긴급 페일오버 격리: 발령 (신규 코드: 145 / 10010001)",
+        "hint": "1. 비트 마스킹: boolean isCpu = (statusCode & FLAG_CPU) != 0; 형태로 각 비트가 켜져있는지 검사합니다.\n2. 가중치 감점: 발생한 장애에 따라 penalty를 누적하고, healthScore = (healthScore < 0) ? 0 : healthScore 형태로 0점 미만 하한선을 보정합니다.\n3. 종합 등급: (healthScore >= 80) ? \"정상 (HEALTHY)\" : ((healthScore >= 50) ? \"주의 (WARNING)\" : \"위험 (CRITICAL)\")\n4. 격리 플래그 셋팅: boolean needsIsolation = (isCpu && isDb) || isPwr; 조건 충족 시 statusCode | FLAG_ISOL 연산으로 비트 7을 켭니다.\n5. 8비트 2진수 서식: String.format(\"%8s\", Integer.toBinaryString(code)).replace(' ', '0') 을 활용하면 00010001 처럼 8자리 2진수 문자열로 예쁘게 출력할 수 있습니다.",
+        "testcases": [
+            {
+                "input": "17",
+                "expected": "=== 클라우드 인프라 8비트 관제 엔진 ===\r\n초기 상태 코드: 17 (2진수: 00010001)\n- CPU 과부하 (1): 감지 (감점 -25)\n- 메모리 고갈 (2): 정상\n- 디스크 부족 (4): 정상\n- 네트워크 손실 (8): 정상\n- DB 락 (16): 감지 (감점 -30)\n- 전원 불안정 (32): 정상\n----------------------------------------\r\n시스템 건전성 점수: 45점 / 100점\n종합 상태 등급: 위험 (CRITICAL)\n긴급 페일오버 격리: 발령 (신규 코드: 145 / 10010001)",
+                "is_hidden": false
+            },
+            {
+                "input": "0",
+                "expected": "=== 클라우드 인프라 8비트 관제 엔진 ===\r\n초기 상태 코드: 0 (2진수: 00000000)\n- CPU 과부하 (1): 정상\n- 메모리 고갈 (2): 정상\n- 디스크 부족 (4): 정상\n- 네트워크 손실 (8): 정상\n- DB 락 (16): 정상\n- 전원 불안정 (32): 정상\n----------------------------------------\r\n시스템 건전성 점수: 100점 / 100점\n종합 상태 등급: 정상 (HEALTHY)\n긴급 페일오버 격리: 미발령 (정상 유지)",
+                "is_hidden": false
+            },
+            {
+                "input": "32",
+                "expected": "=== 클라우드 인프라 8비트 관제 엔진 ===\r\n초기 상태 코드: 32 (2진수: 00100000)\n- CPU 과부하 (1): 정상\n- 메모리 고갈 (2): 정상\n- 디스크 부족 (4): 정상\n- 네트워크 손실 (8): 정상\n- DB 락 (16): 정상\n- 전원 불안정 (32): 감지 (감점 -40)\n----------------------------------------\r\n시스템 건전성 점수: 60점 / 100점\n종합 상태 등급: 주의 (WARNING)\n긴급 페일오버 격리: 발령 (신규 코드: 160 / 10100000)",
+                "is_hidden": false
+            },
+            {
+                "input": "3",
+                "expected": "=== 클라우드 인프라 8비트 관제 엔진 ===\r\n초기 상태 코드: 3 (2진수: 00000011)\n- CPU 과부하 (1): 감지 (감점 -25)\n- 메모리 고갈 (2): 감지 (감점 -25)\n- 디스크 부족 (4): 정상\n- 네트워크 손실 (8): 정상\n- DB 락 (16): 정상\n- 전원 불안정 (32): 정상\n----------------------------------------\r\n시스템 건전성 점수: 50점 / 100점\n종합 상태 등급: 주의 (WARNING)\n긴급 페일오버 격리: 미발령 (정상 유지)",
+                "is_hidden": true
+            },
+            {
+                "input": "12",
+                "expected": "=== 클라우드 인프라 8비트 관제 엔진 ===\r\n초기 상태 코드: 12 (2진수: 00001100)\n- CPU 과부하 (1): 정상\n- 메모리 고갈 (2): 정상\n- 디스크 부족 (4): 감지 (감점 -20)\n- 네트워크 손실 (8): 감지 (감점 -15)\n- DB 락 (16): 정상\n- 전원 불안정 (32): 정상\n----------------------------------------\r\n시스템 건전성 점수: 65점 / 100점\n종합 상태 등급: 주의 (WARNING)\n긴급 페일오버 격리: 미발령 (정상 유지)",
+                "is_hidden": true
+            },
+            {
+                "input": "1",
+                "expected": "=== 클라우드 인프라 8비트 관제 엔진 ===\r\n초기 상태 코드: 1 (2진수: 00000001)\n- CPU 과부하 (1): 감지 (감점 -25)\n- 메모리 고갈 (2): 정상\n- 디스크 부족 (4): 정상\n- 네트워크 손실 (8): 정상\n- DB 락 (16): 정상\n- 전원 불안정 (32): 정상\n----------------------------------------\r\n시스템 건전성 점수: 75점 / 100점\n종합 상태 등급: 주의 (WARNING)\n긴급 페일오버 격리: 미발령 (정상 유지)",
+                "is_hidden": true
+            },
+            {
+                "input": "48",
+                "expected": "=== 클라우드 인프라 8비트 관제 엔진 ===\r\n초기 상태 코드: 48 (2진수: 00110000)\n- CPU 과부하 (1): 정상\n- 메모리 고갈 (2): 정상\n- 디스크 부족 (4): 정상\n- 네트워크 손실 (8): 정상\n- DB 락 (16): 감지 (감점 -30)\n- 전원 불안정 (32): 감지 (감점 -40)\n----------------------------------------\r\n시스템 건전성 점수: 30점 / 100점\n종합 상태 등급: 위험 (CRITICAL)\n긴급 페일오버 격리: 발령 (신규 코드: 176 / 10110000)",
+                "is_hidden": true
+            },
+            {
+                "input": "63",
+                "expected": "=== 클라우드 인프라 8비트 관제 엔진 ===\r\n초기 상태 코드: 63 (2진수: 00111111)\n- CPU 과부하 (1): 감지 (감점 -25)\n- 메모리 고갈 (2): 감지 (감점 -25)\n- 디스크 부족 (4): 감지 (감점 -20)\n- 네트워크 손실 (8): 감지 (감점 -15)\n- DB 락 (16): 감지 (감점 -30)\n- 전원 불안정 (32): 감지 (감점 -40)\n----------------------------------------\r\n시스템 건전성 점수: 0점 / 100점\n종합 상태 등급: 위험 (CRITICAL)\n긴급 페일오버 격리: 발령 (신규 코드: 191 / 10111111)",
+                "is_hidden": true
+            },
+            {
+                "input": "2",
+                "expected": "=== 클라우드 인프라 8비트 관제 엔진 ===\r\n초기 상태 코드: 2 (2진수: 00000010)\n- CPU 과부하 (1): 정상\n- 메모리 고갈 (2): 감지 (감점 -25)\n- 디스크 부족 (4): 정상\n- 네트워크 손실 (8): 정상\n- DB 락 (16): 정상\n- 전원 불안정 (32): 정상\n----------------------------------------\r\n시스템 건전성 점수: 75점 / 100점\n종합 상태 등급: 주의 (WARNING)\n긴급 페일오버 격리: 미발령 (정상 유지)",
+                "is_hidden": true
+            },
+            {
+                "input": "19",
+                "expected": "=== 클라우드 인프라 8비트 관제 엔진 ===\r\n초기 상태 코드: 19 (2진수: 00010011)\n- CPU 과부하 (1): 감지 (감점 -25)\n- 메모리 고갈 (2): 감지 (감점 -25)\n- 디스크 부족 (4): 정상\n- 네트워크 손실 (8): 정상\n- DB 락 (16): 감지 (감점 -30)\n- 전원 불안정 (32): 정상\n----------------------------------------\r\n시스템 건전성 점수: 20점 / 100점\n종합 상태 등급: 위험 (CRITICAL)\n긴급 페일오버 격리: 발령 (신규 코드: 147 / 10010011)",
+                "is_hidden": true
+            }
+        ],
+        "samples": [
+            {
+                "input": "17",
+                "output": "=== 클라우드 인프라 8비트 관제 엔진 ===\r\n초기 상태 코드: 17 (2진수: 00010001)\n- CPU 과부하 (1): 감지 (감점 -25)\n- 메모리 고갈 (2): 정상\n- 디스크 부족 (4): 정상\n- 네트워크 손실 (8): 정상\n- DB 락 (16): 감지 (감점 -30)\n- 전원 불안정 (32): 정상\n----------------------------------------\r\n시스템 건전성 점수: 45점 / 100점\n종합 상태 등급: 위험 (CRITICAL)\n긴급 페일오버 격리: 발령 (신규 코드: 145 / 10010001)"
+            },
+            {
+                "input": "0",
+                "output": "=== 클라우드 인프라 8비트 관제 엔진 ===\r\n초기 상태 코드: 0 (2진수: 00000000)\n- CPU 과부하 (1): 정상\n- 메모리 고갈 (2): 정상\n- 디스크 부족 (4): 정상\n- 네트워크 손실 (8): 정상\n- DB 락 (16): 정상\n- 전원 불안정 (32): 정상\n----------------------------------------\r\n시스템 건전성 점수: 100점 / 100점\n종합 상태 등급: 정상 (HEALTHY)\n긴급 페일오버 격리: 미발령 (정상 유지)"
+            },
+            {
+                "input": "32",
+                "output": "=== 클라우드 인프라 8비트 관제 엔진 ===\r\n초기 상태 코드: 32 (2진수: 00100000)\n- CPU 과부하 (1): 정상\n- 메모리 고갈 (2): 정상\n- 디스크 부족 (4): 정상\n- 네트워크 손실 (8): 정상\n- DB 락 (16): 정상\n- 전원 불안정 (32): 감지 (감점 -40)\n----------------------------------------\r\n시스템 건전성 점수: 60점 / 100점\n종합 상태 등급: 주의 (WARNING)\n긴급 페일오버 격리: 발령 (신규 코드: 160 / 10100000)"
+            }
+        ]
     },
     {
         "id": "day02_하1",

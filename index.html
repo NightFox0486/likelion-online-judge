@@ -171,27 +171,9 @@
                     </div>
                 </div>
 
-                <!-- 백준 스타일: 예제 입력 1 & 예제 출력 1 -->
-                <div class="space-y-3 pt-1">
-                    <div class="bg-slate-900 border border-slate-800 rounded-xl p-3.5">
-                        <div class="flex items-center justify-between text-[11px] font-semibold text-slate-400 mb-1.5">
-                            <span class="flex items-center gap-1.5">
-                                <i class="fa-solid fa-arrow-right-to-bracket text-amber-400"></i> 예제 입력 1
-                            </span>
-                            <button onclick="copySampleInput()" class="text-slate-500 hover:text-slate-200 text-[10px] transition"><i class="fa-regular fa-copy"></i> 복사</button>
-                        </div>
-                        <pre class="code-font text-xs text-slate-300 whitespace-pre-wrap bg-slate-950 p-2.5 rounded-lg border border-slate-800"><code id="sampleInput"></code></pre>
-                    </div>
-
-                    <div class="bg-slate-900 border border-slate-800 rounded-xl p-3.5">
-                        <div class="flex items-center justify-between text-[11px] font-semibold text-slate-400 mb-1.5">
-                            <span class="flex items-center gap-1.5">
-                                <i class="fa-solid fa-arrow-up-right-from-square text-emerald-400"></i> 예제 출력 1 (채점 기준)
-                            </span>
-                            <button onclick="copySampleOutput()" class="text-slate-500 hover:text-slate-200 text-[10px] transition"><i class="fa-regular fa-copy"></i> 복사</button>
-                        </div>
-                        <pre class="code-font text-xs text-emerald-300/90 whitespace-pre-wrap bg-slate-950 p-2.5 rounded-lg border border-slate-800"><code id="sampleOutput"></code></pre>
-                    </div>
+                <!-- 백준 스타일: 동적 예제 입출력 (1, 2, 3) -->
+                <div id="samplesContainer" class="space-y-3 pt-1">
+                    <!-- renderSamples(prob)에 의해 동적으로 렌더링됩니다 -->
                 </div>
 
                 <!-- 관리자 전용: 모범 정답 아코디언 (학생에게는 기본 숨김) -->
@@ -1235,8 +1217,7 @@
                 diffBadge.className = 'px-2.5 py-0.5 rounded text-[11px] font-bold bg-gradient-to-r from-purple-500/20 to-pink-500/20 text-purple-300 border border-purple-500/40 shadow-sm';
             }
             document.getElementById('pDesc').textContent = prob.desc;
-            document.getElementById('sampleInput').textContent = prob.sample_input || '없음';
-            document.getElementById('sampleOutput').textContent = prob.sample_output || '(출력 결과 없음)';
+            renderSamples(prob);
             document.getElementById('pSolutionCode').textContent = prob.solution || '// 모범 답안 준비 중';
 
             // 힌트 내용 세팅
@@ -1263,14 +1244,82 @@
             document.getElementById('judgeDuration').textContent = '-';
         }
 
+        function escapeHtml(str) {
+            if (!str) return '';
+            return String(str)
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;')
+                .replace(/'/g, '&#39;');
+        }
+
+        function renderSamples(prob) {
+            const container = document.getElementById('samplesContainer');
+            if (!container) return;
+            container.innerHTML = '';
+
+            const samples = (prob.samples && prob.samples.length > 0) ? prob.samples : [
+                { input: prob.sample_input || '없음', output: prob.sample_output || '(출력 결과 없음)' }
+            ];
+
+            samples.forEach((s, idx) => {
+                const num = idx + 1;
+                const card = document.createElement('div');
+                card.className = 'space-y-2 bg-slate-900/80 border border-slate-800 rounded-xl p-3.5';
+                
+                const inputCard = document.createElement('div');
+                inputCard.className = 'space-y-1';
+                inputCard.innerHTML = `
+                    <div class="flex items-center justify-between text-[11px] font-semibold text-slate-400">
+                        <span class="flex items-center gap-1.5">
+                            <i class="fa-solid fa-arrow-right-to-bracket text-amber-400"></i> 예제 입력 ${num}
+                        </span>
+                        <button type="button" class="btn-copy-inp text-slate-500 hover:text-slate-200 text-[10px] transition flex items-center gap-1">
+                            <i class="fa-regular fa-copy"></i> 복사
+                        </button>
+                    </div>
+                    <pre class="code-font text-xs text-slate-300 whitespace-pre-wrap bg-slate-950 p-2.5 rounded-lg border border-slate-800 select-text"><code>${escapeHtml(s.input)}</code></pre>
+                `;
+                inputCard.querySelector('.btn-copy-inp').onclick = () => {
+                    navigator.clipboard.writeText(s.input).then(() => alert(`예제 입력 ${num}이 복사되었습니다.`));
+                };
+
+                const outputCard = document.createElement('div');
+                outputCard.className = 'space-y-1 pt-1.5 border-t border-slate-800/60';
+                outputCard.innerHTML = `
+                    <div class="flex items-center justify-between text-[11px] font-semibold text-emerald-400">
+                        <span class="flex items-center gap-1.5">
+                            <i class="fa-solid fa-arrow-up-right-from-square text-emerald-400"></i> 예제 출력 ${num} (기댓값)
+                        </span>
+                        <button type="button" class="btn-copy-out text-slate-500 hover:text-slate-200 text-[10px] transition flex items-center gap-1">
+                            <i class="fa-regular fa-copy"></i> 복사
+                        </button>
+                    </div>
+                    <pre class="code-font text-xs text-emerald-300/90 whitespace-pre-wrap bg-slate-950 p-2.5 rounded-lg border border-slate-800 select-text"><code>${escapeHtml(s.output)}</code></pre>
+                `;
+                outputCard.querySelector('.btn-copy-out').onclick = () => {
+                    navigator.clipboard.writeText(s.output).then(() => alert(`예제 출력 ${num}이 복사되었습니다.`));
+                };
+
+                card.appendChild(inputCard);
+                card.appendChild(outputCard);
+                container.appendChild(card);
+            });
+        }
+
         function copySampleInput() {
-            const text = document.getElementById('sampleInput').textContent;
-            navigator.clipboard.writeText(text).then(() => alert('예제 입력이 복사되었습니다.'));
+            if (currentProblem) {
+                const text = (currentProblem.samples && currentProblem.samples.length > 0) ? currentProblem.samples[0].input : (currentProblem.sample_input || '');
+                navigator.clipboard.writeText(text).then(() => alert('예제 입력 1이 복사되었습니다.'));
+            }
         }
 
         function copySampleOutput() {
-            const text = document.getElementById('sampleOutput').textContent;
-            navigator.clipboard.writeText(text).then(() => alert('예제 출력이 복사되었습니다.'));
+            if (currentProblem) {
+                const text = (currentProblem.samples && currentProblem.samples.length > 0) ? currentProblem.samples[0].output : (currentProblem.sample_output || '');
+                navigator.clipboard.writeText(text).then(() => alert('예제 출력 1이 복사되었습니다.'));
+            }
         }
 
         // 관리자 일차 오픈 토글
@@ -1688,7 +1737,8 @@
                 language: currentProblem.subject.toLowerCase(),
                 code: code,
                 stdin_input: currentProblem.sample_input || '',
-                expected_output: currentProblem.expected
+                expected_output: currentProblem.expected,
+                testcases: (currentProblem.testcases && currentProblem.testcases.length > 0) ? currentProblem.testcases : undefined
             };
 
             const startTime = performance.now();
@@ -1710,7 +1760,14 @@
                 }
 
                 const result = await res.json();
-                showJudgeResult(result.status, result.score, result.stdout, result.stderr || result.message);
+                showJudgeResult(
+                    result.status,
+                    result.score,
+                    result.stdout,
+                    result.stderr || result.message,
+                    result.passed_count,
+                    result.total_count
+                );
             } catch (err) {
                 judgeDuration.textContent = '오류';
                 showJudgeResult('SERVER_ERROR', 0, '', '채점 서버 연결 실패.');
@@ -1720,23 +1777,26 @@
             }
         }
 
-        function showJudgeResult(status, score, stdout, stderr) {
+        function showJudgeResult(status, score, stdout, stderr, passedCount, totalCount) {
             const badge = document.getElementById('judgeBadge');
             const text = document.getElementById('consoleText');
             badge.classList.remove('hidden');
 
+            const hasCaseCounts = (passedCount !== undefined && totalCount !== undefined && totalCount > 0);
+            const countStr = hasCaseCounts ? ` (${passedCount}/${totalCount} 통과)` : '';
+
             if (status === 'ACCEPTED') {
                 badge.className = 'inline-block px-2.5 py-0.5 rounded text-[11px] font-bold bg-emerald-500/20 text-emerald-400 border border-emerald-500/30';
-                badge.textContent = `맞았습니다!! (${score}점)`;
+                badge.textContent = `맞았습니다!!${countStr} - ${score}점`;
             } else if (status === 'PARTIAL') {
                 badge.className = 'inline-block px-2.5 py-0.5 rounded text-[11px] font-bold bg-amber-500/20 text-amber-400 border border-amber-500/30';
-                badge.textContent = `부분 성공 (${score}점)`;
+                badge.textContent = `부분 성공${countStr} - ${score}점`;
             } else if (status === 'HARDCODED_REJECTED') {
                 badge.className = 'inline-block px-2.5 py-0.5 rounded text-[11px] font-bold bg-rose-500/20 text-rose-400 border border-rose-500/30';
                 badge.textContent = '단순 출력 감지 (오답)';
             } else if (status === 'WRONG_ANSWER') {
                 badge.className = 'inline-block px-2.5 py-0.5 rounded text-[11px] font-bold bg-rose-500/20 text-rose-400 border border-rose-500/30';
-                badge.textContent = `틀렸습니다 (${score}점)`;
+                badge.textContent = `틀렸습니다${countStr} - ${score}점`;
             } else if (status === 'COMPILE_ERROR') {
                 badge.className = 'inline-block px-2.5 py-0.5 rounded text-[11px] font-bold bg-amber-500/20 text-amber-400 border border-amber-500/30';
                 badge.textContent = '컴파일 에러';
@@ -1749,10 +1809,10 @@
             }
 
             let logMsg = '';
-            if (stdout) logMsg += `[표준 출력]\n${stdout}\n\n`;
-            if (stderr) logMsg += `[상세 로그]\n${stderr}`;
+            if (stdout) logMsg += `${stdout}\n\n`;
+            if (stderr) logMsg += `[상세 오류/안내]\n${stderr}`;
             if (!logMsg) logMsg = '(출력 내용 없음)';
-            text.textContent = logMsg;
+            text.textContent = logMsg.trim();
         }
 
         // 과제 제출 현황 조회
