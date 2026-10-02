@@ -1,7 +1,3 @@
-// 멋쟁이사자처럼 9기 전체 16일차 실습 문제 데이터셋 (2시간 맞춤형 70제)
-// 각 일차별 상/중/하/도전 난이도 필수 포함 및 초보자 힌트 탑재
-// 1일차 10개 테스트케이스 & 3개 예제 입출력 고도화 완료
-
 const PROBLEMS = [
     {
         "id": "day01_하1",
@@ -91,75 +87,75 @@ const PROBLEMS = [
         "title": "카페 음료 영수증 결제 금액 계산기 (CafeReceiptCalculator)",
         "desc": "카페 포스기(POS)에서 주문받은 음료의 단가와 수량을 입력받아 공급가액, 부가세(VAT 10%), 최종 결제 금액을 계산하여 출력하세요.\n(부가세는 공급가액의 10%이며, (int)로 명시적 형변환합니다.)\n\n[입력]\n첫째 줄에 아메리카노 단가와 수량, 카페라떼 단가와 수량이 공백으로 구분되어 주어집니다.\n(예: 4500 2 5000 3)",
         "template": "import java.util.Scanner;\n\npublic class Solution {\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        // 여기에 코드를 작성하세요\n        \n    }\n}",
-        "solution": "import java.util.Scanner;\n\npublic class Solution {\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        int americanoPrice = sc.nextInt();\n        int americanoQty = sc.nextInt();\n        int lattePrice = sc.nextInt();\n        int latteQty = sc.nextInt();\n\n        int supplyPrice = (americanoPrice * americanoQty) + (lattePrice * latteQty);\n        int vat = (int) (supplyPrice * 0.1);\n        int totalAmount = supplyPrice + vat;\n\n        System.out.println(\"=== 스타카페 주문 영수증 ===\");\n        System.out.printf(\"아메리카노 (%d원 x %d잔): %d원\\n\", americanoPrice, americanoQty, americanoPrice * americanoQty);\n        System.out.printf(\"카페라떼   (%d원 x %d잔): %d원\\n\", lattePrice, latteQty, lattePrice * latteQty);\n        System.out.println(\"---------------------------------\");\n        System.out.printf(\"공급가액: %d원\\n\", supplyPrice);\n        System.out.printf(\"부가세(10%%): %d원\\n\", vat);\n        System.out.printf(\"최종 결제 금액: %d원\\n\", totalAmount);\n    }\n}\n",
+        "solution": "import java.util.Scanner;\n\npublic class Solution {\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        int americanoPrice = sc.nextInt();\n        int americanoQty = sc.nextInt();\n        int lattePrice = sc.nextInt();\n        int latteQty = sc.nextInt();\n\n        int supplyPrice = (americanoPrice * americanoQty) + (lattePrice * latteQty);\n        int vat = (int) (supplyPrice * 0.1);\n        int totalAmount = supplyPrice + vat;\n\n        System.out.println(\"=== 스타카페 주문 영수증 ===\");\n        System.out.printf(\"아메리카노 (%d원 x %d잔): %d원\\n\", americanoPrice, americanoQty, americanoPrice * americanoQty);\n        System.out.printf(\"카페라떼 (%d원 x %d잔): %d원\\n\", lattePrice, latteQty, lattePrice * latteQty);\n        System.out.println(\"---------------------------------\");\n        System.out.printf(\"공급가액: %d원\\n\", supplyPrice);\n        System.out.printf(\"부가세(10%%): %d원\\n\", vat);\n        System.out.printf(\"최종 결제 금액: %d원\\n\", totalAmount);\n    }\n}\n",
         "sample_input": "4500 2 5000 3",
-        "sample_output": "=== 스타카페 주문 영수증 ===\r\n아메리카노 (4500원 x 2잔): 9000원\n카페라떼   (5000원 x 3잔): 15000원\n---------------------------------\r\n공급가액: 24000원\n부가세(10%): 2400원\n최종 결제 금액: 26400원",
-        "expected": "=== 스타카페 주문 영수증 ===\r\n아메리카노 (4500원 x 2잔): 9000원\n카페라떼   (5000원 x 3잔): 15000원\n---------------------------------\r\n공급가액: 24000원\n부가세(10%): 2400원\n최종 결제 금액: 26400원",
+        "sample_output": "=== 스타카페 주문 영수증 ===\n아메리카노 (4500원 x 2잔): 9000원\n카페라떼 (5000원 x 3잔): 15000원\n---------------------------------\n공급가액: 24000원\n부가세(10%): 2400원\n최종 결제 금액: 26400원",
+        "expected": "=== 스타카페 주문 영수증 ===\n아메리카노 (4500원 x 2잔): 9000원\n카페라떼 (5000원 x 3잔): 15000원\n---------------------------------\n공급가액: 24000원\n부가세(10%): 2400원\n최종 결제 금액: 26400원",
         "hint": "1. 4개의 정수를 sc.nextInt()로 순서대로 입력받습니다:\n   int americanoPrice = sc.nextInt(); int americanoQty = sc.nextInt();\n   int lattePrice = sc.nextInt(); int latteQty = sc.nextInt();\n2. 부가세는 공급가액의 10%이며, 소수점을 버리고 정수로 변환하기 위해 (int) (supplyPrice * 0.1) 형태로 명시적 형변환을 적용합니다.\n3. System.out.printf() 서식 출력에서 % 기호 자체를 출력할 때는 %% 로 두 번 작성해야 합니다.",
         "testcases": [
             {
                 "input": "4500 2 5000 3",
-                "expected": "=== 스타카페 주문 영수증 ===\r\n아메리카노 (4500원 x 2잔): 9000원\n카페라떼   (5000원 x 3잔): 15000원\n---------------------------------\r\n공급가액: 24000원\n부가세(10%): 2400원\n최종 결제 금액: 26400원",
+                "expected": "=== 스타카페 주문 영수증 ===\n아메리카노 (4500원 x 2잔): 9000원\n카페라떼 (5000원 x 3잔): 15000원\n---------------------------------\n공급가액: 24000원\n부가세(10%): 2400원\n최종 결제 금액: 26400원",
                 "is_hidden": false
             },
             {
                 "input": "3000 1 4000 2",
-                "expected": "=== 스타카페 주문 영수증 ===\r\n아메리카노 (3000원 x 1잔): 3000원\n카페라떼   (4000원 x 2잔): 8000원\n---------------------------------\r\n공급가액: 11000원\n부가세(10%): 1100원\n최종 결제 금액: 12100원",
+                "expected": "=== 스타카페 주문 영수증 ===\n아메리카노 (3000원 x 1잔): 3000원\n카페라떼 (4000원 x 2잔): 8000원\n---------------------------------\n공급가액: 11000원\n부가세(10%): 1100원\n최종 결제 금액: 12100원",
                 "is_hidden": false
             },
             {
                 "input": "5000 0 6000 1",
-                "expected": "=== 스타카페 주문 영수증 ===\r\n아메리카노 (5000원 x 0잔): 0원\n카페라떼   (6000원 x 1잔): 6000원\n---------------------------------\r\n공급가액: 6000원\n부가세(10%): 600원\n최종 결제 금액: 6600원",
+                "expected": "=== 스타카페 주문 영수증 ===\n아메리카노 (5000원 x 0잔): 0원\n카페라떼 (6000원 x 1잔): 6000원\n---------------------------------\n공급가액: 6000원\n부가세(10%): 600원\n최종 결제 금액: 6600원",
                 "is_hidden": false
             },
             {
                 "input": "4000 5 5500 0",
-                "expected": "=== 스타카페 주문 영수증 ===\r\n아메리카노 (4000원 x 5잔): 20000원\n카페라떼   (5500원 x 0잔): 0원\n---------------------------------\r\n공급가액: 20000원\n부가세(10%): 2000원\n최종 결제 금액: 22000원",
+                "expected": "=== 스타카페 주문 영수증 ===\n아메리카노 (4000원 x 5잔): 20000원\n카페라떼 (5500원 x 0잔): 0원\n---------------------------------\n공급가액: 20000원\n부가세(10%): 2000원\n최종 결제 금액: 22000원",
                 "is_hidden": true
             },
             {
                 "input": "1500 10 2000 5",
-                "expected": "=== 스타카페 주문 영수증 ===\r\n아메리카노 (1500원 x 10잔): 15000원\n카페라떼   (2000원 x 5잔): 10000원\n---------------------------------\r\n공급가액: 25000원\n부가세(10%): 2500원\n최종 결제 금액: 27500원",
+                "expected": "=== 스타카페 주문 영수증 ===\n아메리카노 (1500원 x 10잔): 15000원\n카페라떼 (2000원 x 5잔): 10000원\n---------------------------------\n공급가액: 25000원\n부가세(10%): 2500원\n최종 결제 금액: 27500원",
                 "is_hidden": true
             },
             {
                 "input": "4800 3 5300 2",
-                "expected": "=== 스타카페 주문 영수증 ===\r\n아메리카노 (4800원 x 3잔): 14400원\n카페라떼   (5300원 x 2잔): 10600원\n---------------------------------\r\n공급가액: 25000원\n부가세(10%): 2500원\n최종 결제 금액: 27500원",
+                "expected": "=== 스타카페 주문 영수증 ===\n아메리카노 (4800원 x 3잔): 14400원\n카페라떼 (5300원 x 2잔): 10600원\n---------------------------------\n공급가액: 25000원\n부가세(10%): 2500원\n최종 결제 금액: 27500원",
                 "is_hidden": true
             },
             {
                 "input": "3500 1 4500 1",
-                "expected": "=== 스타카페 주문 영수증 ===\r\n아메리카노 (3500원 x 1잔): 3500원\n카페라떼   (4500원 x 1잔): 4500원\n---------------------------------\r\n공급가액: 8000원\n부가세(10%): 800원\n최종 결제 금액: 8800원",
+                "expected": "=== 스타카페 주문 영수증 ===\n아메리카노 (3500원 x 1잔): 3500원\n카페라떼 (4500원 x 1잔): 4500원\n---------------------------------\n공급가액: 8000원\n부가세(10%): 800원\n최종 결제 금액: 8800원",
                 "is_hidden": true
             },
             {
                 "input": "10000 1 12000 1",
-                "expected": "=== 스타카페 주문 영수증 ===\r\n아메리카노 (10000원 x 1잔): 10000원\n카페라떼   (12000원 x 1잔): 12000원\n---------------------------------\r\n공급가액: 22000원\n부가세(10%): 2200원\n최종 결제 금액: 24200원",
+                "expected": "=== 스타카페 주문 영수증 ===\n아메리카노 (10000원 x 1잔): 10000원\n카페라떼 (12000원 x 1잔): 12000원\n---------------------------------\n공급가액: 22000원\n부가세(10%): 2200원\n최종 결제 금액: 24200원",
                 "is_hidden": true
             },
             {
                 "input": "2500 4 3500 4",
-                "expected": "=== 스타카페 주문 영수증 ===\r\n아메리카노 (2500원 x 4잔): 10000원\n카페라떼   (3500원 x 4잔): 14000원\n---------------------------------\r\n공급가액: 24000원\n부가세(10%): 2400원\n최종 결제 금액: 26400원",
+                "expected": "=== 스타카페 주문 영수증 ===\n아메리카노 (2500원 x 4잔): 10000원\n카페라떼 (3500원 x 4잔): 14000원\n---------------------------------\n공급가액: 24000원\n부가세(10%): 2400원\n최종 결제 금액: 26400원",
                 "is_hidden": true
             },
             {
                 "input": "5000 10 6000 10",
-                "expected": "=== 스타카페 주문 영수증 ===\r\n아메리카노 (5000원 x 10잔): 50000원\n카페라떼   (6000원 x 10잔): 60000원\n---------------------------------\r\n공급가액: 110000원\n부가세(10%): 11000원\n최종 결제 금액: 121000원",
+                "expected": "=== 스타카페 주문 영수증 ===\n아메리카노 (5000원 x 10잔): 50000원\n카페라떼 (6000원 x 10잔): 60000원\n---------------------------------\n공급가액: 110000원\n부가세(10%): 11000원\n최종 결제 금액: 121000원",
                 "is_hidden": true
             }
         ],
         "samples": [
             {
                 "input": "4500 2 5000 3",
-                "output": "=== 스타카페 주문 영수증 ===\r\n아메리카노 (4500원 x 2잔): 9000원\n카페라떼   (5000원 x 3잔): 15000원\n---------------------------------\r\n공급가액: 24000원\n부가세(10%): 2400원\n최종 결제 금액: 26400원"
+                "output": "=== 스타카페 주문 영수증 ===\n아메리카노 (4500원 x 2잔): 9000원\n카페라떼 (5000원 x 3잔): 15000원\n---------------------------------\n공급가액: 24000원\n부가세(10%): 2400원\n최종 결제 금액: 26400원"
             },
             {
                 "input": "3000 1 4000 2",
-                "output": "=== 스타카페 주문 영수증 ===\r\n아메리카노 (3000원 x 1잔): 3000원\n카페라떼   (4000원 x 2잔): 8000원\n---------------------------------\r\n공급가액: 11000원\n부가세(10%): 1100원\n최종 결제 금액: 12100원"
+                "output": "=== 스타카페 주문 영수증 ===\n아메리카노 (3000원 x 1잔): 3000원\n카페라떼 (4000원 x 2잔): 8000원\n---------------------------------\n공급가액: 11000원\n부가세(10%): 1100원\n최종 결제 금액: 12100원"
             },
             {
                 "input": "5000 0 6000 1",
-                "output": "=== 스타카페 주문 영수증 ===\r\n아메리카노 (5000원 x 0잔): 0원\n카페라떼   (6000원 x 1잔): 6000원\n---------------------------------\r\n공급가액: 6000원\n부가세(10%): 600원\n최종 결제 금액: 6600원"
+                "output": "=== 스타카페 주문 영수증 ===\n아메리카노 (5000원 x 0잔): 0원\n카페라떼 (6000원 x 1잔): 6000원\n---------------------------------\n공급가액: 6000원\n부가세(10%): 600원\n최종 결제 금액: 6600원"
             }
         ]
     },
@@ -488,42 +484,328 @@ const PROBLEMS = [
         "day": 2,
         "subject": "Java",
         "difficulty": "하",
-        "title": "학생 시험 성적 등급 및 장학금 판별기 (GradeEvaluator)",
-        "desc": "학생의 시험 점수(0~100)를 입력받아 90점 이상이면 A, 80점 이상이면 B, 70점 이상이면 C, 60점 이상이면 D, 그 미만은 F를 부여하세요.\n추가로 95점 이상인 경우 '전액 장학금 대상', 90점 이상인 경우 '반액 장학금 대상', 그 외는 '장학금 미대상'을 출력하세요.\n(60점 이상은 '합격', 미만은 '불합격' 판정)\n\n[입력]\n첫째 줄에 학생의 점수(0~100 사이 정수)가 주어집니다.\n(예: 96)",
-        "template": "import java.util.Scanner;\n\npublic class Solution {\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        // 여기에 코드를 작성하세요\n        \n    }\n}",
-        "solution": "import java.util.Scanner;\n\npublic class Solution {\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        int score = sc.nextInt();\n\n        char grade;\n        if (score >= 90) grade = 'A';\n        else if (score >= 80) grade = 'B';\n        else if (score >= 70) grade = 'C';\n        else if (score >= 60) grade = 'D';\n        else grade = 'F';\n\n        String passStatus = (score >= 60) ? \"합격\" : \"불합격\";\n\n        String scholarship;\n        if (score >= 95) scholarship = \"전액 장학금 대상\";\n        else if (score >= 90) scholarship = \"반액 장학금 대상\";\n        else scholarship = \"장학금 미대상\";\n\n        System.out.println(\"=== 성적 평가 결과표 ===\");\n        System.out.printf(\"취득 점수: %d점\\n\", score);\n        System.out.printf(\"학점 등급: %c등급 (%s)\\n\", grade, passStatus);\n        System.out.printf(\"장학 혜택: %s\\n\", scholarship);\n    }\n}",
-        "sample_input": "96",
-        "sample_output": "=== 성적 평가 결과표 ===\n취득 점수: 96점\n학점 등급: A등급 (합격)\n장학 혜택: 전액 장학금 대상",
-        "expected": "=== 성적 평가 결과표 ===\n취득 점수: 96점\n학점 등급: A등급 (합격)\n장학 혜택: 전액 장학금 대상",
-        "hint": "1. int score = sc.nextInt(); 로 점수를 읽습니다.\n2. if-else if-else 구조를 사용하여 90, 80, 70, 60점 기준으로 학점 등급을 분류합니다.\n3. 장학금 여부도 95점 이상, 90점 이상 여부에 따라 if-else if로 분기하여 문자열 변수에 담아 출력합니다."
+        "title": "컴퓨터 메모리 계층 구조 및 데이터 접근 레이턴시 판별기 (MemoryHierarchy)",
+        "desc": "데이터 접근에 소요된 지연 시간(Latency, 단위: ns, 나노초)을 입력받아, 컴퓨터 메모리 계층 구조(Memory Hierarchy) 피라미드에서 어느 계층에서 데이터를 가져왔는지 판정하고, 캐시 히트(Cache Hit) 여부를 서식에 맞게 출력하세요.\n\n[메모리 계층 및 지연 시간 기준표]\n- 1ns 이하 (latency <= 1): \"L1 캐시 (L1 Cache)\" | 판정: \"초고속 캐시 히트\"\n- 10ns 이하 (latency <= 10): \"L2/L3 캐시 (L2/L3 Cache)\" | 판정: \"캐시 히트\"\n- 100ns 이하 (latency <= 100): \"메인 메모리 (DRAM RAM)\" | 판정: \"캐시 미스 (메모리 접근)\"\n- 100,000ns 이하 (latency <= 100000): \"초고속 SSD (NVMe Storage)\" | 판정: \"스토리지 I/O\"\n- 100,000ns 초과: \"하드디스크 / 원격 네트워크 (Disk / Network)\" | 판정: \"고지연 I/O 발생\"\n\n[입력]\n첫째 줄에 데이터 접근 지연 시간(ns, 정수)이 주어집니다.\n\n[출력]\n지연 시간에 따라 판정된 계층과 캐시 히트 상태를 분석표 서식에 맞추어 출력하세요.\n=== 메모리 계층 접근 분석표 ===\n소요 지연 시간: {latency}ns\n데이터 위치: {layer}\n접근 상태 판정: {status}\n\n※ 다양한 상황(캐시 히트, DRAM 접근, 스토리지 I/O 등)에 대한 구체적인 입출력은 아래 [예제 1, 2, 3]을 참고하세요.",
+        "template": "import java.util.Scanner;\n\npublic class Solution {\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        // 여기에 코드를 작성하세요\n        \n    }\n}\n",
+        "solution": "import java.util.Scanner;\n\npublic class Solution {\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        long latency = sc.nextLong();\n\n        String layer;\n        String status;\n\n        if (latency <= 1) {\n            layer = \"L1 캐시 (L1 Cache)\";\n            status = \"초고속 캐시 히트\";\n        } else if (latency <= 10) {\n            layer = \"L2/L3 캐시 (L2/L3 Cache)\";\n            status = \"캐시 히트\";\n        } else if (latency <= 100) {\n            layer = \"메인 메모리 (DRAM RAM)\";\n            status = \"캐시 미스 (메모리 접근)\";\n        } else if (latency <= 100000) {\n            layer = \"초고속 SSD (NVMe Storage)\";\n            status = \"스토리지 I/O\";\n        } else {\n            layer = \"하드디스크 / 원격 네트워크 (Disk / Network)\";\n            status = \"고지연 I/O 발생\";\n        }\n\n        System.out.println(\"=== 메모리 계층 접근 분석표 ===\");\n        System.out.printf(\"소요 지연 시간: %dns\\n\", latency);\n        System.out.printf(\"데이터 위치: %s\\n\", layer);\n        System.out.printf(\"접근 상태 판정: %s\\n\", status);\n    }\n}\n",
+        "sample_input": "8",
+        "hint": "1. Scanner sc = new Scanner(System.in); long latency = sc.nextLong(); 로 지연 시간을 읽습니다.\n2. if (latency <= 1) 부터 시작하여 else if (latency <= 10), else if (latency <= 100) 처럼 작은 값(빠른 계층)부터 순차적으로 검사합니다.\n3. 일치하는 블록에서 계층명과 판정 문자열을 변수에 저장한 뒤 마지막에 System.out.printf 로 출력합니다.",
+        "cs_knowledge": "🖥️ [CS 핵심 지식: 컴퓨터 메모리 계층 구조(Memory Hierarchy)와 레이턴시 피라미드]\n현대 컴퓨터 시스템은 비용, 물리적 크기, 전력 한계로 인해 하나의 초고속 메모리만으로 컴퓨터를 만들 수 없습니다.\n따라서 CPU 레지스터(0.5ns) ➔ L1/L2/L3 캐시(1~10ns) ➔ 메인 메모리 DRAM(100ns) ➔ NVMe SSD(100,000ns) ➔ HDD/네트워크(수십 ms 이상) 순으로 피라미드 형태의 '메모리 계층 구조(Memory Hierarchy)'를 형성합니다.\n\nCPU 코어가 필요한 데이터를 L1/L2 캐시에서 곧바로 찾는 것을 '캐시 히트(Cache Hit)'라고 부르며 단 몇 나노초 만에 처리가 끝납니다.\n반면 캐시에 없어 DRAM이나 디스크까지 내려가야 하는 경우를 '캐시 미스(Cache Miss)'라 부르며, 이때는 CPU가 수천~수십만 사이클 동안 유휴(Idle) 상태로 대기해야 합니다.\n백엔드 실무에서 Redis 인메모리 캐시 도입, 데이터베이스 버퍼 풀(Buffer Pool) 튜닝, CPU 친화적인 연속 메모리 배열(Cache-friendly Data Structure)을 사용하는 이유가 바로 이 계층 구조상의 속도 격차를 극복하기 위함입니다.",
+        "logic_guide": "📘 [단계별 로직 구성 순서 & 초보자 가이드]\n1단계: Scanner로 지연 시간 입력받기\n   Scanner sc = new Scanner(System.in);\n   long latency = sc.nextLong();\n\n2단계: 다중 조건문 if - else if - else 작성 (반드시 가장 빠른 작은 값부터 순서대로 검사!)\n   String layer;\n   String status;\n   if (latency <= 1) {\n       layer = \"L1 캐시 (L1 Cache)\";\n       status = \"초고속 캐시 히트\";\n   } else if (latency <= 10) {\n       layer = \"L2/L3 캐시 (L2/L3 Cache)\";\n       status = \"캐시 히트\";\n   } else if (latency <= 100) {\n       layer = \"메인 메모리 (DRAM RAM)\";\n       status = \"캐시 미스 (메모리 접근)\";\n   } else if (latency <= 100000) {\n       layer = \"초고속 SSD (NVMe Storage)\";\n       status = \"스토리지 I/O\";\n   } else {\n       layer = \"하드디스크 / 원격 네트워크 (Disk / Network)\";\n       status = \"고지연 I/O 발생\";\n   }\n   (주의: 만약 latency <= 100000 을 맨 위에 두면 1ns도 100000 이하에 걸려버리는 논리 오류가 발생하므로, 작은 값부터 순차적으로 필터링해야 합니다!)\n\n3단계: 서식 맞춤 출력\n   System.out.println(\"=== 메모리 계층 접근 분석표 ===\");\n   System.out.printf(\"소요 지연 시간: %dns\\n\", latency);\n   System.out.printf(\"데이터 위치: %s\\n\", layer);\n   System.out.printf(\"접근 상태 판정: %s\\n\", status);",
+        "testcases": [
+            {
+                "input": "8",
+                "expected": "=== 메모리 계층 접근 분석표 ===\n소요 지연 시간: 8ns\n데이터 위치: L2/L3 캐시 (L2/L3 Cache)\n접근 상태 판정: 캐시 히트",
+                "is_hidden": false
+            },
+            {
+                "input": "1",
+                "expected": "=== 메모리 계층 접근 분석표 ===\n소요 지연 시간: 1ns\n데이터 위치: L1 캐시 (L1 Cache)\n접근 상태 판정: 초고속 캐시 히트",
+                "is_hidden": false
+            },
+            {
+                "input": "100",
+                "expected": "=== 메모리 계층 접근 분석표 ===\n소요 지연 시간: 100ns\n데이터 위치: 메인 메모리 (DRAM RAM)\n접근 상태 판정: 캐시 미스 (메모리 접근)",
+                "is_hidden": false
+            },
+            {
+                "input": "50000",
+                "expected": "=== 메모리 계층 접근 분석표 ===\n소요 지연 시간: 50000ns\n데이터 위치: 초고속 SSD (NVMe Storage)\n접근 상태 판정: 스토리지 I/O",
+                "is_hidden": true
+            },
+            {
+                "input": "5000000",
+                "expected": "=== 메모리 계층 접근 분석표 ===\n소요 지연 시간: 5000000ns\n데이터 위치: 하드디스크 / 원격 네트워크 (Disk / Network)\n접근 상태 판정: 고지연 I/O 발생",
+                "is_hidden": true
+            },
+            {
+                "input": "0",
+                "expected": "=== 메모리 계층 접근 분석표 ===\n소요 지연 시간: 0ns\n데이터 위치: L1 캐시 (L1 Cache)\n접근 상태 판정: 초고속 캐시 히트",
+                "is_hidden": true
+            },
+            {
+                "input": "10",
+                "expected": "=== 메모리 계층 접근 분석표 ===\n소요 지연 시간: 10ns\n데이터 위치: L2/L3 캐시 (L2/L3 Cache)\n접근 상태 판정: 캐시 히트",
+                "is_hidden": true
+            },
+            {
+                "input": "101",
+                "expected": "=== 메모리 계층 접근 분석표 ===\n소요 지연 시간: 101ns\n데이터 위치: 초고속 SSD (NVMe Storage)\n접근 상태 판정: 스토리지 I/O",
+                "is_hidden": true
+            },
+            {
+                "input": "100000",
+                "expected": "=== 메모리 계층 접근 분석표 ===\n소요 지연 시간: 100000ns\n데이터 위치: 초고속 SSD (NVMe Storage)\n접근 상태 판정: 스토리지 I/O",
+                "is_hidden": true
+            },
+            {
+                "input": "20000000",
+                "expected": "=== 메모리 계층 접근 분석표 ===\n소요 지연 시간: 20000000ns\n데이터 위치: 하드디스크 / 원격 네트워크 (Disk / Network)\n접근 상태 판정: 고지연 I/O 발생",
+                "is_hidden": true
+            }
+        ],
+        "sample_output": "=== 메모리 계층 접근 분석표 ===\n소요 지연 시간: 8ns\n데이터 위치: L2/L3 캐시 (L2/L3 Cache)\n접근 상태 판정: 캐시 히트",
+        "expected": "=== 메모리 계층 접근 분석표 ===\n소요 지연 시간: 8ns\n데이터 위치: L2/L3 캐시 (L2/L3 Cache)\n접근 상태 판정: 캐시 히트",
+        "samples": [
+            {
+                "input": "8",
+                "output": "=== 메모리 계층 접근 분석표 ===\n소요 지연 시간: 8ns\n데이터 위치: L2/L3 캐시 (L2/L3 Cache)\n접근 상태 판정: 캐시 히트"
+            },
+            {
+                "input": "1",
+                "output": "=== 메모리 계층 접근 분석표 ===\n소요 지연 시간: 1ns\n데이터 위치: L1 캐시 (L1 Cache)\n접근 상태 판정: 초고속 캐시 히트"
+            },
+            {
+                "input": "100",
+                "output": "=== 메모리 계층 접근 분석표 ===\n소요 지연 시간: 100ns\n데이터 위치: 메인 메모리 (DRAM RAM)\n접근 상태 판정: 캐시 미스 (메모리 접근)"
+            }
+        ]
     },
     {
         "id": "day02_하2",
         "day": 2,
         "subject": "Java",
         "difficulty": "하",
-        "title": "자판기 음료 주문 및 잔돈 반환기 (VendingMachine)",
-        "desc": "투입 금액과 선택할 음료 메뉴 번호(1: 코카콜라 1200원, 2: 칠성사이다 1100원, 3: 레쓰비 800원, 4: 삼다수 600원)를 입력받아 음료 배출 및 잔돈 반환 로직을 switch-case 문으로 구현하세요.\n\n[입력]\n투입 금액과 메뉴 번호가 공백으로 주어집니다.\n(예: 1500 2)",
-        "template": "import java.util.Scanner;\n\npublic class Solution {\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        // 여기에 코드를 작성하세요\n        \n    }\n}",
-        "solution": "import java.util.Scanner;\n\npublic class Solution {\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        int balance = sc.nextInt();\n        int menuChoice = sc.nextInt();\n\n        String menuName;\n        int price;\n\n        switch (menuChoice) {\n            case 1: menuName = \"코카콜라\"; price = 1200; break;\n            case 2: menuName = \"칠성사이다\"; price = 1100; break;\n            case 3: menuName = \"레쓰비 캔커피\"; price = 800; break;\n            case 4: menuName = \"삼다수 생수\"; price = 600; break;\n            default: menuName = \"알 수 없는 메뉴\"; price = 0; break;\n        }\n\n        System.out.println(\"=== 스마트 음료 자판기 ===\");\n        System.out.printf(\"투입 금액: %,d원\\n\", balance);\n        System.out.printf(\"선택 메뉴: %s (가격: %,d원)\\n\", menuName, price);\n\n        if (price == 0) {\n            System.out.println(\"오류: 올바른 메뉴 번호를 입력해주세요.\");\n        } else if (balance >= price) {\n            int change = balance - price;\n            System.out.printf(\">> [%s] 음료가 나왔습니다! (잔돈: %,d원 반환)\\n\", menuName, change);\n        } else {\n            int shortage = price - balance;\n            System.out.printf(\">> 잔액이 %,d원 부족하여 구매할 수 없습니다.\\n\", shortage);\n        }\n    }\n}",
-        "sample_input": "1500 2",
-        "sample_output": "=== 스마트 음료 자판기 ===\n투입 금액: 1,500원\n선택 메뉴: 칠성사이다 (가격: 1,100원)\n>> [칠성사이다] 음료가 나왔습니다! (잔돈: 400원 반환)",
-        "expected": "=== 스마트 음료 자판기 ===\n투입 금액: 1,500원\n선택 메뉴: 칠성사이다 (가격: 1,100원)\n>> [칠성사이다] 음료가 나왔습니다! (잔돈: 400원 반환)",
-        "hint": "1. switch(menuChoice) { case 1: ... break; } 문으로 메뉴별 이름과 가격을 결정합니다.\n2. 잔액이 음료 가격 이상인지 if-else로 검사하여 잔돈을 계산하거나 부족액을 출력합니다."
+        "title": "HTTP 상태 코드 라우터 & 응답 메시지 생성기 (HttpStatusRouter)",
+        "desc": "웹 백엔드 서버가 클라이언트에게 전달할 HTTP 응답 상태 코드(Status Code, 정수)를 입력받아 switch-case 문을 사용하여 상태 메시지와 처리 조치를 서식에 맞게 출력하세요.\n\n[상태 코드 매핑 기준]\n- 200: 메시지 \"200 OK\" | 조치 \"요청이 성공적으로 처리되었습니다.\"\n- 201: 메시지 \"201 Created\" | 조치 \"새로운 리소스가 정상 생성되었습니다.\"\n- 400: 메시지 \"400 Bad Request\" | 조치 \"잘못된 요청 구문 또는 유효하지 않은 파라미터입니다.\"\n- 401: 메시지 \"401 Unauthorized\" | 조치 \"인증 자격 증명이 유효하지 않거나 누락되었습니다.\"\n- 403: 메시지 \"403 Forbidden\" | 조치 \"접근 권한이 없는 보호된 리소스입니다.\"\n- 404: 메시지 \"404 Not Found\" | 조치 \"요청한 경로의 리소스를 찾을 수 없습니다.\"\n- 500: 메시지 \"500 Internal Server Error\" | 조치 \"서버 내부 처리 중 예기치 않은 오류가 발생했습니다.\"\n- 그 외: 메시지 \"UNKNOWN STATUS\" | 조치 \"정의되지 않은 HTTP 상태 코드입니다.\"\n\n[입력]\n첫째 줄에 HTTP 상태 코드 정수가 주어집니다.\n\n[출력]\n=== HTTP 응답 라우팅 결과 ===\n상태 코드: {code}\n응답 메시지: {statusMessage}\n처리 안내: {actionGuide}\n\n※ 구체적인 상태 코드별 입출력 결과는 아래 [예제 1, 2, 3]을 참고하세요.",
+        "template": "import java.util.Scanner;\n\npublic class Solution {\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        // 여기에 코드를 작성하세요\n        \n    }\n}\n",
+        "solution": "import java.util.Scanner;\n\npublic class Solution {\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        int code = sc.nextInt();\n\n        String message;\n        String action;\n\n        switch (code) {\n            case 200:\n                message = \"200 OK\";\n                action = \"요청이 성공적으로 처리되었습니다.\";\n                break;\n            case 201:\n                message = \"201 Created\";\n                action = \"새로운 리소스가 정상 생성되었습니다.\";\n                break;\n            case 400:\n                message = \"400 Bad Request\";\n                action = \"잘못된 요청 구문 또는 유효하지 않은 파라미터입니다.\";\n                break;\n            case 401:\n                message = \"401 Unauthorized\";\n                action = \"인증 자격 증명이 유효하지 않거나 누락되었습니다.\";\n                break;\n            case 403:\n                message = \"403 Forbidden\";\n                action = \"접근 권한이 없는 보호된 리소스입니다.\";\n                break;\n            case 404:\n                message = \"404 Not Found\";\n                action = \"요청한 경로의 리소스를 찾을 수 없습니다.\";\n                break;\n            case 500:\n                message = \"500 Internal Server Error\";\n                action = \"서버 내부 처리 중 예기치 않은 오류가 발생했습니다.\";\n                break;\n            default:\n                message = \"UNKNOWN STATUS\";\n                action = \"정의되지 않은 HTTP 상태 코드입니다.\";\n                break;\n        }\n\n        System.out.println(\"=== HTTP 응답 라우팅 결과 ===\");\n        System.out.printf(\"상태 코드: %d\\n\", code);\n        System.out.printf(\"응답 메시지: %s\\n\", message);\n        System.out.printf(\"처리 안내: %s\\n\", action);\n    }\n}\n",
+        "sample_input": "404",
+        "hint": "1. int code = sc.nextInt(); 로 상태 코드를 읽습니다.\n2. switch (code) { case 200: ... break; ... default: ... break; } 문법을 구성합니다.\n3. 각 case마다 break를 빼먹지 않아야 다음 케이스로 넘어가는 fall-through 버그를 방지할 수 있습니다.",
+        "cs_knowledge": "🖥️ [CS 핵심 지식: HTTP 프로토콜 상태 코드 체계와 REST API 라우팅]\n월드 와이드 웹(WWW)의 기반인 HTTP 프로토콜은 클라이언트의 요청에 대한 처리 결과를 3자리 숫자인 상태 코드(Status Code)로 응답합니다.\n- 2xx (Success): 클라이언트의 요청이 정상 처리됨 (200 OK, 201 Created 등)\n- 3xx (Redirection): 요청을 완료하기 위해 추가 동작(URL 리다이렉트)이 필요함\n- 4xx (Client Error): 클라이언트의 문법 오류, 미인증, 권한 없음, 리소스 부재 (400, 401, 403, 404)\n- 5xx (Server Error): 서버가 정상적인 요청을 처리하다 내부 버그나 DB 장애로 실패함 (500, 502, 503)\n스프링부트(Spring Boot)나 익스프레스(Express) 같은 백엔드 프레임워크에서는 상태 코드에 따라 적절한 에러 핸들러와 라우터로 분기하여 처리합니다.",
+        "logic_guide": "📘 [단계별 로직 구성 순서 & 초보자 가이드]\n1단계: 정수형 상태 코드 입력받기\n   Scanner sc = new Scanner(System.in);\n   int code = sc.nextInt();\n\n2단계: switch-case 문을 활용한 분기 (각 case마다 break 필수!)\n   switch (code) {\n       case 200: message = \"200 OK\"; action = \"요청이 성공적으로 처리되었습니다.\"; break;\n       case 201: message = \"201 Created\"; action = \"새로운 리소스가 정상 생성되었습니다.\"; break;\n       case 400: message = \"400 Bad Request\"; action = \"잘못된 요청 구문 또는 유효하지 않은 파라미터입니다.\"; break;\n       case 401: message = \"401 Unauthorized\"; action = \"인증 자격 증명이 유효하지 않거나 누락되었습니다.\"; break;\n       case 403: message = \"403 Forbidden\"; action = \"접근 권한이 없는 보호된 리소스입니다.\"; break;\n       case 404: message = \"404 Not Found\"; action = \"요청한 경로의 리소스를 찾을 수 없습니다.\"; break;\n       case 500: message = \"500 Internal Server Error\"; action = \"서버 내부 처리 중 예기치 않은 오류가 발생했습니다.\"; break;\n       default: message = \"UNKNOWN STATUS\"; action = \"정의되지 않은 HTTP 상태 코드입니다.\"; break;\n   }\n\n3단계: 서식 출력\n   System.out.println(\"=== HTTP 응답 라우팅 결과 ===\");\n   System.out.printf(\"상태 코드: %d\\n\", code);\n   System.out.printf(\"응답 메시지: %s\\n\", message);\n   System.out.printf(\"처리 안내: %s\\n\", action);",
+        "testcases": [
+            {
+                "input": "404",
+                "expected": "=== HTTP 응답 라우팅 결과 ===\n상태 코드: 404\n응답 메시지: 404 Not Found\n처리 안내: 요청한 경로의 리소스를 찾을 수 없습니다.",
+                "is_hidden": false
+            },
+            {
+                "input": "200",
+                "expected": "=== HTTP 응답 라우팅 결과 ===\n상태 코드: 200\n응답 메시지: 200 OK\n처리 안내: 요청이 성공적으로 처리되었습니다.",
+                "is_hidden": false
+            },
+            {
+                "input": "201",
+                "expected": "=== HTTP 응답 라우팅 결과 ===\n상태 코드: 201\n응답 메시지: 201 Created\n처리 안내: 새로운 리소스가 정상 생성되었습니다.",
+                "is_hidden": false
+            },
+            {
+                "input": "400",
+                "expected": "=== HTTP 응답 라우팅 결과 ===\n상태 코드: 400\n응답 메시지: 400 Bad Request\n처리 안내: 잘못된 요청 구문 또는 유효하지 않은 파라미터입니다.",
+                "is_hidden": true
+            },
+            {
+                "input": "401",
+                "expected": "=== HTTP 응답 라우팅 결과 ===\n상태 코드: 401\n응답 메시지: 401 Unauthorized\n처리 안내: 인증 자격 증명이 유효하지 않거나 누락되었습니다.",
+                "is_hidden": true
+            },
+            {
+                "input": "403",
+                "expected": "=== HTTP 응답 라우팅 결과 ===\n상태 코드: 403\n응답 메시지: 403 Forbidden\n처리 안내: 접근 권한이 없는 보호된 리소스입니다.",
+                "is_hidden": true
+            },
+            {
+                "input": "500",
+                "expected": "=== HTTP 응답 라우팅 결과 ===\n상태 코드: 500\n응답 메시지: 500 Internal Server Error\n처리 안내: 서버 내부 처리 중 예기치 않은 오류가 발생했습니다.",
+                "is_hidden": true
+            },
+            {
+                "input": "999",
+                "expected": "=== HTTP 응답 라우팅 결과 ===\n상태 코드: 999\n응답 메시지: UNKNOWN STATUS\n처리 안내: 정의되지 않은 HTTP 상태 코드입니다.",
+                "is_hidden": true
+            },
+            {
+                "input": "302",
+                "expected": "=== HTTP 응답 라우팅 결과 ===\n상태 코드: 302\n응답 메시지: UNKNOWN STATUS\n처리 안내: 정의되지 않은 HTTP 상태 코드입니다.",
+                "is_hidden": true
+            },
+            {
+                "input": "503",
+                "expected": "=== HTTP 응답 라우팅 결과 ===\n상태 코드: 503\n응답 메시지: UNKNOWN STATUS\n처리 안내: 정의되지 않은 HTTP 상태 코드입니다.",
+                "is_hidden": true
+            }
+        ],
+        "sample_output": "=== HTTP 응답 라우팅 결과 ===\n상태 코드: 404\n응답 메시지: 404 Not Found\n처리 안내: 요청한 경로의 리소스를 찾을 수 없습니다.",
+        "expected": "=== HTTP 응답 라우팅 결과 ===\n상태 코드: 404\n응답 메시지: 404 Not Found\n처리 안내: 요청한 경로의 리소스를 찾을 수 없습니다.",
+        "samples": [
+            {
+                "input": "404",
+                "output": "=== HTTP 응답 라우팅 결과 ===\n상태 코드: 404\n응답 메시지: 404 Not Found\n처리 안내: 요청한 경로의 리소스를 찾을 수 없습니다."
+            },
+            {
+                "input": "200",
+                "output": "=== HTTP 응답 라우팅 결과 ===\n상태 코드: 200\n응답 메시지: 200 OK\n처리 안내: 요청이 성공적으로 처리되었습니다."
+            },
+            {
+                "input": "201",
+                "output": "=== HTTP 응답 라우팅 결과 ===\n상태 코드: 201\n응답 메시지: 201 Created\n처리 안내: 새로운 리소스가 정상 생성되었습니다."
+            }
+        ]
+    },
+    {
+        "id": "day02_하3",
+        "day": 2,
+        "subject": "Java",
+        "difficulty": "하",
+        "title": "서버 리소스 임계치 모니터링 & 경보 시스템 (ServerHealthAlert)",
+        "desc": "서버 모니터링 시스템에서 측정한 CPU 사용률(%), 메모리 사용률(%), 디스크 잔여 공간(GB)의 3가지 지표를 공백으로 구분하여 입력받아 서버의 건전성 상태를 판정하세요.\n\n[경보 판정 조건 (우선순위: 긴급 > 위험 > 주의 > 정상)]\n1. 긴급 조치 [EMERGENCY]: (CPU >= 95 AND 메모리 >= 95) OR 디스크 <= 5GB\n   -> 종합 판정: \"[EMERGENCY] 긴급 조치 - 즉각적인 리소스 확보가 필요합니다.\"\n2. 위험 경보 [CRITICAL]: CPU >= 85 OR 메모리 >= 85 OR 디스크 <= 15GB\n   -> 종합 판정: \"[CRITICAL] 위험 경보 - 관리자 점검이 필요합니다.\"\n3. 주의 관찰 [WARNING]: CPU >= 70 OR 메모리 >= 70 OR 디스크 <= 30GB\n   -> 종합 판정: \"[WARNING] 주의 관찰 - 리소스 사용량을 모니터링하세요.\"\n4. 정상 운영 [NORMAL]: 그 외 모든 경우\n   -> 종합 판정: \"[NORMAL] 정상 운영 - 모든 리소스가 안정적입니다.\"\n\n[입력]\n첫째 줄에 CPU 사용률(정수), 메모리 사용률(정수), 디스크 잔여량(정수)이 공백으로 주어집니다.\n\n[출력]\n=== 서버 리소스 상태 진단 보고서 ===\nCPU 사용률: {cpu}% | 메모리 사용률: {mem}% | 디스크 잔여량: {disk}GB\n종합 판정: [{ALERT_LEVEL}] {경보 안내}\n\n※ 긴급, 위험, 디스크 고갈 등 다양한 상황에 대한 입출력은 아래 [예제 1, 2, 3]을 참고하세요.",
+        "template": "import java.util.Scanner;\n\npublic class Solution {\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        // 여기에 코드를 작성하세요\n        \n    }\n}\n",
+        "solution": "import java.util.Scanner;\n\npublic class Solution {\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        int cpu = sc.nextInt();\n        int mem = sc.nextInt();\n        int disk = sc.nextInt();\n\n        String status;\n        if ((cpu >= 95 && mem >= 95) || disk <= 5) {\n            status = \"[EMERGENCY] 긴급 조치 - 즉각적인 리소스 확보가 필요합니다.\";\n        } else if (cpu >= 85 || mem >= 85 || disk <= 15) {\n            status = \"[CRITICAL] 위험 경보 - 관리자 점검이 필요합니다.\";\n        } else if (cpu >= 70 || mem >= 70 || disk <= 30) {\n            status = \"[WARNING] 주의 관찰 - 리소스 사용량을 모니터링하세요.\";\n        } else {\n            status = \"[NORMAL] 정상 운영 - 모든 리소스가 안정적입니다.\";\n        }\n\n        System.out.println(\"=== 서버 리소스 상태 진단 보고서 ===\");\n        System.out.printf(\"CPU 사용률: %d%% | 메모리 사용률: %d%% | 디스크 잔여량: %dGB\\n\", cpu, mem, disk);\n        System.out.printf(\"종합 판정: %s\\n\", status);\n    }\n}\n",
+        "sample_input": "88 65 50",
+        "hint": "1. int cpu = sc.nextInt(); int mem = sc.nextInt(); int disk = sc.nextInt(); 로 3개 정수를 차례로 읽습니다.\n2. 논리 AND (&&) 와 논리 OR (||) 연산자를 조합하여 우선순위가 가장 높은 EMERGENCY 조건부터 if-else if 로 판정합니다.\n3. printf 서식 출력 시 퍼센트 기호(%)는 %% 로 작성해야 정상 출력됩니다.",
+        "cs_knowledge": "🖥️ [CS 핵심 지식: 서버 APM(Application Performance Monitoring)과 임계치(Threshold) 경보]\n클라우드 인프라(AWS, GCP)나 대규모 웹 서비스 운영 시, 서버가 다운되기 전에 위험 징후를 감지하는 APM 시스템(Prometheus, Datadog, Grafana)이 필수적입니다.\n운영팀은 리소스 사용량에 따라 3단계 임계치(Threshold: Warning, Critical, Emergency)를 설정하고 자동 경보(Alert)를 발송합니다.\n- CPU/메모리가 95%를 넘거나 디스크가 고갈되면 OOM(Out of Memory) Killer가 프로세스를 강제 종료하거나 커널 패닉이 발생할 수 있습니다.\n프로그래밍에서는 복합 조건문(`&&`, `||`)의 단락 평가(Short-circuit Evaluation)를 고려하여 가장 치명적인 조건을 먼저 검사하도록 설계합니다.",
+        "logic_guide": "📘 [단계별 로직 구성 순서 & 초보자 가이드]\n1단계: 세 가지 리소스 수치 입력받기\n   int cpu = sc.nextInt(); int mem = sc.nextInt(); int disk = sc.nextInt();\n\n2단계: 복합 조건문으로 등급 판별 (가장 심각한 EMERGENCY부터 검사!)\n   if ((cpu >= 95 && mem >= 95) || disk <= 5) { ... }\n   else if (cpu >= 85 || mem >= 85 || disk <= 15) { ... }\n   else if (cpu >= 70 || mem >= 70 || disk <= 30) { ... }\n   else { ... }\n\n3단계: 서식 출력 (% 출력 시 %% 주의)\n   System.out.println(\"=== 서버 리소스 상태 진단 보고서 ===\");\n   System.out.printf(\"CPU 사용률: %d%% | 메모리 사용률: %d%% | 디스크 잔여량: %dGB\\n\", cpu, mem, disk);\n   System.out.printf(\"종합 판정: %s\\n\", status);",
+        "testcases": [
+            {
+                "input": "88 65 50",
+                "expected": "=== 서버 리소스 상태 진단 보고서 ===\nCPU 사용률: 88% | 메모리 사용률: 65% | 디스크 잔여량: 50GB\n종합 판정: [CRITICAL] 위험 경보 - 관리자 점검이 필요합니다.",
+                "is_hidden": false
+            },
+            {
+                "input": "96 97 20",
+                "expected": "=== 서버 리소스 상태 진단 보고서 ===\nCPU 사용률: 96% | 메모리 사용률: 97% | 디스크 잔여량: 20GB\n종합 판정: [EMERGENCY] 긴급 조치 - 즉각적인 리소스 확보가 필요합니다.",
+                "is_hidden": false
+            },
+            {
+                "input": "50 50 3",
+                "expected": "=== 서버 리소스 상태 진단 보고서 ===\nCPU 사용률: 50% | 메모리 사용률: 50% | 디스크 잔여량: 3GB\n종합 판정: [EMERGENCY] 긴급 조치 - 즉각적인 리소스 확보가 필요합니다.",
+                "is_hidden": false
+            },
+            {
+                "input": "95 95 20",
+                "expected": "=== 서버 리소스 상태 진단 보고서 ===\nCPU 사용률: 95% | 메모리 사용률: 95% | 디스크 잔여량: 20GB\n종합 판정: [EMERGENCY] 긴급 조치 - 즉각적인 리소스 확보가 필요합니다.",
+                "is_hidden": true
+            },
+            {
+                "input": "50 50 5",
+                "expected": "=== 서버 리소스 상태 진단 보고서 ===\nCPU 사용률: 50% | 메모리 사용률: 50% | 디스크 잔여량: 5GB\n종합 판정: [EMERGENCY] 긴급 조치 - 즉각적인 리소스 확보가 필요합니다.",
+                "is_hidden": true
+            },
+            {
+                "input": "95 94 20",
+                "expected": "=== 서버 리소스 상태 진단 보고서 ===\nCPU 사용률: 95% | 메모리 사용률: 94% | 디스크 잔여량: 20GB\n종합 판정: [CRITICAL] 위험 경보 - 관리자 점검이 필요합니다.",
+                "is_hidden": true
+            },
+            {
+                "input": "50 85 50",
+                "expected": "=== 서버 리소스 상태 진단 보고서 ===\nCPU 사용률: 50% | 메모리 사용률: 85% | 디스크 잔여량: 50GB\n종합 판정: [CRITICAL] 위험 경보 - 관리자 점검이 필요합니다.",
+                "is_hidden": true
+            },
+            {
+                "input": "50 50 15",
+                "expected": "=== 서버 리소스 상태 진단 보고서 ===\nCPU 사용률: 50% | 메모리 사용률: 50% | 디스크 잔여량: 15GB\n종합 판정: [CRITICAL] 위험 경보 - 관리자 점검이 필요합니다.",
+                "is_hidden": true
+            },
+            {
+                "input": "70 50 50",
+                "expected": "=== 서버 리소스 상태 진단 보고서 ===\nCPU 사용률: 70% | 메모리 사용률: 50% | 디스크 잔여량: 50GB\n종합 판정: [WARNING] 주의 관찰 - 리소스 사용량을 모니터링하세요.",
+                "is_hidden": true
+            },
+            {
+                "input": "69 69 31",
+                "expected": "=== 서버 리소스 상태 진단 보고서 ===\nCPU 사용률: 69% | 메모리 사용률: 69% | 디스크 잔여량: 31GB\n종합 판정: [NORMAL] 정상 운영 - 모든 리소스가 안정적입니다.",
+                "is_hidden": true
+            }
+        ],
+        "sample_output": "=== 서버 리소스 상태 진단 보고서 ===\nCPU 사용률: 88% | 메모리 사용률: 65% | 디스크 잔여량: 50GB\n종합 판정: [CRITICAL] 위험 경보 - 관리자 점검이 필요합니다.",
+        "expected": "=== 서버 리소스 상태 진단 보고서 ===\nCPU 사용률: 88% | 메모리 사용률: 65% | 디스크 잔여량: 50GB\n종합 판정: [CRITICAL] 위험 경보 - 관리자 점검이 필요합니다.",
+        "samples": [
+            {
+                "input": "88 65 50",
+                "output": "=== 서버 리소스 상태 진단 보고서 ===\nCPU 사용률: 88% | 메모리 사용률: 65% | 디스크 잔여량: 50GB\n종합 판정: [CRITICAL] 위험 경보 - 관리자 점검이 필요합니다."
+            },
+            {
+                "input": "96 97 20",
+                "output": "=== 서버 리소스 상태 진단 보고서 ===\nCPU 사용률: 96% | 메모리 사용률: 97% | 디스크 잔여량: 20GB\n종합 판정: [EMERGENCY] 긴급 조치 - 즉각적인 리소스 확보가 필요합니다."
+            },
+            {
+                "input": "50 50 3",
+                "output": "=== 서버 리소스 상태 진단 보고서 ===\nCPU 사용률: 50% | 메모리 사용률: 50% | 디스크 잔여량: 3GB\n종합 판정: [EMERGENCY] 긴급 조치 - 즉각적인 리소스 확보가 필요합니다."
+            }
+        ]
     },
     {
         "id": "day02_중1",
         "day": 2,
         "subject": "Java",
         "difficulty": "중",
-        "title": "N단 구구단 및 직각 삼각형 별 찍기 (PatternPrinter)",
-        "desc": "정수 N(1~9)을 입력받아, 먼저 N단 구구단을 1부터 9까지 곱한 결과를 출력하고, 이어서 N행의 직각 삼각형 별(*) 패턴을 출력하세요.\n(i번째 줄에는 i개의 별이 출력됩니다.)\n\n[입력]\n정수 N 하나가 주어집니다.\n(예: 4)",
-        "template": "import java.util.Scanner;\n\npublic class Solution {\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        // 여기에 코드를 작성하세요\n        \n    }\n}",
-        "solution": "import java.util.Scanner;\n\npublic class Solution {\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        int n = sc.nextInt();\n\n        System.out.printf(\"=== %d단 구구단 ===\\n\", n);\n        for (int i = 1; i <= 9; i++) {\n            System.out.printf(\"%d x %d = %d\\n\", n, i, n * i);\n        }\n\n        System.out.println(\"=== 직각 삼각형 별 패턴 ===\");\n        for (int i = 1; i <= n; i++) {\n            for (int j = 1; j <= i; j++) {\n                System.out.print(\"*\");\n            }\n            System.out.println();\n        }\n    }\n}",
-        "sample_input": "4",
-        "sample_output": "=== 4단 구구단 ===\n4 x 1 = 4\n4 x 2 = 8\n4 x 3 = 12\n4 x 4 = 16\n4 x 5 = 20\n4 x 6 = 24\n4 x 7 = 28\n4 x 8 = 32\n4 x 9 = 36\n=== 직각 삼각형 별 패턴 ===\n*\n**\n***\n****",
-        "expected": "=== 4단 구구단 ===\n4 x 1 = 4\n4 x 2 = 8\n4 x 3 = 12\n4 x 4 = 16\n4 x 5 = 20\n4 x 6 = 24\n4 x 7 = 28\n4 x 8 = 32\n4 x 9 = 36\n=== 직각 삼각형 별 패턴 ===\n*\n**\n***\n****",
-        "hint": "1. 구구단은 for (int i = 1; i <= 9; i++) 단일 루프로 출력합니다.\n2. 별 찍기는 이중 for문을 사용하여 외부 루프는 행(1~N), 내부 루프는 열(1~i)만큼 '*'을 print한 뒤 줄바꿈 println()을 수행합니다."
+        "title": "네트워크 패킷 지수 백오프(Exponential Backoff) 재시도 시뮬레이터 (ExponentialBackoff)",
+        "desc": "분산 네트워크 환경에서 서버 장애 시 재시도 간격을 점진적으로 늘려 서버 과부하를 막는 '지수 백오프(Exponential Backoff)' 알고리즘을 1차원 정수 배열을 활용하여 시뮬레이션하세요.\n기본 대기 시간은 100ms이며, 실패할 때마다 대기 시간이 2배씩 증가합니다(100ms, 200ms, 400ms, 800ms, 1600ms, ...).\n최대 재시도 횟수 N을 입력받은 뒤, N개의 통신 결과(1: 성공, 0: 실패)를 크기 N인 1차원 정수 배열(int[] results)에 먼저 저장하세요.\n그 후 배열을 순회하면서:\n- 성공(1)을 만나면 해당 회차에서 성공 메시지를 출력하고 break로 즉시 루프를 탈출합니다.\n- 실패(0)하면 현재 대기 시간을 누적 대기 시간에 더하고 다음 회차 대기 시간을 2배로 증가시킵니다.\n- N회 동안 한 번도 성공하지 못하면 '최종 전송 실패' 메시지를 출력합니다.\n\n[입력]\n첫째 줄에 최대 재시도 횟수 N이 주어집니다.\n둘째 줄에 N개의 결과(0 또는 1)가 공백으로 주어집니다.\n\n[출력]\n매 회차마다 다음 서식으로 출력합니다:\n- 성공 시: \"[회차] 전송 성공! (총 대기 시간: {total}ms)\" 출력 후 즉시 종료\n- 실패 시: \"[회차] 전송 실패 -> 대기 시간: {delay}ms\"\n- N회 모두 실패 시: \"제한 횟수({N}회) 초과로 최종 전송 실패! (총 대기 시간: {total}ms)\"\n\n※ 조기 성공, 1회차 성공, 최대 회차 초과 실패 등 다양한 실행 케이스는 아래 [예제 1, 2, 3]을 참고하세요.",
+        "template": "import java.util.Scanner;\n\npublic class Solution {\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        int maxAttempts = sc.nextInt();\n\n        // 여기에 1차원 배열(int[])을 선언하고 지수 백오프 시뮬레이션을 작성하세요\n        \n    }\n}\n",
+        "solution": "import java.util.Scanner;\n\npublic class Solution {\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        int maxAttempts = sc.nextInt();\n\n        // 1차원 정수 배열에 N개의 시도 결과(0 또는 1)를 저장\n        int[] results = new int[maxAttempts];\n        for (int i = 0; i < maxAttempts; i++) {\n            results[i] = sc.nextInt();\n        }\n\n        int currentDelay = 100;\n        int totalDelay = 0;\n        boolean success = false;\n\n        // 배열 순회하며 지수 백오프 시뮬레이션\n        for (int i = 0; i < results.length; i++) {\n            int attemptNum = i + 1;\n            if (results[i] == 1) {\n                System.out.printf(\"[%d회차] 전송 성공! (총 대기 시간: %dms)\\n\", attemptNum, totalDelay);\n                success = true;\n                break;\n            } else {\n                System.out.printf(\"[%d회차] 전송 실패 -> 대기 시간: %dms\\n\", attemptNum, currentDelay);\n                totalDelay += currentDelay;\n                currentDelay *= 2;\n            }\n        }\n\n        if (!success) {\n            System.out.printf(\"제한 횟수(%d회) 초과로 최종 전송 실패! (총 대기 시간: %dms)\\n\", maxAttempts, totalDelay);\n        }\n    }\n}\n",
+        "sample_input": "4\n0 0 1 0",
+        "hint": "1. int[] results = new int[maxAttempts]; 로 배열을 생성하고 입력을 채웁니다.\n2. for (int i = 0; i < results.length; i++) 로 배열을 순회하며 results[i] 값을 검사합니다.",
+        "cs_knowledge": "💡 **지수 백오프(Exponential Backoff)와 배열(Array) 버퍼링**\n- **배열(Array)**: 동일한 타입의 데이터를 메모리에 연속적으로 나열하여 인덱스 번호(0부터 시작)로 O(1) 시간에 즉시 접근할 수 있는 기본 선형 자료구조입니다.\n- **스트림 수신과 배열 적재**: 네트워크에서 유입되는 일련의 패킷 응답 신호들을 `int[]` 배열에 먼저 적재해 둔 뒤, 순차적으로 백오프 정책 알고리즘을 적용하는 패턴입니다.",
+        "logic_guide": "🛠️ **배열 활용 로직 설계 가이드**\n1. `int maxAttempts = sc.nextInt();` 로 N을 입력받습니다.\n2. `int[] results = new int[maxAttempts];` 로 크기 N인 1차원 배열을 생성합니다.\n3. for문을 돌며 `results[i] = sc.nextInt();` 로 N개의 결과를 배열에 저장합니다.\n4. 배열 순회 for문(`for (int i = 0; i < results.length; i++)`)을 돌며:\n   - `if (results[i] == 1)`: 성공 메시지 출력 후 `break;`\n   - `else`: 실패 메시지 출력 후 `totalDelay += currentDelay; currentDelay *= 2;`\n5. 루프 종료 후 성공하지 못했으면 최종 실패 메시지를 출력합니다.",
+        "testcases": [
+            {
+                "input": "4\n0 0 1 0",
+                "expected": "[1회차] 전송 실패 -> 대기 시간: 100ms\n[2회차] 전송 실패 -> 대기 시간: 200ms\n[3회차] 전송 성공! (총 대기 시간: 300ms)",
+                "is_hidden": false
+            },
+            {
+                "input": "3\n1 0 0",
+                "expected": "[1회차] 전송 성공! (총 대기 시간: 0ms)",
+                "is_hidden": false
+            },
+            {
+                "input": "5\n0 0 0 0 0",
+                "expected": "[1회차] 전송 실패 -> 대기 시간: 100ms\n[2회차] 전송 실패 -> 대기 시간: 200ms\n[3회차] 전송 실패 -> 대기 시간: 400ms\n[4회차] 전송 실패 -> 대기 시간: 800ms\n[5회차] 전송 실패 -> 대기 시간: 1600ms\n제한 횟수(5회) 초과로 최종 전송 실패! (총 대기 시간: 3100ms)",
+                "is_hidden": false
+            },
+            {
+                "input": "5\n0 0 0 0 1",
+                "expected": "[1회차] 전송 실패 -> 대기 시간: 100ms\n[2회차] 전송 실패 -> 대기 시간: 200ms\n[3회차] 전송 실패 -> 대기 시간: 400ms\n[4회차] 전송 실패 -> 대기 시간: 800ms\n[5회차] 전송 성공! (총 대기 시간: 1500ms)",
+                "is_hidden": true
+            },
+            {
+                "input": "2\n0 1",
+                "expected": "[1회차] 전송 실패 -> 대기 시간: 100ms\n[2회차] 전송 성공! (총 대기 시간: 100ms)",
+                "is_hidden": true
+            },
+            {
+                "input": "1\n1",
+                "expected": "[1회차] 전송 성공! (총 대기 시간: 0ms)",
+                "is_hidden": true
+            },
+            {
+                "input": "1\n0",
+                "expected": "[1회차] 전송 실패 -> 대기 시간: 100ms\n제한 횟수(1회) 초과로 최종 전송 실패! (총 대기 시간: 100ms)",
+                "is_hidden": true
+            },
+            {
+                "input": "6\n0 0 0 1 0 0",
+                "expected": "[1회차] 전송 실패 -> 대기 시간: 100ms\n[2회차] 전송 실패 -> 대기 시간: 200ms\n[3회차] 전송 실패 -> 대기 시간: 400ms\n[4회차] 전송 성공! (총 대기 시간: 700ms)",
+                "is_hidden": true
+            },
+            {
+                "input": "4\n0 0 0 0",
+                "expected": "[1회차] 전송 실패 -> 대기 시간: 100ms\n[2회차] 전송 실패 -> 대기 시간: 200ms\n[3회차] 전송 실패 -> 대기 시간: 400ms\n[4회차] 전송 실패 -> 대기 시간: 800ms\n제한 횟수(4회) 초과로 최종 전송 실패! (총 대기 시간: 1500ms)",
+                "is_hidden": true
+            },
+            {
+                "input": "3\n0 1 0",
+                "expected": "[1회차] 전송 실패 -> 대기 시간: 100ms\n[2회차] 전송 성공! (총 대기 시간: 100ms)",
+                "is_hidden": true
+            }
+        ],
+        "sample_output": "[1회차] 전송 실패 -> 대기 시간: 100ms\n[2회차] 전송 실패 -> 대기 시간: 200ms\n[3회차] 전송 성공! (총 대기 시간: 300ms)",
+        "expected": "[1회차] 전송 실패 -> 대기 시간: 100ms\n[2회차] 전송 실패 -> 대기 시간: 200ms\n[3회차] 전송 성공! (총 대기 시간: 300ms)",
+        "samples": [
+            {
+                "input": "4\n0 0 1 0",
+                "output": "[1회차] 전송 실패 -> 대기 시간: 100ms\n[2회차] 전송 실패 -> 대기 시간: 200ms\n[3회차] 전송 성공! (총 대기 시간: 300ms)"
+            },
+            {
+                "input": "3\n1 0 0",
+                "output": "[1회차] 전송 성공! (총 대기 시간: 0ms)"
+            },
+            {
+                "input": "5\n0 0 0 0 0",
+                "output": "[1회차] 전송 실패 -> 대기 시간: 100ms\n[2회차] 전송 실패 -> 대기 시간: 200ms\n[3회차] 전송 실패 -> 대기 시간: 400ms\n[4회차] 전송 실패 -> 대기 시간: 800ms\n[5회차] 전송 실패 -> 대기 시간: 1600ms\n제한 횟수(5회) 초과로 최종 전송 실패! (총 대기 시간: 3100ms)"
+            }
+        ]
     },
     {
         "id": "day02_중2",
@@ -531,41 +813,491 @@ const PROBLEMS = [
         "subject": "Java",
         "difficulty": "중",
         "title": "숫자 맞추기 Up-Down 게임 시뮬레이터 (UpDownGame)",
-        "desc": "목표 정답 숫자와 시도 횟수 K, 그리고 K개의 추측 숫자를 순서대로 입력받아 Up-Down 게임 판정을 진행하세요.\n- 추측값이 목표값보다 크면: 'DOWN! 더 작은 수를 입력하세요.'\n- 추측값이 목표값보다 작으면: 'UP! 더 큰 수를 입력하세요.'\n- 정답을 맞추면: '정답입니다! X회 만에 맞추셨습니다! 🎉' 출력 후 즉시 종료(break)\n- K번 시도 내에 맞추지 못하면 마지막에 '아쉽습니다. 정답은 X였습니다.' 출력\n\n[입력]\n첫째 줄에 정답 숫자(1~100)와 총 시도 횟수 K가 공백으로 주어집니다.\n둘째 줄에 K개의 추측 숫자가 공백으로 주어집니다.\n(예:\n50 4\n30 70 45 50)",
-        "template": "import java.util.Scanner;\n\npublic class Solution {\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        // 여기에 코드를 작성하세요\n        \n    }\n}",
-        "solution": "import java.util.Scanner;\n\npublic class Solution {\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        int target = sc.nextInt();\n        int attempts = sc.nextInt();\n\n        boolean isCorrect = false;\n        int count = 0;\n\n        for (int i = 1; i <= attempts; i++) {\n            int guess = sc.nextInt();\n            count = i;\n\n            if (guess == target) {\n                System.out.printf(\"[%d회차] 추측: %d -> 정답입니다! %d회 만에 맞추셨습니다!\\n\", i, guess, count);\n                isCorrect = true;\n                break;\n            } else if (guess < target) {\n                System.out.printf(\"[%d회차] 추측: %d -> UP! 더 큰 수를 입력하세요.\\n\", i, guess);\n            } else {\n                System.out.printf(\"[%d회차] 추측: %d -> DOWN! 더 작은 수를 입력하세요.\\n\", i, guess);\n            }\n        }\n\n        if (!isCorrect) {\n            System.out.printf(\"아쉽습니다. 제한 횟수(%d회) 초과로 실패! 정답은 %d였습니다.\\n\", attempts, target);\n        }\n    }\n}",
+        "desc": "정답 숫자 target(1~100)과 최대 시도 횟수 K, 그리고 플레이어가 입력한 K개의 추측 숫자를 1차원 정수 배열(int[] guesses)에 저장하여 Up-Down 게임 판정을 진행하세요.\n배열에 저장된 추측값들을 순차적으로 순회하며 판정합니다:\n- 추측값 > 정답: \"[i회차] 추측: X -> DOWN! 더 작은 수를 입력하세요.\"\n- 추측값 < 정답: \"[i회차] 추측: X -> UP! 더 큰 수를 입력하세요.\"\n- 추측값 == 정답: \"[i회차] 추측: X -> 정답입니다! i회 만에 맞추셨습니다!\" 출력 후 break로 즉시 루프 탈출\n- K회 내에 맞추지 못하면: \"아쉽습니다. 제한 횟수(K회) 초과로 실패! 정답은 target였습니다.\" 출력\n\n[입력]\n첫째 줄에 정답 숫자 target과 최대 시도 횟수 K가 공백으로 주어집니다.\n둘째 줄에 K개의 추측 숫자가 공백으로 주어집니다.\n\n[출력]\n각 회차별 추측 결과 및 최종 성공/실패 여부를 서식에 맞추어 출력합니다.\n\n※ 중간 정답 성공, 빠른 회차 성공, 횟수 초과 실패 등 다양한 게임 시뮬레이션은 아래 [예제 1, 2, 3]을 참고하세요.",
+        "template": "import java.util.Scanner;\n\npublic class Solution {\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        // 여기에 크기 K인 1차원 배열을 선언하고 Up-Down 게임을 작성하세요\n        \n    }\n}\n",
+        "solution": "import java.util.Scanner;\n\npublic class Solution {\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        int target = sc.nextInt();\n        int attempts = sc.nextInt();\n\n        // 플레이어의 추측값들을 저장할 1차원 배열\n        int[] guesses = new int[attempts];\n        for (int i = 0; i < attempts; i++) {\n            guesses[i] = sc.nextInt();\n        }\n\n        boolean isCorrect = false;\n\n        // 추측값 배열을 순회하며 판정\n        for (int i = 0; i < guesses.length; i++) {\n            int attemptNum = i + 1;\n            int guess = guesses[i];\n\n            if (guess == target) {\n                System.out.printf(\"[%d회차] 추측: %d -> 정답입니다! %d회 만에 맞추셨습니다!\\n\", attemptNum, guess, attemptNum);\n                isCorrect = true;\n                break;\n            } else if (guess < target) {\n                System.out.printf(\"[%d회차] 추측: %d -> UP! 더 큰 수를 입력하세요.\\n\", attemptNum, guess);\n            } else {\n                System.out.printf(\"[%d회차] 추측: %d -> DOWN! 더 작은 수를 입력하세요.\\n\", attemptNum, guess);\n            }\n        }\n\n        if (!isCorrect) {\n            System.out.printf(\"아쉽습니다. 제한 횟수(%d회) 초과로 실패! 정답은 %d였습니다.\\n\", attempts, target);\n        }\n    }\n}\n",
         "sample_input": "50 4\n30 70 45 50",
+        "hint": "1. int[] guesses = new int[attempts]; 로 크기 K의 배열을 생성합니다.\n2. guesses[i] 로 각 추측값에 접근하여 target과 비교합니다.",
+        "cs_knowledge": "💡 **배열(Array)을 이용한 사용자 입력 로그 기록 및 순차 탐색**\n- **입력 히스토리 보존**: 사용자나 외부 시스템의 입력을 즉시 소비하지 않고 배열에 보존하면, 추후 재검증, 감사(Audit), 롤백 등의 다양한 처리가 가능해집니다.\n- **인덱스와 회차 매핑**: 0-based 인덱스(`i = 0, 1, 2...`)를 사람의 회차(`i + 1 = 1, 2, 3...`)로 변환하여 처리하는 기법을 익힙니다.",
+        "logic_guide": "🛠️ **배열 활용 로직 설계 가이드**\n1. `int target = sc.nextInt(); int attempts = sc.nextInt();`\n2. `int[] guesses = new int[attempts];` 배열을 생성합니다.\n3. for문으로 K개의 추측값을 `guesses[i] = sc.nextInt();`에 입력받습니다.\n4. `for (int i = 0; i < guesses.length; i++)` 로 배열을 순회하며:\n   - `int guess = guesses[i];`\n   - `guess == target` 이면 정답 메시지 출력 후 `break;`\n   - `guess < target` 이면 UP 메시지 출력\n   - `guess > target` 이면 DOWN 메시지 출력\n5. 끝까지 못 맞췄다면 실패 메시지를 출력합니다.",
+        "testcases": [
+            {
+                "input": "50 4\n30 70 45 50",
+                "expected": "[1회차] 추측: 30 -> UP! 더 큰 수를 입력하세요.\n[2회차] 추측: 70 -> DOWN! 더 작은 수를 입력하세요.\n[3회차] 추측: 45 -> UP! 더 큰 수를 입력하세요.\n[4회차] 추측: 50 -> 정답입니다! 4회 만에 맞추셨습니다!",
+                "is_hidden": false
+            },
+            {
+                "input": "77 3\n50 80 77",
+                "expected": "[1회차] 추측: 50 -> UP! 더 큰 수를 입력하세요.\n[2회차] 추측: 80 -> DOWN! 더 작은 수를 입력하세요.\n[3회차] 추측: 77 -> 정답입니다! 3회 만에 맞추셨습니다!",
+                "is_hidden": false
+            },
+            {
+                "input": "10 3\n20 15 12",
+                "expected": "[1회차] 추측: 20 -> DOWN! 더 작은 수를 입력하세요.\n[2회차] 추측: 15 -> DOWN! 더 작은 수를 입력하세요.\n[3회차] 추측: 12 -> DOWN! 더 작은 수를 입력하세요.\n아쉽습니다. 제한 횟수(3회) 초과로 실패! 정답은 10였습니다.",
+                "is_hidden": false
+            },
+            {
+                "input": "1 1\n1",
+                "expected": "[1회차] 추측: 1 -> 정답입니다! 1회 만에 맞추셨습니다!",
+                "is_hidden": true
+            },
+            {
+                "input": "100 5\n50 75 88 94 99",
+                "expected": "[1회차] 추측: 50 -> UP! 더 큰 수를 입력하세요.\n[2회차] 추측: 75 -> UP! 더 큰 수를 입력하세요.\n[3회차] 추측: 88 -> UP! 더 큰 수를 입력하세요.\n[4회차] 추측: 94 -> UP! 더 큰 수를 입력하세요.\n[5회차] 추측: 99 -> UP! 더 큰 수를 입력하세요.\n아쉽습니다. 제한 횟수(5회) 초과로 실패! 정답은 100였습니다.",
+                "is_hidden": true
+            },
+            {
+                "input": "33 4\n33 50 20 10",
+                "expected": "[1회차] 추측: 33 -> 정답입니다! 1회 만에 맞추셨습니다!",
+                "is_hidden": true
+            },
+            {
+                "input": "60 5\n10 20 30 40 50",
+                "expected": "[1회차] 추측: 10 -> UP! 더 큰 수를 입력하세요.\n[2회차] 추측: 20 -> UP! 더 큰 수를 입력하세요.\n[3회차] 추측: 30 -> UP! 더 큰 수를 입력하세요.\n[4회차] 추측: 40 -> UP! 더 큰 수를 입력하세요.\n[5회차] 추측: 50 -> UP! 더 큰 수를 입력하세요.\n아쉽습니다. 제한 횟수(5회) 초과로 실패! 정답은 60였습니다.",
+                "is_hidden": true
+            },
+            {
+                "input": "85 4\n90 80 84 85",
+                "expected": "[1회차] 추측: 90 -> DOWN! 더 작은 수를 입력하세요.\n[2회차] 추측: 80 -> UP! 더 큰 수를 입력하세요.\n[3회차] 추측: 84 -> UP! 더 큰 수를 입력하세요.\n[4회차] 추측: 85 -> 정답입니다! 4회 만에 맞추셨습니다!",
+                "is_hidden": true
+            },
+            {
+                "input": "42 2\n41 43",
+                "expected": "[1회차] 추측: 41 -> UP! 더 큰 수를 입력하세요.\n[2회차] 추측: 43 -> DOWN! 더 작은 수를 입력하세요.\n아쉽습니다. 제한 횟수(2회) 초과로 실패! 정답은 42였습니다.",
+                "is_hidden": true
+            },
+            {
+                "input": "25 3\n50 10 25",
+                "expected": "[1회차] 추측: 50 -> DOWN! 더 작은 수를 입력하세요.\n[2회차] 추측: 10 -> UP! 더 큰 수를 입력하세요.\n[3회차] 추측: 25 -> 정답입니다! 3회 만에 맞추셨습니다!",
+                "is_hidden": true
+            }
+        ],
         "sample_output": "[1회차] 추측: 30 -> UP! 더 큰 수를 입력하세요.\n[2회차] 추측: 70 -> DOWN! 더 작은 수를 입력하세요.\n[3회차] 추측: 45 -> UP! 더 큰 수를 입력하세요.\n[4회차] 추측: 50 -> 정답입니다! 4회 만에 맞추셨습니다!",
         "expected": "[1회차] 추측: 30 -> UP! 더 큰 수를 입력하세요.\n[2회차] 추측: 70 -> DOWN! 더 작은 수를 입력하세요.\n[3회차] 추측: 45 -> UP! 더 큰 수를 입력하세요.\n[4회차] 추측: 50 -> 정답입니다! 4회 만에 맞추셨습니다!",
-        "hint": "1. int target = sc.nextInt(); int attempts = sc.nextInt(); 로 게임 설정을 읽습니다.\n2. for (int i = 1; i <= attempts; i++) 루프에서 sc.nextInt()로 추측값을 하나씩 읽고 비교합니다.\n3. 정답을 맞추면 `break` 키워드로 즉시 루프를 탈출합니다."
+        "samples": [
+            {
+                "input": "50 4\n30 70 45 50",
+                "output": "[1회차] 추측: 30 -> UP! 더 큰 수를 입력하세요.\n[2회차] 추측: 70 -> DOWN! 더 작은 수를 입력하세요.\n[3회차] 추측: 45 -> UP! 더 큰 수를 입력하세요.\n[4회차] 추측: 50 -> 정답입니다! 4회 만에 맞추셨습니다!"
+            },
+            {
+                "input": "77 3\n50 80 77",
+                "output": "[1회차] 추측: 50 -> UP! 더 큰 수를 입력하세요.\n[2회차] 추측: 80 -> DOWN! 더 작은 수를 입력하세요.\n[3회차] 추측: 77 -> 정답입니다! 3회 만에 맞추셨습니다!"
+            },
+            {
+                "input": "10 3\n20 15 12",
+                "output": "[1회차] 추측: 20 -> DOWN! 더 작은 수를 입력하세요.\n[2회차] 추측: 15 -> DOWN! 더 작은 수를 입력하세요.\n[3회차] 추측: 12 -> DOWN! 더 작은 수를 입력하세요.\n아쉽습니다. 제한 횟수(3회) 초과로 실패! 정답은 10였습니다."
+            }
+        ]
     },
     {
-        "id": "day02_상",
+        "id": "day02_중3",
+        "day": 2,
+        "subject": "Java",
+        "difficulty": "중",
+        "title": "CPU 라운드 로빈(Round Robin) 스케줄러 타임슬라이스 시뮬레이터 (RoundRobinScheduler)",
+        "desc": "운영체제(OS)의 대표적인 선점형 CPU 스케줄링 기법인 라운드 로빈(Round Robin) 방식을 프로세스 버스트 타임 배열(int[] burst)과 다중 루프로 시뮬레이션하세요.\n두 프로세스 P1과 P2의 초기 잔여 작업 시간(Burst Time, ms)을 크기 2인 정수 배열 `int[] burst = new int[]{ p1, p2 };`에 저장하고, 타임 퀀텀 Q(ms)를 입력받습니다.\n- P1과 P2를 번갈아가며 CPU에 할당합니다 (외부 while 루프 + 내부 배열 순회 for 루프).\n- 매 턴마다 실행 가능한 프로세스는 최대 Q만큼 작업을 처리하고 잔여 시간을 줄입니다. (잔여 시간이 Q보다 작으면 남은 만큼만 처리하고 0으로 완료)\n- 한 프로세스가 완료되면 남은 다른 프로세스만 단독으로 턴을 진행합니다.\n- 모든 프로세스의 잔여 작업이 0이 되면 스케줄링을 종료합니다.\n\n[입력]\n첫째 줄에 P1의 작업 시간, P2의 작업 시간, 타임 퀀텀 Q(모두 정수, ms 단위)가 공백으로 주어집니다.\n\n[출력]\n=== CPU 라운드 로빈 스케줄링 시뮬레이션 ===\n[턴 {t}] {프로세스} 실행 ({처리}ms 처리, {남은작업 또는 완료})\n...\n-----------------------------------------\n총 실행 턴: {총턴수}턴 | 모든 프로세스 처리 완료\n\n※ 두 프로세스의 버스트 타임 차이에 따른 스케줄링 결과는 아래 [예제 1, 2, 3]을 참고하세요.",
+        "template": "import java.util.Scanner;\n\npublic class Solution {\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        // 여기에 프로세스 배열(int[] burst)을 선언하고 다중 루프 스케줄러를 작성하세요\n        \n    }\n}\n",
+        "solution": "import java.util.Scanner;\n\npublic class Solution {\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        // 프로세스 버스트 타임과 프로세스 이름을 배열로 관리\n        int[] burst = new int[]{ sc.nextInt(), sc.nextInt() };\n        String[] pNames = new String[]{ \"P1\", \"P2\" };\n        int q = sc.nextInt();\n\n        System.out.println(\"=== CPU 라운드 로빈 스케줄링 시뮬레이션 ===\");\n        int turn = 0;\n\n        // 외부 while 루프: 모든 프로세스가 완료될 때까지 반복\n        while (burst[0] > 0 || burst[1] > 0) {\n            // 내부 for 루프: 프로세스 배열을 순회하며 퀀텀 할당\n            for (int i = 0; i < burst.length; i++) {\n                if (burst[i] > 0) {\n                    turn++;\n                    int exec = Math.min(burst[i], q);\n                    burst[i] -= exec;\n                    if (burst[i] == 0) {\n                        System.out.printf(\"[턴 %d] %s 실행 (%dms 처리, %s 완료!)\\n\", turn, pNames[i], exec, pNames[i]);\n                    } else {\n                        System.out.printf(\"[턴 %d] %s 실행 (%dms 처리, 남은 작업: %dms)\\n\", turn, pNames[i], exec, burst[i]);\n                    }\n                }\n            }\n        }\n\n        System.out.println(\"-----------------------------------------\");\n        System.out.printf(\"총 실행 턴: %d턴 | 모든 프로세스 처리 완료\\n\", turn);\n    }\n}\n",
+        "sample_input": "15 25 10",
+        "hint": "1. int[] burst = new int[]{ sc.nextInt(), sc.nextInt() }; 로 프로세스 작업 시간을 배열로 관리합니다.\n2. while 루프 안에 for (int i = 0; i < burst.length; i++) 루프를 두어 각 프로세스를 번갈아 처리합니다.",
+        "cs_knowledge": "💡 **배열(Array) 기반의 프로세스 제어 블록(PCB) 스케줄링**\n- **PCB(Process Control Block) 큐**: 운영체제는 실행 준비 상태인 프로세스들의 식별자와 작업 시간을 배열 또는 큐 구조로 관리합니다.\n- **다중 루프와 배열**: 외부 루프(`while (burst[0] > 0 || burst[1] > 0)`)로 전체 작업 완료 여부를 감시하고, 내부 루프(`for (int i = 0; i < burst.length; i++)`)로 배열의 프로세스들을 순차 방문하여 타임슬라이스를 배분합니다.",
+        "logic_guide": "🛠️ **배열 및 다중 루프 설계 가이드**\n1. `int[] burst = new int[]{ sc.nextInt(), sc.nextInt() };` 로 P1, P2 시간을 배열에 담습니다.\n2. `String[] pNames = new String[]{ \"P1\", \"P2\" };` 로 이름 배열을 선언합니다.\n3. `int q = sc.nextInt(); int turn = 0;`\n4. **외부 while문 (`while (burst[0] > 0 || burst[1] > 0)`)**:\n   - **내부 for문 (`for (int i = 0; i < burst.length; i++)`)**:\n     * `if (burst[i] > 0)`:\n       - `turn++; int exec = Math.min(burst[i], q); burst[i] -= exec;`\n       - 남은 시간이 0이면 완료 메시지, 아니면 남은 작업 메시지 출력\n5. 종료 후 총 실행 턴수를 출력합니다.",
+        "testcases": [
+            {
+                "input": "15 25 10",
+                "expected": "=== CPU 라운드 로빈 스케줄링 시뮬레이션 ===\n[턴 1] P1 실행 (10ms 처리, 남은 작업: 5ms)\n[턴 2] P2 실행 (10ms 처리, 남은 작업: 15ms)\n[턴 3] P1 실행 (5ms 처리, P1 완료!)\n[턴 4] P2 실행 (10ms 처리, 남은 작업: 5ms)\n[턴 5] P2 실행 (5ms 처리, P2 완료!)\n-----------------------------------------\n총 실행 턴: 5턴 | 모든 프로세스 처리 완료",
+                "is_hidden": false
+            },
+            {
+                "input": "10 10 5",
+                "expected": "=== CPU 라운드 로빈 스케줄링 시뮬레이션 ===\n[턴 1] P1 실행 (5ms 처리, 남은 작업: 5ms)\n[턴 2] P2 실행 (5ms 처리, 남은 작업: 5ms)\n[턴 3] P1 실행 (5ms 처리, P1 완료!)\n[턴 4] P2 실행 (5ms 처리, P2 완료!)\n-----------------------------------------\n총 실행 턴: 4턴 | 모든 프로세스 처리 완료",
+                "is_hidden": false
+            },
+            {
+                "input": "5 20 10",
+                "expected": "=== CPU 라운드 로빈 스케줄링 시뮬레이션 ===\n[턴 1] P1 실행 (5ms 처리, P1 완료!)\n[턴 2] P2 실행 (10ms 처리, 남은 작업: 10ms)\n[턴 3] P2 실행 (10ms 처리, P2 완료!)\n-----------------------------------------\n총 실행 턴: 3턴 | 모든 프로세스 처리 완료",
+                "is_hidden": false
+            },
+            {
+                "input": "30 0 10",
+                "expected": "=== CPU 라운드 로빈 스케줄링 시뮬레이션 ===\n[턴 1] P1 실행 (10ms 처리, 남은 작업: 20ms)\n[턴 2] P1 실행 (10ms 처리, 남은 작업: 10ms)\n[턴 3] P1 실행 (10ms 처리, P1 완료!)\n-----------------------------------------\n총 실행 턴: 3턴 | 모든 프로세스 처리 완료",
+                "is_hidden": true
+            },
+            {
+                "input": "8 12 4",
+                "expected": "=== CPU 라운드 로빈 스케줄링 시뮬레이션 ===\n[턴 1] P1 실행 (4ms 처리, 남은 작업: 4ms)\n[턴 2] P2 실행 (4ms 처리, 남은 작업: 8ms)\n[턴 3] P1 실행 (4ms 처리, P1 완료!)\n[턴 4] P2 실행 (4ms 처리, 남은 작업: 4ms)\n[턴 5] P2 실행 (4ms 처리, P2 완료!)\n-----------------------------------------\n총 실행 턴: 5턴 | 모든 프로세스 처리 완료",
+                "is_hidden": true
+            },
+            {
+                "input": "25 5 10",
+                "expected": "=== CPU 라운드 로빈 스케줄링 시뮬레이션 ===\n[턴 1] P1 실행 (10ms 처리, 남은 작업: 15ms)\n[턴 2] P2 실행 (5ms 처리, P2 완료!)\n[턴 3] P1 실행 (10ms 처리, 남은 작업: 5ms)\n[턴 4] P1 실행 (5ms 처리, P1 완료!)\n-----------------------------------------\n총 실행 턴: 4턴 | 모든 프로세스 처리 완료",
+                "is_hidden": true
+            },
+            {
+                "input": "100 50 30",
+                "expected": "=== CPU 라운드 로빈 스케줄링 시뮬레이션 ===\n[턴 1] P1 실행 (30ms 처리, 남은 작업: 70ms)\n[턴 2] P2 실행 (30ms 처리, 남은 작업: 20ms)\n[턴 3] P1 실행 (30ms 처리, 남은 작업: 40ms)\n[턴 4] P2 실행 (20ms 처리, P2 완료!)\n[턴 5] P1 실행 (30ms 처리, 남은 작업: 10ms)\n[턴 6] P1 실행 (10ms 처리, P1 완료!)\n-----------------------------------------\n총 실행 턴: 6턴 | 모든 프로세스 처리 완료",
+                "is_hidden": true
+            },
+            {
+                "input": "7 7 10",
+                "expected": "=== CPU 라운드 로빈 스케줄링 시뮬레이션 ===\n[턴 1] P1 실행 (7ms 처리, P1 완료!)\n[턴 2] P2 실행 (7ms 처리, P2 완료!)\n-----------------------------------------\n총 실행 턴: 2턴 | 모든 프로세스 처리 완료",
+                "is_hidden": true
+            },
+            {
+                "input": "3 3 1",
+                "expected": "=== CPU 라운드 로빈 스케줄링 시뮬레이션 ===\n[턴 1] P1 실행 (1ms 처리, 남은 작업: 2ms)\n[턴 2] P2 실행 (1ms 처리, 남은 작업: 2ms)\n[턴 3] P1 실행 (1ms 처리, 남은 작업: 1ms)\n[턴 4] P2 실행 (1ms 처리, 남은 작업: 1ms)\n[턴 5] P1 실행 (1ms 처리, P1 완료!)\n[턴 6] P2 실행 (1ms 처리, P2 완료!)\n-----------------------------------------\n총 실행 턴: 6턴 | 모든 프로세스 처리 완료",
+                "is_hidden": true
+            },
+            {
+                "input": "40 40 20",
+                "expected": "=== CPU 라운드 로빈 스케줄링 시뮬레이션 ===\n[턴 1] P1 실행 (20ms 처리, 남은 작업: 20ms)\n[턴 2] P2 실행 (20ms 처리, 남은 작업: 20ms)\n[턴 3] P1 실행 (20ms 처리, P1 완료!)\n[턴 4] P2 실행 (20ms 처리, P2 완료!)\n-----------------------------------------\n총 실행 턴: 4턴 | 모든 프로세스 처리 완료",
+                "is_hidden": true
+            }
+        ],
+        "sample_output": "=== CPU 라운드 로빈 스케줄링 시뮬레이션 ===\n[턴 1] P1 실행 (10ms 처리, 남은 작업: 5ms)\n[턴 2] P2 실행 (10ms 처리, 남은 작업: 15ms)\n[턴 3] P1 실행 (5ms 처리, P1 완료!)\n[턴 4] P2 실행 (10ms 처리, 남은 작업: 5ms)\n[턴 5] P2 실행 (5ms 처리, P2 완료!)\n-----------------------------------------\n총 실행 턴: 5턴 | 모든 프로세스 처리 완료",
+        "expected": "=== CPU 라운드 로빈 스케줄링 시뮬레이션 ===\n[턴 1] P1 실행 (10ms 처리, 남은 작업: 5ms)\n[턴 2] P2 실행 (10ms 처리, 남은 작업: 15ms)\n[턴 3] P1 실행 (5ms 처리, P1 완료!)\n[턴 4] P2 실행 (10ms 처리, 남은 작업: 5ms)\n[턴 5] P2 실행 (5ms 처리, P2 완료!)\n-----------------------------------------\n총 실행 턴: 5턴 | 모든 프로세스 처리 완료",
+        "samples": [
+            {
+                "input": "15 25 10",
+                "output": "=== CPU 라운드 로빈 스케줄링 시뮬레이션 ===\n[턴 1] P1 실행 (10ms 처리, 남은 작업: 5ms)\n[턴 2] P2 실행 (10ms 처리, 남은 작업: 15ms)\n[턴 3] P1 실행 (5ms 처리, P1 완료!)\n[턴 4] P2 실행 (10ms 처리, 남은 작업: 5ms)\n[턴 5] P2 실행 (5ms 처리, P2 완료!)\n-----------------------------------------\n총 실행 턴: 5턴 | 모든 프로세스 처리 완료"
+            },
+            {
+                "input": "10 10 5",
+                "output": "=== CPU 라운드 로빈 스케줄링 시뮬레이션 ===\n[턴 1] P1 실행 (5ms 처리, 남은 작업: 5ms)\n[턴 2] P2 실행 (5ms 처리, 남은 작업: 5ms)\n[턴 3] P1 실행 (5ms 처리, P1 완료!)\n[턴 4] P2 실행 (5ms 처리, P2 완료!)\n-----------------------------------------\n총 실행 턴: 4턴 | 모든 프로세스 처리 완료"
+            },
+            {
+                "input": "5 20 10",
+                "output": "=== CPU 라운드 로빈 스케줄링 시뮬레이션 ===\n[턴 1] P1 실행 (5ms 처리, P1 완료!)\n[턴 2] P2 실행 (10ms 처리, 남은 작업: 10ms)\n[턴 3] P2 실행 (10ms 처리, P2 완료!)\n-----------------------------------------\n총 실행 턴: 3턴 | 모든 프로세스 처리 완료"
+            }
+        ]
+    },
+    {
+        "id": "day02_상1",
         "day": 2,
         "subject": "Java",
         "difficulty": "상",
-        "title": "369 게임 박수 횟수 계산기 (ThreeSixNineGame)",
-        "desc": "정수 N(1~100)을 입력받아 1부터 N까지의 369 게임을 시뮬레이션하세요.\n- 숫자에 3, 6, 9가 포함되어 있다면 포함된 개수만큼 '짝'을 출력합니다. (예: 33은 '짝짝')\n- 3, 6, 9가 포함되지 않은 숫자는 숫자 그대로 출력합니다.\n- 출력은 공백으로 구분하며, 마지막 줄에 1부터 N까지 친 총 박수 횟수를 출력하세요.\n\n[입력]\n끝 숫자 N이 주어집니다.\n(예: 35)",
-        "template": "import java.util.Scanner;\n\npublic class Solution {\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        // 여기에 코드를 작성하세요\n        \n    }\n}",
-        "solution": "import java.util.Scanner;\n\npublic class Solution {\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        int n = sc.nextInt();\n\n        int totalClaps = 0;\n        StringBuilder sb = new StringBuilder();\n\n        for (int i = 1; i <= n; i++) {\n            int temp = i;\n            int clapCount = 0;\n\n            while (temp > 0) {\n                int digit = temp % 10;\n                if (digit == 3 || digit == 6 || digit == 9) {\n                    clapCount++;\n                }\n                temp /= 10;\n            }\n\n            if (clapCount > 0) {\n                totalClaps += clapCount;\n                for (int c = 0; c < clapCount; c++) {\n                    sb.append(\"짝\");\n                }\n            } else {\n                sb.append(i);\n            }\n\n            if (i < n) sb.append(\" \");\n        }\n\n        System.out.println(\"=== 369 게임 진행 결과 ===\");\n        System.out.println(sb.toString());\n        System.out.println(\"---------------------------------\");\n        System.out.printf(\"1부터 %d까지 총 박수 횟수: %d회\\n\", n, totalClaps);\n    }\n}",
-        "sample_input": "35",
-        "sample_output": "=== 369 게임 진행 결과 ===\n1 2 짝 4 5 짝 7 8 짝 10 11 12 짝 14 15 짝 17 18 짝 20 21 22 짝 24 25 짝 27 28 짝 짝 짝 짝 짝짝 짝 짝\n---------------------------------\n1부터 35까지 총 박수 횟수: 16회",
-        "expected": "=== 369 게임 진행 결과 ===\n1 2 짝 4 5 짝 7 8 짝 10 11 12 짝 14 15 짝 17 18 짝 20 21 22 짝 24 25 짝 27 28 짝 짝 짝 짝 짝짝 짝 짝\n---------------------------------\n1부터 35까지 총 박수 횟수: 16회",
-        "hint": "1. 1부터 N까지 for문으로 순회합니다.\n2. 각 숫자 `temp`를 `while (temp > 0)`로 자리수(`temp % 10`)마다 3, 6, 9인지 확인하고 `temp /= 10`으로 줄여나갑니다.\n3. `clapCount`가 1 이상이면 박수 개수만큼 '짝'을 이어붙이고 `totalClaps`에 합산합니다."
+        "title": "API Rate Limiter: 다중 테넌트 토큰 버킷 트래픽 제어기 (MultiTenantRateLimiter)",
+        "desc": "클라우드 SaaS 멀티테넌시(Multi-Tenancy) 환경에서 각 기업(테넌트)별로 API 트래픽을 제어하는 Rate Limiter를 다중 반복문과 continue 문으로 구현하세요.\n시스템으로 유입되는 총 테넌트 수 T가 주어집니다.\n외부 반복문으로 T개의 테넌트를 순회하고, 각 테넌트의 M개 요청 비용을 1차원 정수 배열(int[] costs)에 저장한 뒤 내부 반복문과 continue 문으로 순회 판별합니다.\n\n[각 테넌트 입력 정보]\n- 첫 줄: 테넌트 식별자(문자열 ID), 버킷 최대 용량 C(정수), 초기 잔여 토큰 K(정수), 요청 개수 M(정수)\n- 둘째 줄: M개의 요청이 필요로 하는 토큰 수 M개가 공백으로 구분되어 주어집니다.\n\n[처리 및 continue 규칙]\n- 비용이 0인 헬스체크(PING/Heartbeat) 요청 (cost == 0):\n  시스템 상태 확인용 무상 면제 트래픽입니다. 바이패스 카운트(bypass)를 1 증가시키고,\n  continue 문을 사용하여 아래의 잔여 토큰 검사 및 차감/차단 로직을 실행하지 않고 즉시 다음 요청으로 건너뜁니다!\n- 일반 API 요청 (cost > 0):\n  * 필요 토큰 <= 현재 잔여 토큰: 토큰 차감(tokens -= cost) 후 '허용(allowed)' 건수 +1\n  * 필요 토큰 > 현재 잔여 토큰: 토큰 차감 없이 '차단(dropped)' 건수 +1\n- 테넌트의 M개 요청 처리가 끝나면 테넌트별 처리 요약을 출력합니다:\n  \"[{ID}] 처리 결과: 허용 {허용건수}건 / 차단 {차단건수}건 / 바이패스 {바이패스건수}건 (잔여 토큰: {잔여토큰})\"\n- 모든 테넌트(T개) 처리가 완료되면 하단에 전체 시스템 통계를 출력합니다:\n  \"=== 전체 시스템 트래픽 집계 ===\"\n  \"총 테넌트: {T}개사 | 총 허용: {총허용}건 | 총 차단: {총차단}건 | 총 바이패스: {총바이패스}건\"\n\n초심자를 위한 상세 힌트와 CS 지식은 아래 설명창을 참고하세요.",
+        "cs_knowledge": "💡 **멀티테넌시 Rate Limiting과 무상 헬스체크 트래픽 바이패스(continue)**\n- **멀티테넌시(Multi-Tenancy)**: 단일 인스턴스에서 여러 고객사(테넌트)를 격리 서빙하는 클라우드 기본 구조입니다.\n- **HealthCheck Bypass**: AWS ALB, Nginx 등 프로덕션 게이트웨이는 인프라 모니터링용 Ping/Heartbeat 트래픽(비용 0)에 대해 고객사의 API Rate Limit 쿼터를 소진시키지 않고 즉시 무상 통과(Bypass)시킵니다.\n- **continue 문의 역할**: 특정 조건(비용 0)을 만족할 때, 루프 내의 복잡한 잔여 토큰 차감/차단 분기 로직을 실행하지 않고 루프의 다음 회차로 즉시 제어를 넘기는 대표적인 제어 흐름 최적화 기법입니다.\n- **배열 버퍼링**: 테넌트의 대량 트래픽 요청을 `int[] costs` 배열에 메모리 버퍼링하여 일괄 순회 분석합니다.",
+        "logic_guide": "🛠️ **다중 반복문 및 continue 로직 설계 가이드**\n1. 총 테넌트 수 T를 `int tCount = sc.nextInt();`로 입력받습니다.\n2. 시스템 전체 집계를 위해 `int totalAllowed = 0; int totalDropped = 0; int totalBypass = 0;`를 선언합니다.\n3. **외부 for문 (`for (int t = 1; t <= tCount; t++)`)**:\n   - `String tenantId = sc.next(); int capacity = sc.nextInt(); int tokens = sc.nextInt(); int m = sc.nextInt();`\n   - 테넌트별 카운터 `int allowed = 0; int dropped = 0; int bypass = 0;` 선언.\n4. **내부 for문 (`for (int i = 1; i <= m; i++)`)**:\n   - `int[] costs = new int[m]; 에 요청들을 먼저 입력받고, for (int i = 0; i < costs.length; i++) 로 배열을 순회합니다.`\n   - `if (cost == 0) { bypass++; continue; }` -> continue로 아래 토큰 차감/차단 로직을 실행하지 않고 다음 요청으로 건너뜁니다.\n   - `if (tokens >= cost) { tokens -= cost; allowed++; } else { dropped++; }`\n5. 내부 for문 종료 후 테넌트별 결과를 출력하고, 전체 누적 변수에 더합니다.\n6. 외부 for문 종료 후 전체 시스템 트래픽 집계를 출력합니다.",
+        "template": "import java.util.Scanner;\n\npublic class Solution {\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        // 여기에 다중 반복문(이중 for문)을 작성하세요\n        \n    }\n}\n",
+        "solution": "import java.util.Scanner;\n\npublic class Solution {\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        int tCount = sc.nextInt();\n\n        int totalAllowed = 0;\n        int totalDropped = 0;\n        int totalBypass = 0;\n\n        for (int t = 1; t <= tCount; t++) {\n            String tenantId = sc.next();\n            int capacity = sc.nextInt();\n            int tokens = sc.nextInt();\n            int m = sc.nextInt();\n\n            // 테넌트의 요청 비용 목록을 1차원 정수 배열에 저장\n            int[] costs = new int[m];\n            for (int i = 0; i < m; i++) {\n                costs[i] = sc.nextInt();\n            }\n\n            int allowed = 0;\n            int dropped = 0;\n            int bypass = 0;\n\n            // 비용 배열을 순회하며 요청 판별\n            for (int i = 0; i < costs.length; i++) {\n                int cost = costs[i];\n\n                // [continue 활용] 헬스체크(비용 0) 요청은 무상 통과\n                if (cost == 0) {\n                    bypass++;\n                    continue;\n                }\n\n                if (tokens >= cost) {\n                    tokens -= cost;\n                    allowed++;\n                } else {\n                    dropped++;\n                }\n            }\n\n            System.out.printf(\"[%s] 처리 결과: 허용 %d건 / 차단 %d건 / 바이패스 %d건 (잔여 토큰: %d)\\n\", tenantId, allowed, dropped, bypass, tokens);\n            totalAllowed += allowed;\n            totalDropped += dropped;\n            totalBypass += bypass;\n        }\n\n        System.out.println(\"=== 전체 시스템 트래픽 집계 ===\");\n        System.out.printf(\"총 테넌트: %d개사 | 총 허용: %d건 | 총 차단: %d건 | 총 바이패스: %d건\\n\", tCount, totalAllowed, totalDropped, totalBypass);\n    }\n}\n",
+        "hint": "1. 외부 루프는 테넌트를 순회하고, 내부 루프는 각 요청을 순회합니다.\n2. cost == 0 일 때 bypass++ 후 continue; 를 실행하면 아래의 토큰 검사 코드를 거치지 않고 바로 다음 요청으로 넘어갑니다.",
+        "samples": [
+            {
+                "input": "2\nTenantA 100 30 4\n10 0 15 10\nTenantB 50 15 4\n0 5 10 5",
+                "output": "[TenantA] 처리 결과: 허용 2건 / 차단 1건 / 바이패스 1건 (잔여 토큰: 5)\n[TenantB] 처리 결과: 허용 2건 / 차단 1건 / 바이패스 1건 (잔여 토큰: 0)\n=== 전체 시스템 트래픽 집계 ===\n총 테넌트: 2개사 | 총 허용: 4건 | 총 차단: 2건 | 총 바이패스: 2건"
+            },
+            {
+                "input": "1\nShopCorp 50 50 5\n0 0 10 20 0",
+                "output": "[ShopCorp] 처리 결과: 허용 2건 / 차단 0건 / 바이패스 3건 (잔여 토큰: 20)\n=== 전체 시스템 트래픽 집계 ===\n총 테넌트: 1개사 | 총 허용: 2건 | 총 차단: 0건 | 총 바이패스: 3건"
+            },
+            {
+                "input": "3\nAlpha 20 10 3\n0 15 5\nBeta 30 0 2\n0 1\nGamma 100 50 3\n20 0 20",
+                "output": "[Alpha] 처리 결과: 허용 1건 / 차단 1건 / 바이패스 1건 (잔여 토큰: 5)\n[Beta] 처리 결과: 허용 0건 / 차단 1건 / 바이패스 1건 (잔여 토큰: 0)\n[Gamma] 처리 결과: 허용 2건 / 차단 0건 / 바이패스 1건 (잔여 토큰: 10)\n=== 전체 시스템 트래픽 집계 ===\n총 테넌트: 3개사 | 총 허용: 3건 | 총 차단: 2건 | 총 바이패스: 3건"
+            }
+        ],
+        "sample_input": "2\nTenantA 100 30 4\n10 0 15 10\nTenantB 50 15 4\n0 5 10 5",
+        "sample_output": "[TenantA] 처리 결과: 허용 2건 / 차단 1건 / 바이패스 1건 (잔여 토큰: 5)\n[TenantB] 처리 결과: 허용 2건 / 차단 1건 / 바이패스 1건 (잔여 토큰: 0)\n=== 전체 시스템 트래픽 집계 ===\n총 테넌트: 2개사 | 총 허용: 4건 | 총 차단: 2건 | 총 바이패스: 2건",
+        "expected": "[TenantA] 처리 결과: 허용 2건 / 차단 1건 / 바이패스 1건 (잔여 토큰: 5)\n[TenantB] 처리 결과: 허용 2건 / 차단 1건 / 바이패스 1건 (잔여 토큰: 0)\n=== 전체 시스템 트래픽 집계 ===\n총 테넌트: 2개사 | 총 허용: 4건 | 총 차단: 2건 | 총 바이패스: 2건",
+        "testcases": [
+            {
+                "input": "2\nTenantA 100 30 4\n10 0 15 10\nTenantB 50 15 4\n0 5 10 5",
+                "expected": "[TenantA] 처리 결과: 허용 2건 / 차단 1건 / 바이패스 1건 (잔여 토큰: 5)\n[TenantB] 처리 결과: 허용 2건 / 차단 1건 / 바이패스 1건 (잔여 토큰: 0)\n=== 전체 시스템 트래픽 집계 ===\n총 테넌트: 2개사 | 총 허용: 4건 | 총 차단: 2건 | 총 바이패스: 2건",
+                "is_hidden": false
+            },
+            {
+                "input": "1\nShopCorp 50 50 5\n0 0 10 20 0",
+                "expected": "[ShopCorp] 처리 결과: 허용 2건 / 차단 0건 / 바이패스 3건 (잔여 토큰: 20)\n=== 전체 시스템 트래픽 집계 ===\n총 테넌트: 1개사 | 총 허용: 2건 | 총 차단: 0건 | 총 바이패스: 3건",
+                "is_hidden": false
+            },
+            {
+                "input": "3\nAlpha 20 10 3\n0 15 5\nBeta 30 0 2\n0 1\nGamma 100 50 3\n20 0 20",
+                "expected": "[Alpha] 처리 결과: 허용 1건 / 차단 1건 / 바이패스 1건 (잔여 토큰: 5)\n[Beta] 처리 결과: 허용 0건 / 차단 1건 / 바이패스 1건 (잔여 토큰: 0)\n[Gamma] 처리 결과: 허용 2건 / 차단 0건 / 바이패스 1건 (잔여 토큰: 10)\n=== 전체 시스템 트래픽 집계 ===\n총 테넌트: 3개사 | 총 허용: 3건 | 총 차단: 2건 | 총 바이패스: 3건",
+                "is_hidden": false
+            },
+            {
+                "input": "2\nAcme 50 25 4\n10 0 10 5\nBetaLab 100 40 3\n0 20 15",
+                "expected": "[Acme] 처리 결과: 허용 3건 / 차단 0건 / 바이패스 1건 (잔여 토큰: 0)\n[BetaLab] 처리 결과: 허용 2건 / 차단 0건 / 바이패스 1건 (잔여 토큰: 5)\n=== 전체 시스템 트래픽 집계 ===\n총 테넌트: 2개사 | 총 허용: 5건 | 총 차단: 0건 | 총 바이패스: 2건",
+                "is_hidden": true
+            },
+            {
+                "input": "1\nSingleUser 10 5 2\n0 5",
+                "expected": "[SingleUser] 처리 결과: 허용 1건 / 차단 0건 / 바이패스 1건 (잔여 토큰: 0)\n=== 전체 시스템 트래픽 집계 ===\n총 테넌트: 1개사 | 총 허용: 1건 | 총 차단: 0건 | 총 바이패스: 1건",
+                "is_hidden": true
+            },
+            {
+                "input": "1\nHeavyBot 100 10 3\n50 0 50",
+                "expected": "[HeavyBot] 처리 결과: 허용 0건 / 차단 2건 / 바이패스 1건 (잔여 토큰: 10)\n=== 전체 시스템 트래픽 집계 ===\n총 테넌트: 1개사 | 총 허용: 0건 | 총 차단: 2건 | 총 바이패스: 1건",
+                "is_hidden": true
+            },
+            {
+                "input": "3\nUser1 100 100 3\n0 50 50\nUser2 100 100 3\n101 0 1\nUser3 100 100 2\n10 20",
+                "expected": "[User1] 처리 결과: 허용 2건 / 차단 0건 / 바이패스 1건 (잔여 토큰: 0)\n[User2] 처리 결과: 허용 1건 / 차단 1건 / 바이패스 1건 (잔여 토큰: 99)\n[User3] 처리 결과: 허용 2건 / 차단 0건 / 바이패스 0건 (잔여 토큰: 70)\n=== 전체 시스템 트래픽 집계 ===\n총 테넌트: 3개사 | 총 허용: 5건 | 총 차단: 1건 | 총 바이패스: 2건",
+                "is_hidden": true
+            },
+            {
+                "input": "2\nServiceX 20 20 5\n0 0 0 0 0\nServiceY 20 0 2\n0 1",
+                "expected": "[ServiceX] 처리 결과: 허용 0건 / 차단 0건 / 바이패스 5건 (잔여 토큰: 20)\n[ServiceY] 처리 결과: 허용 0건 / 차단 1건 / 바이패스 1건 (잔여 토큰: 0)\n=== 전체 시스템 트래픽 집계 ===\n총 테넌트: 2개사 | 총 허용: 0건 | 총 차단: 1건 | 총 바이패스: 6건",
+                "is_hidden": true
+            },
+            {
+                "input": "4\nT1 10 10 2\n0 10\nT2 10 10 1\n11\nT3 10 0 1\n0\nT4 10 10 3\n6 0 5",
+                "expected": "[T1] 처리 결과: 허용 1건 / 차단 0건 / 바이패스 1건 (잔여 토큰: 0)\n[T2] 처리 결과: 허용 0건 / 차단 1건 / 바이패스 0건 (잔여 토큰: 10)\n[T3] 처리 결과: 허용 0건 / 차단 0건 / 바이패스 1건 (잔여 토큰: 0)\n[T4] 처리 결과: 허용 1건 / 차단 1건 / 바이패스 1건 (잔여 토큰: 4)\n=== 전체 시스템 트래픽 집계 ===\n총 테넌트: 4개사 | 총 허용: 2건 | 총 차단: 2건 | 총 바이패스: 3건",
+                "is_hidden": true
+            },
+            {
+                "input": "2\nFinTech 1000 500 4\n200 0 150 100\nLogistics 500 100 4\n50 0 60 10",
+                "expected": "[FinTech] 처리 결과: 허용 3건 / 차단 0건 / 바이패스 1건 (잔여 토큰: 50)\n[Logistics] 처리 결과: 허용 2건 / 차단 1건 / 바이패스 1건 (잔여 토큰: 40)\n=== 전체 시스템 트래픽 집계 ===\n총 테넌트: 2개사 | 총 허용: 5건 | 총 차단: 1건 | 총 바이패스: 2건",
+                "is_hidden": true
+            }
+        ]
     },
     {
-        "id": "day02_도전",
+        "id": "day02_상2",
+        "day": 2,
+        "subject": "Java",
+        "difficulty": "상",
+        "title": "데이터베이스 WAL(Write-Ahead Logging) 멀티 세션 트랜잭션 관리자 (MultiSessionWalManager)",
+        "desc": "데이터베이스 관리 시스템(DBMS)의 트랜잭션 원자성(ACID Atomicity)을 보장하는 WAL(Write-Ahead Logging) 엔진을 다중 반복문으로 구현하세요.\n초기 계좌 잔액은 0원입니다.\n배치로 유입되는 총 트랜잭션 세션 수 T가 주어집니다.\n외부 반복문으로 T개의 트랜잭션 세션을 순회하고, 각 세션의 K개 명령어와 금액을 1차원 배열(String[] ops, int[] vals)로 구성된 Write-Ahead Log 버퍼에 적재한 뒤 순차 검증합니다.\n\n[각 트랜잭션 입력 정보]\n- 첫 줄: 트랜잭션 식별자(문자열 ID, 예: TX_1), 실행할 명령어 개수 K (1 이상)\n- 다음 K개 줄: 명령어(ADD 또는 SUB)와 금액 X가 주어집니다.\n  * ADD X : 임시 변경분(pending)에 X원 가산 (pending += X)\n  * SUB X : 임시 변경분(pending)에 X원 차감 (단, 현재 계좌 잔액 + pending 에서 X를 차감했을 때 잔액이 마이너스가 되면 '잔액 부족 충돌' 오류 플래그를 설정합니다)\n\n[커밋 및 롤백 규칙]\n- K개 작업을 수행하는 동안 잔액 부족 충돌이 한 번도 발생하지 않으면:\n  임시 변경분을 실제 계좌 잔액(balance)에 영구 반영(커밋)하고, 커밋 건수 +1\n  출력: \"[{ID}] COMMIT 완료 (변동: {+/-변동액}원 | 현재 잔액: {잔액}원)\"\n- 작업 중 단 한 번이라도 잔액 부족 충돌이 발생하면:\n  트랜잭션 전체를 무효화(롤백)하여 실제 계좌 잔액을 변경하지 않고, 롤백 건수 +1\n  출력: \"[{ID}] ROLLBACK 취소 (잔액 부족 충돌 | 현재 잔액: {잔액}원)\"\n- 모든 트랜잭션 세션(T개)이 종료되면 최종 보고서를 출력합니다:\n  \"=== WAL 트랜잭션 최종 정산 ===\"\n  \"최종 계좌 잔액: {잔액}원 | 커밋: {커밋수}건 | 롤백: {롤백수}건\"\n\n초심자를 위한 상세 힌트와 CS 지식은 아래 설명창을 참고하세요.",
+        "cs_knowledge": "💡 **트랜잭션 원자성(Atomicity)과 WAL(Write-Ahead Logging)**\n- **원자성(All or Nothing)**: 트랜잭션 내의 모든 작업이 100% 성공하거나, 중간에 하나라도 오류(ABORT)가 발생하면 이전 상태로 완벽히 되돌려야(Rollback) 합니다.\n- **WAL(Write-Ahead Logging)**: 실제 데이터베이스 디스크에 영구 쓰기 전에, 메모리 내 임시 버퍼(Pending Log)에 먼저 기록해두고 최종 커밋 시점에 일괄 반영하는 기법입니다.\n- **다중 반복문과 break 제어**: 외부 루프는 여러 트랜잭션 세션을 독립적으로 관리하고, 내부 루프는 각 트랜잭션의 세부 명령어를 수행하다가 충돌(ABORT) 발생 시 `break`로 즉시 내부 루프를 탈출하여 롤백하는 구조입니다.\n- **배열 기반 WAL 로그 버퍼**: 트랜잭션의 연산 시퀀스를 배열에 순서대로 기록(Log)해 두고 검증하는 DBMS 메모리 버퍼 기법입니다.",
+        "logic_guide": "🛠️ **배열 기반 WAL 로그 버퍼 로직 설계 가이드**\n1. 총 세션 수 T를 `int tCount = sc.nextInt();`로 입력받습니다.\n2. 계좌 잔액 `int balance = 0; int commitCount = 0; int rollbackCount = 0;`를 선언합니다.\n3. **외부 for문 (`for (int t = 1; t <= tCount; t++)`)**:\n   - `String txId = sc.next(); int k = sc.nextInt();`\n   - K개의 명령어와 금액을 저장할 1차원 배열 버퍼 생성:\n     `String[] ops = new String[k]; int[] vals = new int[k];`\n   - for문으로 `ops[i] = sc.next(); vals[i] = sc.nextInt();` 를 배열에 먼저 적재합니다.\n   - `int pending = 0; boolean hasError = false;`\n4. **내부 for문 (`for (int i = 0; i < k; i++)`)**:\n   - `if (ops[i].equals(\"ADD\"))`: `pending += vals[i];`\n   - `else if (ops[i].equals(\"SUB\"))`:\n     * 잔액 부족 검사: `if (balance + pending < vals[i]) hasError = true; else pending -= vals[i];`\n5. 내부 for문 종료 후:\n   - `if (!hasError)`: `balance += pending; commitCount++; System.out.printf(\"[%s] COMMIT 완료 (변동: %+d원 | 현재 잔액: %d원)\\n\", txId, pending, balance);`\n   - `else`: `rollbackCount++; System.out.printf(\"[%s] ROLLBACK 취소 (잔액 부족 충돌 | 현재 잔액: %d원)\\n\", txId, balance);`\n6. 모든 세션 완료 후 최종 정산 라인을 출력합니다.",
+        "template": "import java.util.Scanner;\n\npublic class Solution {\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        // 여기에 다중 반복문과 break 제어 로직을 작성하세요\n        \n    }\n}\n",
+        "solution": "import java.util.Scanner;\n\npublic class Solution {\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        int tCount = sc.nextInt();\n\n        int balance = 0;\n        int commitCount = 0;\n        int rollbackCount = 0;\n\n        for (int t = 1; t <= tCount; t++) {\n            String txId = sc.next();\n            int k = sc.nextInt();\n\n            // 트랜잭션의 작업 명령어와 금액을 1차원 배열(Write-Ahead Log 버퍼)에 적재\n            String[] ops = new String[k];\n            int[] vals = new int[k];\n            for (int i = 0; i < k; i++) {\n                ops[i] = sc.next();\n                vals[i] = sc.nextInt();\n            }\n\n            int pending = 0;\n            boolean hasError = false;\n\n            // 로그 배열을 순차적으로 해석 및 검증\n            for (int i = 0; i < k; i++) {\n                if (ops[i].equals(\"ADD\")) {\n                    pending += vals[i];\n                } else if (ops[i].equals(\"SUB\")) {\n                    if (balance + pending < vals[i]) {\n                        hasError = true;\n                    } else {\n                        pending -= vals[i];\n                    }\n                }\n            }\n\n            if (!hasError) {\n                balance += pending;\n                commitCount++;\n                System.out.printf(\"[%s] COMMIT 완료 (변동: %+d원 | 현재 잔액: %d원)\\n\", txId, pending, balance);\n            } else {\n                rollbackCount++;\n                System.out.printf(\"[%s] ROLLBACK 취소 (잔액 부족 충돌 | 현재 잔액: %d원)\\n\", txId, balance);\n            }\n        }\n\n        System.out.println(\"=== WAL 트랜잭션 최종 정산 ===\");\n        System.out.printf(\"최종 계좌 잔액: %d원 | 커밋: %d건 | 롤백: %d건\\n\", balance, commitCount, rollbackCount);\n    }\n}\n",
+        "hint": "1. String[] ops = new String[k]; int[] vals = new int[k]; 로 트랜잭션 명령어를 배열 버퍼에 먼저 저장합니다.\n2. 배열을 순회하며 잔액(balance + pending)이 출금액(vals[i])보다 작은지 검사하여 충돌을 감지합니다.",
+        "samples": [
+            {
+                "input": "2\nTX_1 3\nADD 5000\nADD 3000\nSUB 2000\nTX_2 2\nSUB 10000\nADD 5000",
+                "output": "[TX_1] COMMIT 완료 (변동: +6000원 | 현재 잔액: 6000원)\n[TX_2] ROLLBACK 취소 (잔액 부족 충돌 | 현재 잔액: 6000원)\n=== WAL 트랜잭션 최종 정산 ===\n최종 계좌 잔액: 6000원 | 커밋: 1건 | 롤백: 1건"
+            },
+            {
+                "input": "1\nTX_INIT 2\nADD 10000\nSUB 3000",
+                "output": "[TX_INIT] COMMIT 완료 (변동: +7000원 | 현재 잔액: 7000원)\n=== WAL 트랜잭션 최종 정산 ===\n최종 계좌 잔액: 7000원 | 커밋: 1건 | 롤백: 0건"
+            },
+            {
+                "input": "3\nTX_A 1\nADD 1000\nTX_B 1\nSUB 2000\nTX_C 2\nADD 500\nSUB 1200",
+                "output": "[TX_A] COMMIT 완료 (변동: +1000원 | 현재 잔액: 1000원)\n[TX_B] ROLLBACK 취소 (잔액 부족 충돌 | 현재 잔액: 1000원)\n[TX_C] COMMIT 완료 (변동: -700원 | 현재 잔액: 300원)\n=== WAL 트랜잭션 최종 정산 ===\n최종 계좌 잔액: 300원 | 커밋: 2건 | 롤백: 1건"
+            }
+        ],
+        "sample_input": "2\nTX_1 3\nADD 5000\nADD 3000\nSUB 2000\nTX_2 2\nSUB 10000\nADD 5000",
+        "sample_output": "[TX_1] COMMIT 완료 (변동: +6000원 | 현재 잔액: 6000원)\n[TX_2] ROLLBACK 취소 (잔액 부족 충돌 | 현재 잔액: 6000원)\n=== WAL 트랜잭션 최종 정산 ===\n최종 계좌 잔액: 6000원 | 커밋: 1건 | 롤백: 1건",
+        "expected": "[TX_1] COMMIT 완료 (변동: +6000원 | 현재 잔액: 6000원)\n[TX_2] ROLLBACK 취소 (잔액 부족 충돌 | 현재 잔액: 6000원)\n=== WAL 트랜잭션 최종 정산 ===\n최종 계좌 잔액: 6000원 | 커밋: 1건 | 롤백: 1건",
+        "testcases": [
+            {
+                "input": "2\nTX_1 3\nADD 5000\nADD 3000\nSUB 2000\nTX_2 2\nSUB 10000\nADD 5000",
+                "expected": "[TX_1] COMMIT 완료 (변동: +6000원 | 현재 잔액: 6000원)\n[TX_2] ROLLBACK 취소 (잔액 부족 충돌 | 현재 잔액: 6000원)\n=== WAL 트랜잭션 최종 정산 ===\n최종 계좌 잔액: 6000원 | 커밋: 1건 | 롤백: 1건",
+                "is_hidden": false
+            },
+            {
+                "input": "1\nTX_INIT 2\nADD 10000\nSUB 3000",
+                "expected": "[TX_INIT] COMMIT 완료 (변동: +7000원 | 현재 잔액: 7000원)\n=== WAL 트랜잭션 최종 정산 ===\n최종 계좌 잔액: 7000원 | 커밋: 1건 | 롤백: 0건",
+                "is_hidden": false
+            },
+            {
+                "input": "3\nTX_A 1\nADD 1000\nTX_B 1\nSUB 2000\nTX_C 2\nADD 500\nSUB 1200",
+                "expected": "[TX_A] COMMIT 완료 (변동: +1000원 | 현재 잔액: 1000원)\n[TX_B] ROLLBACK 취소 (잔액 부족 충돌 | 현재 잔액: 1000원)\n[TX_C] COMMIT 완료 (변동: -700원 | 현재 잔액: 300원)\n=== WAL 트랜잭션 최종 정산 ===\n최종 계좌 잔액: 300원 | 커밋: 2건 | 롤백: 1건",
+                "is_hidden": false
+            },
+            {
+                "input": "2\nTX_101 2\nSUB 100\nADD 500\nTX_102 2\nADD 2000\nSUB 500",
+                "expected": "[TX_101] ROLLBACK 취소 (잔액 부족 충돌 | 현재 잔액: 0원)\n[TX_102] COMMIT 완료 (변동: +1500원 | 현재 잔액: 1500원)\n=== WAL 트랜잭션 최종 정산 ===\n최종 계좌 잔액: 1500원 | 커밋: 1건 | 롤백: 1건",
+                "is_hidden": true
+            },
+            {
+                "input": "1\nTX_BIG 4\nADD 50000\nSUB 20000\nADD 10000\nSUB 40000",
+                "expected": "[TX_BIG] COMMIT 완료 (변동: +0원 | 현재 잔액: 0원)\n=== WAL 트랜잭션 최종 정산 ===\n최종 계좌 잔액: 0원 | 커밋: 1건 | 롤백: 0건",
+                "is_hidden": true
+            },
+            {
+                "input": "1\nTX_FAIL 3\nADD 1000\nSUB 500\nSUB 800",
+                "expected": "[TX_FAIL] ROLLBACK 취소 (잔액 부족 충돌 | 현재 잔액: 0원)\n=== WAL 트랜잭션 최종 정산 ===\n최종 계좌 잔액: 0원 | 커밋: 0건 | 롤백: 1건",
+                "is_hidden": true
+            },
+            {
+                "input": "3\nTX_1 1\nADD 100\nTX_2 1\nADD 200\nTX_3 1\nADD 300",
+                "expected": "[TX_1] COMMIT 완료 (변동: +100원 | 현재 잔액: 100원)\n[TX_2] COMMIT 완료 (변동: +200원 | 현재 잔액: 300원)\n[TX_3] COMMIT 완료 (변동: +300원 | 현재 잔액: 600원)\n=== WAL 트랜잭션 최종 정산 ===\n최종 계좌 잔액: 600원 | 커밋: 3건 | 롤백: 0건",
+                "is_hidden": true
+            },
+            {
+                "input": "3\nTX_A 1\nSUB 10\nTX_B 1\nSUB 20\nTX_C 1\nSUB 30",
+                "expected": "[TX_A] ROLLBACK 취소 (잔액 부족 충돌 | 현재 잔액: 0원)\n[TX_B] ROLLBACK 취소 (잔액 부족 충돌 | 현재 잔액: 0원)\n[TX_C] ROLLBACK 취소 (잔액 부족 충돌 | 현재 잔액: 0원)\n=== WAL 트랜잭션 최종 정산 ===\n최종 계좌 잔액: 0원 | 커밋: 0건 | 롤백: 3건",
+                "is_hidden": true
+            },
+            {
+                "input": "2\nTX_FIRST 2\nADD 3000\nSUB 1000\nTX_SECOND 3\nSUB 500\nSUB 1000\nSUB 1000",
+                "expected": "[TX_FIRST] COMMIT 완료 (변동: +2000원 | 현재 잔액: 2000원)\n[TX_SECOND] ROLLBACK 취소 (잔액 부족 충돌 | 현재 잔액: 2000원)\n=== WAL 트랜잭션 최종 정산 ===\n최종 계좌 잔액: 2000원 | 커밋: 1건 | 롤백: 1건",
+                "is_hidden": true
+            },
+            {
+                "input": "2\nTX_SAVE 2\nADD 10000\nSUB 2000\nTX_USE 2\nSUB 7000\nSUB 1000",
+                "expected": "[TX_SAVE] COMMIT 완료 (변동: +8000원 | 현재 잔액: 8000원)\n[TX_USE] COMMIT 완료 (변동: -8000원 | 현재 잔액: 0원)\n=== WAL 트랜잭션 최종 정산 ===\n최종 계좌 잔액: 0원 | 커밋: 2건 | 롤백: 0건",
+                "is_hidden": true
+            }
+        ]
+    },
+    {
+        "id": "day02_도전1",
         "day": 2,
         "subject": "Java",
         "difficulty": "도전",
-        "title": "소수(Prime Number) 판별 및 N번째 소수 탐색기 (PrimeFinder)",
-        "desc": "양의 정수 N(1~1,000)을 입력받아, 2부터 시작하여 N번째 소수(Prime Number)를 찾아내고, 해당 소수까지 도달하는 동안 거쳐간 소수의 총 개수와 합성수(1 제외 소수가 아닌 수)의 총 개수를 집계하세요.\n(효율적인 탐색을 위해 2부터 제곱근 sqrt(num)까지만 나누어 떨어지는지 검사하는 최적화 알고리즘을 적용하세요.)\n\n[입력]\n찾고자 하는 소수의 순번 N\n(예: 10)",
-        "template": "import java.util.Scanner;\n\npublic class Solution {\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        // 여기에 코드를 작성하세요\n        \n    }\n}",
-        "solution": "import java.util.Scanner;\n\npublic class Solution {\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        int targetN = sc.nextInt();\n\n        int primeCount = 0;\n        int compositeCount = 0;\n        int currentNum = 2;\n        int lastPrime = 2;\n\n        while (primeCount < targetN) {\n            boolean isPrime = true;\n            for (int i = 2; i * i <= currentNum; i++) {\n                if (currentNum % i == 0) {\n                    isPrime = false;\n                    break;\n                }\n            }\n\n            if (isPrime) {\n                primeCount++;\n                lastPrime = currentNum;\n            } else {\n                compositeCount++;\n            }\n\n            if (primeCount == targetN) break;\n            currentNum++;\n        }\n\n        System.out.println(\"=== N번째 소수 탐색 시뮬레이터 ===\");\n        System.out.printf(\"탐색 목표: %d번째 소수\\n\", targetN);\n        System.out.println(\"---------------------------------\");\n        System.out.printf(\"%d번째 소수: %d\\n\", targetN, lastPrime);\n        System.out.printf(\"2부터 %d까지 소수 개수: %d개\\n\", lastPrime, primeCount);\n        System.out.printf(\"2부터 %d까지 합성수 개수: %d개\\n\", lastPrime, compositeCount);\n    }\n}",
-        "sample_input": "10",
-        "sample_output": "=== N번째 소수 탐색 시뮬레이터 ===\n탐색 목표: 10번째 소수\n---------------------------------\n10번째 소수: 29\n2부터 29까지 소수 개수: 10개\n2부터 29까지 합성수 개수: 18개",
-        "expected": "=== N번째 소수 탐색 시뮬레이터 ===\n탐색 목표: 10번째 소수\n---------------------------------\n10번째 소수: 29\n2부터 29까지 소수 개수: 10개\n2부터 29까지 합성수 개수: 18개",
-        "hint": "1. 어떤 수 k가 소수인지 검사할 때, 2부터 k-1까지 모두 나눌 필요 없이 `i * i <= k` 까지만 나누어 떨어지는지 검사하면 시간 복잡도를 O(√N)으로 획기적으로 줄일 수 있습니다.\n2. while문으로 `primeCount < targetN`인 동안 순차 탐색하며 카운터를 갱신합니다."
+        "title": "네트워크 다중 패킷 프레임 2차원 체크섬 검증기 (MultiPacketChecksumValidator)",
+        "desc": "컴퓨터 네트워크 데이터 링크 계층에서 전송되는 프레임(Frame) 시퀀스의 다중 패킷 무결성을 2차원 체크섬(Checksum) 알고리즘으로 검증하세요.\n수신된 총 패킷 프레임 개수 P가 주어집니다.\n외부 반복문으로 P개의 패킷을 순회하고, 각 패킷의 B개 1바이트 데이터를 1차원 배열(int[] bytes)에 저장한 뒤 배열을 순회하며 합산 및 2차원 체크섬을 계산합니다.\n\n[각 패킷 입력 정보]\n- 첫 줄: 패킷 식별자(문자열 ID, 예: PKT-01), 데이터 바이트 개수 B\n- 둘째 줄: B개의 바이트 데이터(0~255)와 해당 패킷의 수신 체크섬 C(0~255)가 공백으로 주어집니다.\n\n[체크섬 계산 및 판정 규칙]\n- 해당 패킷의 B개 바이트 총합 sum을 구합니다.\n- 계산된 체크섬 = (256 - (sum % 256)) % 256\n- 계산된 체크섬 == 수신된 체크섬 C:\n  정상 패킷 통과(PASS) 카운트 +1\n  출력: \"[{ID}] PASS (합계: {sum} | 체크섬: {calcChecksum})\"\n- 계산된 체크섬 != 수신된 체크섬 C:\n  손상 패킷 감지(FAIL) 카운트 +1\n  출력: \"[{ID}] FAIL: 손상 감지 (계산: {calcChecksum} != 수신: {recvChecksum})\"\n- 모든 패킷(P개) 검증이 끝나면 종합 무결성 분석 보고서를 출력합니다:\n  \"=== 네트워크 프레임 무결성 분석 보고서 ===\"\n  \"총 패킷: {P}개 | 정상: {정상수}개 | 손상: {손상수}개\"\n\n초심자를 위한 상세 힌트와 CS 지식은 아래 설명창을 참고하세요.",
+        "cs_knowledge": "💡 **네트워크 프레임 시퀀스와 2차원 패킷 무결성 검증**\n- **데이터 링크 프레임**: 물리 계층을 통해 전송되는 비트 스트림을 패킷/프레임 단위로 묶어 에러를 검출합니다.\n- **체크섬(Checksum)**: 바이트 데이터들의 누적 합(Sum)을 기반으로 역수를 취해 데이터 전송 중 비트 플립(Bit Flip)이나 누락이 일어났는지 1바이트로 검증하는 표준 오류 검출 기법입니다.\n- **다중 반복문(2차원 구조)**: 외부 루프는 전송 스트림 상의 연속된 패킷 프레임들을 하나씩 수신하고, 내부 루프는 각 패킷 프레임 내부의 바이트 청크를 순회하며 누적 체크섬을 연산하는 네트워크 I/O의 대표적 패턴입니다.\n- **바이트 배열(Byte Array)**: 네트워크 소켓을 통해 수신된 패킷 바이트 청크를 배열에 보관하여 체크섬 무결성을 계산합니다.",
+        "logic_guide": "🛠️ **바이트 배열 및 2차원 체크섬 로직 설계 가이드**\n1. 총 패킷 수 P를 `int pCount = sc.nextInt();`로 입력받습니다.\n2. `int passCount = 0; int failCount = 0;`를 선언합니다.\n3. **외부 for문 (`for (int p = 1; p <= pCount; p++)`)**:\n   - `String pktId = sc.next(); int bCount = sc.nextInt();`\n   - 패킷 페이로드를 담을 1차원 바이트 배열 생성:\n     `int[] bytes = new int[bCount];`\n   - for문으로 `bytes[b] = sc.nextInt();` 를 배열에 채웁니다.\n   - `int recvChecksum = sc.nextInt();`\n4. **내부 for문 (`for (int b = 0; b < bytes.length; b++)`)**:\n   - 바이트 배열을 순회하며 `sum += bytes[b];` 누적 합산합니다.\n5. 내부 for문 종료 후 체크섬 계산 및 검증:\n   - `int calcChecksum = (256 - (sum % 256)) % 256;`\n   - `if (calcChecksum == recvChecksum)`: `passCount++; System.out.printf(\"[%s] PASS (합계: %d | 체크섬: %d)\\n\", pktId, sum, calcChecksum);`\n   - `else`: `failCount++; System.out.printf(\"[%s] FAIL: 손상 감지 (계산: %d != 수신: %d)\\n\", pktId, calcChecksum, recvChecksum);`\n6. 외부 for문 종료 후 최종 분석 보고서를 출력합니다.",
+        "template": "import java.util.Scanner;\n\npublic class Solution {\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        // 여기에 다중 반복문 기반 패킷 체크섬 검증 로직을 작성하세요\n        \n    }\n}\n",
+        "solution": "import java.util.Scanner;\n\npublic class Solution {\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        int pCount = sc.nextInt();\n\n        int passCount = 0;\n        int failCount = 0;\n\n        for (int p = 1; p <= pCount; p++) {\n            String pktId = sc.next();\n            int bCount = sc.nextInt();\n\n            // 패킷 페이로드 바이트들을 1차원 배열에 저장\n            int[] bytes = new int[bCount];\n            for (int b = 0; b < bCount; b++) {\n                bytes[b] = sc.nextInt();\n            }\n\n            int recvChecksum = sc.nextInt();\n\n            // 바이트 배열을 순회하며 합산\n            int sum = 0;\n            for (int b = 0; b < bytes.length; b++) {\n                sum += bytes[b];\n            }\n\n            int calcChecksum = (256 - (sum % 256)) % 256;\n\n            if (calcChecksum == recvChecksum) {\n                passCount++;\n                System.out.printf(\"[%s] PASS (합계: %d | 체크섬: %d)\\n\", pktId, sum, calcChecksum);\n            } else {\n                failCount++;\n                System.out.printf(\"[%s] FAIL: 손상 감지 (계산: %d != 수신: %d)\\n\", pktId, calcChecksum, recvChecksum);\n            }\n        }\n\n        System.out.println(\"=== 네트워크 프레임 무결성 분석 보고서 ===\");\n        System.out.printf(\"총 패킷: %d개 | 정상: %d개 | 손상: %d개\\n\", pCount, passCount, failCount);\n    }\n}\n",
+        "sample_input": "2\nPKT-01 3\n10 20 30 196\nPKT-02 4\n50 50 50 50 56",
+        "sample_output": "[PKT-01] PASS (합계: 60 | 체크섬: 196)\n[PKT-02] PASS (합계: 200 | 체크섬: 56)\n=== 네트워크 프레임 무결성 분석 보고서 ===\n총 패킷: 2개 | 정상: 2개 | 손상: 0개",
+        "expected": "[PKT-01] PASS (합계: 60 | 체크섬: 196)\n[PKT-02] PASS (합계: 200 | 체크섬: 56)\n=== 네트워크 프레임 무결성 분석 보고서 ===\n총 패킷: 2개 | 정상: 2개 | 손상: 0개",
+        "samples": [
+            {
+                "input": "2\nPKT-01 3\n10 20 30 196\nPKT-02 4\n50 50 50 50 56",
+                "output": "[PKT-01] PASS (합계: 60 | 체크섬: 196)\n[PKT-02] PASS (합계: 200 | 체크섬: 56)\n=== 네트워크 프레임 무결성 분석 보고서 ===\n총 패킷: 2개 | 정상: 2개 | 손상: 0개"
+            },
+            {
+                "input": "1\nPKT-ERR 2\n100 200 99",
+                "output": "[PKT-ERR] FAIL: 손상 감지 (계산: 212 != 수신: 99)\n=== 네트워크 프레임 무결성 분석 보고서 ===\n총 패킷: 1개 | 정상: 0개 | 손상: 1개"
+            },
+            {
+                "input": "3\nFRAME_A 2\n0 0 0\nFRAME_B 2\n128 128 0\nFRAME_C 1\n255 1",
+                "output": "[FRAME_A] PASS (합계: 0 | 체크섬: 0)\n[FRAME_B] PASS (합계: 256 | 체크섬: 0)\n[FRAME_C] PASS (합계: 255 | 체크섬: 1)\n=== 네트워크 프레임 무결성 분석 보고서 ===\n총 패킷: 3개 | 정상: 3개 | 손상: 0개"
+            }
+        ],
+        "testcases": [
+            {
+                "input": "2\nPKT-01 3\n10 20 30 196\nPKT-02 4\n50 50 50 50 56",
+                "expected": "[PKT-01] PASS (합계: 60 | 체크섬: 196)\n[PKT-02] PASS (합계: 200 | 체크섬: 56)\n=== 네트워크 프레임 무결성 분석 보고서 ===\n총 패킷: 2개 | 정상: 2개 | 손상: 0개",
+                "is_hidden": false
+            },
+            {
+                "input": "1\nPKT-ERR 2\n100 200 99",
+                "expected": "[PKT-ERR] FAIL: 손상 감지 (계산: 212 != 수신: 99)\n=== 네트워크 프레임 무결성 분석 보고서 ===\n총 패킷: 1개 | 정상: 0개 | 손상: 1개",
+                "is_hidden": false
+            },
+            {
+                "input": "3\nFRAME_A 2\n0 0 0\nFRAME_B 2\n128 128 0\nFRAME_C 1\n255 1",
+                "expected": "[FRAME_A] PASS (합계: 0 | 체크섬: 0)\n[FRAME_B] PASS (합계: 256 | 체크섬: 0)\n[FRAME_C] PASS (합계: 255 | 체크섬: 1)\n=== 네트워크 프레임 무결성 분석 보고서 ===\n총 패킷: 3개 | 정상: 3개 | 손상: 0개",
+                "is_hidden": false
+            },
+            {
+                "input": "2\nP1 3\n1 2 3 250\nP2 3\n1 2 3 251",
+                "expected": "[P1] PASS (합계: 6 | 체크섬: 250)\n[P2] FAIL: 손상 감지 (계산: 250 != 수신: 251)\n=== 네트워크 프레임 무결성 분석 보고서 ===\n총 패킷: 2개 | 정상: 1개 | 손상: 1개",
+                "is_hidden": true
+            },
+            {
+                "input": "1\nSOLO 4\n25 25 25 25 156",
+                "expected": "[SOLO] PASS (합계: 100 | 체크섬: 156)\n=== 네트워크 프레임 무결성 분석 보고서 ===\n총 패킷: 1개 | 정상: 1개 | 손상: 0개",
+                "is_hidden": true
+            },
+            {
+                "input": "1\nBAD_PKT 3\n10 10 10 0",
+                "expected": "[BAD_PKT] FAIL: 손상 감지 (계산: 226 != 수신: 0)\n=== 네트워크 프레임 무결성 분석 보고서 ===\n총 패킷: 1개 | 정상: 0개 | 손상: 1개",
+                "is_hidden": true
+            },
+            {
+                "input": "3\nSTREAM_1 2\n50 50 156\nSTREAM_2 2\n100 100 56\nSTREAM_3 2\n200 200 68",
+                "expected": "[STREAM_1] PASS (합계: 100 | 체크섬: 156)\n[STREAM_2] PASS (합계: 200 | 체크섬: 56)\n[STREAM_3] FAIL: 손상 감지 (계산: 112 != 수신: 68)\n=== 네트워크 프레임 무결성 분석 보고서 ===\n총 패킷: 3개 | 정상: 2개 | 손상: 1개",
+                "is_hidden": true
+            },
+            {
+                "input": "2\nZERO_SUM 1\n0 0\nMAX_SUM 2\n255 255 2",
+                "expected": "[ZERO_SUM] PASS (합계: 0 | 체크섬: 0)\n[MAX_SUM] PASS (합계: 510 | 체크섬: 2)\n=== 네트워크 프레임 무결성 분석 보고서 ===\n총 패킷: 2개 | 정상: 2개 | 손상: 0개",
+                "is_hidden": true
+            },
+            {
+                "input": "4\nF1 1\n10 246\nF2 1\n20 236\nF3 1\n30 225\nF4 1\n40 216",
+                "expected": "[F1] PASS (합계: 10 | 체크섬: 246)\n[F2] PASS (합계: 20 | 체크섬: 236)\n[F3] FAIL: 손상 감지 (계산: 226 != 수신: 225)\n[F4] PASS (합계: 40 | 체크섬: 216)\n=== 네트워크 프레임 무결성 분석 보고서 ===\n총 패킷: 4개 | 정상: 3개 | 손상: 1개",
+                "is_hidden": true
+            },
+            {
+                "input": "2\nHEADER 5\n1 2 3 4 5 241\nPAYLOAD 3\n100 100 100 12",
+                "expected": "[HEADER] PASS (합계: 15 | 체크섬: 241)\n[PAYLOAD] FAIL: 손상 감지 (계산: 212 != 수신: 12)\n=== 네트워크 프레임 무결성 분석 보고서 ===\n총 패킷: 2개 | 정상: 1개 | 손상: 1개",
+                "is_hidden": true
+            }
+        ],
+        "hint": "1. int[] bytes = new int[bCount]; 로 각 패킷의 바이트 데이터를 배열에 저장합니다.\n2. for (int b = 0; b < bytes.length; b++) 로 바이트 배열을 순회하여 sum을 구합니다.\n3. 체크섬 공식은 (256 - (sum % 256)) % 256 입니다."
+    },
+    {
+        "id": "day02_도전2",
+        "day": 2,
+        "subject": "Java",
+        "difficulty": "도전",
+        "title": "가상 CPU 마이크로코드 명령어 & 레지스터 비트 덤프 엔진 (MicrocodeCpuEmulator)",
+        "desc": "컴퓨터 CPU 제어 유닛(Control Unit)의 마이크로코드(Microcode) 반복 연산, 하드웨어 인터럽트(break), 8비트 레지스터 2진수 비트 덤프를 다중 반복문으로 구현하세요.\nCPU 레지스터 파일을 크기 2의 배열(int[] registers = new int[2]; registers[0]: R0, registers[1]: R1)로 관리합니다. (모든 레지스터 값은 8비트 부호 없는 정수 0~255 범위를 유지합니다)\n총 N개의 마이크로 명령어가 주어집니다.\n외부 반복문으로 N개의 명령어를 순회하고, 'REPEAT' 또는 'DUMP' 명령어 실행 시 내부 반복문으로 세부 연산 및 비트 출력을 수행합니다.\n\n[명령어 사양]\n- SET {reg} {val} : 해당 레지스터(R0 또는 R1)에 val 값 대입\n- REPEAT {count} {op} {operand} : op 연산(ADD 또는 SUB)을 내부 반복문으로 count번 연속 반복 실행!\n  * ADD 시 오버플로우 트랩(break):\n    연산 결과(r0 + operand)가 8비트 상한(255)을 초과하면 r0 = 255로 포화시키고,\n    \"[인터럽트] R0 오버플로우 트랩! ({현재회차}회차에서 조기 중단)\" 출력 후 break로 내부 REPEAT 루프 즉시 탈출!\n  * SUB 시 언더플로우 트랩(break):\n    연산 결과(r0 - operand)가 8비트 하한(0) 미만이 되면 r0 = 0으로 포화시키고,\n    \"[인터럽트] R0 언더플로우 트랩! ({현재회차}회차에서 조기 중단)\" 출력 후 break로 내부 REPEAT 루프 즉시 탈출!\n- DUMP {reg} : 해당 레지스터의 8비트 2진수 비트 패턴을 내부 반복문(7번 비트부터 0번 비트까지)으로 순회하여 출력!\n  출력 형식: \"[{reg} 비트 덤프: 10진수 {val} | 2진수 {8자리이진수}]\"\n\n[출력 규칙]\n- 인터럽트 트랩 및 DUMP 명령어 결과는 실행될 때마다 즉시 출력합니다.\n- 모든 명령어(N개) 처리가 완료되면 최종 CPU 상태 보고서를 출력합니다:\n  \"=== 8비트 가상 CPU 실행 보고서 ===\"\n  \"총 사이클: {N}사이클 | 최종 R0: {R0} | 최종 R1: {R1}\"\n\n초심자를 위한 상세 힌트와 CS 지식은 아래 설명창을 참고하세요.",
+        "cs_knowledge": "💡 **CPU 하드웨어 인터럽트(Trap)와 루프 조기 탈출(break)**\n- **ALU 오버플로우 트랩**: CPU의 산술논리연산장치(ALU)는 8비트 레지스터 용량을 초과하는 연산이 감지되면 하드웨어 예외 신호(Exception Trap)를 발생시켜 진행 중이던 명령어 마이크로 사이클을 즉시 중단합니다.\n- **포화 연산(Saturation Arithmetic)**: 오버플로우 시 255, 언더플로우 시 0으로 고정하여 시스템 크래시를 방지하는 임베디드/DSP 하드웨어 기법입니다.\n- **break 문의 역할**: 내부 반복문(`for (int c = 1; c <= count; c++)`) 내에서 트랩 조건을 감지했을 때 `break`를 호출하면 내부 루프만 즉시 탈출하여 상위 프로그램 흐름으로 복귀합니다.\n- **레지스터 파일 배열(Register File Array)**: 실제 CPU 하드웨어는 R0~Rn 레지스터들을 레지스터 파일이라는 주소 지정 가능한 배열 구조로 설계합니다.",
+        "logic_guide": "🛠️ **레지스터 파일 배열, break, 비트 덤프 배열 로직 가이드**\n1. 총 명령어 개수 N을 `int nCmds = sc.nextInt();`로 입력받습니다.\n2. 크기 2의 레지스터 파일 배열 `int[] registers = new int[2]; int cycles = 0;` (0번 인덱스: R0, 1번 인덱스: R1)\n3. **외부 for문 (`for (int i = 0; i < nCmds; i++)`)**:\n   - `String op = sc.next(); cycles++;`\n   - `if (op.equals(\"SET\"))`:\n     * `String reg = sc.next(); int val = sc.nextInt(); int idx = reg.equals(\"R0\") ? 0 : 1; registers[idx] = val;`\n   - `else if (op.equals(\"REPEAT\"))`:\n     * `int count = sc.nextInt(); String targetOp = sc.next(); int operand = sc.nextInt();`\n     * **내부 for문 (`for (int c = 1; c <= count; c++)`)**:\n       - `if (targetOp.equals(\"ADD\"))`:\n         * `if (registers[0] + operand > 255) { registers[0] = 255; System.out.printf(\"[인터럽트] R0 오버플로우 트랩! (%d회차에서 조기 중단)\\n\", c); break; }`\n         * `else { registers[0] += operand; }`\n       - `else if (targetOp.equals(\"SUB\"))`:\n         * `if (registers[0] - operand < 0) { registers[0] = 0; System.out.printf(\"[인터럽트] R0 언더플로우 트랩! (%d회차에서 조기 중단)\\n\", c); break; }`\n         * `else { registers[0] -= operand; }`\n   - `else if (op.equals(\"DUMP\"))`:\n     * `String reg = sc.next(); int idx = reg.equals(\"R0\") ? 0 : 1; int val = registers[idx];`\n     * 8비트 2진수를 담을 크기 8의 배열 생성: `int[] bits = new int[8];`\n     * **내부 for문 (`for (int bit = 7; bit >= 0; bit--)`)**: `bits[7 - bit] = (val >> bit) & 1;`\n     * `System.out.printf(\"[%s 비트 덤프: 10진수 %d | 2진수 \", reg, val);`\n     * **배열 출력 for문 (`for (int b = 0; b < bits.length; b++)`)**: `System.out.print(bits[b]);`\n     * `System.out.println(\"]\");`\n4. 외부 for문 종료 후 최종 CPU 실행 보고서를 출력합니다.",
+        "template": "import java.util.Scanner;\n\npublic class Solution {\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        // 여기에 다중 반복문 기반 가상 CPU 에뮬레이터 로직을 작성하세요\n        \n    }\n}\n",
+        "solution": "import java.util.Scanner;\n\npublic class Solution {\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        int nCmds = sc.nextInt();\n\n        // CPU 레지스터를 크기 2의 배열로 관리 (registers[0]: R0, registers[1]: R1)\n        int[] registers = new int[2];\n        int cycles = 0;\n\n        for (int i = 0; i < nCmds; i++) {\n            String op = sc.next();\n            cycles++;\n\n            if (op.equals(\"SET\")) {\n                String reg = sc.next();\n                int val = sc.nextInt();\n                int idx = reg.equals(\"R0\") ? 0 : 1;\n                registers[idx] = val;\n            } else if (op.equals(\"REPEAT\")) {\n                int count = sc.nextInt();\n                String targetOp = sc.next();\n                int operand = sc.nextInt();\n\n                for (int c = 1; c <= count; c++) {\n                    if (targetOp.equals(\"ADD\")) {\n                        // [break 활용] 8비트 상한(255) 초과 시 오버플로우 트랩 발생 및 내부 루프 즉시 탈출\n                        if (registers[0] + operand > 255) {\n                            registers[0] = 255;\n                            System.out.printf(\"[인터럽트] R0 오버플로우 트랩! (%d회차에서 조기 중단)\\n\", c);\n                            break;\n                        }\n                        registers[0] += operand;\n                    } else if (targetOp.equals(\"SUB\")) {\n                        // [break 활용] 8비트 하한(0) 미만 시 언더플로우 트랩 발생 및 내부 루프 즉시 탈출\n                        if (registers[0] - operand < 0) {\n                            registers[0] = 0;\n                            System.out.printf(\"[인터럽트] R0 언더플로우 트랩! (%d회차에서 조기 중단)\\n\", c);\n                            break;\n                        }\n                        registers[0] -= operand;\n                    }\n                }\n            } else if (op.equals(\"DUMP\")) {\n                String reg = sc.next();\n                int idx = reg.equals(\"R0\") ? 0 : 1;\n                int val = registers[idx];\n\n                // 8비트 2진수를 크기 8의 배열에 담아 순회 출력\n                int[] bits = new int[8];\n                for (int bit = 7; bit >= 0; bit--) {\n                    bits[7 - bit] = (val >> bit) & 1;\n                }\n\n                System.out.printf(\"[%s 비트 덤프: 10진수 %d | 2진수 \", reg, val);\n                for (int b = 0; b < bits.length; b++) {\n                    System.out.print(bits[b]);\n                }\n                System.out.println(\"]\");\n            }\n        }\n\n        System.out.println(\"=== 8비트 가상 CPU 실행 보고서 ===\");\n        System.out.printf(\"총 사이클: %d사이클 | 최종 R0: %d | 최종 R1: %d\\n\", cycles, registers[0], registers[1]);\n    }\n}\n",
+        "sample_input": "4\nSET R0 10\nREPEAT 3 ADD 5\nDUMP R0\nSET R1 7",
+        "sample_output": "[R0 비트 덤프: 10진수 25 | 2진수 00011001]\n=== 8비트 가상 CPU 실행 보고서 ===\n총 사이클: 4사이클 | 최종 R0: 25 | 최종 R1: 7",
+        "expected": "[R0 비트 덤프: 10진수 25 | 2진수 00011001]\n=== 8비트 가상 CPU 실행 보고서 ===\n총 사이클: 4사이클 | 최종 R0: 25 | 최종 R1: 7",
+        "samples": [
+            {
+                "input": "4\nSET R0 10\nREPEAT 3 ADD 5\nDUMP R0\nSET R1 7",
+                "output": "[R0 비트 덤프: 10진수 25 | 2진수 00011001]\n=== 8비트 가상 CPU 실행 보고서 ===\n총 사이클: 4사이클 | 최종 R0: 25 | 최종 R1: 7"
+            },
+            {
+                "input": "3\nSET R0 200\nREPEAT 3 ADD 30\nDUMP R0",
+                "output": "[인터럽트] R0 오버플로우 트랩! (2회차에서 조기 중단)\n[R0 비트 덤프: 10진수 255 | 2진수 11111111]\n=== 8비트 가상 CPU 실행 보고서 ===\n총 사이클: 3사이클 | 최종 R0: 255 | 최종 R1: 0"
+            },
+            {
+                "input": "4\nSET R0 20\nREPEAT 5 SUB 10\nDUMP R0\nSET R1 100",
+                "output": "[인터럽트] R0 언더플로우 트랩! (3회차에서 조기 중단)\n[R0 비트 덤프: 10진수 0 | 2진수 00000000]\n=== 8비트 가상 CPU 실행 보고서 ===\n총 사이클: 4사이클 | 최종 R0: 0 | 최종 R1: 100"
+            }
+        ],
+        "testcases": [
+            {
+                "input": "4\nSET R0 10\nREPEAT 3 ADD 5\nDUMP R0\nSET R1 7",
+                "expected": "[R0 비트 덤프: 10진수 25 | 2진수 00011001]\n=== 8비트 가상 CPU 실행 보고서 ===\n총 사이클: 4사이클 | 최종 R0: 25 | 최종 R1: 7",
+                "is_hidden": false
+            },
+            {
+                "input": "3\nSET R0 200\nREPEAT 3 ADD 30\nDUMP R0",
+                "expected": "[인터럽트] R0 오버플로우 트랩! (2회차에서 조기 중단)\n[R0 비트 덤프: 10진수 255 | 2진수 11111111]\n=== 8비트 가상 CPU 실행 보고서 ===\n총 사이클: 3사이클 | 최종 R0: 255 | 최종 R1: 0",
+                "is_hidden": false
+            },
+            {
+                "input": "4\nSET R0 20\nREPEAT 5 SUB 10\nDUMP R0\nSET R1 100",
+                "expected": "[인터럽트] R0 언더플로우 트랩! (3회차에서 조기 중단)\n[R0 비트 덤프: 10진수 0 | 2진수 00000000]\n=== 8비트 가상 CPU 실행 보고서 ===\n총 사이클: 4사이클 | 최종 R0: 0 | 최종 R1: 100",
+                "is_hidden": false
+            },
+            {
+                "input": "3\nSET R0 250\nREPEAT 2 ADD 10\nDUMP R0",
+                "expected": "[인터럽트] R0 오버플로우 트랩! (1회차에서 조기 중단)\n[R0 비트 덤프: 10진수 255 | 2진수 11111111]\n=== 8비트 가상 CPU 실행 보고서 ===\n총 사이클: 3사이클 | 최종 R0: 255 | 최종 R1: 0",
+                "is_hidden": true
+            },
+            {
+                "input": "2\nSET R0 15\nDUMP R0",
+                "expected": "[R0 비트 덤프: 10진수 15 | 2진수 00001111]\n=== 8비트 가상 CPU 실행 보고서 ===\n총 사이클: 2사이클 | 최종 R0: 15 | 최종 R1: 0",
+                "is_hidden": true
+            },
+            {
+                "input": "4\nSET R0 10\nREPEAT 4 SUB 5\nDUMP R0\nSET R1 100",
+                "expected": "[인터럽트] R0 언더플로우 트랩! (3회차에서 조기 중단)\n[R0 비트 덤프: 10진수 0 | 2진수 00000000]\n=== 8비트 가상 CPU 실행 보고서 ===\n총 사이클: 4사이클 | 최종 R0: 0 | 최종 R1: 100",
+                "is_hidden": true
+            },
+            {
+                "input": "2\nSET R1 128\nDUMP R1",
+                "expected": "[R1 비트 덤프: 10진수 128 | 2진수 10000000]\n=== 8비트 가상 CPU 실행 보고서 ===\n총 사이클: 2사이클 | 최종 R0: 0 | 최종 R1: 128",
+                "is_hidden": true
+            },
+            {
+                "input": "5\nSET R0 0\nREPEAT 5 ADD 51\nDUMP R0\nREPEAT 1 SUB 1\nDUMP R0",
+                "expected": "[R0 비트 덤프: 10진수 255 | 2진수 11111111]\n[R0 비트 덤프: 10진수 254 | 2진수 11111110]\n=== 8비트 가상 CPU 실행 보고서 ===\n총 사이클: 5사이클 | 최종 R0: 254 | 최종 R1: 0",
+                "is_hidden": true
+            },
+            {
+                "input": "3\nSET R0 85\nDUMP R0\nSET R1 170",
+                "expected": "[R0 비트 덤프: 10진수 85 | 2진수 01010101]\n=== 8비트 가상 CPU 실행 보고서 ===\n총 사이클: 3사이클 | 최종 R0: 85 | 최종 R1: 170",
+                "is_hidden": true
+            },
+            {
+                "input": "4\nSET R0 64\nREPEAT 2 ADD 32\nDUMP R0\nDUMP R1",
+                "expected": "[R0 비트 덤프: 10진수 128 | 2진수 10000000]\n[R1 비트 덤프: 10진수 0 | 2진수 00000000]\n=== 8비트 가상 CPU 실행 보고서 ===\n총 사이클: 4사이클 | 최종 R0: 128 | 최종 R1: 0",
+                "is_hidden": true
+            }
+        ],
+        "hint": "1. int[] registers = new int[2]; 로 R0(0번), R1(1번) 레지스터를 배열로 관리합니다.\n2. REPEAT 루프 내부에서 8비트 한계 초과 시 break; 로 내부 루프를 탈출합니다.\n3. DUMP에서는 크기 8의 int[] bits 배열에 2진수를 담은 뒤 순회하여 출력합니다."
     },
     {
         "id": "day03_하1",
@@ -1604,7 +2336,3 @@ const PROBLEMS = [
         "hint": "1. `new Proxy(target, { set(target, prop, val) { ... } })`는 객체의 속성 할당 연산을 가로챕니다(Intercept).\n2. 속성 변경 감지 즉시 `listeners.forEach(fn => fn(target))`를 실행함으로써 현대 프론트엔드 프레임워크의 반응성(Reactivity)을 구현할 수 있습니다."
     }
 ];
-
-if (typeof module !== 'undefined' && module.exports) {
-    module.exports = PROBLEMS;
-}

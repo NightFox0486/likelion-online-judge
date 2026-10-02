@@ -34,8 +34,26 @@
                 <button onclick="showView('status')" id="navStatusBtn" class="px-3 py-1.5 rounded-lg text-xs font-medium text-slate-300 hover:bg-slate-800 transition flex items-center gap-1.5">
                     <i class="fa-solid fa-chart-line"></i> 제출 현황
                 </button>
+                <!-- 제출현황 우측: 버그 제보 버튼 (학생/공통) -->
+                <button onclick="openSystemBugModal()" id="navSystemBugBtn" class="px-3 py-1.5 rounded-lg text-xs font-medium text-slate-300 hover:bg-slate-800 transition flex items-center gap-1.5" title="웹사이트 이용 중 오류나 개선사항을 제보합니다">
+                    <i class="fa-solid fa-bug text-rose-400"></i> 버그 제보
+                </button>
                 <button onclick="showView('stats')" id="navStatsBtn" class="hidden px-3 py-1.5 rounded-lg text-xs font-bold text-amber-400 bg-amber-500/10 hover:bg-amber-500/20 border border-amber-500/30 transition flex items-center gap-1.5">
                     <i class="fa-solid fa-chart-pie"></i> 통계 대시보드
+                </button>
+                <button onclick="showView('bugs')" id="navBugsBtn" class="hidden px-3 py-1.5 rounded-lg text-xs font-bold text-rose-400 bg-rose-500/10 hover:bg-rose-500/20 border border-rose-500/30 transition flex items-center gap-1.5">
+                    <i class="fa-solid fa-triangle-exclamation"></i> 문제 오류 검토
+                    <span id="navBugsBadge" class="hidden ml-1 px-1.5 py-0.2 rounded-full text-[10px] bg-rose-500 text-white font-bold">0</span>
+                </button>
+                <!-- 문제 오류 검토 우측: 관리자 전용 버그 수정 요청 탭 -->
+                <button onclick="showView('bugFixes')" id="navBugFixBtn" class="hidden px-3 py-1.5 rounded-lg text-xs font-bold text-amber-400 bg-amber-500/10 hover:bg-amber-500/20 border border-amber-500/30 transition flex items-center gap-1.5" title="학생들이 제보한 시스템 버그 및 수정 요청 목록을 검토합니다">
+                    <i class="fa-solid fa-screwdriver-wrench text-amber-400"></i> 버그 수정 요청
+                    <span id="navBugFixBadge" class="hidden ml-1 px-1.5 py-0.2 rounded-full text-[10px] bg-amber-500 text-slate-950 font-bold">0</span>
+                </button>
+                <!-- 관리자 전용 교육생 모니터링 탭 -->
+                <button onclick="showView('monitoring')" id="navMonitoringBtn" class="hidden px-3 py-1.5 rounded-lg text-xs font-bold text-emerald-400 bg-emerald-500/10 hover:bg-emerald-500/20 border border-emerald-500/30 transition flex items-center gap-1.5" title="교육생들의 실시간 온라인 접속 여부, 타이핑 및 자리비움을 모니터링합니다">
+                    <i class="fa-solid fa-desktop text-emerald-400"></i> 교육생 모니터링
+                    <span id="navMonitoringBadge" class="hidden ml-1 px-1.5 py-0.2 rounded-full text-[10px] bg-emerald-500 text-slate-950 font-bold">0</span>
                 </button>
             </nav>
         </div>
@@ -120,6 +138,24 @@
             </div>
         </div>
 
+        <!-- 관리자 전용: 오류 검토 모드 알림 배너 -->
+        <div id="bugReviewBanner" class="hidden bg-rose-500/15 border-b border-rose-500/30 px-6 py-2 flex items-center justify-between text-xs text-rose-300">
+            <div class="flex items-center gap-2">
+                <span class="bg-rose-500 text-white text-[10px] font-bold px-2 py-0.5 rounded flex items-center gap-1 shadow-xs">
+                    <i class="fa-solid fa-triangle-exclamation"></i> 오류 검토 모드
+                </span>
+                <span id="bugReviewBannerText" class="font-medium text-slate-200"></span>
+            </div>
+            <div class="flex items-center gap-2">
+                <button onclick="resolveCurrentBugReview()" id="btnResolveBugInReview" class="bg-emerald-600 hover:bg-emerald-500 text-white font-bold px-2.5 py-1 rounded text-[11px] transition flex items-center gap-1 shadow-sm">
+                    <i class="fa-solid fa-check"></i> 검토 완료 처리
+                </button>
+                <button onclick="exitBugReviewMode()" class="bg-slate-800 hover:bg-slate-700 text-slate-300 px-2.5 py-1 rounded text-[11px] transition border border-slate-700">
+                    <i class="fa-solid fa-list-check mr-1"></i> 목록으로 돌아가기
+                </button>
+            </div>
+        </div>
+
         <!-- 2단 분할: 좌측 문제 본문 vs 우측 코드 에디터 -->
         <div class="flex-1 flex flex-col md:flex-row overflow-hidden">
             <!-- 좌측 문제 본문 -->
@@ -129,6 +165,9 @@
                         <span id="pSubjectBadge" class="px-2 py-0.5 rounded text-[11px] font-semibold bg-blue-500/20 text-blue-400 border border-blue-500/30">Java</span>
                         <span id="pDayBadge" class="px-2 py-0.5 rounded text-[11px] font-semibold bg-slate-800 text-slate-300 border border-slate-700">1일차</span>
                         <span id="pDiffBadge" class="px-2 py-0.5 rounded text-[11px] font-semibold bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">하</span>
+                        <span id="pClosedBadge" class="hidden px-2 py-0.5 rounded text-[11px] font-bold bg-rose-500/20 text-rose-400 border border-rose-500/30 flex items-center gap-1">
+                            <i class="fa-solid fa-lock text-[10px]"></i> 제출 마감됨 (테스트만 가능)
+                        </span>
                     </div>
                 </div>
 
@@ -155,6 +194,14 @@
                             </div>
                             <p id="pHintText" class="text-slate-300 leading-relaxed pl-3 border-l-2 border-amber-500/50 whitespace-pre-line select-text"></p>
                         </div>
+
+                        <!-- 단계별 로직 구성 순서 & 초보자 가이드 -->
+                        <div id="logicGuideCard" class="hidden pt-2 border-t border-slate-800/80 space-y-1.5">
+                            <div class="font-bold text-emerald-400 flex items-center gap-1 text-[11px]">
+                                <i class="fa-solid fa-route"></i> 단계별 로직 구성 순서 & 초보자 가이드
+                            </div>
+                            <p id="pLogicGuideText" class="text-slate-300 leading-relaxed pl-3 border-l-2 border-emerald-500/50 whitespace-pre-line select-text"></p>
+                        </div>
                         
                         <!-- 실습 주제별 핵심 문법 설명 팁 (일차별 자동 변경) -->
                         <div id="topicSyntaxGuideCard" class="pt-2 border-t border-slate-800/80 space-y-2">
@@ -171,6 +218,25 @@
                     </div>
                 </div>
 
+                <!-- 실무 및 CS 핵심 지식 아코디언 카드 -->
+                <div id="csKnowledgeCard" class="hidden border border-indigo-500/30 rounded-xl overflow-hidden bg-indigo-500/5">
+                    <button onclick="toggleCsKnowledge()" class="w-full px-4 py-2.5 text-left text-xs font-semibold text-indigo-400 hover:text-indigo-300 flex items-center justify-between transition">
+                        <span class="flex items-center gap-1.5">
+                            <i class="fa-solid fa-microchip text-indigo-400"></i> CS 핵심 지식 & 실무 연계
+                        </span>
+                        <div class="flex items-center gap-1.5">
+                            <span class="text-[10px] text-indigo-400/80 bg-indigo-500/10 px-1.5 py-0.5 rounded border border-indigo-500/20 font-normal">실무 CS</span>
+                            <i id="csChevron" class="fa-solid fa-chevron-down text-indigo-400 text-xs transition-transform"></i>
+                        </div>
+                    </button>
+                    <div id="csContainer" class="hidden p-4 bg-slate-950/80 border-t border-slate-800 text-xs space-y-2">
+                        <div class="font-bold text-indigo-400 flex items-center gap-1 text-[11px]">
+                            <i class="fa-solid fa-graduation-cap"></i> 이 문제에 녹아있는 컴퓨터 사이언스(CS) 개념
+                        </div>
+                        <p id="pCsText" class="text-slate-300 leading-relaxed pl-3 border-l-2 border-indigo-500/50 whitespace-pre-line select-text"></p>
+                    </div>
+                </div>
+
                 <!-- 백준 스타일: 동적 예제 입출력 (1, 2, 3) -->
                 <div id="samplesContainer" class="space-y-3 pt-1">
                     <!-- renderSamples(prob)에 의해 동적으로 렌더링됩니다 -->
@@ -180,7 +246,7 @@
                 <div id="adminSolutionCard" class="hidden border border-amber-500/30 rounded-xl overflow-hidden bg-amber-500/5">
                     <button onclick="toggleSolution()" class="w-full px-4 py-2.5 text-left text-xs font-semibold text-amber-400 hover:text-amber-300 flex items-center justify-between transition">
                         <span class="flex items-center gap-1.5">
-                            <i class="fa-solid fa-key"></i> 정답 예시 코드 (관리자 전용)
+                            <i class="fa-solid fa-key"></i> 정답 예시 코드
                         </span>
                         <i id="solChevron" class="fa-solid fa-chevron-down text-amber-500 text-xs transition-transform"></i>
                     </button>
@@ -197,23 +263,42 @@
                     <div class="flex items-center space-x-1.5">
                         <button onclick="resetCode()" class="text-xs bg-slate-800 hover:bg-slate-700 text-slate-300 px-2.5 py-1 rounded transition">초기화</button>
                         <button onclick="copyCode()" class="text-xs bg-slate-800 hover:bg-slate-700 text-slate-300 px-2.5 py-1 rounded transition">복사</button>
-                        <button onclick="submitCode()" id="submitBtn" class="text-xs bg-amber-500 hover:bg-amber-400 font-bold text-slate-950 px-3.5 py-1 rounded transition flex items-center gap-1">
-                            <i class="fa-solid fa-play"></i> 제출 및 채점
+                        <button onclick="openBugReportModal()" id="btnBugReport" class="text-xs bg-rose-500/10 hover:bg-rose-500/20 text-rose-400 font-bold px-3 py-1 rounded border border-rose-500/30 transition flex items-center gap-1 shadow-sm" title="문제 오류를 관리자에게 제보합니다">
+                            <i class="fa-solid fa-triangle-exclamation"></i> 문제 오류 제보
+                        </button>
+                        <button onclick="runCode(true)" id="testRunBtn" class="text-xs bg-slate-800 hover:bg-slate-700 text-emerald-400 font-bold px-3 py-1 rounded border border-emerald-500/40 transition flex items-center gap-1 shadow-sm">
+                            <i class="fa-solid fa-vial"></i> 테스트 실행
+                        </button>
+                        <button onclick="runCode(false)" id="submitBtn" class="text-xs bg-amber-500 hover:bg-amber-400 font-bold text-slate-950 px-3.5 py-1 rounded transition flex items-center gap-1 shadow-sm">
+                            <i class="fa-solid fa-cloud-arrow-up"></i> 제출하기
                         </button>
                     </div>
                 </div>
 
-                <div class="flex-1 relative">
-                    <textarea id="codeEditor" spellcheck="false" class="w-full h-full p-4 bg-slate-950 text-slate-100 code-font text-xs leading-relaxed resize-none focus:outline-none placeholder-slate-700 select-text"></textarea>
+                <div class="flex-1 relative flex overflow-hidden bg-slate-950">
+                    <!-- 줄 번호 (Line Numbers Gutter) -->
+                    <div id="lineNumbers" class="w-12 py-4 pl-2 pr-2 bg-slate-950 text-right text-slate-500 font-mono text-xs leading-relaxed select-none overflow-hidden shrink-0 border-r border-slate-800/80 whitespace-pre">1</div>
+                    <!-- 코드 에디터 -->
+                    <textarea id="codeEditor" wrap="off" spellcheck="false" class="flex-1 h-full py-4 px-3 bg-slate-950 text-slate-100 font-mono text-xs leading-relaxed resize-none focus:outline-none placeholder-slate-700 select-text overflow-auto whitespace-pre"></textarea>
+                </div>
+
+                <!-- 콘솔 리사이저 드래그 핸들 바 (사용자가 위로 원하는 만큼 늘릴 수 있음) -->
+                <div id="consoleResizer" class="h-2 bg-slate-800/90 hover:bg-amber-500 active:bg-amber-500 cursor-row-resize flex items-center justify-center transition-colors select-none group border-t border-b border-slate-700/60" title="위아래로 드래그하여 실행 결과 창 크기를 조절하세요 (더블클릭: 확대/기본 크기 토글)">
+                    <div class="w-10 h-1 bg-slate-500 group-hover:bg-slate-950 rounded-full transition-colors pointer-events-none"></div>
                 </div>
 
                 <!-- 채점 콘솔 창 -->
-                <div class="border-t border-slate-800 bg-slate-900/90 flex flex-col h-52">
+                <div id="consoleContainer" class="bg-slate-900/90 flex flex-col" style="height: 220px; min-height: 80px; max-height: 80vh;">
                     <div class="px-4 py-1.5 border-b border-slate-800 flex items-center justify-between text-[11px] text-slate-400">
                         <span class="flex items-center gap-1.5">
                             <i class="fa-solid fa-terminal"></i> 실행 결과
                         </span>
-                        <span id="judgeDuration">-</span>
+                        <div class="flex items-center gap-2">
+                            <span id="judgeDuration">-</span>
+                            <button onclick="toggleConsoleMaximize()" class="text-slate-400 hover:text-amber-400 text-xs px-1.5 py-0.5 rounded transition" title="실행 결과 창 크게/원래대로 토글">
+                                <i id="consoleSizeIcon" class="fa-solid fa-up-right-and-down-left-from-center"></i>
+                            </button>
+                        </div>
                     </div>
                     <div class="p-3.5 flex-1 overflow-y-auto space-y-1.5" id="consoleOutput">
                         <div id="judgeBadge" class="hidden inline-block px-2.5 py-0.5 rounded text-[11px] font-bold"></div>
@@ -237,6 +322,54 @@
             </button>
         </div>
 
+        <!-- 검색 및 필터 바 (문제별 / 학생별 / 구분별) -->
+        <div class="flex flex-wrap items-center gap-3 bg-slate-900/80 p-3 rounded-xl border border-slate-800 text-xs">
+            <!-- 일차 필터 드롭다운 (학생은 오픈된 일차만, 관리자는 전체) -->
+            <div class="flex items-center gap-1.5">
+                <span class="text-slate-400 font-semibold"><i class="fa-solid fa-calendar-day text-amber-400 mr-1"></i>일차:</span>
+                <select id="subFilterDay" onchange="onSubDayFilterChange()" class="bg-slate-950 border border-slate-800 rounded-lg px-2.5 py-1.5 text-slate-200 focus:outline-none focus:border-amber-500 text-xs">
+                    <option value="">전체 일차</option>
+                </select>
+            </div>
+
+            <!-- 문제 필터 드롭다운 (일차 선택 시 해당 일차 문제로 연동) -->
+            <div class="flex items-center gap-1.5">
+                <span class="text-slate-400 font-semibold"><i class="fa-solid fa-book-open text-amber-400 mr-1"></i>문제:</span>
+                <select id="subFilterProblem" onchange="filterSubmissionsTable()" class="bg-slate-950 border border-slate-800 rounded-lg px-2.5 py-1.5 text-slate-200 focus:outline-none focus:border-amber-500 max-w-[240px] text-xs">
+                    <option value="">전체 문제</option>
+                </select>
+            </div>
+
+            <!-- 교육생 이름 / 아이디 검색 (관리자 전용) -->
+            <div id="subFilterNameContainer" class="flex items-center gap-1.5 flex-1 min-w-[200px]">
+                <span class="text-slate-400 font-semibold"><i class="fa-solid fa-user text-amber-400 mr-1"></i>이름/ID:</span>
+                <div class="relative flex-1">
+                    <input type="text" id="subFilterName" oninput="filterSubmissionsTable()" placeholder="학생 이름 또는 아이디 검색" class="w-full bg-slate-950 border border-slate-800 rounded-lg pl-7 pr-3 py-1.5 text-slate-200 placeholder-slate-600 focus:outline-none focus:border-amber-500 text-xs">
+                    <i class="fa-solid fa-magnifying-glass absolute left-2.5 top-2.5 text-slate-600 text-[10px]"></i>
+                </div>
+            </div>
+
+            <!-- 학생 전용 본인 식별 배지 -->
+            <div id="mySubmissionsBadge" class="hidden flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 bg-slate-950 rounded-lg border border-slate-800 text-emerald-400">
+                <i class="fa-solid fa-user-check"></i>
+                <span id="mySubmissionsLabel" class="text-slate-200">내 제출 기록</span>
+            </div>
+
+            <!-- 관리자 전용: 제출 구분 필터 -->
+            <div id="subFilterTypeContainer" class="hidden flex items-center gap-1.5">
+                <span class="text-slate-400 font-semibold"><i class="fa-solid fa-filter text-amber-400 mr-1"></i>구분:</span>
+                <select id="subFilterType" onchange="filterSubmissionsTable()" class="bg-slate-950 border border-slate-800 rounded-lg px-2.5 py-1.5 text-slate-200 focus:outline-none focus:border-amber-500 text-xs">
+                    <option value="">전체 (제출 + 테스트)</option>
+                    <option value="SUBMIT" selected>최종 제출만</option>
+                    <option value="TEST">테스트 실행만</option>
+                </select>
+            </div>
+
+            <button onclick="resetSubFilters()" class="text-xs bg-slate-800 hover:bg-slate-700 text-slate-300 px-2.5 py-1.5 rounded-lg border border-slate-700 transition">
+                필터 초기화
+            </button>
+        </div>
+
         <div class="bg-slate-900 border border-slate-800 rounded-xl overflow-hidden shadow">
             <table class="w-full text-left text-xs">
                 <thead class="bg-slate-900 text-slate-400 uppercase font-semibold border-b border-slate-800">
@@ -244,10 +377,11 @@
                         <th class="px-4 py-2.5">제출#</th>
                         <th class="px-4 py-2.5">학생</th>
                         <th class="px-4 py-2.5">문제</th>
+                        <th class="px-4 py-2.5">구분</th>
                         <th class="px-4 py-2.5">결과</th>
                         <th class="px-4 py-2.5">점수</th>
                         <th class="px-4 py-2.5">시간</th>
-                        <th class="px-4 py-2.5">제출일시</th>
+                        <th class="px-4 py-2.5">제출일시 (KST)</th>
                         <th class="px-4 py-2.5 text-center">코드</th>
                     </tr>
                 </thead>
@@ -261,13 +395,46 @@
     <!-- VIEW 4: 관리자 전용 통계 대시보드 (Stats View) -->
     <!-- ======================================================== -->
     <div id="viewStats" class="hidden flex-1 overflow-y-auto p-6 max-w-6xl mx-auto w-full space-y-6">
-        <div class="flex items-center justify-between pb-3 border-b border-slate-800">
-            <h2 class="text-base font-bold text-white flex items-center gap-2">
-                <i class="fa-solid fa-chart-pie text-amber-400"></i> 통계 대시보드
-            </h2>
-            <button onclick="loadStatsData()" class="text-xs bg-slate-800 hover:bg-slate-700 text-slate-200 px-3 py-1.5 rounded-lg border border-slate-700 transition flex items-center gap-1.5">
-                <i class="fa-solid fa-rotate"></i> 새로고침
-            </button>
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between pb-3 border-b border-slate-800 gap-3">
+            <div class="flex flex-wrap items-center gap-3">
+                <h2 class="text-base font-bold text-white flex items-center gap-2">
+                    <i class="fa-solid fa-chart-pie text-amber-400"></i> 통계 대시보드
+                </h2>
+                <span class="text-slate-600 hidden sm:inline">|</span>
+                <!-- 일차 선택 필터 -->
+                <div class="flex items-center gap-2 bg-slate-900 border border-slate-800 px-3 py-1.5 rounded-xl">
+                    <label for="statsDayFilter" class="text-xs font-semibold text-slate-300 flex items-center gap-1.5 whitespace-nowrap">
+                        <i class="fa-solid fa-calendar-day text-amber-400"></i> 일차 선택:
+                    </label>
+                    <select id="statsDayFilter" onchange="onStatsDayFilterChange(this.value)" class="bg-slate-950 border border-slate-700 text-amber-400 font-bold text-xs rounded-lg px-2.5 py-1 focus:outline-none focus:border-amber-500">
+                        <option value="0">전체 일차 (총 90제 종합)</option>
+                        <option value="1">1일차 - 자바 기초 (6문제)</option>
+                        <option value="2">2일차 - 자바 제어문 (10문제)</option>
+                        <option value="3">3일차 - 자바 배열 (6문제)</option>
+                        <option value="4">4일차 - 클래스와 객체 (5문제)</option>
+                        <option value="5">5일차 - 상속과 다형성 (5문제)</option>
+                        <option value="6">6일차 - 예외와 인터페이스 (5문제)</option>
+                        <option value="7">7일차 - 컬렉션과 람다 (5문제)</option>
+                        <option value="8">8일차 - MySQL 기본 조회 (6문제)</option>
+                        <option value="9">9일차 - MySQL 함수와 그룹화 (5문제)</option>
+                        <option value="10">10일차 - MySQL 조인과 무결성 (5문제)</option>
+                        <option value="11">11일차 - MySQL 트랜잭션 (5문제)</option>
+                        <option value="12">12일차 - MySQL DDL과 정규화 (5문제)</option>
+                        <option value="13">13일차 - Web HTML5 (6문제)</option>
+                        <option value="14">14일차 - Web CSS3 (5문제)</option>
+                        <option value="15">15일차 - Web JavaScript 기초 (6문제)</option>
+                        <option value="16">16일차 - Web JS 비동기와 DOM (5문제)</option>
+                    </select>
+                </div>
+            </div>
+            <div class="flex items-center gap-2">
+                <span id="statsScopeBadge" class="text-xs px-3 py-1 rounded-full bg-amber-500/10 text-amber-400 border border-amber-500/20 font-bold">
+                    전체 종합
+                </span>
+                <button onclick="loadStatsData()" class="text-xs bg-slate-800 hover:bg-slate-700 text-slate-200 px-3 py-1.5 rounded-lg border border-slate-700 transition flex items-center gap-1.5">
+                    <i class="fa-solid fa-rotate"></i> 새로고침
+                </button>
+            </div>
         </div>
 
         <!-- 1. 핵심 요약 KPI 카드 4종 -->
@@ -278,22 +445,24 @@
                     <i class="fa-solid fa-users text-amber-400"></i>
                 </div>
                 <div class="text-2xl font-bold text-white" id="statTotalStudents">0명</div>
+                <div class="text-[10px] text-slate-500 mt-1">테스트 계정 제외</div>
             </div>
 
             <div class="bg-slate-900 border border-slate-800 rounded-2xl p-4">
                 <div class="flex items-center justify-between text-slate-400 text-xs mb-2">
-                    <span>평균 완료율</span>
+                    <span id="statAvgCompletionLabel">평균 실습 완료율</span>
                     <i class="fa-solid fa-list-check text-emerald-400"></i>
                 </div>
                 <div class="text-2xl font-bold text-emerald-400" id="statAvgCompletion">0%</div>
                 <div class="w-full bg-slate-800 h-1.5 rounded-full mt-2 overflow-hidden">
                     <div id="statAvgCompletionBar" class="bg-emerald-500 h-full w-0 transition-all duration-500"></div>
                 </div>
+                <div class="text-[10px] text-slate-500 mt-1" id="statTargetProblemsText">총 90문제 기준</div>
             </div>
 
             <div class="bg-slate-900 border border-slate-800 rounded-2xl p-4">
                 <div class="flex items-center justify-between text-slate-400 text-xs mb-2">
-                    <span>전체 정답률</span>
+                    <span id="statOverallAccuracyLabel">전체 정답률</span>
                     <i class="fa-solid fa-bullseye text-blue-400"></i>
                 </div>
                 <div class="text-2xl font-bold text-blue-400" id="statOverallAccuracy">0%</div>
@@ -302,10 +471,11 @@
 
             <div class="bg-slate-900 border border-slate-800 rounded-2xl p-4">
                 <div class="flex items-center justify-between text-slate-400 text-xs mb-2">
-                    <span>총 제출 시도</span>
+                    <span id="statTotalSubmissionsLabel">총 제출 시도</span>
                     <i class="fa-solid fa-code-commit text-purple-400"></i>
                 </div>
                 <div class="text-2xl font-bold text-purple-400" id="statTotalSubmissions">0회</div>
+                <div class="text-[10px] text-slate-500 mt-1">공식 제출 기준 (KST)</div>
             </div>
         </div>
 
@@ -331,11 +501,11 @@
                     <thead class="bg-slate-850 bg-slate-800/80 text-slate-400 font-semibold border-b border-slate-800">
                         <tr>
                             <th class="px-4 py-2.5">학생</th>
-                            <th class="px-4 py-2.5">실습 완료율</th>
+                            <th class="px-4 py-2.5" id="thCompletionRate">실습 완료율</th>
                             <th class="px-4 py-2.5">정답률</th>
                             <th class="px-4 py-2.5">시도 횟수</th>
                             <th class="px-4 py-2.5">평균 점수</th>
-                            <th class="px-4 py-2.5">최근 제출 시각</th>
+                            <th class="px-4 py-2.5">최근 활동 (KST)</th>
                             <th class="px-4 py-2.5 text-center">상세 보기</th>
                         </tr>
                     </thead>
@@ -351,7 +521,7 @@
             <!-- 취약 문제 분석 -->
             <div class="bg-slate-900 border border-slate-800 rounded-2xl p-5 space-y-3">
                 <h3 class="text-sm font-bold text-white flex items-center gap-2">
-                    <i class="fa-solid fa-triangle-exclamation text-rose-400"></i> 오답 빈도 높은 취약 문제 TOP 5
+                    <i class="fa-solid fa-triangle-exclamation text-rose-400"></i> <span id="vulnProblemsHeader">오답 빈도 높은 취약 문제 TOP 5</span>
                 </h3>
                 <div id="vulnerableProblemsList" class="space-y-2 pt-1">
                     <!-- 동적 렌더링 -->
@@ -366,6 +536,309 @@
                 <div id="statusDistributionBars" class="space-y-2.5 pt-1">
                     <!-- 동적 렌더링 -->
                 </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ======================================================== -->
+    <!-- VIEW 5: 관리자 버그 검토 요청 목록 화면 (Bug Reports View) -->
+    <!-- ======================================================== -->
+    <!-- VIEW 5: 관리자 문제 오류 검토 화면 (Bug Review View) -->
+    <!-- ======================================================== -->
+    <div id="viewBugs" class="hidden flex-1 overflow-y-auto p-6 max-w-[1550px] mx-auto w-full space-y-4">
+        <div class="flex items-center justify-between pb-2 border-b border-slate-800">
+            <div>
+                <h2 class="text-base font-bold text-white flex items-center gap-2">
+                    <i class="fa-solid fa-triangle-exclamation text-rose-400"></i> 학생 문제 오류 제보 검토
+                </h2>
+                <p class="text-xs text-slate-400 mt-0.5">학생들이 실습 중 제보한 코드와 에러 로그를 검토하고 에디터에서 즉시 테스트 및 디버깅할 수 있습니다.</p>
+            </div>
+            <div class="flex items-center gap-2">
+                <button onclick="loadBugReports()" class="text-xs bg-slate-800 hover:bg-slate-700 text-slate-200 px-3 py-1.5 rounded-lg border border-slate-700 transition flex items-center gap-1.5 shadow-sm">
+                    <i class="fa-solid fa-rotate"></i> 새로고침
+                </button>
+            </div>
+        </div>
+
+        <!-- 검색 및 필터 바 -->
+        <div class="flex flex-wrap items-center gap-3 bg-slate-900/80 p-3 rounded-xl border border-slate-800 text-xs">
+            <!-- 일차 필터 -->
+            <div class="flex items-center gap-1.5">
+                <span class="text-slate-400 font-semibold"><i class="fa-solid fa-calendar-day text-amber-400 mr-1"></i>일차:</span>
+                <select id="filterBugDay" onchange="renderBugReportsTable()" class="bg-slate-950 border border-slate-800 rounded-lg px-2.5 py-1 text-xs text-slate-200 focus:outline-none focus:border-amber-500">
+                    <option value="all">전체 일차</option>
+                    <option value="1">1일차</option>
+                    <option value="2">2일차</option>
+                    <option value="3">3일차</option>
+                    <option value="4">4일차</option>
+                    <option value="5">5일차</option>
+                    <option value="6">6일차</option>
+                    <option value="7">7일차</option>
+                    <option value="8">8일차</option>
+                    <option value="9">9일차</option>
+                    <option value="10">10일차</option>
+                    <option value="11">11일차</option>
+                    <option value="12">12일차</option>
+                    <option value="13">13일차</option>
+                    <option value="14">14일차</option>
+                    <option value="15">15일차</option>
+                    <option value="16">16일차</option>
+                </select>
+            </div>
+
+            <!-- 상태 필터 -->
+            <div class="flex items-center gap-1.5">
+                <span class="text-slate-400 font-semibold"><i class="fa-solid fa-filter text-rose-400 mr-1"></i>상태:</span>
+                <select id="filterBugStatus" onchange="renderBugReportsTable()" class="bg-slate-950 border border-slate-800 rounded-lg px-2.5 py-1 text-xs text-slate-200 focus:outline-none focus:border-rose-500">
+                    <option value="all">전체 상태</option>
+                    <option value="PENDING" selected>검토 대기중</option>
+                    <option value="RESOLVED">검토 완료됨</option>
+                </select>
+            </div>
+
+            <!-- 검색창 -->
+            <div class="flex-1 min-w-[200px]">
+                <input type="text" id="searchBugInput" oninput="renderBugReportsTable()" placeholder="학생명, 아이디, 문제 제목 또는 에러 내용 검색..." class="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-1 text-xs text-white focus:outline-none focus:border-amber-500">
+            </div>
+        </div>
+
+        <!-- 제보 통계 요약 카드 3종 -->
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+            <div class="bg-slate-900/80 border border-slate-800 rounded-xl p-3 flex items-center justify-between">
+                <span class="text-xs text-slate-400 font-medium">총 접수 건수</span>
+                <span id="bugStatTotal" class="text-sm font-bold text-white">0건</span>
+            </div>
+            <div class="bg-slate-900/80 border border-slate-800 rounded-xl p-3 flex items-center justify-between">
+                <span class="text-xs text-rose-400 font-medium flex items-center gap-1"><i class="fa-solid fa-circle-dot"></i> 검토 대기중</span>
+                <span id="bugStatPending" class="text-sm font-bold text-rose-400">0건</span>
+            </div>
+            <div class="bg-slate-900/80 border border-slate-800 rounded-xl p-3 flex items-center justify-between">
+                <span class="text-xs text-emerald-400 font-medium flex items-center gap-1"><i class="fa-solid fa-circle-check"></i> 검토 완료</span>
+                <span id="bugStatResolved" class="text-sm font-bold text-emerald-400">0건</span>
+            </div>
+        </div>
+
+        <!-- 제보 목록 테이블 -->
+        <div class="bg-slate-900 border border-slate-800 rounded-2xl overflow-hidden shadow-lg">
+            <div class="overflow-x-auto">
+                <table class="w-full text-left text-xs min-w-[1150px] table-auto">
+                    <thead class="bg-slate-800/80 text-slate-400 text-[11px] uppercase tracking-wider border-b border-slate-700 select-none">
+                        <tr>
+                            <th class="py-3 px-3 text-center whitespace-nowrap w-12">번호</th>
+                            <th class="py-3 px-3 whitespace-nowrap w-36">접수 일시</th>
+                            <th class="py-3 px-3 whitespace-nowrap w-40">학생명 (아이디)</th>
+                            <th class="py-3 px-3 whitespace-nowrap w-64">문제</th>
+                            <th class="py-3 px-4 text-amber-400 whitespace-nowrap min-w-[280px]">학생 제보 내용</th>
+                            <th class="py-3 px-4 whitespace-nowrap min-w-[320px]">에러 / 출력 로그</th>
+                            <th class="py-3 px-3 text-center whitespace-nowrap w-24">상태</th>
+                            <th class="py-3 px-3 text-center whitespace-nowrap w-28">액션</th>
+                        </tr>
+                    </thead>
+                    <tbody id="bugReportsTbody" class="divide-y divide-slate-800 text-slate-300">
+                        <!-- 자바스크립트로 렌더링 -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- ======================================================== -->
+    <!-- VIEW 6: 관리자 버그 수정 요청 목록 화면 (System Bug Fixes View) -->
+    <!-- ======================================================== -->
+    <div id="viewBugFixes" class="hidden flex-1 overflow-y-auto p-6 max-w-[1550px] mx-auto w-full space-y-4">
+        <div class="flex items-center justify-between pb-2 border-b border-slate-800">
+            <div>
+                <h2 class="text-base font-bold text-white flex items-center gap-2">
+                    <i class="fa-solid fa-screwdriver-wrench text-amber-400"></i> 시스템 버그 수정 요청 검토
+                </h2>
+                <p class="text-xs text-slate-400 mt-0.5">학생들이 제보한 웹사이트 오류 설명과 캡처 이미지를 확인하고 처리 상태를 관리합니다.</p>
+            </div>
+            <div class="flex items-center gap-2">
+                <button onclick="loadSystemBugReports()" class="text-xs bg-slate-800 hover:bg-slate-700 text-slate-200 px-3 py-1.5 rounded-lg border border-slate-700 transition flex items-center gap-1.5 shadow-sm">
+                    <i class="fa-solid fa-rotate"></i> 새로고침
+                </button>
+            </div>
+        </div>
+
+        <!-- 검색 및 필터 바 -->
+        <div class="flex flex-wrap items-center gap-3 bg-slate-900/80 p-3 rounded-xl border border-slate-800 text-xs">
+            <!-- 상태 필터 -->
+            <div class="flex items-center gap-1.5">
+                <span class="text-slate-400 font-semibold"><i class="fa-solid fa-filter text-amber-400 mr-1"></i>상태:</span>
+                <select id="filterSysBugStatus" onchange="renderSystemBugReportsTable()" class="bg-slate-950 border border-slate-800 rounded-lg px-2.5 py-1 text-xs text-slate-200 focus:outline-none focus:border-amber-500">
+                    <option value="all">전체 상태</option>
+                    <option value="PENDING" selected>수정 대기중</option>
+                    <option value="RESOLVED">수정 완료됨</option>
+                </select>
+            </div>
+
+            <!-- 검색창 -->
+            <div class="flex-1 min-w-[200px]">
+                <input type="text" id="searchSysBugInput" oninput="renderSystemBugReportsTable()" placeholder="학생명, 아이디, 오류 설명 검색..." class="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-1 text-xs text-white focus:outline-none focus:border-amber-500">
+            </div>
+        </div>
+
+        <!-- 통계 요약 카드 3종 -->
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+            <div class="bg-slate-900/80 border border-slate-800 rounded-xl p-3 flex items-center justify-between">
+                <span class="text-xs text-slate-400 font-medium">총 접수 건수</span>
+                <span id="sysBugStatTotal" class="text-sm font-bold text-white">0건</span>
+            </div>
+            <div class="bg-slate-900/80 border border-slate-800 rounded-xl p-3 flex items-center justify-between">
+                <span class="text-xs text-amber-400 font-medium flex items-center gap-1"><i class="fa-solid fa-circle-dot"></i> 수정 대기중</span>
+                <span id="sysBugStatPending" class="text-sm font-bold text-amber-400">0건</span>
+            </div>
+            <div class="bg-slate-900/80 border border-slate-800 rounded-xl p-3 flex items-center justify-between">
+                <span class="text-xs text-emerald-400 font-medium flex items-center gap-1"><i class="fa-solid fa-circle-check"></i> 수정 완료</span>
+                <span id="sysBugStatResolved" class="text-sm font-bold text-emerald-400">0건</span>
+            </div>
+        </div>
+
+        <!-- 버그 수정 요청 테이블 -->
+        <div class="bg-slate-900 border border-slate-800 rounded-2xl overflow-hidden shadow-lg">
+            <div class="overflow-x-auto">
+                <table class="w-full text-left text-xs">
+                    <thead class="bg-slate-800/80 text-slate-400 text-[11px] uppercase tracking-wider border-b border-slate-700">
+                        <tr>
+                            <th class="py-3 px-4">번호</th>
+                            <th class="py-3 px-4">접수 일시</th>
+                            <th class="py-3 px-4">제보자 (아이디)</th>
+                            <th class="py-3 px-4">버그 설명</th>
+                            <th class="py-3 px-4 text-center">첨부 이미지</th>
+                            <th class="py-3 px-4 text-center">상태</th>
+                            <th class="py-3 px-4 text-center">액션</th>
+                        </tr>
+                    </thead>
+                    <tbody id="sysBugReportsTbody" class="divide-y divide-slate-800 text-slate-300">
+                        <!-- 자바스크립트로 렌더링 -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- ======================================================== -->
+    <!-- VIEW 7: 실시간 교육생 모니터링 화면 (Realtime Student Monitoring View) -->
+    <!-- ======================================================== -->
+    <div id="viewMonitoring" class="hidden flex-1 overflow-y-auto p-6 max-w-[1550px] mx-auto w-full space-y-4">
+        <div class="flex items-center justify-between pb-2 border-b border-slate-800">
+            <div>
+                <h2 class="text-base font-bold text-white flex items-center gap-2">
+                    <i class="fa-solid fa-desktop text-emerald-400"></i> 실시간 교육생 모니터링
+                    <span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full text-[11px] font-semibold bg-emerald-500/15 text-emerald-400 border border-emerald-500/30">
+                        <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span> LIVE
+                    </span>
+                </h2>
+                <p class="text-xs text-slate-400 mt-0.5">교육생들의 실시간 온라인/오프라인 접속 상태, 에디터 타이핑 활동, 10분 이상 자리비움 및 실습 진도를 실시간으로 모니터링합니다.</p>
+            </div>
+            <div class="flex items-center gap-2">
+                <span id="monLastSyncedText" class="text-xs text-slate-400 font-mono hidden sm:inline">최근 동기화: -</span>
+                <button id="monAutoRefreshBtn" onclick="toggleMonitoringAutoRefresh()" class="text-xs bg-emerald-500/15 hover:bg-emerald-500/25 text-emerald-300 px-3 py-1.5 rounded-lg border border-emerald-500/30 transition flex items-center gap-1.5 shadow-sm">
+                    <i class="fa-solid fa-arrows-rotate fa-spin" id="monAutoRefreshIcon"></i> <span id="monAutoRefreshText">자동 동기화 (8초)</span>
+                </button>
+                <button onclick="loadMonitoringData(true)" class="text-xs bg-slate-800 hover:bg-slate-700 text-slate-200 px-3 py-1.5 rounded-lg border border-slate-700 transition flex items-center gap-1.5 shadow-sm">
+                    <i class="fa-solid fa-rotate"></i> 즉시 갱신
+                </button>
+            </div>
+        </div>
+
+        <!-- 실시간 요약 KPI 카드 5종 -->
+        <div class="grid grid-cols-2 sm:grid-cols-5 gap-3">
+            <div class="bg-slate-900/80 border border-slate-800 rounded-xl p-3 flex flex-col justify-between">
+                <span class="text-[11px] text-slate-400 font-medium flex items-center gap-1.5">
+                    <i class="fa-solid fa-users text-slate-400"></i> 전체 교육생
+                </span>
+                <div class="mt-2 flex items-baseline justify-between">
+                    <span id="monKpiTotal" class="text-xl font-black text-white font-mono">24</span>
+                    <span class="text-[10px] text-slate-500 font-medium">명</span>
+                </div>
+            </div>
+            <div class="bg-slate-900/80 border border-emerald-500/30 bg-emerald-950/10 rounded-xl p-3 flex flex-col justify-between">
+                <span class="text-[11px] text-emerald-400 font-medium flex items-center gap-1.5">
+                    <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span> 실시간 온라인
+                </span>
+                <div class="mt-2 flex items-baseline justify-between">
+                    <span id="monKpiOnline" class="text-xl font-black text-emerald-400 font-mono">0</span>
+                    <span class="text-[10px] text-emerald-500/70 font-medium">접속 중</span>
+                </div>
+            </div>
+            <div class="bg-slate-900/80 border border-purple-500/30 bg-purple-950/10 rounded-xl p-3 flex flex-col justify-between">
+                <span class="text-[11px] text-purple-400 font-medium flex items-center gap-1.5">
+                    <i class="fa-solid fa-keyboard text-purple-400"></i> 코딩 / 타이핑 중
+                </span>
+                <div class="mt-2 flex items-baseline justify-between">
+                    <span id="monKpiTyping" class="text-xl font-black text-purple-400 font-mono">0</span>
+                    <span class="text-[10px] text-purple-500/70 font-medium">실시간 작성</span>
+                </div>
+            </div>
+            <div class="bg-slate-900/80 border border-rose-500/30 bg-rose-950/10 rounded-xl p-3 flex flex-col justify-between">
+                <span class="text-[11px] text-rose-400 font-medium flex items-center gap-1.5">
+                    <i class="fa-solid fa-triangle-exclamation text-rose-400"></i> 10분+ 자리비움
+                </span>
+                <div class="mt-2 flex items-baseline justify-between">
+                    <span id="monKpiAway" class="text-xl font-black text-rose-400 font-mono">0</span>
+                    <span class="text-[10px] text-rose-500/70 font-medium">미참여 의심</span>
+                </div>
+            </div>
+            <div class="bg-slate-900/80 border border-slate-800 rounded-xl p-3 flex flex-col justify-between">
+                <span class="text-[11px] text-slate-400 font-medium flex items-center gap-1.5">
+                    <i class="fa-solid fa-power-off text-slate-500"></i> 오프라인
+                </span>
+                <div class="mt-2 flex items-baseline justify-between">
+                    <span id="monKpiOffline" class="text-xl font-black text-slate-400 font-mono">0</span>
+                    <span class="text-[10px] text-slate-500 font-medium">미접속</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- 퀵 필터 버튼 그룹 및 검색 바 -->
+        <div class="flex flex-wrap items-center justify-between gap-3 bg-slate-900/80 p-3 rounded-xl border border-slate-800 text-xs">
+            <div class="flex flex-wrap items-center gap-1.5" id="monFilterGroup">
+                <button onclick="setMonFilter('all')" data-monfilter="all" class="mon-filter-btn px-2.5 py-1 rounded-lg font-bold bg-amber-500 text-slate-950 transition">
+                    전체 (<span id="monFilterAllCnt">0</span>)
+                </button>
+                <button onclick="setMonFilter('online')" data-monfilter="online" class="mon-filter-btn px-2.5 py-1 rounded-lg font-medium bg-slate-950 hover:bg-slate-800 text-emerald-400 border border-slate-800 transition">
+                    🟢 온라인 (<span id="monFilterOnlineCnt">0</span>)
+                </button>
+                <button onclick="setMonFilter('typing')" data-monfilter="typing" class="mon-filter-btn px-2.5 py-1 rounded-lg font-medium bg-slate-950 hover:bg-slate-800 text-purple-400 border border-slate-800 transition">
+                    ⌨️ 코딩 중 (<span id="monFilterTypingCnt">0</span>)
+                </button>
+                <button onclick="setMonFilter('away')" data-monfilter="away" class="mon-filter-btn px-2.5 py-1 rounded-lg font-medium bg-slate-950 hover:bg-slate-800 text-rose-400 border border-slate-800 transition">
+                    ⚠️ 10분+ 자리비움 (<span id="monFilterAwayCnt">0</span>)
+                </button>
+                <button onclick="setMonFilter('offline')" data-monfilter="offline" class="mon-filter-btn px-2.5 py-1 rounded-lg font-medium bg-slate-950 hover:bg-slate-800 text-slate-400 border border-slate-800 transition">
+                    ⚪ 오프라인 (<span id="monFilterOfflineCnt">0</span>)
+                </button>
+            </div>
+
+            <!-- 검색창 -->
+            <div class="flex items-center gap-2 flex-1 sm:flex-initial min-w-[220px]">
+                <div class="relative w-full">
+                    <i class="fa-solid fa-magnifying-glass absolute left-2.5 top-2 text-slate-500"></i>
+                    <input type="text" id="monSearchInput" oninput="renderMonitoringTable()" placeholder="교육생 이름, 아이디, 문제 검색..." class="w-full bg-slate-950 border border-slate-800 rounded-lg pl-8 pr-3 py-1 text-xs text-white focus:outline-none focus:border-amber-500">
+                </div>
+            </div>
+        </div>
+
+        <!-- 모니터링 테이블 -->
+        <div class="bg-slate-900 border border-slate-800 rounded-2xl overflow-hidden shadow-lg">
+            <div class="overflow-x-auto">
+                <table class="w-full text-left text-xs">
+                    <thead class="bg-slate-800/80 text-slate-400 text-[11px] uppercase tracking-wider border-b border-slate-700">
+                        <tr>
+                            <th class="py-3 px-4 w-12 text-center">번호</th>
+                            <th class="py-3 px-4">교육생 (아이디)</th>
+                            <th class="py-3 px-4 text-center">실시간 상태</th>
+                            <th class="py-3 px-4">현재 작업 중인 문제</th>
+                            <th class="py-3 px-4 text-center">작성 코드 분량</th>
+                            <th class="py-3 px-4">최근 활동 (KST)</th>
+                            <th class="py-3 px-4 text-center">상세</th>
+                        </tr>
+                    </thead>
+                    <tbody id="monitoringTbody" class="divide-y divide-slate-800 text-slate-300">
+                        <!-- 자바스크립트로 렌더링 -->
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>
@@ -467,8 +940,158 @@
         </div>
     </div>
 
+    <!-- 문제 오류 제보 모달 (학생/관리자 공통) -->
+    <div id="bugReportModal" class="hidden fixed inset-0 bg-black/75 backdrop-blur-xs flex items-center justify-center z-50 p-4">
+        <div class="bg-slate-900 border border-slate-800 rounded-2xl w-full max-w-lg shadow-2xl overflow-hidden animate-in fade-in zoom-in-95 duration-150">
+            <div class="bg-slate-800/90 px-6 py-3.5 border-b border-slate-700 flex items-center justify-between">
+                <div class="flex items-center gap-2">
+                    <div class="w-7 h-7 rounded-lg bg-rose-500/20 border border-rose-500/30 flex items-center justify-center text-rose-400 text-sm">
+                        <i class="fa-solid fa-triangle-exclamation"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-sm font-bold text-white">문제 오류 제보</h3>
+                        <p class="text-[11px] text-slate-400" id="bugReportModalSub">문제나 채점 시스템 오류를 관리자에게 알립니다.</p>
+                    </div>
+                </div>
+                <button onclick="closeBugReportModal()" class="text-slate-400 hover:text-white text-lg">&times;</button>
+            </div>
+
+            <div class="p-6 space-y-4 text-xs">
+                <!-- 강조 안내 메시지: 가장 최근에 작성된 코드로 제보 됩니다 -->
+                <div class="p-3.5 bg-rose-500/10 border border-rose-500/30 rounded-xl space-y-1">
+                    <div class="font-bold text-rose-400 flex items-center gap-1.5 text-xs">
+                        <i class="fa-solid fa-circle-exclamation"></i> 가장 최근에 작성된 코드로 제보 됩니다.
+                    </div>
+                    <p class="text-[11px] text-slate-300 leading-relaxed">
+                        에디터에 작성된 현재 코드와 최근 실행 결과(에러 로그)가 관리자에게 함께 전송되어 신속한 확인 및 조치가 이루어집니다.
+                    </p>
+                </div>
+
+                <!-- 문제 정보 -->
+                <div class="bg-slate-950 p-3 rounded-xl border border-slate-800 space-y-1.5">
+                    <div class="flex items-center justify-between">
+                        <span class="text-slate-400 font-medium">제보 대상 문제:</span>
+                        <span id="bugReportProblemTitle" class="text-amber-400 font-bold truncate max-w-xs text-right"></span>
+                    </div>
+                    <div class="flex items-center justify-between">
+                        <span class="text-slate-400 font-medium">제보자:</span>
+                        <span id="bugReportUser" class="text-slate-200"></span>
+                    </div>
+                </div>
+
+                <!-- 오류 현상 또는 의견 (선택 사항) -->
+                <div>
+                    <label class="block text-slate-300 font-medium mb-1.5 flex items-center justify-between">
+                        <span>추가 설명 또는 현상 (선택)</span>
+                        <span class="text-[10px] text-slate-500">예: 3번 예제 기대값 이상, 런타임 에러 등</span>
+                    </label>
+                    <textarea id="bugReportComment" rows="2" placeholder="어떤 부분이 이상하거나 오류가 나는지 자유롭게 적어주세요. (생략 가능)" class="w-full bg-slate-950 border border-slate-800 rounded-xl p-3 text-xs text-white focus:outline-none focus:border-rose-500 resize-none"></textarea>
+                </div>
+
+                <!-- 제보될 코드 미리보기 (접이식) -->
+                <div class="border border-slate-800 rounded-xl overflow-hidden bg-slate-950/60">
+                    <button type="button" onclick="toggleBugCodePreview()" class="w-full px-3 py-2 text-left text-[11px] text-slate-400 hover:text-slate-200 flex items-center justify-between">
+                        <span class="flex items-center gap-1.5">
+                            <i class="fa-solid fa-code text-indigo-400"></i> 제보될 코드 미리보기 (<span id="bugCodeLen">0</span>자)
+                        </span>
+                        <i id="bugCodeChevron" class="fa-solid fa-chevron-down text-xs transition-transform"></i>
+                    </button>
+                    <div id="bugCodePreviewContainer" class="hidden p-3 border-t border-slate-800 max-h-32 overflow-y-auto">
+                        <pre><code id="bugCodePreview" class="code-font text-[11px] text-slate-300 whitespace-pre-wrap"></code></pre>
+                    </div>
+                </div>
+
+                <!-- 버튼 영역 -->
+                <div class="pt-2 flex items-center gap-2">
+                    <button type="button" onclick="closeBugReportModal()" class="flex-1 bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold py-2.5 rounded-xl text-xs transition">취소</button>
+                    <button type="button" id="btnSubmitBugReport" onclick="submitBugReport()" class="flex-1 bg-rose-600 hover:bg-rose-500 text-white font-bold py-2.5 rounded-xl text-xs transition shadow-md flex items-center justify-center gap-1.5">
+                        <i class="fa-solid fa-paper-plane"></i> 확인 및 제보 전송
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 학생/공통: 시스템 버그 제보 모달 (이미지 첨부 및 설명 입력) -->
+    <div id="systemBugModal" class="hidden fixed inset-0 bg-black/75 backdrop-blur-xs flex items-center justify-center z-50 p-4">
+        <div class="bg-slate-900 border border-slate-800 rounded-2xl w-full max-w-lg shadow-2xl overflow-hidden animate-in fade-in zoom-in-95 duration-150">
+            <div class="bg-slate-800/90 px-6 py-3.5 border-b border-slate-700 flex items-center justify-between">
+                <div class="flex items-center gap-2">
+                    <div class="w-7 h-7 rounded-lg bg-rose-500/20 border border-rose-500/30 flex items-center justify-center text-rose-400 text-sm">
+                        <i class="fa-solid fa-bug"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-sm font-bold text-white">버그 제보</h3>
+                        <p class="text-[11px] text-slate-400">사이트 이용 중 화면 이상이나 기능 오류를 제보해주세요.</p>
+                    </div>
+                </div>
+                <button onclick="closeSystemBugModal()" class="text-slate-400 hover:text-white text-lg">&times;</button>
+            </div>
+
+            <form id="formSystemBug" onsubmit="submitSystemBug(event)" class="p-6 space-y-4 text-xs">
+                <!-- 제보자 정보 표시 -->
+                <div class="bg-slate-950 p-3 rounded-xl border border-slate-800 flex items-center justify-between">
+                    <span class="text-slate-400 font-medium">제보자:</span>
+                    <span id="sysBugUser" class="text-slate-200 font-semibold"></span>
+                </div>
+
+                <!-- 버그 내용 설명 (필수) -->
+                <div>
+                    <label class="block text-slate-300 font-medium mb-1.5 flex items-center justify-between">
+                        <span>오류 현상 및 설명 <span class="text-rose-400">*</span></span>
+                        <span class="text-[10px] text-slate-500">어떤 상황에서 발생했는지 적어주세요</span>
+                    </label>
+                    <textarea id="sysBugDescription" required rows="4" placeholder="예: 2일차 문제 목록에서 3번 문제를 클릭했을 때 화면이 멈추거나 깨집니다." class="w-full bg-slate-950 border border-slate-800 rounded-xl p-3 text-xs text-white focus:outline-none focus:border-rose-500 resize-none leading-relaxed"></textarea>
+                </div>
+
+                <!-- 첨부 이미지 (드래그앤드롭 / 파일선택 / 클립보드 붙여넣기 지원) -->
+                <div>
+                    <label class="block text-slate-300 font-medium mb-1.5 flex items-center justify-between">
+                        <span>캡처 화면 / 첨부 이미지 (선택)</span>
+                        <span class="text-[10px] text-slate-500">스크린샷 복사 후 붙여넣기(Ctrl+V) 가능</span>
+                    </label>
+                    
+                    <!-- 파일 업로드 영역 -->
+                    <div id="sysBugDropZone" onclick="document.getElementById('sysBugFileInput').click()" class="border-2 border-dashed border-slate-700 hover:border-rose-500/50 bg-slate-950/60 hover:bg-slate-950 rounded-xl p-4 text-center cursor-pointer transition flex flex-col items-center justify-center gap-1.5">
+                        <i class="fa-solid fa-cloud-arrow-up text-slate-400 text-lg"></i>
+                        <p class="text-[11px] text-slate-300">이미지 파일을 클릭하여 선택하거나 여기로 드래그하세요</p>
+                        <p class="text-[10px] text-slate-500">PNG, JPG, GIF 지원 (화면 캡처 후 Ctrl+V 로 즉시 붙여넣기도 가능)</p>
+                        <input type="file" id="sysBugFileInput" accept="image/*" class="hidden" onchange="handleSystemBugFile(this)">
+                    </div>
+
+                    <!-- 이미지 미리보기 영역 -->
+                    <div id="sysBugPreviewContainer" class="hidden mt-2 p-2 bg-slate-950 border border-slate-800 rounded-xl relative group">
+                        <img id="sysBugPreviewImg" src="" alt="첨부 이미지 미리보기" class="max-h-48 rounded-lg mx-auto object-contain">
+                        <button type="button" onclick="removeSystemBugImage(event)" class="absolute top-3 right-3 bg-slate-900/90 hover:bg-rose-600 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs transition shadow-md" title="이미지 삭제">
+                            <i class="fa-solid fa-xmark"></i>
+                        </button>
+                        <div id="sysBugImgSizeText" class="text-[10px] text-slate-400 text-center mt-1"></div>
+                    </div>
+                </div>
+
+                <!-- 제출 버튼 -->
+                <div class="pt-2 flex items-center gap-2">
+                    <button type="button" onclick="closeSystemBugModal()" class="flex-1 bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold py-2.5 rounded-xl text-xs transition">취소</button>
+                    <button type="submit" id="btnSubmitSysBug" class="flex-1 bg-rose-600 hover:bg-rose-500 text-white font-bold py-2.5 rounded-xl text-xs transition shadow-md flex items-center justify-center gap-1.5">
+                        <i class="fa-solid fa-paper-plane"></i> 버그 제보 등록
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- 첨부 이미지 원본 확대 보기 모달 -->
+    <div id="bugImageModal" class="hidden fixed inset-0 bg-black/85 backdrop-blur-md flex items-center justify-center z-50 p-4" onclick="closeBugImageModal()">
+        <div class="relative max-w-4xl max-h-[90vh] flex flex-col items-center" onclick="event.stopPropagation()">
+            <img id="bugImageModalImg" src="" alt="확대 이미지" class="max-w-full max-h-[85vh] rounded-xl shadow-2xl border border-slate-700 object-contain">
+            <button onclick="closeBugImageModal()" class="absolute -top-3 -right-3 bg-slate-800 hover:bg-rose-600 text-white rounded-full w-8 h-8 flex items-center justify-center text-sm shadow-xl transition">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+        </div>
+    </div>
+
     <!-- 문제 데이터셋 -->
-    <script src="problems.js?v=20260929_clean_v7"></script>
+    <script src="problems.js?v=20261002_verified"></script>
 
     <script>
         let selectedDay = 1;
@@ -482,9 +1105,20 @@
 
         // 오픈(Unlock) 상태 (기본 1일차만 오픈)
         let unlockedDays = JSON.parse(localStorage.getItem('unlocked_days') || '[1]');
+        // 모범 답안 오픈(Unlock) 상태 (기본 전체 비공개)
+        let unlockedSolutions = JSON.parse(localStorage.getItem('unlocked_solutions') || '[]');
+        // 실습 제출 마감(Closed) 상태 (기본 전체 진행중)
+        let closedDays = JSON.parse(localStorage.getItem('closed_days') || '[]');
 
         window.addEventListener('DOMContentLoaded', async () => {
+            initEditorEvents();
+            initConsoleResizer();
             updateAuthUI();
+            updateBugBadgeCount();
+            updateSystemBugBadgeCount();
+            if (currentUser && currentUser.role === 'admin') {
+                loadMonitoringData();
+            }
             if (!currentUser) {
                 showView('gate');
             } else {
@@ -508,6 +1142,12 @@
                     const data = await res.json();
                     unlockedDays = data.unlocked_days || [1];
                     localStorage.setItem('unlocked_days', JSON.stringify(unlockedDays));
+                    unlockedSolutions = data.unlocked_solutions || [];
+                    localStorage.setItem('unlocked_solutions', JSON.stringify(unlockedSolutions));
+                    closedDays = data.closed_days || [];
+                    localStorage.setItem('closed_days', JSON.stringify(closedDays));
+                    renderDaysGrid();
+                    updateSubmitButtonState();
                 }
             } catch (e) {}
         }
@@ -515,6 +1155,15 @@
         function isDayUnlocked(day) {
             if (currentUser && currentUser.role === 'admin') return true;
             return unlockedDays.includes(day);
+        }
+
+        function isSolutionUnlocked(day) {
+            if (currentUser && currentUser.role === 'admin') return true;
+            return unlockedSolutions.includes(day);
+        }
+
+        function isDayClosed(day) {
+            return closedDays.includes(day);
         }
 
         // 일차 목록 뷰로 이동
@@ -533,10 +1182,20 @@
             const vProb = document.getElementById('viewProblem');
             const vStat = document.getElementById('viewStatus');
             const vStats = document.getElementById('viewStats');
+            const vBugs = document.getElementById('viewBugs');
+            const vBugFixes = document.getElementById('viewBugFixes');
+            const vMonitoring = document.getElementById('viewMonitoring');
             const nDays = document.getElementById('navDaysBtn');
             const nStat = document.getElementById('navStatusBtn');
             const nStats = document.getElementById('navStatsBtn');
+            const nBugs = document.getElementById('navBugsBtn');
+            const nBugFix = document.getElementById('navBugFixBtn');
+            const nMonitoring = document.getElementById('navMonitoringBtn');
             const mainNav = document.getElementById('mainNav');
+
+            if (viewName !== 'monitoring') {
+                stopMonitoringAutoRefresh();
+            }
 
             // 비로그인 상태이거나 명시적으로 gate 뷰 요청 시
             if (!currentUser || viewName === 'gate') {
@@ -545,6 +1204,9 @@
                 if (vProb) vProb.classList.add('hidden');
                 if (vStat) vStat.classList.add('hidden');
                 if (vStats) vStats.classList.add('hidden');
+                if (vBugs) vBugs.classList.add('hidden');
+                if (vBugFixes) vBugFixes.classList.add('hidden');
+                if (vMonitoring) vMonitoring.classList.add('hidden');
                 if (mainNav) {
                     mainNav.classList.add('hidden');
                     mainNav.classList.remove('flex');
@@ -557,6 +1219,9 @@
             if (vProb) vProb.classList.add('hidden');
             if (vStat) vStat.classList.add('hidden');
             if (vStats) vStats.classList.add('hidden');
+            if (vBugs) vBugs.classList.add('hidden');
+            if (vBugFixes) vBugFixes.classList.add('hidden');
+            if (vMonitoring) vMonitoring.classList.add('hidden');
 
             if (mainNav) {
                 mainNav.classList.remove('hidden');
@@ -572,6 +1237,27 @@
                     nStats.className = 'px-3 py-1.5 rounded-lg text-xs font-bold text-amber-400 bg-amber-500/10 hover:bg-amber-500/20 border border-amber-500/30 transition flex items-center gap-1.5';
                 } else {
                     nStats.className = 'hidden';
+                }
+            }
+            if (nBugs) {
+                if (isAdmin) {
+                    nBugs.className = 'px-3 py-1.5 rounded-lg text-xs font-bold text-rose-400 bg-rose-500/10 hover:bg-rose-500/20 border border-rose-500/30 transition flex items-center gap-1.5';
+                } else {
+                    nBugs.className = 'hidden';
+                }
+            }
+            if (nBugFix) {
+                if (isAdmin) {
+                    nBugFix.className = 'px-3 py-1.5 rounded-lg text-xs font-bold text-amber-400 bg-amber-500/10 hover:bg-amber-500/20 border border-amber-500/30 transition flex items-center gap-1.5';
+                } else {
+                    nBugFix.className = 'hidden';
+                }
+            }
+            if (nMonitoring) {
+                if (isAdmin) {
+                    nMonitoring.className = 'px-3 py-1.5 rounded-lg text-xs font-bold text-emerald-400 bg-emerald-500/10 hover:bg-emerald-500/20 border border-emerald-500/30 transition flex items-center gap-1.5';
+                } else {
+                    nMonitoring.className = 'hidden';
                 }
             }
 
@@ -593,6 +1279,31 @@
                 if (vStats) vStats.classList.remove('hidden');
                 if (nStats) nStats.className = 'px-3 py-1.5 rounded-lg text-xs font-bold bg-amber-500 text-slate-950 transition flex items-center gap-1.5';
                 loadStatsData();
+            } else if (viewName === 'bugs') {
+                if (!isAdmin) {
+                    showView('days');
+                    return;
+                }
+                if (vBugs) vBugs.classList.remove('hidden');
+                if (nBugs) nBugs.className = 'px-3 py-1.5 rounded-lg text-xs font-bold bg-rose-500 text-slate-950 transition flex items-center gap-1.5';
+                loadBugReports();
+            } else if (viewName === 'bugFixes') {
+                if (!isAdmin) {
+                    showView('days');
+                    return;
+                }
+                if (vBugFixes) vBugFixes.classList.remove('hidden');
+                if (nBugFix) nBugFix.className = 'px-3 py-1.5 rounded-lg text-xs font-bold bg-amber-500 text-slate-950 transition flex items-center gap-1.5';
+                loadSystemBugReports();
+            } else if (viewName === 'monitoring') {
+                if (!isAdmin) {
+                    showView('days');
+                    return;
+                }
+                if (vMonitoring) vMonitoring.classList.remove('hidden');
+                if (nMonitoring) nMonitoring.className = 'px-3 py-1.5 rounded-lg text-xs font-bold bg-emerald-500 text-slate-950 transition flex items-center gap-1.5';
+                loadMonitoringData();
+                startMonitoringAutoRefresh();
             }
         }
 
@@ -638,20 +1349,60 @@
                         : 'bg-slate-950/60 border-slate-800/40 opacity-50 cursor-not-allowed'
                 }`;
 
-                // 상단 헤더: 일차 번호 & 관리자 스위치
-                let adminToggleHtml = '';
+                // 상단 헤더: 일차 번호 & 관리자 스위치 (실습 오픈 바로 밑에 답안 오픈, 그 밑에 제출 마감)
+                let headerRightHtml = '';
+                const isSolUnlocked = unlockedSolutions.includes(d);
+                const isClosed = closedDays.includes(d);
+
                 if (isAdmin) {
-                    adminToggleHtml = `
-                        <div class="flex items-center space-x-1.5" onclick="event.stopPropagation()">
-                            <span class="text-[10px] ${isServerUnlocked ? 'text-amber-400 font-bold' : 'text-slate-500'}">
-                                ${isServerUnlocked ? '오픈됨' : '비공개'}
-                            </span>
-                            <label class="relative inline-flex items-center cursor-pointer">
-                                <input type="checkbox" onchange="toggleDayLock(${d}, this.checked)" class="sr-only peer" ${isServerUnlocked ? 'checked' : ''}>
-                                <div class="w-8 h-4 bg-slate-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-3 after:w-3 after:transition-all peer-checked:bg-amber-500"></div>
-                            </label>
+                    headerRightHtml = `
+                        <div class="flex flex-col items-end gap-1.5" onclick="event.stopPropagation()">
+                            <!-- 실습 오픈 스위치 -->
+                            <div class="flex items-center space-x-1.5">
+                                <span class="text-[10px] text-slate-400 font-medium">실습:</span>
+                                <span class="text-[10px] ${isServerUnlocked ? 'text-amber-400 font-bold' : 'text-slate-500'}">
+                                    ${isServerUnlocked ? '오픈됨' : '비공개'}
+                                </span>
+                                <label class="relative inline-flex items-center cursor-pointer">
+                                    <input type="checkbox" onchange="toggleDayLock(${d}, this.checked)" class="sr-only peer" ${isServerUnlocked ? 'checked' : ''}>
+                                    <div class="w-7 h-3.5 bg-slate-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[1px] after:left-[1px] after:bg-white after:rounded-full after:h-2.5 after:w-2.5 after:transition-all peer-checked:bg-amber-500"></div>
+                                </label>
+                            </div>
+                            <!-- 바로 밑에: 답안 오픈 스위치 -->
+                            <div class="flex items-center space-x-1.5">
+                                <span class="text-[10px] text-slate-400 font-medium">답안:</span>
+                                <span class="text-[10px] ${isSolUnlocked ? 'text-emerald-400 font-bold' : 'text-slate-500'}">
+                                    ${isSolUnlocked ? '공개됨' : '비공개'}
+                                </span>
+                                <label class="relative inline-flex items-center cursor-pointer">
+                                    <input type="checkbox" onchange="toggleSolutionLock(${d}, this.checked)" class="sr-only peer" ${isSolUnlocked ? 'checked' : ''}>
+                                    <div class="w-7 h-3.5 bg-slate-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[1px] after:left-[1px] after:bg-white after:rounded-full after:h-2.5 after:w-2.5 after:transition-all peer-checked:bg-emerald-500"></div>
+                                </label>
+                            </div>
+                            <!-- 바로 밑에: 제출 마감 스위치 -->
+                            <div class="flex items-center space-x-1.5">
+                                <span class="text-[10px] text-slate-400 font-medium">마감:</span>
+                                <span class="text-[10px] ${isClosed ? 'text-rose-400 font-bold' : 'text-slate-500'}">
+                                    ${isClosed ? '마감됨' : '진행중'}
+                                </span>
+                                <label class="relative inline-flex items-center cursor-pointer">
+                                    <input type="checkbox" onchange="toggleCloseDay(${d}, this.checked)" class="sr-only peer" ${isClosed ? 'checked' : ''}>
+                                    <div class="w-7 h-3.5 bg-slate-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[1px] after:left-[1px] after:bg-white after:rounded-full after:h-2.5 after:w-2.5 after:transition-all peer-checked:bg-rose-500"></div>
+                                </label>
+                            </div>
                         </div>
                     `;
+                } else {
+                    let badges = [];
+                    if (isClosed) {
+                        badges.push(`<span class="text-[10px] text-rose-400 bg-rose-500/10 border border-rose-500/30 px-2 py-0.5 rounded font-semibold flex items-center gap-1"><i class="fa-solid fa-lock text-[9px]"></i> 제출 마감</span>`);
+                    }
+                    if (isSolUnlocked) {
+                        badges.push(`<span class="text-[10px] text-emerald-400 bg-emerald-500/10 border border-emerald-500/30 px-2 py-0.5 rounded font-semibold flex items-center gap-1"><i class="fa-solid fa-key text-[9px]"></i> 답안 공개</span>`);
+                    }
+                    if (badges.length > 0) {
+                        headerRightHtml = `<div class="flex items-center gap-1.5">${badges.join('')}</div>`;
+                    }
                 }
 
                 card.innerHTML = `
@@ -662,7 +1413,7 @@
                                 sub === 'MySQL' ? 'bg-sky-500/20 text-sky-400 border border-sky-500/30' :
                                 'bg-purple-500/20 text-purple-400 border border-purple-500/30'
                             }">${sub}</span>
-                            ${adminToggleHtml}
+                            ${headerRightHtml}
                         </div>
 
                         <h3 class="text-base font-bold text-white mb-4">${d}일차 실습</h3>
@@ -1297,6 +2048,196 @@
                         "삼항 연산자 클램핑: 음수로 내려갈 수 있는 수치를 최소 0점으로 제한하는 하한선 보정 기법입니다."
                     ]
                 ]
+            },
+            "day02_하1": {
+                title: "2일차 [하1] ✨ 메모리 계층 판별: 다중 분기 조건문(if - else if - else)과 지연시간 평가",
+                subject: "Java",
+                badge: "다중 if-else & 메모리 계층",
+                items: [
+                    [
+                        "if (조건1) { ... } else if (조건2) { ... }",
+                        "다중 조건 분기: 위에서부터 순서대로 조건을 평가하며, 가장 먼저 참이 되는 단 하나의 블록만 실행하고 빠져나옵니다."
+                    ],
+                    [
+                        "조건 검사 순서 (작은 지연시간 ➔ 큰 지연시간)",
+                        "L1 캐시(<= 1ns) ➔ L2/L3 캐시(<= 10ns) ➔ RAM(<= 100ns) 순으로 작은 기준값부터 검사해야 상위 기준에 걸리는 논리적 오류를 방지합니다."
+                    ],
+                    [
+                        "long latency = sc.nextLong();",
+                        "수 나노초(ns)에서 수백만 나노초까지 큰 정수 범위를 안전하게 다루기 위해 long 정수형 변수를 사용합니다."
+                    ]
+                ]
+            },
+            "day02_하2": {
+                title: "2일차 [하2] ✨ 특정 값 일치 분기: switch - case - default & break 탈출",
+                subject: "Java",
+                badge: "switch-case",
+                items: [
+                    [
+                        "switch (변수) { case 값: ... break; }",
+                        "정수, 문자, 문자열의 특정 일치 값을 고속으로 비교할 때 if문보다 가독성이 우수한 분기문입니다."
+                    ],
+                    [
+                        "break;",
+                        "switch 블록 또는 반복문을 즉시 완전히 탈출합니다. 생략하면 다음 case로 흘러내리는 Fall-through가 일어납니다."
+                    ],
+                    [
+                        "default:",
+                        "위의 어떤 case에도 일치하지 않을 때 실행되는 기본 예외 처리 블록입니다."
+                    ]
+                ]
+            },
+            "day02_하3": {
+                title: "2일차 [하3] ✨ 복합 조건식: 논리 OR(||), AND(&&) & 실수 평균 계산",
+                subject: "Java",
+                badge: "복합 조건 판별",
+                items: [
+                    [
+                        "A || B (논리 OR)",
+                        "A 또는 B 중 어느 하나라도 참(true)이면 전체가 참이 되는 단축 평가(Short-circuit) 논리 연산자입니다."
+                    ],
+                    [
+                        "double avg = (cpu + mem + disk) / 3.0;",
+                        "정수 나눗셈에서 소수점을 유지하려면 분모를 반드시 `3.0`과 같은 실수(double)로 나누어야 합니다."
+                    ],
+                    [
+                        "System.out.printf(\\\"%.1f%%\\\\n\\\", avg);",
+                        "printf에서 소수점 1자리 출력은 `%.1f`, 퍼센트 기호 자체는 `%%`로 출력합니다."
+                    ]
+                ]
+            },
+            "day02_중1": {
+                title: "2일차 [중1] ✨ 정해진 횟수 반복: for 루프 & 기하급수적 지수 증가(*= 2)",
+                subject: "Java",
+                badge: "for & 지수 증가",
+                items: [
+                    [
+                        "for (int i = 1; i <= n; i++) { ... }",
+                        "초기식, 조건식, 증감식으로 구성되어 정해진 횟수(n번)만큼 블록 내부를 반복 실행합니다."
+                    ],
+                    [
+                        "currentDelay *= 2;",
+                        "복합 대입 연산자: 이전 값에 2를 곱하여 누적 대입함으로써 지수함수(Exponential)적 증가를 구현합니다."
+                    ],
+                    [
+                        "totalWaitTime += currentDelay;",
+                        "매 반복 회차마다 소요된 대기 시간을 누적 합산(Accumulate)하는 패턴입니다."
+                    ]
+                ]
+            },
+            "day02_중2": {
+                title: "2일차 [중2] ✨ 조건부 반복 탈출: break & 플래그 변수 활용",
+                subject: "Java",
+                badge: "루프 break 탈출",
+                items: [
+                    [
+                        "break;",
+                        "목표값(정답)을 찾았을 때 아직 남아있는 for 반복을 즉시 중단하고 루프 밖으로 탈출합니다."
+                    ],
+                    [
+                        "boolean isCorrect = false;",
+                        "루프 안에서 정답을 맞췄는지 여부를 기록해두고, 루프 종료 후 실패 메시지를 띄울지 판단하는 플래그(Flag)입니다."
+                    ],
+                    [
+                        "if (!isCorrect) { ... }",
+                        "논리 부정 연산자(!): isCorrect가 false일 때(정답을 못 맞췄을 때) 실행되는 블록입니다."
+                    ]
+                ]
+            },
+            "day02_중3": {
+                title: "2일차 [중3] ✨ 조건 기반 반복: while(조건) & 교대 실행(Round Robin)",
+                subject: "Java",
+                badge: "while 교대 실행",
+                items: [
+                    [
+                        "while (burstA > 0 || burstB > 0)",
+                        "반복 횟수가 사전에 고정되지 않고, 특정 종료 조건이 될 때까지 동적으로 반복하는 while문입니다."
+                    ],
+                    [
+                        "int run = (burst >= quantum) ? quantum : burst;",
+                        "타임 퀀텀보다 남은 작업이 적을 때 초과 실행을 막기 위해 최소값을 선택하는 삼항 연산 클램핑입니다."
+                    ],
+                    [
+                        "round++;",
+                        "루프 1회전이 끝날 때마다 라운드 카운터를 1씩 증가시켜 시뮬레이션 경과를 추적합니다."
+                    ]
+                ]
+            },
+            "day02_상1": {
+                title: "2일차 [상1] ✨ 처리율 제한: 상한선 클램핑 & 조건부 자원 소모",
+                subject: "Java",
+                badge: "토큰 버킷 제어",
+                items: [
+                    [
+                        "Math.min(capacity, tokens + refill)",
+                        "토큰 충전 시 버킷의 최대 허용 용량을 초과하지 않도록 상한선을 제어하는 클램핑 기법입니다."
+                    ],
+                    [
+                        "if (currentTokens >= cost)",
+                        "자원이 충분할 때만 허용하고 차감(`currentTokens -= cost`), 부족하면 거부하는 Rate Limiter의 핵심 조건문입니다."
+                    ],
+                    [
+                        "(double) accepted / total * 100.0",
+                        "정수끼리의 나눗셈 시 0이 되는 것을 방지하기 위해 `(double)`로 명시적 형변환 후 백분율을 계산합니다."
+                    ]
+                ]
+            },
+            "day02_상2": {
+                title: "2일차 [상2] ✨ 무한 스트림 입력: while (sc.hasNextInt()) & 상태 머신",
+                subject: "Java",
+                badge: "스트림 & 상태 머신",
+                items: [
+                    [
+                        "while (sc.hasNextInt())",
+                        "입력 버퍼에 다음 정수 데이터가 남아있는 동안 계속해서 반복하여 읽어들이는 스트림 입력 패턴입니다."
+                    ],
+                    [
+                        "임시 잔액(temp) vs 확정 잔액(db)",
+                        "트랜잭션 ACID 원자성을 위해 임시 변수에 먼저 계산하고, COMMIT 시에만 실제 확정 변수에 동기화합니다."
+                    ],
+                    [
+                        "printf(\\\"%+,d원\\\", amount)",
+                        "`%+d` 서식: 양수일 때는 `+5,000`, 음수일 때는 `-2,000` 처럼 부호를 자동으로 붙여 출력합니다."
+                    ]
+                ]
+            },
+            "day02_도전1": {
+                title: "2일차 [도전1] ✨ 비트 순환 가산: while 캐리 접기 & 1의 보수(~)",
+                subject: "Java",
+                badge: "비트 접기 & 보수",
+                items: [
+                    [
+                        "while (sum > 255) { sum = (sum & 0xFF) + (sum >> 8); }",
+                        "8비트를 초과하는 자리올림수(Carry: 상위 비트)를 우측 시프트(`>> 8`)로 잘라내어 하위 비트에 순환 가산합니다."
+                    ],
+                    [
+                        "(~sum) & 0xFF",
+                        "비트 NOT(1의 보수, `~`) 연산자로 모든 0과 1을 반전시킨 후 8비트 마스킹(`& 0xFF`)하여 체크섬을 생성합니다."
+                    ],
+                    [
+                        "String.format(\\\"0x%02X\\\", checksum)",
+                        "1바이트 체크섬 값을 `0xFA` 처럼 2자리 대문자 16진수 포맷으로 변환합니다."
+                    ]
+                ]
+            },
+            "day02_도전2": {
+                title: "2일차 [도전2] ✨ 가상 CPU 에뮬레이션: 옵코드 디코딩 & 8비트 레지스터 래핑",
+                subject: "Java",
+                badge: "가상 CPU 사이클",
+                items: [
+                    [
+                        "Fetch - Decode - Execute 사이클",
+                        "`while`문(사이클 반복) ➔ `sc.nextInt()`(명령어 가져오기) ➔ `switch(opcode)`(해석 및 실행)로 이어지는 CPU 핵심 루프입니다."
+                    ],
+                    [
+                        "r0 = ((r0 - r1) % 256 + 256) % 256;",
+                        "8비트 레지스터 언더플로우 방지: 자바의 음수 나머지 연산 특성을 보정하여 항상 0~255 범위로 순환(Wrap-around)시킵니다."
+                    ],
+                    [
+                        "ZF = (r0 == r1);  GF = (r0 > r1);",
+                        "비교 연산(CMP) 시 두 레지스터의 크기 관계를 Zero Flag와 Greater Flag에 논리값(boolean)으로 세팅합니다."
+                    ]
+                ]
             }
         };
 
@@ -1372,17 +2313,54 @@
             } else {
                 diffBadge.className = 'px-2.5 py-0.5 rounded text-[11px] font-bold bg-gradient-to-r from-purple-500/20 to-pink-500/20 text-purple-300 border border-purple-500/40 shadow-sm';
             }
+
+            const closedBadge = document.getElementById('pClosedBadge');
+            const isClosed = isDayClosed(prob.day);
+            if (closedBadge) {
+                if (isClosed) {
+                    closedBadge.classList.remove('hidden');
+                } else {
+                    closedBadge.classList.add('hidden');
+                }
+            }
+            updateSubmitButtonState();
+
             document.getElementById('pDesc').textContent = prob.desc;
             renderSamples(prob);
             document.getElementById('pSolutionCode').textContent = prob.solution || '// 모범 답안 준비 중';
 
             // 힌트 내용 세팅
             document.getElementById('pHintText').textContent = prob.hint || '문제를 꼼꼼히 읽고 예제 입출력 서식을 맞춰 작성해 보세요.';
+
+            // 단계별 로직 구성 순서 및 초보자 가이드 세팅
+            const logicCard = document.getElementById('logicGuideCard');
+            const logicTextEl = document.getElementById('pLogicGuideText');
+            if (prob.logic_guide && logicCard && logicTextEl) {
+                logicCard.classList.remove('hidden');
+                logicTextEl.textContent = prob.logic_guide;
+            } else if (logicCard) {
+                logicCard.classList.add('hidden');
+            }
+
             renderTopicSyntaxGuide(prob);
 
-            // 정답 예시 코드는 오직 관리자(admin)에게만 노출
+            // CS 핵심 지식 아코디언 세팅
+            const csCard = document.getElementById('csKnowledgeCard');
+            const csTextEl = document.getElementById('pCsText');
+            if (prob.cs_knowledge && csCard && csTextEl) {
+                csCard.classList.remove('hidden');
+                csTextEl.textContent = prob.cs_knowledge;
+            } else if (csCard) {
+                csCard.classList.add('hidden');
+            }
+            const csContainer = document.getElementById('csContainer');
+            if (csContainer) csContainer.classList.add('hidden');
+            const csChevron = document.getElementById('csChevron');
+            if (csChevron) csChevron.classList.remove('rotate-180');
+
+            // 정답 예시 코드는 관리자이거나 해당 일차 답안이 공개(오픈)되었을 때 노출
             const adminSolCard = document.getElementById('adminSolutionCard');
-            if (currentUser && currentUser.role === 'admin') {
+            if (isSolutionUnlocked(prob.day)) {
                 adminSolCard.classList.remove('hidden');
             } else {
                 adminSolCard.classList.add('hidden');
@@ -1390,6 +2368,7 @@
 
             document.getElementById('editorLang').textContent = `${prob.subject} Editor`;
             codeEditor.value = prob.template;
+            updateLineNumbers();
 
             document.getElementById('solutionContainer').classList.add('hidden');
             document.getElementById('solChevron').classList.remove('rotate-180');
@@ -1498,6 +2477,66 @@
             renderDaysGrid();
         }
 
+        // 관리자 모범 답안 오픈 토글
+        async function toggleSolutionLock(day, isUnlocked) {
+            if (isUnlocked) {
+                if (!unlockedSolutions.includes(day)) unlockedSolutions.push(day);
+            } else {
+                unlockedSolutions = unlockedSolutions.filter(d => d !== day);
+            }
+            localStorage.setItem('unlocked_solutions', JSON.stringify(unlockedSolutions));
+
+            try {
+                await fetch(`${judgeServerUrl}/api/admin/toggle-solution`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ day: day, unlocked: isUnlocked })
+                });
+            } catch (e) {}
+
+            renderDaysGrid();
+        }
+
+        // 관리자 실습 제출 마감 토글
+        async function toggleCloseDay(day, isClosed) {
+            if (isClosed) {
+                if (!closedDays.includes(day)) closedDays.push(day);
+            } else {
+                closedDays = closedDays.filter(d => d !== day);
+            }
+            localStorage.setItem('closed_days', JSON.stringify(closedDays));
+
+            try {
+                await fetch(`${judgeServerUrl}/api/admin/toggle-close-day`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ day: day, closed: isClosed })
+                });
+            } catch (e) {}
+
+            renderDaysGrid();
+            updateSubmitButtonState();
+        }
+
+        // 제출 버튼 상태 갱신 (마감 시 '제출 마감됨'으로 변경 및 비활성화)
+        function updateSubmitButtonState() {
+            const submitBtn = document.getElementById('submitBtn');
+            if (!submitBtn) return;
+            const currentDay = currentProblem ? currentProblem.day : selectedDay;
+            const isClosed = isDayClosed(currentDay);
+            if (isClosed) {
+                submitBtn.className = 'text-xs bg-rose-500/15 hover:bg-rose-500/25 font-bold text-rose-300 px-3.5 py-1 rounded transition flex items-center gap-1 border border-rose-500/40 shadow-sm cursor-pointer';
+                submitBtn.innerHTML = '<i class="fa-solid fa-lock text-rose-400"></i> 제출 마감됨';
+                submitBtn.title = '해당 일차의 실습 제출이 마감되었습니다. 클릭 시 상세 안내가 표시됩니다.';
+                submitBtn.disabled = false;
+            } else {
+                submitBtn.className = 'text-xs bg-amber-500 hover:bg-amber-400 font-bold text-slate-950 px-3.5 py-1 rounded transition flex items-center gap-1 shadow-sm';
+                submitBtn.innerHTML = '<i class="fa-solid fa-cloud-arrow-up"></i> 제출하기';
+                submitBtn.title = '최종 과제로 채점 및 제출합니다.';
+                submitBtn.disabled = false;
+            }
+        }
+
         function toggleSolution() {
             const container = document.getElementById('solutionContainer');
             const chevron = document.getElementById('solChevron');
@@ -1512,9 +2551,17 @@
             chevron.classList.toggle('rotate-180');
         }
 
+        function toggleCsKnowledge() {
+            const container = document.getElementById('csContainer');
+            const chevron = document.getElementById('csChevron');
+            container.classList.toggle('hidden');
+            chevron.classList.toggle('rotate-180');
+        }
+
         function resetCode() {
             if (currentProblem && confirm('기본 템플릿으로 초기화하시겠습니까?')) {
                 document.getElementById('codeEditor').value = currentProblem.template;
+                updateLineNumbers();
             }
         }
 
@@ -1566,9 +2613,51 @@
                 }
             }
 
+            const navBugsBtn = document.getElementById('navBugsBtn');
+            if (navBugsBtn) {
+                if (currentUser && currentUser.role === 'admin') {
+                    navBugsBtn.classList.remove('hidden');
+                } else {
+                    navBugsBtn.classList.add('hidden');
+                }
+            }
+
+            const navBugFixBtn = document.getElementById('navBugFixBtn');
+            if (navBugFixBtn) {
+                if (currentUser && currentUser.role === 'admin') {
+                    navBugFixBtn.classList.remove('hidden');
+                    updateSystemBugBadgeCount();
+                } else {
+                    navBugFixBtn.classList.add('hidden');
+                }
+            }
+
+            const navMonitoringBtn = document.getElementById('navMonitoringBtn');
+            if (navMonitoringBtn) {
+                if (currentUser && currentUser.role === 'admin') {
+                    navMonitoringBtn.classList.remove('hidden');
+                } else {
+                    navMonitoringBtn.classList.add('hidden');
+                }
+            }
+
+            // 학생 계정이면 실시간 활동 추적기 활성화
+            if (currentUser && currentUser.role !== 'admin') {
+                initStudentActivityTracker();
+            }
+
+            // NF 계정이면 실시간 버그 알림 폴러 활성화, 그 외 계정은 중지
+            if (currentUser && currentUser.username === 'NF') {
+                startNfNotificationPoller();
+            } else {
+                stopNfNotificationPoller();
+            }
+
             const adminSolCard = document.getElementById('adminSolutionCard');
             if (adminSolCard) {
-                if (currentUser && currentUser.role === 'admin') {
+                if (currentProblem && isSolutionUnlocked(currentProblem.day)) {
+                    adminSolCard.classList.remove('hidden');
+                } else if (currentUser && currentUser.role === 'admin') {
                     adminSolCard.classList.remove('hidden');
                 } else {
                     adminSolCard.classList.add('hidden');
@@ -1862,8 +2951,8 @@
         function openLoginModal() { document.getElementById('loginModal').classList.remove('hidden'); }
         function closeLoginModal() { document.getElementById('loginModal').classList.add('hidden'); }
 
-        // 채점 및 과제 제출
-        async function submitCode() {
+        // 채점 및 과제 제출 (테스트 실행 또는 공식 제출)
+        async function runCode(isTest = false) {
             if (!currentUser) {
                 if (confirm('로그인 후 제출하시겠습니까?')) {
                     openLoginModal();
@@ -1873,15 +2962,29 @@
 
             if (!currentProblem) return;
 
+            // 실행/제출 즉시 실시간 활동 하트비트 전송
+            sendStudentHeartbeat();
+
+            // 마감된 일차의 공식 제출(SUBMIT) 차단 (테스트 실행만 허용)
+            if (!isTest && isDayClosed(currentProblem.day)) {
+                alert(`[실습 제출 마감 안내]\n\n${currentProblem.day}일차 실습 과제 제출이 마감되어 최종 제출이 불가합니다.\n\n▶ [테스트 실행]은 마감 여부와 상관없이 계속해서 자유롭게 실행 및 검증하실 수 있습니다.`);
+                return;
+            }
+
             const code = document.getElementById('codeEditor').value;
             const submitBtn = document.getElementById('submitBtn');
+            const testRunBtn = document.getElementById('testRunBtn');
             const consoleText = document.getElementById('consoleText');
             const judgeBadge = document.getElementById('judgeBadge');
             const judgeDuration = document.getElementById('judgeDuration');
 
-            submitBtn.disabled = true;
-            submitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> 채점 중...';
-            consoleText.textContent = '채점 중...';
+            const activeBtn = isTest ? testRunBtn : submitBtn;
+            if (submitBtn) submitBtn.disabled = true;
+            if (testRunBtn) testRunBtn.disabled = true;
+
+            const actionLabel = isTest ? '테스트 실행' : '채점';
+            if (activeBtn) activeBtn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> ${actionLabel} 중...`;
+            consoleText.textContent = `${actionLabel} 진행 중...`;
             judgeBadge.className = 'hidden';
             judgeDuration.textContent = '...';
 
@@ -1889,12 +2992,13 @@
                 username: currentUser ? currentUser.username : 'guest',
                 student_name: currentUser ? currentUser.name : '게스트',
                 problem_id: currentProblem.id,
-                problem_title: `${currentProblem.day}일차 [${currentProblem.difficulty}]`,
+                problem_title: `${currentProblem.day}일차 [${currentProblem.difficulty}] ${currentProblem.title}`,
                 language: currentProblem.subject.toLowerCase(),
                 code: code,
                 stdin_input: currentProblem.sample_input || '',
                 expected_output: currentProblem.expected,
-                testcases: (currentProblem.testcases && currentProblem.testcases.length > 0) ? currentProblem.testcases : undefined
+                testcases: (currentProblem.testcases && currentProblem.testcases.length > 0) ? currentProblem.testcases : undefined,
+                submission_type: isTest ? 'TEST' : 'SUBMIT'
             };
 
             const startTime = performance.now();
@@ -1911,7 +3015,7 @@
 
                 if (!res.ok) {
                     const err = await res.json();
-                    showJudgeResult('ERROR', 0, '', err.detail || '채점 서버 오류');
+                    showJudgeResult('ERROR', 0, '', err.detail || '채점 서버 오류', undefined, undefined, isTest);
                     return;
                 }
 
@@ -1922,46 +3026,58 @@
                     result.stdout,
                     result.stderr || result.message,
                     result.passed_count,
-                    result.total_count
+                    result.total_count,
+                    isTest
                 );
             } catch (err) {
                 judgeDuration.textContent = '오류';
-                showJudgeResult('SERVER_ERROR', 0, '', '채점 서버 연결 실패.');
+                showJudgeResult('SERVER_ERROR', 0, '', '채점 서버 연결 실패.', undefined, undefined, isTest);
             } finally {
-                submitBtn.disabled = false;
-                submitBtn.innerHTML = '<i class="fa-solid fa-play"></i> 제출 및 채점';
+                if (submitBtn) {
+                    submitBtn.disabled = false;
+                    updateSubmitButtonState();
+                }
+                if (testRunBtn) {
+                    testRunBtn.disabled = false;
+                    testRunBtn.innerHTML = '<i class="fa-solid fa-vial"></i> 테스트 실행';
+                }
             }
         }
 
-        function showJudgeResult(status, score, stdout, stderr, passedCount, totalCount) {
+        function submitCode() {
+            return runCode(false);
+        }
+
+        function showJudgeResult(status, score, stdout, stderr, passedCount, totalCount, isTest = false) {
             const badge = document.getElementById('judgeBadge');
             const text = document.getElementById('consoleText');
             badge.classList.remove('hidden');
 
             const hasCaseCounts = (passedCount !== undefined && totalCount !== undefined && totalCount > 0);
             const countStr = hasCaseCounts ? ` (${passedCount}/${totalCount} 통과)` : '';
+            const prefix = isTest ? '[테스트] ' : '';
 
             if (status === 'ACCEPTED') {
                 badge.className = 'inline-block px-2.5 py-0.5 rounded text-[11px] font-bold bg-emerald-500/20 text-emerald-400 border border-emerald-500/30';
-                badge.textContent = `맞았습니다!!${countStr} - ${score}점`;
+                badge.textContent = `${prefix}맞았습니다!!${countStr} - ${score}점`;
             } else if (status === 'PARTIAL') {
                 badge.className = 'inline-block px-2.5 py-0.5 rounded text-[11px] font-bold bg-amber-500/20 text-amber-400 border border-amber-500/30';
-                badge.textContent = `부분 성공${countStr} - ${score}점`;
+                badge.textContent = `${prefix}부분 성공${countStr} - ${score}점`;
             } else if (status === 'HARDCODED_REJECTED') {
                 badge.className = 'inline-block px-2.5 py-0.5 rounded text-[11px] font-bold bg-rose-500/20 text-rose-400 border border-rose-500/30';
-                badge.textContent = '단순 출력 감지 (오답)';
+                badge.textContent = `${prefix}단순 출력 감지 (오답)`;
             } else if (status === 'WRONG_ANSWER') {
                 badge.className = 'inline-block px-2.5 py-0.5 rounded text-[11px] font-bold bg-rose-500/20 text-rose-400 border border-rose-500/30';
-                badge.textContent = `틀렸습니다${countStr} - ${score}점`;
+                badge.textContent = `${prefix}틀렸습니다${countStr} - ${score}점`;
             } else if (status === 'COMPILE_ERROR') {
                 badge.className = 'inline-block px-2.5 py-0.5 rounded text-[11px] font-bold bg-amber-500/20 text-amber-400 border border-amber-500/30';
-                badge.textContent = '컴파일 에러';
+                badge.textContent = `${prefix}컴파일 에러`;
             } else if (status === 'TIME_LIMIT_EXCEEDED') {
                 badge.className = 'inline-block px-2.5 py-0.5 rounded text-[11px] font-bold bg-rose-500/20 text-rose-400 border border-rose-500/30';
-                badge.textContent = '시간 초과';
+                badge.textContent = `${prefix}시간 초과`;
             } else {
                 badge.className = 'inline-block px-2.5 py-0.5 rounded text-[11px] font-bold bg-rose-500/20 text-rose-400 border border-rose-500/30';
-                badge.textContent = `실행 에러: ${status}`;
+                badge.textContent = `${prefix}실행 에러: ${status}`;
             }
 
             let logMsg = '';
@@ -1971,90 +3087,385 @@
             text.textContent = logMsg.trim();
         }
 
-        // 과제 제출 현황 조회
+        // ========================================================
+        // 에디터 줄 번호(Line Numbers) 및 스마트 인덴트(Auto-Indent)
+        // ========================================================
+        function updateLineNumbers() {
+            const editor = document.getElementById('codeEditor');
+            const lineNumEl = document.getElementById('lineNumbers');
+            if (!editor || !lineNumEl) return;
+            const lines = (editor.value || '').split('\n').length;
+            let nums = '';
+            for (let i = 1; i <= lines; i++) {
+                nums += i + '\n';
+            }
+            lineNumEl.textContent = nums;
+        }
+
+        function initEditorEvents() {
+            const editor = document.getElementById('codeEditor');
+            const lineNumEl = document.getElementById('lineNumbers');
+            if (!editor) return;
+
+            // 스크롤 동기화
+            editor.addEventListener('scroll', () => {
+                if (lineNumEl) lineNumEl.scrollTop = editor.scrollTop;
+            });
+            if (lineNumEl) {
+                lineNumEl.addEventListener('wheel', (e) => {
+                    editor.scrollTop += e.deltaY;
+                });
+            }
+
+            // 입력 시 줄 번호 갱신
+            editor.addEventListener('input', updateLineNumbers);
+
+            // Tab (4칸 공백) 및 Enter (이전 줄 들여쓰기 유지 및 블록 확장)
+            editor.addEventListener('keydown', function(e) {
+                if (e.key === 'Tab') {
+                    e.preventDefault();
+                    const start = this.selectionStart;
+                    const end = this.selectionEnd;
+                    this.value = this.value.substring(0, start) + '    ' + this.value.substring(end);
+                    this.selectionStart = this.selectionEnd = start + 4;
+                    updateLineNumbers();
+                } else if (e.key === 'Enter') {
+                    e.preventDefault();
+                    const start = this.selectionStart;
+                    const end = this.selectionEnd;
+                    const val = this.value;
+
+                    // 현재 줄의 시작 위치 및 이전 줄 내용 추출
+                    const lastNewLine = val.lastIndexOf('\n', start - 1);
+                    const currentLine = val.substring(lastNewLine + 1, start);
+
+                    // 이전 줄의 선행 들여쓰기(공백/탭) 추출
+                    const indentMatch = currentLine.match(/^[ \t]*/);
+                    let indent = indentMatch ? indentMatch[0] : '';
+
+                    // 만약 현재 줄이 '{'로 끝났다면 4칸 추가 들여쓰기
+                    const trimmed = currentLine.trimEnd();
+                    const opensBlock = trimmed.endsWith('{');
+                    if (opensBlock) {
+                        indent += '    ';
+                    }
+
+                    // 커서 바로 다음 문자가 '}'인 경우 줄 바꿈 확장
+                    const charAfter = val.charAt(start);
+                    if (opensBlock && charAfter === '}') {
+                        const baseIndent = indentMatch ? indentMatch[0] : '';
+                        const insertion = '\n' + indent + '\n' + baseIndent;
+                        this.value = val.substring(0, start) + insertion + val.substring(end);
+                        this.selectionStart = this.selectionEnd = start + 1 + indent.length;
+                    } else {
+                        const insertion = '\n' + indent;
+                        this.value = val.substring(0, start) + insertion + val.substring(end);
+                        this.selectionStart = this.selectionEnd = start + insertion.length;
+                    }
+                    updateLineNumbers();
+                }
+            });
+        }
+
+        // ========================================================
+        // 과제 제출 현황 조회 및 필터링 기능
+        // ========================================================
+        let rawSubmissionsList = [];
+
+        function initSubFilterDropdowns() {
+            const daySelect = document.getElementById('subFilterDay');
+            if (!daySelect) return;
+
+            const curDayVal = daySelect.value;
+            daySelect.innerHTML = '<option value="">전체 일차</option>';
+
+            // 학생은 오픈된 일차만, 관리자는 1~16일차 전체
+            for (let d = 1; d <= 16; d++) {
+                if (isDayUnlocked(d)) {
+                    const sub = d <= 7 ? 'Java' : (d <= 12 ? 'MySQL' : 'Web');
+                    const opt = document.createElement('option');
+                    opt.value = d;
+                    opt.textContent = `${d}일차 (${sub})`;
+                    if (String(d) === curDayVal) opt.selected = true;
+                    daySelect.appendChild(opt);
+                }
+            }
+
+            updateSubProblemDropdown();
+        }
+
+        function updateSubProblemDropdown() {
+            const daySelect = document.getElementById('subFilterDay');
+            const probSelect = document.getElementById('subFilterProblem');
+            if (!probSelect) return;
+
+            const selectedDay = daySelect ? daySelect.value : '';
+            const curProbVal = probSelect.value;
+
+            probSelect.innerHTML = '<option value="">전체 문제</option>';
+
+            if (typeof PROBLEMS !== 'undefined') {
+                PROBLEMS.forEach(p => {
+                    // 학생은 아직 미오픈된 일차의 문제는 드롭다운에 절대 표시하지 않음
+                    if (!isDayUnlocked(p.day)) return;
+
+                    // 특정 일차가 선택된 경우 해당 일차 문제만 추가
+                    if (selectedDay && String(p.day) !== selectedDay) return;
+
+                    const opt = document.createElement('option');
+                    opt.value = p.id;
+                    opt.textContent = selectedDay 
+                        ? `[${p.difficulty}] ${p.title}` 
+                        : `${p.day}일차 [${p.difficulty}] ${p.title}`;
+                    if (p.id === curProbVal) opt.selected = true;
+                    probSelect.appendChild(opt);
+                });
+            }
+        }
+
+        function onSubDayFilterChange() {
+            updateSubProblemDropdown();
+            filterSubmissionsTable();
+        }
+
+        function resetSubFilters() {
+            const selDay = document.getElementById('subFilterDay');
+            const selProb = document.getElementById('subFilterProblem');
+            const inpName = document.getElementById('subFilterName');
+            const selType = document.getElementById('subFilterType');
+            if (selDay) selDay.value = '';
+            updateSubProblemDropdown();
+            if (selProb) selProb.value = '';
+            if (inpName) inpName.value = '';
+            if (selType) selType.value = (currentUser && currentUser.role === 'admin') ? '' : 'SUBMIT';
+            filterSubmissionsTable();
+        }
+
+        function filterSubmissionsTable() {
+            const tbody = document.getElementById('submissionTableBody');
+            if (!rawSubmissionsList) return;
+
+            const selectedDay = (document.getElementById('subFilterDay') ? document.getElementById('subFilterDay').value : '').trim();
+            const selectedProbId = (document.getElementById('subFilterProblem') ? document.getElementById('subFilterProblem').value : '').trim();
+            const searchKeyword = (document.getElementById('subFilterName') ? document.getElementById('subFilterName').value : '').trim().toLowerCase();
+            const selectedType = (document.getElementById('subFilterType') ? document.getElementById('subFilterType').value : '').trim();
+
+            const isAdmin = currentUser && currentUser.role === 'admin';
+
+            const filtered = rawSubmissionsList.filter(item => {
+                // 학생 계정은 오직 본인 제출 기록만 엄격히 조회
+                if (!isAdmin && currentUser) {
+                    if (item.username !== currentUser.username) {
+                        return false;
+                    }
+                }
+
+                const p = (typeof PROBLEMS !== 'undefined') ? PROBLEMS.find(x => x.id === item.problem_id) : null;
+
+                // 학생 계정: 미공개(미오픈) 일차 문제는 목록에 노출하지 않음
+                if (!isAdmin && p && !isDayUnlocked(p.day)) {
+                    return false;
+                }
+
+                // 일차 필터
+                if (selectedDay) {
+                    const itemDay = p ? String(p.day) : '';
+                    if (itemDay !== selectedDay) {
+                        return false;
+                    }
+                }
+
+                // 문제 필터
+                if (selectedProbId && item.problem_id !== selectedProbId) {
+                    return false;
+                }
+
+                // 이름 / 아이디 필터 (관리자 전용 검색)
+                if (isAdmin && searchKeyword) {
+                    const name = (item.student_name || '').toLowerCase();
+                    const u = (item.username || '').toLowerCase();
+                    if (!name.includes(searchKeyword) && !u.includes(searchKeyword)) {
+                        return false;
+                    }
+                }
+                // 제출 구분 필터
+                const subType = item.submission_type || 'SUBMIT';
+                if (isAdmin) {
+                    if (selectedType && subType !== selectedType) {
+                        return false;
+                    }
+                } else {
+                    // 학생은 테스트 실행 기록 제외하고 공식 제출만 노출
+                    if (subType === 'TEST') {
+                        return false;
+                    }
+                }
+                return true;
+            });
+
+            renderSubmissionsTable(filtered);
+        }
+
+        function renderSubmissionsTable(list) {
+            const tbody = document.getElementById('submissionTableBody');
+            tbody.innerHTML = '';
+
+            if (!list || list.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="9" class="text-center py-8 text-slate-500">조건에 일치하는 제출 이력이 없습니다.</td></tr>';
+                return;
+            }
+
+            const isAdmin = currentUser && currentUser.role === 'admin';
+
+            list.forEach(item => {
+                const tr = document.createElement('tr');
+                tr.className = 'hover:bg-slate-800/40 transition';
+
+                let resultBadge = '';
+                if (item.status === 'ACCEPTED') {
+                    resultBadge = '<span class="text-emerald-400 font-bold">맞았습니다</span>';
+                } else if (item.status === 'PARTIAL') {
+                    resultBadge = `<span class="text-amber-400 font-bold">부분 점수 (${item.score}점)</span>`;
+                } else if (item.status === 'HARDCODED_REJECTED') {
+                    resultBadge = '<span class="text-rose-400 font-bold">단순 출력 감지</span>';
+                } else if (item.status === 'WRONG_ANSWER') {
+                    resultBadge = '<span class="text-rose-400 font-bold">틀렸습니다</span>';
+                } else if (item.status === 'COMPILE_ERROR') {
+                    resultBadge = '<span class="text-amber-400 font-bold">컴파일 에러</span>';
+                } else {
+                    resultBadge = `<span class="text-rose-400 font-bold">${item.status}</span>`;
+                }
+
+                const isMine = currentUser && item.username === currentUser.username;
+
+                let displayName = '';
+                let codeButtonHtml = '';
+
+                if (isAdmin) {
+                    displayName = `${escapeHtml(item.student_name)} <span class="text-[10px] text-slate-500">(${escapeHtml(item.username)})</span>`;
+                    codeButtonHtml = `
+                        <button onclick="viewSubmittedCode(${item.id})" class="bg-slate-800 hover:bg-slate-700 text-amber-400 px-2.5 py-1 rounded text-[11px] transition">
+                            코드 보기
+                        </button>
+                    `;
+                } else if (isMine) {
+                    const myName = (currentUser && currentUser.name) ? currentUser.name : item.student_name;
+                    displayName = `<span class="text-amber-400 font-bold">${escapeHtml(myName)} (나)</span>`;
+                    codeButtonHtml = `
+                        <button onclick="viewSubmittedCode(${item.id})" class="bg-amber-500/20 hover:bg-amber-500/30 text-amber-300 border border-amber-500/40 px-2.5 py-1 rounded text-[11px] transition">
+                            내 코드
+                        </button>
+                    `;
+                } else {
+                    displayName = `<span class="text-slate-400">익명 교육생</span>`;
+                    codeButtonHtml = `
+                        <span class="text-slate-600 text-[11px] flex items-center justify-center gap-1 select-none">
+                            <i class="fa-solid fa-lock text-[9px]"></i> 비공개
+                        </span>
+                    `;
+                }
+
+                // 문제 제목 고도화: problem_id로 PROBLEMS 배열에서 정확한 일차/난이도/제목 매핑
+                let probDisplayHtml = '';
+                const pObj = (typeof PROBLEMS !== 'undefined') ? PROBLEMS.find(p => p.id === item.problem_id) : null;
+                if (pObj) {
+                    probDisplayHtml = `
+                        <div class="flex items-center space-x-1.5">
+                            <span class="px-1.5 py-0.5 rounded text-[10px] font-bold bg-slate-800 text-amber-300 border border-slate-700 shrink-0">
+                                ${pObj.day}일차 [${pObj.difficulty}]
+                            </span>
+                            <span class="text-slate-200 truncate max-w-[240px]" title="${escapeHtml(pObj.title)}">
+                                ${escapeHtml(pObj.title)}
+                            </span>
+                        </div>
+                    `;
+                } else {
+                    probDisplayHtml = `<span class="text-slate-200">${escapeHtml(item.problem_title)}</span>`;
+                }
+
+                // 구분 뱃지 (제출 vs 테스트)
+                const isTest = (item.submission_type === 'TEST');
+                const typeBadge = isTest 
+                    ? '<span class="px-1.5 py-0.5 rounded text-[10px] font-bold bg-purple-500/20 text-purple-300 border border-purple-500/30">테스트</span>'
+                    : '<span class="px-1.5 py-0.5 rounded text-[10px] font-bold bg-blue-500/20 text-blue-300 border border-blue-500/30">제출</span>';
+
+                tr.innerHTML = `
+                    <td class="px-4 py-2.5 font-mono text-slate-500">${item.id}</td>
+                    <td class="px-4 py-2.5">${displayName}</td>
+                    <td class="px-4 py-2.5">${probDisplayHtml}</td>
+                    <td class="px-4 py-2.5">${typeBadge}</td>
+                    <td class="px-4 py-2.5">${resultBadge}</td>
+                    <td class="px-4 py-2.5 font-bold ${item.score === 100 ? 'text-emerald-400' : 'text-slate-400'}">${item.score}점</td>
+                    <td class="px-4 py-2.5 text-slate-400 font-mono">${item.execution_time_ms} ms</td>
+                    <td class="px-4 py-2.5 text-slate-500 text-[11px]">${item.created_at}</td>
+                    <td class="px-4 py-2.5 text-center">
+                        ${codeButtonHtml}
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
         async function loadSubmissions() {
             const tbody = document.getElementById('submissionTableBody');
-            tbody.innerHTML = '<tr><td colspan="8" class="text-center py-8 text-slate-500">제출 목록을 불러오는 중...</td></tr>';
+            tbody.innerHTML = '<tr><td colspan="9" class="text-center py-8 text-slate-500">제출 목록을 불러오는 중...</td></tr>';
+
+            const isAdmin = currentUser && currentUser.role === 'admin';
+            const nameFilterContainer = document.getElementById('subFilterNameContainer');
+            const myBadge = document.getElementById('mySubmissionsBadge');
+            const typeFilterContainer = document.getElementById('subFilterTypeContainer');
+
+            if (nameFilterContainer) {
+                if (isAdmin) nameFilterContainer.classList.remove('hidden');
+                else nameFilterContainer.classList.add('hidden');
+            }
+            if (myBadge) {
+                if (isAdmin) {
+                    myBadge.classList.add('hidden');
+                } else {
+                    myBadge.classList.remove('hidden');
+                    const myLabel = document.getElementById('mySubmissionsLabel');
+                    if (myLabel && currentUser) myLabel.textContent = `${currentUser.name} 님의 제출 기록`;
+                }
+            }
+            if (typeFilterContainer) {
+                if (isAdmin) {
+                    typeFilterContainer.classList.remove('hidden');
+                } else {
+                    typeFilterContainer.classList.add('hidden');
+                }
+            }
+
+            // 일차 및 문제 필터 드롭다운 초기화
+            initSubFilterDropdowns();
 
             try {
-                const res = await fetch(`${judgeServerUrl}/api/submissions`);
+                // 관리자는 전체 학생 및 테스트 실행 내역까지 조회; 학생은 본인의 공식 제출만 조회
+                const fetchUrl = isAdmin 
+                    ? `${judgeServerUrl}/api/submissions?include_tests=true&limit=3000` 
+                    : `${judgeServerUrl}/api/submissions?username=${encodeURIComponent(currentUser ? currentUser.username : '')}&limit=2000`;
+
+                const res = await fetch(fetchUrl);
                 if (!res.ok) throw new Error();
                 const list = await res.json();
 
-                if (list.length === 0) {
-                    tbody.innerHTML = '<tr><td colspan="8" class="text-center py-8 text-slate-500">아직 제출된 과제가 없습니다.</td></tr>';
-                    return;
-                }
-
-                tbody.innerHTML = '';
-                list.forEach(item => {
-                    const tr = document.createElement('tr');
-                    tr.className = 'hover:bg-slate-800/40 transition';
-
-                    let resultBadge = '';
-                    if (item.status === 'ACCEPTED') {
-                        resultBadge = '<span class="text-emerald-400 font-bold">맞았습니다</span>';
-                    } else if (item.status === 'PARTIAL') {
-                        resultBadge = `<span class="text-amber-400 font-bold">부분 점수 (${item.score}점)</span>`;
-                    } else if (item.status === 'HARDCODED_REJECTED') {
-                        resultBadge = '<span class="text-rose-400 font-bold">단순 출력 감지</span>';
-                    } else if (item.status === 'WRONG_ANSWER') {
-                        resultBadge = '<span class="text-rose-400 font-bold">틀렸습니다</span>';
-                    } else if (item.status === 'COMPILE_ERROR') {
-                        resultBadge = '<span class="text-amber-400 font-bold">컴파일 에러</span>';
-                    } else {
-                        resultBadge = `<span class="text-rose-400 font-bold">${item.status}</span>`;
+                // 테스트 및 관리자 계정 제외 (실제 수강생 데이터만 표기)
+                const excludedUsers = ['test', '테스트학생', 'test_verify', 'admin', '강사', '매니저', 'NF', 'anonymous', 'guest'];
+                rawSubmissionsList = list.filter(item => {
+                    const u = (item.username || '').toLowerCase();
+                    const name = (item.student_name || '').toLowerCase();
+                    if (isAdmin && (excludedUsers.includes(u) || u.startsWith('test') || u.startsWith('sample') || name.includes('테스트'))) {
+                        return false;
                     }
-
-                    const isAdmin = currentUser && currentUser.role === 'admin';
-                    const isMine = currentUser && item.username === currentUser.username;
-
-                    let displayName = '';
-                    let codeButtonHtml = '';
-
-                    if (isAdmin) {
-                        // 관리자: 실명 및 아이디 확인, 전체 소스코드 열람 가능
-                        displayName = `${item.student_name} <span class="text-[10px] text-slate-500">(${item.username})</span>`;
-                        codeButtonHtml = `
-                            <button onclick="viewSubmittedCode(${item.id})" class="bg-slate-800 hover:bg-slate-700 text-amber-400 px-2.5 py-1 rounded text-[11px] transition">
-                                코드 보기
-                            </button>
-                        `;
-                    } else if (isMine) {
-                        // 본인 제출건: 본인 이름 표시 및 내 코드 보기 가능
-                        const myName = (currentUser && currentUser.name) ? currentUser.name : item.student_name;
-                        displayName = `<span class="text-amber-400 font-bold">${myName} (나)</span>`;
-                        codeButtonHtml = `
-                            <button onclick="viewSubmittedCode(${item.id})" class="bg-amber-500/20 hover:bg-amber-500/30 text-amber-300 border border-amber-500/40 px-2.5 py-1 rounded text-[11px] transition">
-                                내 코드
-                            </button>
-                        `;
-                    } else {
-                        // 타 학생 제출건: 익명화 및 소스코드 잠금
-                        displayName = `<span class="text-slate-400">익명 교육생</span>`;
-                        codeButtonHtml = `
-                            <span class="text-slate-600 text-[11px] flex items-center justify-center gap-1 select-none">
-                                <i class="fa-solid fa-lock text-[9px]"></i> 비공개
-                            </span>
-                        `;
+                    if (!isAdmin && currentUser) {
+                        return item.username === currentUser.username;
                     }
-
-                    tr.innerHTML = `
-                        <td class="px-4 py-2.5 font-mono text-slate-500">${item.id}</td>
-                        <td class="px-4 py-2.5">${displayName}</td>
-                        <td class="px-4 py-2.5 text-slate-200">${item.problem_title}</td>
-                        <td class="px-4 py-2.5">${resultBadge}</td>
-                        <td class="px-4 py-2.5 font-bold ${item.score === 100 ? 'text-emerald-400' : 'text-slate-400'}">${item.score}점</td>
-                        <td class="px-4 py-2.5 text-slate-400 font-mono">${item.execution_time_ms} ms</td>
-                        <td class="px-4 py-2.5 text-slate-500">${item.created_at}</td>
-                        <td class="px-4 py-2.5 text-center">
-                            ${codeButtonHtml}
-                        </td>
-                    `;
-                    tbody.appendChild(tr);
+                    return true;
                 });
+
+                filterSubmissionsTable();
             } catch (err) {
-                tbody.innerHTML = '<tr><td colspan="8" class="text-center py-8 text-rose-400">제출 목록을 불러올 수 없습니다.</td></tr>';
+                tbody.innerHTML = '<tr><td colspan="9" class="text-center py-8 text-rose-400">제출 목록을 불러올 수 없습니다.</td></tr>';
             }
         }
 
@@ -2091,10 +3502,19 @@
         // 관리자 전용: 종합 통계 및 학생별 성과 대시보드
         // ========================================================
         let rawStatsData = null;
+        let currentSelectedStatDay = 0;
+        let currentTargetProblemCount = 90;
 
-        async function loadStatsData() {
+        async function loadStatsData(day = null) {
+            if (day !== null && day !== undefined) {
+                currentSelectedStatDay = parseInt(day, 10) || 0;
+            } else {
+                const el = document.getElementById('statsDayFilter');
+                if (el) currentSelectedStatDay = parseInt(el.value, 10) || 0;
+            }
             try {
-                const res = await fetch(`${judgeServerUrl}/api/admin/stats`);
+                const query = currentSelectedStatDay > 0 ? `?day=${currentSelectedStatDay}` : '';
+                const res = await fetch(`${judgeServerUrl}/api/admin/stats${query}`);
                 if (!res.ok) throw new Error();
                 rawStatsData = await res.json();
                 renderStatsUI(rawStatsData);
@@ -2103,18 +3523,60 @@
             }
         }
 
+        function onStatsDayFilterChange(val) {
+            currentSelectedStatDay = parseInt(val, 10) || 0;
+            loadStatsData(currentSelectedStatDay);
+        }
+
         function renderStatsUI(data) {
             if (!data) return;
 
             const summary = data.summary || {};
-            const students = data.students || [];
+            const selDay = summary.selected_day !== undefined ? summary.selected_day : currentSelectedStatDay;
+            currentTargetProblemCount = summary.target_problem_count || (selDay === 1 ? 6 : (selDay === 2 ? 10 : (selDay > 0 ? 5 : 90)));
+            const excludedUsers = ['test', '테스트학생', 'test_verify', 'admin', '강사', '매니저', 'NF', 'anonymous', 'guest'];
+            const students = (data.students || []).filter(s => {
+                const u = (s.username || '').toLowerCase();
+                const name = (s.name || '').toLowerCase();
+                return !(excludedUsers.includes(u) || u.startsWith('test') || u.startsWith('sample') || name.includes('테스트'));
+            });
             const problems = data.problems || [];
+
+            // UI 배지 및 라벨 업데이트
+            const scopeBadge = document.getElementById('statsScopeBadge');
+            if (scopeBadge) {
+                scopeBadge.textContent = selDay > 0 ? `${selDay}일차 (${currentTargetProblemCount}제)` : `전체 종합 (${currentTargetProblemCount}제)`;
+            }
+            const compLabel = document.getElementById('statAvgCompletionLabel');
+            if (compLabel) {
+                compLabel.textContent = selDay > 0 ? `${selDay}일차 평균 실습 완료율` : '평균 실습 완료율';
+            }
+            const targetText = document.getElementById('statTargetProblemsText');
+            if (targetText) {
+                targetText.textContent = selDay > 0 ? `${selDay}일차 총 ${currentTargetProblemCount}문제 기준` : `총 ${currentTargetProblemCount}문제 기준`;
+            }
+            const accLabel = document.getElementById('statOverallAccuracyLabel');
+            if (accLabel) {
+                accLabel.textContent = selDay > 0 ? `${selDay}일차 정답률` : '전체 정답률';
+            }
+            const subLabel = document.getElementById('statTotalSubmissionsLabel');
+            if (subLabel) {
+                subLabel.textContent = selDay > 0 ? `${selDay}일차 제출 시도` : '총 제출 시도';
+            }
+            const thComp = document.getElementById('thCompletionRate');
+            if (thComp) {
+                thComp.textContent = selDay > 0 ? `${selDay}일차 완료율 (${currentTargetProblemCount}제)` : `실습 완료율 (${currentTargetProblemCount}제)`;
+            }
+            const vulnTitle = document.getElementById('vulnProblemsHeader');
+            if (vulnTitle) {
+                vulnTitle.textContent = selDay > 0 ? `${selDay}일차 취약 문제 TOP 5` : '오답 빈도 높은 취약 문제 TOP 5';
+            }
 
             // 1. KPI 카드 반영
             document.getElementById('statTotalStudents').textContent = `${summary.total_students || 0}명`;
             
-            let avgComp = 0;
-            if (students.length > 0) {
+            let avgComp = summary.avg_completion_rate !== undefined ? summary.avg_completion_rate : 0;
+            if (avgComp === 0 && students.length > 0) {
                 const totalComp = students.reduce((acc, s) => acc + (s.completion_rate || 0), 0);
                 avgComp = Math.round((totalComp / students.length) * 10) / 10;
             }
@@ -2202,6 +3664,7 @@
                 const tr = document.createElement('tr');
                 tr.className = 'hover:bg-slate-800/40 transition';
 
+                const curTarget = s.target_problem_count || currentTargetProblemCount || 90;
                 tr.innerHTML = `
                     <td class="px-4 py-3">
                         <div class="flex items-center space-x-2">
@@ -2215,11 +3678,11 @@
                     <td class="px-4 py-3">
                         <div class="space-y-1">
                             <div class="flex items-center justify-between text-[11px]">
-                                <span class="text-emerald-400 font-bold">${s.solved_count} / 86 완료</span>
+                                <span class="text-emerald-400 font-bold">${s.solved_count} / ${curTarget} 완료</span>
                                 <span class="text-slate-400">${s.completion_rate}%</span>
                             </div>
                             <div class="w-36 bg-slate-950 h-1.5 rounded-full overflow-hidden border border-slate-800">
-                                <div class="bg-emerald-500 h-full" style="width: ${s.completion_rate}%"></div>
+                                <div class="bg-emerald-500 h-full" style="width: ${Math.min(s.completion_rate, 100)}%"></div>
                             </div>
                         </div>
                     </td>
@@ -2276,8 +3739,10 @@
             const student = (rawStatsData.students || []).find(s => s.username === username);
             if (!student) return;
 
-            document.getElementById('sModalTitle').textContent = `${student.name} (${student.username}) 실습 분석`;
-            document.getElementById('sModalSubtitle').textContent = `완료: ${student.solved_count}/48문제 (${student.completion_rate}%) | 정답률: ${student.accuracy}% | 총 제출: ${student.total_attempts}회`;
+            const targetProbCount = student.target_problem_count || currentTargetProblemCount || 90;
+            const scopeText = currentSelectedStatDay > 0 ? `${currentSelectedStatDay}일차 기준` : '전체 90제 기준';
+            document.getElementById('sModalTitle').textContent = `${student.name} (${student.username}) 실습 분석 [${scopeText}]`;
+            document.getElementById('sModalSubtitle').textContent = `완료: ${student.solved_count}/${targetProbCount}문제 (${student.completion_rate}%) | 정답률: ${student.accuracy}% | 총 제출: ${student.total_attempts}회 | 최근 활동(KST): ${student.last_active}`;
 
             const container = document.getElementById('sModalContent');
             const solvedList = student.solved_problems || [];
@@ -2330,6 +3795,1350 @@
 
         function closeStudentDetailModal() {
             document.getElementById('studentDetailModal').classList.add('hidden');
+        }
+
+        // =========================================================
+        // 실행 결과 콘솔창 상하 드래그 리사이저 (사용자 임의 크기 조절)
+        // =========================================================
+        function initConsoleResizer() {
+            const resizer = document.getElementById('consoleResizer');
+            const container = document.getElementById('consoleContainer');
+            if (!resizer || !container) return;
+
+            // 로컬 스토리지에 저장된 높이 복원
+            const savedHeight = localStorage.getItem('lion_console_height');
+            if (savedHeight && parseInt(savedHeight) >= 70) {
+                container.style.height = `${parseInt(savedHeight)}px`;
+            }
+
+            let isResizing = false;
+            let startY = 0;
+            let startHeight = 0;
+
+            resizer.addEventListener('mousedown', (e) => {
+                isResizing = true;
+                startY = e.clientY;
+                startHeight = container.offsetHeight;
+                document.body.style.userSelect = 'none';
+                document.body.style.cursor = 'row-resize';
+            });
+
+            window.addEventListener('mousemove', (e) => {
+                if (!isResizing) return;
+                // 위로 드래그할수록(clientY 감소) 콘솔 높이가 커짐
+                const dy = startY - e.clientY;
+                const minHeight = 70;
+                const maxHeight = Math.round(window.innerHeight * 0.85);
+                const newHeight = Math.min(Math.max(startHeight + dy, minHeight), maxHeight);
+                container.style.height = `${newHeight}px`;
+            });
+
+            window.addEventListener('mouseup', () => {
+                if (isResizing) {
+                    isResizing = false;
+                    document.body.style.userSelect = '';
+                    document.body.style.cursor = '';
+                    localStorage.setItem('lion_console_height', container.offsetHeight);
+                }
+            });
+
+            // 더블클릭 시 확대/기본 크기 토글
+            resizer.addEventListener('dblclick', toggleConsoleMaximize);
+        }
+
+        function toggleConsoleMaximize() {
+            const container = document.getElementById('consoleContainer');
+            const icon = document.getElementById('consoleSizeIcon');
+            if (!container) return;
+            const currentHeight = container.offsetHeight;
+            if (currentHeight > 300) {
+                container.style.height = '200px';
+                if (icon) icon.className = 'fa-solid fa-up-right-and-down-left-from-center';
+                localStorage.setItem('lion_console_height', '200');
+            } else {
+                const expandedHeight = Math.round(window.innerHeight * 0.55);
+                container.style.height = `${expandedHeight}px`;
+                if (icon) icon.className = 'fa-solid fa-down-left-and-up-right-to-center';
+                localStorage.setItem('lion_console_height', expandedHeight);
+            }
+        }
+
+        // =========================================================
+        // 학생 관점: 문제 오류 및 버그 제보 모달 & 전송
+        // =========================================================
+        function openBugReportModal() {
+            if (!currentProblem) {
+                alert('먼저 문제를 선택해주세요.');
+                return;
+            }
+            const modal = document.getElementById('bugReportModal');
+            if (!modal) return;
+
+            document.getElementById('bugReportProblemTitle').textContent = `${currentProblem.day}일차 [${currentProblem.difficulty}] ${currentProblem.title}`;
+            document.getElementById('bugReportUser').textContent = currentUser ? `${currentUser.name} (${currentUser.username})` : '게스트';
+            
+            const code = document.getElementById('codeEditor').value;
+            document.getElementById('bugCodePreview').textContent = code || '// (작성된 코드가 없습니다)';
+            document.getElementById('bugCodeLen').textContent = code.length;
+            document.getElementById('bugReportComment').value = '';
+
+            modal.classList.remove('hidden');
+        }
+
+        function closeBugReportModal() {
+            const modal = document.getElementById('bugReportModal');
+            if (modal) modal.classList.add('hidden');
+        }
+
+        function toggleBugCodePreview() {
+            const container = document.getElementById('bugCodePreviewContainer');
+            const chevron = document.getElementById('bugCodeChevron');
+            if (!container) return;
+            if (container.classList.contains('hidden')) {
+                container.classList.remove('hidden');
+                if (chevron) chevron.style.transform = 'rotate(180deg)';
+            } else {
+                container.classList.add('hidden');
+                if (chevron) chevron.style.transform = 'rotate(0deg)';
+            }
+        }
+
+        async function submitBugReport() {
+            if (!currentProblem) return;
+            const code = document.getElementById('codeEditor').value;
+            const comment = document.getElementById('bugReportComment').value.trim();
+            const consoleText = document.getElementById('consoleText').textContent;
+            const submitBtn = document.getElementById('btnSubmitBugReport');
+
+            if (!code || code.trim().length === 0) {
+                alert('에디터에 작성된 코드가 없습니다. 코드를 작성 후 제보해주세요.');
+                return;
+            }
+
+            if (submitBtn) {
+                submitBtn.disabled = true;
+                submitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> 제보 전송 중...';
+            }
+
+            // 실제 콘솔 출력 로그 (기본 안내 문구 제외)
+            let capturedLog = '';
+            if (consoleText && !consoleText.includes('// Output console') && !consoleText.includes('// 여기에 실행 결과')) {
+                capturedLog = consoleText.trim();
+            }
+
+            const payload = {
+                username: currentUser ? currentUser.username : 'guest',
+                student_name: currentUser ? currentUser.name : '게스트',
+                problem_id: currentProblem.id,
+                problem_title: `${currentProblem.day}일차 [${currentProblem.difficulty}] ${currentProblem.title}`,
+                language: currentProblem.subject.toLowerCase(),
+                code: code,
+                comment: comment,
+                error_log: capturedLog
+            };
+
+            try {
+                const res = await fetch(`${judgeServerUrl}/api/problem-bugs`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+                if (!res.ok) throw new Error();
+                const data = await res.json();
+
+                // 로컬 스토리지 보존
+                let localReports = JSON.parse(localStorage.getItem('lion_bug_reports') || '[]');
+                localReports.unshift({
+                    id: data.id || ('bug_' + Date.now()),
+                    ...payload,
+                    created_at: new Date().toLocaleString('ko-KR', { timeZone: 'Asia/Seoul' }),
+                    status: 'PENDING'
+                });
+                localStorage.setItem('lion_bug_reports', JSON.stringify(localReports.slice(0, 100)));
+
+                alert('문제 오류 제보가 성공적으로 접수되었습니다!\n작성하신 코드, 제보 내용, 실행 에러 로그가 관리자에게 정확히 전달되었습니다.');
+            } catch (e) {
+                // 오프라인/대체 보존
+                let localReports = JSON.parse(localStorage.getItem('lion_bug_reports') || '[]');
+                localReports.unshift({
+                    id: 'bug_' + Date.now(),
+                    ...payload,
+                    created_at: new Date().toLocaleString('ko-KR', { timeZone: 'Asia/Seoul' }),
+                    status: 'PENDING'
+                });
+                localStorage.setItem('lion_bug_reports', JSON.stringify(localReports.slice(0, 100)));
+                alert('문제 오류 제보가 접수되었습니다.');
+            } finally {
+                if (submitBtn) {
+                    submitBtn.disabled = false;
+                    submitBtn.innerHTML = '<i class="fa-solid fa-paper-plane"></i> 확인 및 제보 전송';
+                }
+                closeBugReportModal();
+                updateBugBadgeCount();
+            }
+        }
+
+        // =========================================================
+        // 관리자 관점: 문제 오류 검토 탭 및 상세 보기 기능
+        // =========================================================
+        let currentBugReviewReport = null;
+        let allBugReportsList = [];
+
+        async function loadBugReports() {
+            const tbody = document.getElementById('bugReportsTbody');
+            if (tbody) {
+                tbody.innerHTML = `<tr><td colspan="8" class="py-8 text-center text-slate-500"><i class="fa-solid fa-spinner fa-spin mr-2"></i>제보 목록을 불러오는 중...</td></tr>`;
+            }
+
+            let reports = [];
+
+            try {
+                const res = await fetch(`${judgeServerUrl}/api/problem-bugs`);
+                if (res.ok) {
+                    reports = await res.json();
+                }
+            } catch (e) {
+                console.warn('Failed to fetch bug reports from server:', e);
+            }
+
+            // 로컬 스토리지에만 있는 제보와 합치기
+            const localReports = JSON.parse(localStorage.getItem('lion_bug_reports') || '[]');
+            localReports.forEach(lr => {
+                const exists = reports.some(r => r.id === lr.id || (r.username === lr.username && r.problem_id === lr.problem_id && Math.abs(new Date(r.created_at) - new Date(lr.created_at)) < 15000));
+                if (!exists) reports.push(lr);
+            });
+
+            // 최신순 정렬
+            reports.sort((a, b) => (b.id || 0) > (a.id || 0) ? 1 : -1);
+
+            allBugReportsList = reports;
+            renderBugReportsTable();
+            updateBugBadgeCount();
+        }
+
+        function renderBugReportsTable() {
+            const tbody = document.getElementById('bugReportsTbody');
+            const dayFilter = document.getElementById('filterBugDay')?.value || 'all';
+            const statusFilter = document.getElementById('filterBugStatus')?.value || 'all';
+            const searchVal = (document.getElementById('searchBugInput')?.value || '').toLowerCase().trim();
+
+            if (!tbody) return;
+
+            let filtered = allBugReportsList.filter(r => {
+                if (dayFilter !== 'all') {
+                    const dayNum = parseInt(dayFilter);
+                    const dayPad = dayNum < 10 ? '0' + dayNum : '' + dayNum;
+                    if (!r.problem_id.includes(`day${dayPad}`) && !r.problem_title.includes(`${dayNum}일차`)) {
+                        return false;
+                    }
+                }
+                if (statusFilter !== 'all' && r.status !== statusFilter) {
+                    return false;
+                }
+                if (searchVal) {
+                    const text = `${r.username} ${r.student_name} ${r.problem_title} ${r.error_log || ''} ${r.comment || ''}`.toLowerCase();
+                    if (!text.includes(searchVal)) return false;
+                }
+                return true;
+            });
+
+            const totalCount = allBugReportsList.length;
+            const pendingCount = allBugReportsList.filter(r => r.status !== 'RESOLVED').length;
+            const resolvedCount = allBugReportsList.filter(r => r.status === 'RESOLVED').length;
+
+            const elTotal = document.getElementById('bugStatTotal');
+            const elPending = document.getElementById('bugStatPending');
+            const elResolved = document.getElementById('bugStatResolved');
+            if (elTotal) elTotal.textContent = `${totalCount}건`;
+            if (elPending) elPending.textContent = `${pendingCount}건`;
+            if (elResolved) elResolved.textContent = `${resolvedCount}건`;
+
+            if (filtered.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="8" class="py-12 text-center text-slate-500"><i class="fa-solid fa-check-circle text-2xl mb-2 text-slate-600 block"></i>조건에 맞는 문제 오류 제보가 없습니다.</td></tr>`;
+                return;
+            }
+
+            tbody.innerHTML = filtered.map((r, idx) => {
+                const isResolved = r.status === 'RESOLVED';
+                const statusBadge = isResolved
+                    ? '<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[10px] font-bold bg-emerald-500/20 text-emerald-400 border border-emerald-500/30"><i class="fa-solid fa-check"></i> 검토 완료</span>'
+                    : '<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[10px] font-bold bg-rose-500/20 text-rose-400 border border-rose-500/30 animate-pulse"><i class="fa-solid fa-circle-dot"></i> 검토 대기</span>';
+
+                const commentText = r.comment ? escapeHtml(r.comment) : '<span class="text-slate-600 italic">(작성 내용 없음)</span>';
+                const logSnippet = r.error_log ? escapeHtml(r.error_log) : '<span class="text-slate-600 italic">(에러 로그 없음)</span>';
+
+                return `
+                    <tr class="hover:bg-slate-800/50 transition">
+                        <td class="py-3 px-3 text-slate-400 font-mono text-[11px] text-center w-12">${r.id}</td>
+                        <td class="py-3 px-3 text-slate-400 whitespace-nowrap text-[11px] w-36">${r.created_at || '-'}</td>
+                        <td class="py-3 px-3 font-semibold text-white whitespace-nowrap w-40">
+                            ${escapeHtml(r.student_name)} <span class="text-slate-500 text-[11px] font-normal">(${escapeHtml(r.username)})</span>
+                        </td>
+                        <td class="py-3 px-3 text-amber-300 font-medium w-64 max-w-[260px]">
+                            <div class="truncate" title="${escapeHtml(r.problem_title)}">
+                                ${escapeHtml(r.problem_title)}
+                            </div>
+                        </td>
+                        <td class="py-3 px-4 text-amber-300 font-medium text-xs min-w-[280px] max-w-md">
+                            <div class="bg-amber-500/10 border border-amber-500/20 rounded-lg p-2.5 text-slate-200 leading-relaxed text-xs break-words whitespace-pre-wrap select-text" title="${escapeHtml(r.comment || '')}">
+                                ${commentText}
+                            </div>
+                        </td>
+                        <td class="py-3 px-4 font-mono text-slate-300 text-[11px] min-w-[320px]">
+                            <div class="bg-slate-950/80 px-2.5 py-1.5 rounded-lg border border-slate-800 text-[11px] text-rose-300/90 whitespace-pre-wrap break-all max-h-24 overflow-y-auto select-text" title="${escapeHtml(r.error_log || '')}">
+                                ${logSnippet}
+                            </div>
+                        </td>
+                        <td class="py-3 px-3 text-center whitespace-nowrap w-24">
+                            ${statusBadge}
+                        </td>
+                        <td class="py-3 px-3 text-center whitespace-nowrap w-28">
+                            <div class="flex items-center justify-center gap-1.5">
+                                <button onclick="openBugReportDetail('${r.id}')" class="bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold px-2.5 py-1.5 rounded text-[11px] transition flex items-center gap-1 shadow-sm whitespace-nowrap">
+                                    <i class="fa-solid fa-magnifying-glass"></i> 상세 보기
+                                </button>
+                                ${!isResolved ? `
+                                    <button onclick="toggleBugResolveStatus('${r.id}', true)" class="bg-slate-800 hover:bg-emerald-600 text-slate-300 hover:text-white px-2 py-1.5 rounded text-[11px] transition" title="검토 완료 처리">
+                                        <i class="fa-solid fa-check"></i>
+                                    </button>
+                                ` : `
+                                    <button onclick="toggleBugResolveStatus('${r.id}', false)" class="bg-slate-800 hover:bg-slate-700 text-slate-400 px-2 py-1.5 rounded text-[11px] transition" title="대기 상태로 변경">
+                                        <i class="fa-solid fa-rotate-left"></i>
+                                    </button>
+                                `}
+                            </div>
+                        </td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        async function openBugReportDetail(bugId) {
+            let report = allBugReportsList.find(r => String(r.id) === String(bugId));
+            if (!report) {
+                alert('해당 제보 내역을 찾을 수 없습니다.');
+                return;
+            }
+
+            // PROBLEMS 데이터셋에서 일치하는 문제 찾기
+            let targetProb = null;
+            if (report.problem_id) {
+                targetProb = PROBLEMS.find(p => p.id === report.problem_id);
+            }
+            if (!targetProb && report.problem_title) {
+                targetProb = PROBLEMS.find(p => report.problem_title.includes(p.title));
+            }
+            if (!targetProb) {
+                const match = (report.problem_title || '').match(/(\d+)일차/);
+                if (match) {
+                    const d = parseInt(match[1]);
+                    const dayProbs = PROBLEMS.filter(p => p.day === d);
+                    if (dayProbs.length > 0) targetProb = dayProbs[0];
+                }
+            }
+
+            if (!targetProb) {
+                alert('해당 제보의 문제 정보를 찾을 수 없습니다.');
+                return;
+            }
+
+            currentBugReviewReport = report;
+
+            // 문제 풀이 화면으로 전환
+            selectedDay = targetProb.day;
+            currentProblem = targetProb;
+            showView('problem');
+            renderProblemTabsForDay();
+            renderCurrentProblemDetails();
+
+            // 에디터에 학생이 제보한 코드를 그대로 적어주기
+            const editor = document.getElementById('codeEditor');
+            if (editor) {
+                editor.value = report.code || '// (제보된 코드가 비어있습니다)';
+                updateLineNumbers();
+            }
+
+            // 콘솔 창에 제보 내용 및 실제 에러 로그를 명확히 구분하여 노출
+            const consoleText = document.getElementById('consoleText');
+            const judgeBadge = document.getElementById('judgeBadge');
+            if (consoleText) {
+                const commentPart = report.comment ? `[학생 제보 내용]\n${report.comment}\n\n--------------------------------------------------\n` : '';
+                const logPart = report.error_log ? `[제보 당시 콘솔 실행/에러 로그]\n${report.error_log}` : '[제보 당시 콘솔 로그 없음]';
+                consoleText.textContent = commentPart + logPart;
+            }
+            if (judgeBadge) {
+                judgeBadge.className = 'inline-block px-2.5 py-0.5 rounded text-[11px] font-bold bg-rose-500/20 text-rose-400 border border-rose-500/30';
+                judgeBadge.innerHTML = `<i class="fa-solid fa-triangle-exclamation"></i> ${escapeHtml(report.student_name)}(${escapeHtml(report.username)}) 학생 오류 제보 검토 (${report.created_at})`;
+                judgeBadge.classList.remove('hidden');
+            }
+
+            // 콘솔 창 높이 확장
+            const consoleEl = document.getElementById('consoleContainer');
+            if (consoleEl && consoleEl.offsetHeight < 320) {
+                consoleEl.style.height = '350px';
+            }
+
+            // 상단 버그 검토 안내 배너 활성화
+            const banner = document.getElementById('bugReviewBanner');
+            const bannerText = document.getElementById('bugReviewBannerText');
+            if (banner && bannerText) {
+                const commentSummary = report.comment ? `"${escapeHtml(report.comment)}"` : '상세 의견 없음';
+                bannerText.innerHTML = `제보 학생: <strong class="text-white">${escapeHtml(report.student_name)} (${escapeHtml(report.username)})</strong> | 제보 내용: <span class="text-amber-300 font-semibold">${commentSummary}</span> | [테스트 실행]으로 즉시 검증할 수 있습니다.`;
+                banner.classList.remove('hidden');
+            }
+        }
+
+        function resolveCurrentBugReview() {
+            if (!currentBugReviewReport) return;
+            toggleBugResolveStatus(currentBugReviewReport.id, true);
+            alert('검토 완료 처리되었습니다.');
+            exitBugReviewMode();
+        }
+
+        function exitBugReviewMode() {
+            currentBugReviewReport = null;
+            const banner = document.getElementById('bugReviewBanner');
+            if (banner) banner.classList.add('hidden');
+            showView('bugs');
+        }
+
+        async function toggleBugResolveStatus(bugId, isResolved) {
+            const idStr = String(bugId);
+            const r = allBugReportsList.find(x => String(x.id) === idStr);
+            if (r) r.status = isResolved ? 'RESOLVED' : 'PENDING';
+
+            // 서버 상태 동기화
+            try {
+                await fetch(`${judgeServerUrl}/api/problem-bugs/${bugId}/resolve`, { method: 'POST' });
+            } catch (e) {}
+
+            renderBugReportsTable();
+            updateBugBadgeCount();
+        }
+
+        async function updateBugBadgeCount() {
+            const badge = document.getElementById('navBugsBadge');
+            if (!badge) return;
+
+            // NF 계정에게만 버그 알림 배지 및 알림 노출 (강사, 매니저 등 타 관리자는 배제)
+            if (!currentUser || currentUser.username !== 'NF') {
+                badge.classList.add('hidden');
+                return;
+            }
+
+            let pendingCount = 0;
+            if (allBugReportsList && allBugReportsList.length > 0) {
+                pendingCount = allBugReportsList.filter(r => r.status !== 'RESOLVED').length;
+            } else {
+                try {
+                    const res = await fetch(`${judgeServerUrl}/api/problem-bugs?status=PENDING`);
+                    if (res.ok) {
+                        const list = await res.json();
+                        pendingCount = list.length;
+                    }
+                } catch (e) {
+                    const localReports = JSON.parse(localStorage.getItem('lion_bug_reports') || '[]');
+                    const resolvedIds = JSON.parse(localStorage.getItem('lion_resolved_bug_ids') || '[]');
+                    pendingCount = localReports.filter(r => !resolvedIds.includes(String(r.id))).length;
+                }
+            }
+            if (pendingCount > 0) {
+                badge.textContent = pendingCount > 99 ? '99+' : pendingCount;
+                badge.classList.remove('hidden');
+            } else {
+                badge.classList.add('hidden');
+            }
+        }
+
+        // =========================================================
+        // 시스템 버그 제보 (학생/공통) 및 관리자 버그 수정 요청 관리
+        // =========================================================
+        let currentSystemBugImage = null; // Base64 data URL
+        let allSystemBugReports = [];
+
+        function openSystemBugModal() {
+            if (!currentUser) {
+                if (confirm('버그 제보를 위해 먼저 로그인하시겠습니까?')) {
+                    openLoginModal();
+                }
+                return;
+            }
+            const modal = document.getElementById('systemBugModal');
+            if (!modal) return;
+
+            document.getElementById('sysBugUser').textContent = `${currentUser.name} (${currentUser.username})`;
+            document.getElementById('sysBugDescription').value = '';
+            removeSystemBugImage();
+
+            modal.classList.remove('hidden');
+        }
+
+        function closeSystemBugModal() {
+            const modal = document.getElementById('systemBugModal');
+            if (modal) modal.classList.add('hidden');
+        }
+
+        function handleSystemBugFile(input) {
+            if (input.files && input.files[0]) {
+                const file = input.files[0];
+                if (!file.type.startsWith('image/')) {
+                    alert('이미지 파일(PNG, JPG, GIF 등)만 첨부할 수 있습니다.');
+                    return;
+                }
+                if (file.size > 5 * 1024 * 1024) {
+                    alert('이미지 크기는 5MB 이하만 가능합니다.');
+                    return;
+                }
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    setSystemBugImage(e.target.result, file.size);
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+
+        function setSystemBugImage(base64Data, sizeBytes) {
+            currentSystemBugImage = base64Data;
+            const previewContainer = document.getElementById('sysBugPreviewContainer');
+            const previewImg = document.getElementById('sysBugPreviewImg');
+            const sizeText = document.getElementById('sysBugImgSizeText');
+
+            if (previewContainer && previewImg) {
+                previewImg.src = base64Data;
+                previewContainer.classList.remove('hidden');
+                if (sizeText && sizeBytes) {
+                    const kb = Math.round(sizeBytes / 1024);
+                    sizeText.textContent = `첨부된 이미지 (${kb} KB)`;
+                }
+            }
+        }
+
+        function removeSystemBugImage(e) {
+            if (e) e.stopPropagation();
+            currentSystemBugImage = null;
+            const previewContainer = document.getElementById('sysBugPreviewContainer');
+            const fileInput = document.getElementById('sysBugFileInput');
+            if (previewContainer) previewContainer.classList.add('hidden');
+            if (fileInput) fileInput.value = '';
+        }
+
+        // 클립보드 붙여넣기(Ctrl+V) 지원 (스크린샷 복사 후 바로 붙여넣기 가능)
+        window.addEventListener('paste', (e) => {
+            const modal = document.getElementById('systemBugModal');
+            if (!modal || modal.classList.contains('hidden')) return;
+            const items = (e.clipboardData || e.originalEvent?.clipboardData)?.items;
+            if (!items) return;
+            for (let item of items) {
+                if (item.kind === 'file' && item.type.startsWith('image/')) {
+                    const blob = item.getAsFile();
+                    const reader = new FileReader();
+                    reader.onload = (event) => {
+                        setSystemBugImage(event.target.result, blob.size);
+                    };
+                    reader.readAsDataURL(blob);
+                    break;
+                }
+            }
+        });
+
+        async function submitSystemBug(e) {
+            e.preventDefault();
+            const desc = document.getElementById('sysBugDescription').value.trim();
+            const submitBtn = document.getElementById('btnSubmitSysBug');
+
+            if (!desc) {
+                alert('버그 현상 설명을 입력해주세요.');
+                return;
+            }
+
+            if (submitBtn) {
+                submitBtn.disabled = true;
+                submitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> 제보 등록 중...';
+            }
+
+            const payload = {
+                username: currentUser ? currentUser.username : 'anonymous',
+                student_name: currentUser ? currentUser.name : '학생',
+                description: desc,
+                image_data: currentSystemBugImage || null
+            };
+
+            const localReport = {
+                id: 'sys_' + Date.now(),
+                username: payload.username,
+                student_name: payload.student_name,
+                description: payload.description,
+                image_data: payload.image_data,
+                created_at: new Date().toLocaleString('ko-KR', { timeZone: 'Asia/Seoul' }),
+                status: 'PENDING'
+            };
+
+            // 로컬 스토리지에 즉시 보존
+            let localReports = JSON.parse(localStorage.getItem('lion_system_bug_reports') || '[]');
+            localReports.unshift(localReport);
+            localStorage.setItem('lion_system_bug_reports', JSON.stringify(localReports.slice(0, 100)));
+
+            try {
+                const res = await fetch(`${judgeServerUrl}/api/system-bugs`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+                if (res.ok) {
+                    const data = await res.json();
+                    if (data.id) {
+                        localReport.server_id = data.id;
+                        localStorage.setItem('lion_system_bug_reports', JSON.stringify(localReports.slice(0, 100)));
+                    }
+                }
+            } catch (err) {
+                console.warn('System bug report server sync note:', err);
+            } finally {
+                if (submitBtn) {
+                    submitBtn.disabled = false;
+                    submitBtn.innerHTML = '<i class="fa-solid fa-paper-plane"></i> 버그 제보 등록';
+                }
+                closeSystemBugModal();
+                alert('버그 제보가 성공적으로 접수되었습니다.\n관리자 검토 후 신속히 조치하겠습니다. 제보 감사합니다!');
+                updateSystemBugBadgeCount();
+            }
+        }
+
+        async function loadSystemBugReports() {
+            const tbody = document.getElementById('sysBugReportsTbody');
+            if (tbody) {
+                tbody.innerHTML = `<tr><td colspan="7" class="py-8 text-center text-slate-500"><i class="fa-solid fa-spinner fa-spin mr-2"></i>버그 수정 요청 목록을 불러오는 중...</td></tr>`;
+            }
+
+            let reports = [];
+
+            // 1. 서버 API 조회
+            try {
+                const res = await fetch(`${judgeServerUrl}/api/system-bugs`);
+                if (res.ok) {
+                    const serverItems = await res.json();
+                    serverItems.forEach(item => {
+                        reports.push({
+                            id: item.id,
+                            server_id: item.id,
+                            username: item.username,
+                            student_name: item.student_name,
+                            description: item.description,
+                            image_data: item.image_data,
+                            created_at: item.created_at,
+                            status: item.status || 'PENDING'
+                        });
+                    });
+                }
+            } catch (e) {
+                console.warn('Failed to fetch system bugs from server:', e);
+            }
+
+            // 2. 로컬 스토리지 데이터 합치기
+            const localReports = JSON.parse(localStorage.getItem('lion_system_bug_reports') || '[]');
+            const resolvedIds = JSON.parse(localStorage.getItem('lion_resolved_system_bugs') || '[]');
+
+            localReports.forEach(lr => {
+                const exists = reports.some(r => 
+                    (lr.server_id && r.id === lr.server_id) || 
+                    (r.username === lr.username && r.description === lr.description)
+                );
+                if (!exists) {
+                    reports.push(lr);
+                } else {
+                    const matched = reports.find(r => (lr.server_id && r.id === lr.server_id) || (r.username === lr.username && r.description === lr.description));
+                    if (matched && !matched.image_data && lr.image_data) {
+                        matched.image_data = lr.image_data;
+                    }
+                }
+            });
+
+            // 해결 상태 반영
+            reports.forEach(r => {
+                if (resolvedIds.includes(String(r.id)) || (r.server_id && resolvedIds.includes(String(r.server_id)))) {
+                    r.status = 'RESOLVED';
+                }
+            });
+
+            reports.sort((a, b) => (b.id || 0) > (a.id || 0) ? 1 : -1);
+            allSystemBugReports = reports;
+            renderSystemBugReportsTable();
+            updateSystemBugBadgeCount();
+        }
+
+        function renderSystemBugReportsTable() {
+            const tbody = document.getElementById('sysBugReportsTbody');
+            const statusFilter = document.getElementById('filterSysBugStatus')?.value || 'all';
+            const searchVal = (document.getElementById('searchSysBugInput')?.value || '').toLowerCase().trim();
+
+            if (!tbody) return;
+
+            let filtered = allSystemBugReports.filter(r => {
+                if (statusFilter !== 'all' && r.status !== statusFilter) return false;
+                if (searchVal) {
+                    const text = `${r.username} ${r.student_name} ${r.description}`.toLowerCase();
+                    if (!text.includes(searchVal)) return false;
+                }
+                return true;
+            });
+
+            const total = allSystemBugReports.length;
+            const pending = allSystemBugReports.filter(r => r.status !== 'RESOLVED').length;
+            const resolved = allSystemBugReports.filter(r => r.status === 'RESOLVED').length;
+
+            const elTotal = document.getElementById('sysBugStatTotal');
+            const elPending = document.getElementById('sysBugStatPending');
+            const elResolved = document.getElementById('sysBugStatResolved');
+            if (elTotal) elTotal.textContent = `${total}건`;
+            if (elPending) elPending.textContent = `${pending}건`;
+            if (elResolved) elResolved.textContent = `${resolved}건`;
+
+            if (filtered.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="7" class="py-12 text-center text-slate-500"><i class="fa-solid fa-check-circle text-2xl mb-2 text-slate-600 block"></i>조건에 맞는 버그 수정 요청이 없습니다.</td></tr>`;
+                return;
+            }
+
+            tbody.innerHTML = filtered.map(r => {
+                const isResolved = r.status === 'RESOLVED';
+                const statusBadge = isResolved
+                    ? '<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[10px] font-bold bg-emerald-500/20 text-emerald-400 border border-emerald-500/30"><i class="fa-solid fa-check"></i> 수정 완료</span>'
+                    : '<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[10px] font-bold bg-amber-500/20 text-amber-400 border border-amber-500/30 animate-pulse"><i class="fa-solid fa-circle-dot"></i> 수정 대기</span>';
+
+                let imgCell = '<span class="text-slate-600 text-[11px]">없음</span>';
+                if (r.image_data) {
+                    imgCell = `
+                        <div class="flex justify-center">
+                            <img src="${r.image_data}" alt="캡처 화면" onclick="openBugImageModal('${r.id}')" class="w-10 h-10 object-cover rounded-lg border border-slate-700 hover:border-amber-400 cursor-pointer transition hover:scale-105 shadow-sm" title="클릭하여 원본 크기로 확대">
+                        </div>
+                    `;
+                }
+
+                return `
+                    <tr class="hover:bg-slate-800/50 transition">
+                        <td class="py-3 px-4 text-slate-400 font-mono text-[11px]">${r.id}</td>
+                        <td class="py-3 px-4 text-slate-400 whitespace-nowrap text-[11px]">${r.created_at || '-'}</td>
+                        <td class="py-3 px-4 font-semibold text-white whitespace-nowrap">
+                            ${r.student_name} <span class="text-slate-500 text-[11px] font-normal">(${r.username})</span>
+                        </td>
+                        <td class="py-3 px-4 text-slate-200 text-xs leading-relaxed max-w-md select-text whitespace-pre-line">
+                            ${escapeHtml(r.description)}
+                        </td>
+                        <td class="py-3 px-4 text-center whitespace-nowrap">
+                            ${imgCell}
+                        </td>
+                        <td class="py-3 px-4 text-center whitespace-nowrap">
+                            ${statusBadge}
+                        </td>
+                        <td class="py-3 px-4 text-center whitespace-nowrap">
+                            <div class="flex items-center justify-center gap-1.5">
+                                ${!isResolved ? `
+                                    <button onclick="toggleSystemBugResolveStatus('${r.id}', true)" class="bg-emerald-600 hover:bg-emerald-500 text-white font-bold px-2.5 py-1 rounded text-[11px] transition flex items-center gap-1 shadow-sm" title="수정 완료 처리">
+                                        <i class="fa-solid fa-check"></i> 수정 완료
+                                    </button>
+                                ` : `
+                                    <button onclick="toggleSystemBugResolveStatus('${r.id}', false)" class="bg-slate-800 hover:bg-slate-700 text-slate-400 px-2 py-1 rounded text-[11px] transition" title="수정 대기 상태로 변경">
+                                        <i class="fa-solid fa-rotate-left"></i> 대기로 변경
+                                    </button>
+                                `}
+                                <button onclick="deleteSystemBugReport('${r.id}')" class="bg-slate-800 hover:bg-rose-600/80 text-slate-400 hover:text-white px-2 py-1 rounded text-[11px] transition" title="제보 삭제">
+                                    <i class="fa-solid fa-trash-can"></i>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        function openBugImageModal(reportId) {
+            const report = allSystemBugReports.find(r => String(r.id) === String(reportId));
+            if (!report || !report.image_data) return;
+            const modal = document.getElementById('bugImageModal');
+            const img = document.getElementById('bugImageModalImg');
+            if (modal && img) {
+                img.src = report.image_data;
+                modal.classList.remove('hidden');
+            }
+        }
+
+        function closeBugImageModal() {
+            const modal = document.getElementById('bugImageModal');
+            if (modal) modal.classList.add('hidden');
+        }
+
+        async function toggleSystemBugResolveStatus(bugId, isResolved) {
+            let resolvedIds = JSON.parse(localStorage.getItem('lion_resolved_system_bugs') || '[]');
+            const idStr = String(bugId);
+            if (isResolved) {
+                if (!resolvedIds.includes(idStr)) resolvedIds.push(idStr);
+            } else {
+                resolvedIds = resolvedIds.filter(id => id !== idStr);
+            }
+            localStorage.setItem('lion_resolved_system_bugs', JSON.stringify(resolvedIds));
+
+            const report = allSystemBugReports.find(r => String(r.id) === idStr);
+            if (report) report.status = isResolved ? 'RESOLVED' : 'PENDING';
+
+            // 서버에도 상태 전달 시도
+            try {
+                if (report && report.server_id && isResolved) {
+                    await fetch(`${judgeServerUrl}/api/system-bugs/${report.server_id}/resolve`, { method: 'POST' });
+                }
+            } catch (e) {}
+
+            renderSystemBugReportsTable();
+            updateSystemBugBadgeCount();
+        }
+
+        async function deleteSystemBugReport(bugId) {
+            if (!confirm('해당 버그 제보를 삭제하시겠습니까?')) return;
+            const idStr = String(bugId);
+            const report = allSystemBugReports.find(r => String(r.id) === idStr);
+
+            // 로컬 스토리지 삭제
+            let localReports = JSON.parse(localStorage.getItem('lion_system_bug_reports') || '[]');
+            localReports = localReports.filter(r => String(r.id) !== idStr && String(r.server_id) !== idStr);
+            localStorage.setItem('lion_system_bug_reports', JSON.stringify(localReports));
+
+            allSystemBugReports = allSystemBugReports.filter(r => String(r.id) !== idStr);
+
+            // 서버 삭제 API
+            if (report && report.server_id) {
+                try {
+                    await fetch(`${judgeServerUrl}/api/system-bugs/${report.server_id}`, { method: 'DELETE' });
+                } catch (e) {}
+            }
+
+            renderSystemBugReportsTable();
+            updateSystemBugBadgeCount();
+        }
+
+        function updateSystemBugBadgeCount() {
+            const badge = document.getElementById('navBugFixBadge');
+            if (!badge) return;
+
+            // NF 계정에게만 버그 수정 요청 배지 및 알림 노출 (강사, 매니저 등 타 관리자는 배제)
+            if (!currentUser || currentUser.username !== 'NF') {
+                badge.classList.add('hidden');
+                return;
+            }
+
+            const resolvedIds = JSON.parse(localStorage.getItem('lion_resolved_system_bugs') || '[]');
+            const localReports = JSON.parse(localStorage.getItem('lion_system_bug_reports') || '[]');
+            const pendingCount = localReports.filter(r => !resolvedIds.includes(String(r.id)) && !(r.server_id && resolvedIds.includes(String(r.server_id)))).length;
+            if (pendingCount > 0) {
+                badge.textContent = pendingCount > 99 ? '99+' : pendingCount;
+                badge.classList.remove('hidden');
+            } else {
+                badge.classList.add('hidden');
+            }
+        }
+
+        // =========================================================
+        // NF 관리자 전용 실시간 오류/버그 알림 시스템 (NF Alert System)
+        // =========================================================
+        let nfNotificationPollerTimer = null;
+        let lastKnownProblemBugId = parseInt(localStorage.getItem('lion_last_known_prob_bug_id') || '0');
+        let lastKnownSystemBugId = parseInt(localStorage.getItem('lion_last_known_sys_bug_id') || '0');
+
+        function startNfNotificationPoller() {
+            if (!currentUser || currentUser.username !== 'NF') {
+                stopNfNotificationPoller();
+                return;
+            }
+            if (nfNotificationPollerTimer) return;
+            nfNotificationPollerTimer = setInterval(checkNfNewBugAlerts, 15000);
+            checkNfNewBugAlerts();
+        }
+
+        function stopNfNotificationPoller() {
+            if (nfNotificationPollerTimer) {
+                clearInterval(nfNotificationPollerTimer);
+                nfNotificationPollerTimer = null;
+            }
+        }
+
+        async function checkNfNewBugAlerts() {
+            if (!currentUser || currentUser.username !== 'NF') return;
+
+            // 1. 문제 오류 제보 확인
+            try {
+                const res = await fetch(`${judgeServerUrl}/api/problem-bugs?status=PENDING`);
+                if (res.ok) {
+                    const list = await res.json();
+                    updateBugBadgeCount();
+                    if (list.length > 0) {
+                        const maxId = Math.max(...list.map(r => r.id));
+                        if (lastKnownProblemBugId > 0 && maxId > lastKnownProblemBugId) {
+                            const newest = list.find(r => r.id === maxId);
+                            if (newest) showNfToast('problem', newest);
+                        }
+                        lastKnownProblemBugId = maxId;
+                        localStorage.setItem('lion_last_known_prob_bug_id', String(maxId));
+                    }
+                }
+            } catch (e) {}
+
+            // 2. 시스템 버그 제보 확인
+            try {
+                const res2 = await fetch(`${judgeServerUrl}/api/system-bugs?status=PENDING`);
+                if (res2.ok) {
+                    const list2 = await res2.json();
+                    updateSystemBugBadgeCount();
+                    if (list2.length > 0) {
+                        const maxId2 = Math.max(...list2.map(r => r.id));
+                        if (lastKnownSystemBugId > 0 && maxId2 > lastKnownSystemBugId) {
+                            const newest2 = list2.find(r => r.id === maxId2);
+                            if (newest2) showNfToast('system', newest2);
+                        }
+                        lastKnownSystemBugId = maxId2;
+                        localStorage.setItem('lion_last_known_sys_bug_id', String(maxId2));
+                    }
+                }
+            } catch (e) {}
+        }
+
+        function playNfChime() {
+            try {
+                const ctx = new (window.AudioContext || window.webkitAudioContext)();
+                const osc = ctx.createOscillator();
+                const gain = ctx.createGain();
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(587.33, ctx.currentTime); // D5
+                osc.frequency.setValueAtTime(880, ctx.currentTime + 0.1); // A5
+                gain.gain.setValueAtTime(0.12, ctx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.35);
+                osc.connect(gain);
+                gain.connect(ctx.destination);
+                osc.start();
+                osc.stop(ctx.currentTime + 0.35);
+            } catch (e) {}
+        }
+
+        function showNfToast(type, report) {
+            playNfChime();
+            let toast = document.getElementById('nfBugToast');
+            if (!toast) {
+                toast = document.createElement('div');
+                toast.id = 'nfBugToast';
+                toast.className = 'fixed top-5 right-5 z-[9999] bg-slate-900 border-2 border-rose-500 rounded-2xl p-4 shadow-2xl max-w-sm flex items-start gap-3 transition-all duration-300';
+                document.body.appendChild(toast);
+            }
+
+            const title = type === 'problem' ? '문제 오류 검토 제보' : '시스템 버그 수정 요청';
+            const viewTarget = type === 'problem' ? 'bugs' : 'bugFixes';
+            const student = report.student_name || report.username || '교육생';
+            const desc = report.comment || report.description || report.problem_title || '새로운 제보가 접수되었습니다.';
+
+            toast.innerHTML = `
+                <div class="w-9 h-9 rounded-xl bg-rose-500/20 text-rose-400 flex items-center justify-center shrink-0 border border-rose-500/40">
+                    <i class="fa-solid fa-bell text-base animate-bounce"></i>
+                </div>
+                <div class="flex-1 min-w-0">
+                    <div class="flex items-center justify-between">
+                        <h4 class="text-xs font-bold text-rose-400 flex items-center gap-1.5">
+                            <span class="px-1.5 py-0.5 rounded bg-rose-500 text-slate-950 text-[10px] font-black">NF 전용</span>
+                            ${title}
+                        </h4>
+                        <button onclick="document.getElementById('nfBugToast')?.remove()" class="text-slate-500 hover:text-slate-300 text-xs ml-2">
+                            <i class="fa-solid fa-xmark"></i>
+                        </button>
+                    </div>
+                    <p class="text-xs text-white font-medium mt-1 truncate">제보자: <strong class="text-amber-400">${escapeHtml(student)}</strong></p>
+                    <p class="text-[11px] text-slate-400 mt-0.5 line-clamp-2">${escapeHtml(desc)}</p>
+                    <div class="mt-2.5 flex items-center gap-2">
+                        <button onclick="showView('${viewTarget}'); document.getElementById('nfBugToast')?.remove();" class="px-2.5 py-1 rounded-lg bg-rose-500 hover:bg-rose-600 text-white font-bold text-[11px] transition shadow-xs flex items-center gap-1">
+                            <i class="fa-solid fa-arrow-right"></i> 바로 검토하기
+                        </button>
+                        <button onclick="document.getElementById('nfBugToast')?.remove()" class="px-2 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 text-[11px] transition">
+                            닫기
+                        </button>
+                    </div>
+                </div>
+            `;
+        }
+
+        // =========================================================
+        // 실시간 학생 활동 추적 (Heartbeat & Typing Detection)
+        // =========================================================
+        let studentLastTypedTime = 0;
+        let studentLastActiveTime = Date.now();
+        let studentHeartbeatTimer = null;
+        let studentTrackerInitialized = false;
+
+        function initStudentActivityTracker() {
+            if (studentTrackerInitialized) return;
+            studentTrackerInitialized = true;
+
+            const onUserActivity = () => {
+                studentLastActiveTime = Date.now();
+            };
+
+            window.addEventListener('mousemove', onUserActivity, { passive: true });
+            window.addEventListener('mousedown', onUserActivity, { passive: true });
+            window.addEventListener('scroll', onUserActivity, { passive: true });
+
+            // 브라우저 탭 활성화 시 즉시 하트비트 전송
+            document.addEventListener('visibilitychange', () => {
+                if (!document.hidden) {
+                    studentLastActiveTime = Date.now();
+                    sendStudentHeartbeat();
+                }
+            });
+
+            window.addEventListener('keydown', (e) => {
+                studentLastActiveTime = Date.now();
+                const activeTag = document.activeElement ? document.activeElement.tagName.toLowerCase() : '';
+                if (activeTag === 'textarea' || activeTag === 'input' || (document.activeElement && document.activeElement.id === 'codeEditor')) {
+                    studentLastTypedTime = Date.now();
+                }
+            }, { passive: true });
+
+            const editor = document.getElementById('codeEditor');
+            if (editor) {
+                editor.addEventListener('input', () => {
+                    studentLastTypedTime = Date.now();
+                    studentLastActiveTime = Date.now();
+                });
+            }
+
+            if (studentHeartbeatTimer) clearInterval(studentHeartbeatTimer);
+            studentHeartbeatTimer = setInterval(sendStudentHeartbeat, 12000);
+            setTimeout(sendStudentHeartbeat, 1500);
+        }
+
+        async function sendStudentHeartbeat() {
+            if (!currentUser || currentUser.role === 'admin') return;
+
+            const now = Date.now();
+            const isTyping = (now - studentLastTypedTime) < 18000;
+            const isIdle = (now - studentLastActiveTime) > 120000;
+
+            let status = 'ONLINE';
+            if (isTyping) {
+                status = 'TYPING';
+            } else if (isIdle) {
+                status = 'IDLE';
+            }
+
+            const editor = document.getElementById('codeEditor');
+            const codeLen = editor ? editor.value.length : 0;
+
+            try {
+                await fetch(`${judgeServerUrl}/api/monitor/heartbeat`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        username: currentUser.username,
+                        student_name: currentUser.name || currentUser.username,
+                        status: status,
+                        problem_id: currentProblem ? currentProblem.id : null,
+                        problem_title: currentProblem ? currentProblem.title : null,
+                        code_length: codeLen
+                    })
+                });
+            } catch (e) {
+                // Heartbeat error ignored
+            }
+        }
+
+        // =========================================================
+        // 관리자 실시간 교육생 모니터링 기능 (Monitoring Dashboard)
+        // =========================================================
+        let monRawData = null;
+        let monFilterMode = 'all';
+        let monAutoRefreshInterval = null;
+        let monAutoRefreshEnabled = true;
+
+        async function loadMonitoringData(isManual = false) {
+            try {
+                const res = await fetch(`${judgeServerUrl}/api/monitor/students`);
+                if (!res.ok) throw new Error('모니터링 데이터 조회 실패');
+                monRawData = await res.json();
+
+                // KPI 카드 업데이트
+                const s = monRawData.summary || { total: 0, online: 0, typing: 0, away_10m: 0, offline: 0 };
+                const elTotal = document.getElementById('monKpiTotal');
+                const elOnline = document.getElementById('monKpiOnline');
+                const elTyping = document.getElementById('monKpiTyping');
+                const elAway = document.getElementById('monKpiAway');
+                const elOffline = document.getElementById('monKpiOffline');
+
+                if (elTotal) elTotal.textContent = s.total;
+                if (elOnline) elOnline.textContent = s.online;
+                if (elTyping) elTyping.textContent = s.typing;
+                if (elAway) elAway.textContent = s.away_10m;
+                if (elOffline) elOffline.textContent = s.offline;
+
+                // 필터 버튼 카운트
+                const fAll = document.getElementById('monFilterAllCnt');
+                const fOnline = document.getElementById('monFilterOnlineCnt');
+                const fTyping = document.getElementById('monFilterTypingCnt');
+                const fAway = document.getElementById('monFilterAwayCnt');
+                const fOffline = document.getElementById('monFilterOfflineCnt');
+
+                if (fAll) fAll.textContent = s.total;
+                if (fOnline) fOnline.textContent = s.online;
+                if (fTyping) fTyping.textContent = s.typing;
+                if (fAway) fAway.textContent = s.away_10m;
+                if (fOffline) fOffline.textContent = s.offline;
+
+                // 상단 네비게이션 뱃지 (실시간 온라인 접속자 수 표시)
+                const navBadge = document.getElementById('navMonitoringBadge');
+                if (navBadge) {
+                    if (s.online > 0) {
+                        navBadge.textContent = s.online;
+                        navBadge.classList.remove('hidden');
+                    } else {
+                        navBadge.classList.add('hidden');
+                    }
+                }
+
+                // 최근 동기화 시각
+                const syncEl = document.getElementById('monLastSyncedText');
+                if (syncEl) {
+                    const timePart = monRawData.timestamp ? monRawData.timestamp.split(' ')[1] : new Date().toLocaleTimeString();
+                    syncEl.textContent = `최근 동기화: ${timePart}`;
+                }
+
+                renderMonitoringTable();
+            } catch (err) {
+                console.error("loadMonitoringData error:", err);
+            }
+        }
+
+        function setMonFilter(mode) {
+            monFilterMode = mode;
+            document.querySelectorAll('#monFilterGroup .mon-filter-btn').forEach(btn => {
+                if (btn.dataset.monfilter === mode) {
+                    btn.className = 'mon-filter-btn px-2.5 py-1 rounded-lg font-bold bg-amber-500 text-slate-950 transition';
+                } else {
+                    btn.className = 'mon-filter-btn px-2.5 py-1 rounded-lg font-medium bg-slate-950 hover:bg-slate-800 text-slate-300 border border-slate-800 transition';
+                }
+            });
+            renderMonitoringTable();
+        }
+
+        function renderMonitoringTable() {
+            const tbody = document.getElementById('monitoringTbody');
+            if (!tbody) return;
+
+            if (!monRawData || !monRawData.students) {
+                tbody.innerHTML = `<tr><td colspan="7" class="py-8 text-center text-slate-500">데이터를 불러오는 중입니다...</td></tr>`;
+                return;
+            }
+
+            const query = (document.getElementById('monSearchInput')?.value || '').trim().toLowerCase();
+            let list = [...monRawData.students];
+
+            // 1. 필터링
+            if (monFilterMode === 'online') {
+                list = list.filter(s => s.is_online);
+            } else if (monFilterMode === 'typing') {
+                list = list.filter(s => s.is_typing);
+            } else if (monFilterMode === 'away') {
+                list = list.filter(s => s.is_away_10m);
+            } else if (monFilterMode === 'offline') {
+                list = list.filter(s => !s.is_online);
+            }
+
+            // 2. 검색어 필터
+            if (query) {
+                list = list.filter(s => 
+                    (s.name && s.name.toLowerCase().includes(query)) ||
+                    (s.username && s.username.toLowerCase().includes(query)) ||
+                    (s.problem_title && s.problem_title.toLowerCase().includes(query)) ||
+                    (s.problem_id && s.problem_id.toLowerCase().includes(query))
+                );
+            }
+
+            // 3. 정렬 우선순위:
+            // 1순위: 타이핑 중
+            // 2순위: 온라인
+            // 3순위: 최근 활동 (diff_seconds 오름차순, null은 맨 뒤)
+            // 4순위: 이름 가나다순
+            list.sort((a, b) => {
+                if (a.is_typing && !b.is_typing) return -1;
+                if (!a.is_typing && b.is_typing) return 1;
+                if (a.is_online && !b.is_online) return -1;
+                if (!a.is_online && b.is_online) return 1;
+                if (a.diff_seconds !== null && b.diff_seconds !== null) {
+                    return a.diff_seconds - b.diff_seconds;
+                }
+                if (a.diff_seconds !== null && b.diff_seconds === null) return -1;
+                if (a.diff_seconds === null && b.diff_seconds !== null) return 1;
+                return (a.name || '').localeCompare(b.name || '');
+            });
+
+            if (list.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="7" class="py-10 text-center text-slate-500">해당 조건에 일치하는 교육생이 없습니다.</td></tr>`;
+                return;
+            }
+
+            tbody.innerHTML = list.map((s, idx) => {
+                // 상태 뱃지 렌더링
+                let statusBadge = '';
+                if (s.is_typing) {
+                    statusBadge = `
+                        <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-bold bg-purple-500/20 text-purple-300 border border-purple-500/50 shadow-sm animate-pulse">
+                            <i class="fa-solid fa-keyboard text-purple-400"></i> 코딩 중 (입력)
+                        </span>
+                    `;
+                } else if (s.is_online) {
+                    statusBadge = `
+                        <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-500/40">
+                            <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping"></span> 온라인 (접속)
+                        </span>
+                    `;
+                } else if (s.is_away_10m) {
+                    statusBadge = `
+                        <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-bold bg-rose-500/20 text-rose-300 border border-rose-500/40 shadow-sm">
+                            <i class="fa-solid fa-triangle-exclamation text-rose-400"></i> 10분+ 자리비움
+                        </span>
+                    `;
+                } else {
+                    statusBadge = `
+                        <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[11px] font-medium bg-slate-800 text-slate-400 border border-slate-700">
+                            오프라인
+                        </span>
+                    `;
+                }
+
+                // 문제 정보 렌더링
+                let problemDisplay = '';
+                if (s.problem_id) {
+                    problemDisplay = `
+                        <div>
+                            <span class="font-bold text-slate-100">${escapeHtml(s.problem_title || s.problem_id)}</span>
+                            <span class="text-[10px] text-slate-400 font-mono ml-1.5 px-1.5 py-0.5 rounded bg-slate-950 border border-slate-800">${escapeHtml(s.problem_id)}</span>
+                        </div>
+                    `;
+                } else {
+                    problemDisplay = `<span class="text-slate-500 italic">문제 선택 안함</span>`;
+                }
+
+                // 코드 분량 렌더링
+                let codeDisplay = '';
+                if (s.code_length && s.code_length > 0) {
+                    codeDisplay = `
+                        <span class="inline-block px-2 py-0.5 rounded bg-slate-950 border border-slate-800 text-cyan-300 font-mono text-[11px] font-bold">
+                            ${s.code_length.toLocaleString()}자
+                        </span>
+                    `;
+                } else {
+                    codeDisplay = `<span class="text-slate-600">-</span>`;
+                }
+
+                // 최근 활동 시간 포맷팅
+                let lastSeenDisplay = '';
+                if (s.diff_seconds === null) {
+                    lastSeenDisplay = `<span class="text-slate-500">접속 기록 없음</span>`;
+                } else if (s.diff_seconds < 15) {
+                    lastSeenDisplay = `
+                        <div>
+                            <span class="text-emerald-400 font-bold">방금 전 (${s.diff_seconds}초 전)</span>
+                            <span class="block text-[10px] text-slate-500 font-mono">${s.last_seen || ''}</span>
+                        </div>
+                    `;
+                } else if (s.diff_seconds < 60) {
+                    lastSeenDisplay = `
+                        <div>
+                            <span class="text-emerald-400 font-medium">${s.diff_seconds}초 전</span>
+                            <span class="block text-[10px] text-slate-500 font-mono">${s.last_seen || ''}</span>
+                        </div>
+                    `;
+                } else if (s.diff_seconds < 600) {
+                    const mins = Math.floor(s.diff_seconds / 60);
+                    lastSeenDisplay = `
+                        <div>
+                            <span class="text-amber-400 font-medium">${mins}분 전</span>
+                            <span class="block text-[10px] text-slate-500 font-mono">${s.last_seen || ''}</span>
+                        </div>
+                    `;
+                } else {
+                    const mins = Math.floor(s.diff_seconds / 60);
+                    const hours = Math.floor(mins / 60);
+                    const diffText = hours > 0 ? `${hours}시간 ${mins % 60}분 전` : `${mins}분 전`;
+                    lastSeenDisplay = `
+                        <div>
+                            <span class="text-rose-400 font-bold flex items-center gap-1">
+                                <i class="fa-solid fa-clock-rotate-left"></i> ${diffText}
+                            </span>
+                            <span class="block text-[10px] text-slate-500 font-mono">${s.last_seen || ''}</span>
+                        </div>
+                    `;
+                }
+
+                // row background highlighting
+                let rowBg = 'hover:bg-slate-800/50 transition';
+                if (s.is_typing) rowBg = 'bg-purple-950/15 hover:bg-purple-950/25 transition';
+                else if (s.is_online) rowBg = 'bg-emerald-950/10 hover:bg-emerald-950/20 transition';
+                else if (s.is_away_10m) rowBg = 'bg-rose-950/10 hover:bg-rose-950/20 transition';
+
+                return `
+                    <tr class="${rowBg}">
+                        <td class="py-3 px-4 text-center font-mono text-slate-500 text-[11px]">${idx + 1}</td>
+                        <td class="py-3 px-4">
+                            <div class="font-bold text-white text-xs">${escapeHtml(s.name)}</div>
+                            <div class="text-[11px] text-slate-400 font-mono">${escapeHtml(s.username)}</div>
+                        </td>
+                        <td class="py-3 px-4 text-center">${statusBadge}</td>
+                        <td class="py-3 px-4">${problemDisplay}</td>
+                        <td class="py-3 px-4 text-center">${codeDisplay}</td>
+                        <td class="py-3 px-4">${lastSeenDisplay}</td>
+                        <td class="py-3 px-4 text-center">
+                            <button onclick="viewStudentFromMonitoring('${escapeHtml(s.username)}')" class="px-2.5 py-1 rounded bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-medium border border-slate-700 transition flex items-center gap-1 mx-auto shadow-xs" title="실습 상세 통계 모달 열기">
+                                <i class="fa-solid fa-chart-simple text-amber-400"></i> 분석
+                            </button>
+                        </td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        function toggleMonitoringAutoRefresh() {
+            monAutoRefreshEnabled = !monAutoRefreshEnabled;
+            const btn = document.getElementById('monAutoRefreshBtn');
+            const icon = document.getElementById('monAutoRefreshIcon');
+            const text = document.getElementById('monAutoRefreshText');
+
+            if (monAutoRefreshEnabled) {
+                if (btn) btn.className = 'text-xs bg-emerald-500/15 hover:bg-emerald-500/25 text-emerald-300 px-3 py-1.5 rounded-lg border border-emerald-500/30 transition flex items-center gap-1.5 shadow-sm';
+                if (icon) icon.className = 'fa-solid fa-arrows-rotate fa-spin text-emerald-400';
+                if (text) text.textContent = '자동 동기화 (8초)';
+                startMonitoringAutoRefresh();
+            } else {
+                if (btn) btn.className = 'text-xs bg-slate-800 hover:bg-slate-700 text-slate-400 px-3 py-1.5 rounded-lg border border-slate-700 transition flex items-center gap-1.5 shadow-sm';
+                if (icon) icon.className = 'fa-solid fa-pause text-slate-400';
+                if (text) text.textContent = '자동 동기화 정지됨';
+                stopMonitoringAutoRefresh();
+            }
+        }
+
+        function startMonitoringAutoRefresh() {
+            if (!monAutoRefreshEnabled) return;
+            if (monAutoRefreshInterval) clearInterval(monAutoRefreshInterval);
+            monAutoRefreshInterval = setInterval(() => {
+                loadMonitoringData();
+            }, 8000);
+        }
+
+        function stopMonitoringAutoRefresh() {
+            if (monAutoRefreshInterval) {
+                clearInterval(monAutoRefreshInterval);
+                monAutoRefreshInterval = null;
+            }
+        }
+
+        async function viewStudentFromMonitoring(username) {
+            try {
+                if (!rawStatsData) {
+                    await loadStatsData();
+                }
+                viewStudentDetail(username);
+            } catch (err) {
+                alert(`${username} 교육생의 세부 통계를 불러올 수 없습니다.`);
+            }
         }
     </script>
 </body>
