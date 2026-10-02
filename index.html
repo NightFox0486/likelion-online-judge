@@ -1305,6 +1305,11 @@
                 loadMonitoringData();
                 startMonitoringAutoRefresh();
             }
+
+            // 교육생 활동 감지: 페이지/탭 전환 시 온라인 업데이트 전송
+            if (currentUser && currentUser.role !== 'admin' && typeof sendActivityUpdate === 'function') {
+                sendActivityUpdate('ONLINE', true);
+            }
         }
 
         // 과목 필터
@@ -2369,6 +2374,14 @@
             document.getElementById('editorLang').textContent = `${prob.subject} Editor`;
             codeEditor.value = prob.template;
             updateLineNumbers();
+
+            // 문제 변경 시 기준 코드 갱신 및 온라인 활동 전송
+            if (typeof lastReportedCode !== 'undefined') {
+                lastReportedCode = prob.template;
+            }
+            if (currentUser && currentUser.role !== 'admin' && typeof sendActivityUpdate === 'function') {
+                sendActivityUpdate('ONLINE', true);
+            }
 
             document.getElementById('solutionContainer').classList.add('hidden');
             document.getElementById('solChevron').classList.remove('rotate-180');
@@ -4759,67 +4772,75 @@
         }
 
         // =========================================================
-        // 실시간 학생 활동 추적 (Heartbeat & Typing Detection)
+        // 실시간 학생 활동 추적 (변경사항 감지 기반 Activity Tracker)
         // =========================================================
-        let studentLastTypedTime = 0;
-        let studentLastActiveTime = Date.now();
-        let studentHeartbeatTimer = null;
         let studentTrackerInitialized = false;
+        let lastReportedCode = '';
+        let lastActivitySentTime = 0;
+        let typingThrottleTimer = null;
 
         function initStudentActivityTracker() {
             if (studentTrackerInitialized) return;
             studentTrackerInitialized = true;
 
-            const onUserActivity = () => {
-                studentLastActiveTime = Date.now();
-            };
-
-            window.addEventListener('mousemove', onUserActivity, { passive: true });
-            window.addEventListener('mousedown', onUserActivity, { passive: true });
-            window.addEventListener('scroll', onUserActivity, { passive: true });
-
-            // 브라우저 탭 활성화 시 즉시 하트비트 전송
+            // 브라우저 탭 복귀 시 (페이지 전환/탭 활성화) 온라인 업데이트
             document.addEventListener('visibilitychange', () => {
                 if (!document.hidden) {
-                    studentLastActiveTime = Date.now();
-                    sendStudentHeartbeat();
+                    sendActivityUpdate('ONLINE', true);
                 }
             });
 
-            window.addEventListener('keydown', (e) => {
-                studentLastActiveTime = Date.now();
-                const activeTag = document.activeElement ? document.activeElement.tagName.toLowerCase() : '';
-                if (activeTag === 'textarea' || activeTag === 'input' || (document.activeElement && document.activeElement.id === 'codeEditor')) {
-                    studentLastTypedTime = Date.now();
-                }
-            }, { passive: true });
-
+            // 코드 에디터 입력 감지: 작성 코드 내용이 '실제로 변경'되었을 때만 'TYPING' 상태로 업데이트
             const editor = document.getElementById('codeEditor');
             if (editor) {
+                lastReportedCode = editor.value;
                 editor.addEventListener('input', () => {
-                    studentLastTypedTime = Date.now();
-                    studentLastActiveTime = Date.now();
+                    handleCodeEditorInput();
                 });
             }
 
-            if (studentHeartbeatTimer) clearInterval(studentHeartbeatTimer);
-            studentHeartbeatTimer = setInterval(sendStudentHeartbeat, 12000);
-            setTimeout(sendStudentHeartbeat, 1500);
+            // 첫 로그인 / 로드 시 1회 초기 온라인 등록 (이후에는 변경사항 이벤트 발생 시에만 전송)
+            setTimeout(() => {
+                sendActivityUpdate('ONLINE', true);
+            }, 1000);
         }
 
-        async function sendStudentHeartbeat() {
+        // 작성 코드 변화 감지 핸들러 (내용 변화 없을 시 무시)
+        function handleCodeEditorInput() {
+            const editor = document.getElementById('codeEditor');
+            if (!editor) return;
+            const currentCode = editor.value;
+
+            // 작성 코드 내용에 변화가 전혀 없으면 (단순 포커스, 방향키 이동, 선택 등) 무시
+            if (currentCode === lastReportedCode) {
+                return;
+            }
+
+            const now = Date.now();
+            // 10초 throttle: 타이핑 중일 때 10초에 최대 1회만 서버에 TYPING 전송
+            if (now - lastActivitySentTime >= 10000) {
+                lastReportedCode = currentCode;
+                sendActivityUpdate('TYPING', true);
+            } else if (!typingThrottleTimer) {
+                typingThrottleTimer = setTimeout(() => {
+                    typingThrottleTimer = null;
+                    const latestCode = document.getElementById('codeEditor')?.value || '';
+                    if (latestCode !== lastReportedCode) {
+                        lastReportedCode = latestCode;
+                        sendActivityUpdate('TYPING', true);
+                    }
+                }, 10000 - (now - lastActivitySentTime));
+            }
+        }
+
+        // 변경사항(타이핑, 페이지 전환, 문제 선택 등) 감지 시에만 호출되는 활동 업데이트 함수
+        async function sendActivityUpdate(status = 'ONLINE', force = false) {
             if (!currentUser || currentUser.role === 'admin') return;
 
             const now = Date.now();
-            const isTyping = (now - studentLastTypedTime) < 18000;
-            const isIdle = (now - studentLastActiveTime) > 120000;
-
-            let status = 'ONLINE';
-            if (isTyping) {
-                status = 'TYPING';
-            } else if (isIdle) {
-                status = 'IDLE';
-            }
+            // 최소 3초 간격 제약 (연속 과다 호출 방지, force인 경우 제외)
+            if (!force && (now - lastActivitySentTime) < 3000) return;
+            lastActivitySentTime = now;
 
             const editor = document.getElementById('codeEditor');
             const codeLen = editor ? editor.value.length : 0;
@@ -4831,16 +4852,19 @@
                     body: JSON.stringify({
                         username: currentUser.username,
                         student_name: currentUser.name || currentUser.username,
-                        status: status,
+                        status: status, // 'TYPING' or 'ONLINE'
                         problem_id: currentProblem ? currentProblem.id : null,
                         problem_title: currentProblem ? currentProblem.title : null,
                         code_length: codeLen
                     })
                 });
             } catch (e) {
-                // Heartbeat error ignored
+                // Network error ignored
             }
         }
+
+        // 기존 코드와의 호환성을 위한 alias
+        const sendStudentHeartbeat = (status = 'ONLINE') => sendActivityUpdate(status, true);
 
         // =========================================================
         // 관리자 실시간 교육생 모니터링 기능 (Monitoring Dashboard)
@@ -4952,23 +4976,8 @@
                 );
             }
 
-            // 3. 정렬 우선순위:
-            // 1순위: 타이핑 중
-            // 2순위: 온라인
-            // 3순위: 최근 활동 (diff_seconds 오름차순, null은 맨 뒤)
-            // 4순위: 이름 가나다순
-            list.sort((a, b) => {
-                if (a.is_typing && !b.is_typing) return -1;
-                if (!a.is_typing && b.is_typing) return 1;
-                if (a.is_online && !b.is_online) return -1;
-                if (!a.is_online && b.is_online) return 1;
-                if (a.diff_seconds !== null && b.diff_seconds !== null) {
-                    return a.diff_seconds - b.diff_seconds;
-                }
-                if (a.diff_seconds !== null && b.diff_seconds === null) return -1;
-                if (a.diff_seconds === null && b.diff_seconds !== null) return 1;
-                return (a.name || '').localeCompare(b.name || '');
-            });
+            // 3. 정렬: 교육생 가나다 순 고정 (이름 기준 한국어 사전순)
+            list.sort((a, b) => (a.name || '').localeCompare(b.name || '', 'ko'));
 
             if (list.length === 0) {
                 tbody.innerHTML = `<tr><td colspan="7" class="py-10 text-center text-slate-500">해당 조건에 일치하는 교육생이 없습니다.</td></tr>`;
