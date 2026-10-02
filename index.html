@@ -4855,7 +4855,8 @@
                         status: status, // 'TYPING' or 'ONLINE'
                         problem_id: currentProblem ? currentProblem.id : null,
                         problem_title: currentProblem ? currentProblem.title : null,
-                        code_length: codeLen
+                        code_length: codeLen,
+                        is_action: force
                     })
                 });
             } catch (e) {
