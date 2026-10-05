@@ -1,3 +1,7 @@
+// 멋쟁이사자처럼 9기 전체 16일차 실습 문제 데이터셋 (3시간 맞춤형 94제)
+// 각 일차별 상/중/하/도전 난이도 필수 포함 및 초보자 힌트 탑재
+// 1일차 6제 / 2일차 10제 / 3일차 10제 고도화 완료 (CS 핵심 지식 및 로직 가이드, 3개 예제 탑재)
+
 const PROBLEMS = [
     {
         "id": "day01_하1",
@@ -1304,84 +1308,820 @@ const PROBLEMS = [
         "day": 3,
         "subject": "Java",
         "difficulty": "하",
-        "title": "정수 배열 최소/최대/평균 통계 계산기 (ArrayStatistics)",
-        "desc": "정수 N(3~20)과 N개의 정수를 입력받아 1차원 배열에 저장한 후, 원소들의 총합, 평균(소수점 둘째 자리), 최댓값, 최솟값을 계산하여 출력하세요.\n\n[입력]\n첫째 줄에 정수의 개수 N이 주어집니다.\n둘째 줄에 N개의 정수가 공백으로 주어집니다.\n(예:\n5\n12 85 43 90 27)",
-        "template": "import java.util.Scanner;\n\npublic class Solution {\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        // 여기에 코드를 작성하세요\n        \n    }\n}",
-        "solution": "import java.util.Scanner;\n\npublic class Solution {\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        int n = sc.nextInt();\n        int[] arr = new int[n];\n\n        int sum = 0;\n        for (int i = 0; i < n; i++) {\n            arr[i] = sc.nextInt();\n            sum += arr[i];\n        }\n\n        int max = arr[0];\n        int min = arr[0];\n        for (int i = 1; i < n; i++) {\n            if (arr[i] > max) max = arr[i];\n            if (arr[i] < min) min = arr[i];\n        }\n\n        double avg = (double) sum / n;\n\n        System.out.println(\"=== 배열 기초 통계 분석표 ===\");\n        System.out.printf(\"원소 개수: %d개\\n\", n);\n        System.out.printf(\"합계: %d\\n\", sum);\n        System.out.printf(\"평균: %.2f\\n\", avg);\n        System.out.printf(\"최댓값: %d\\n\", max);\n        System.out.printf(\"최솟값: %d\\n\", min);\n    }\n}",
+        "title": "정수 배열 기초 통계 분석 및 이상치(Outlier) 탐색기 (ArrayStatistics)",
+        "desc": "정수 N(3 <= N <= 30)과 N개의 정수를 입력받아 1차원 정수 배열(int[])에 저장한 후, 배열의 기초 통계와 평균으로부터 가장 크게 벗어난 이상치(Outlier)를 탐색하세요.\n\n[요구 분석 항목]\n1. 원소 개수: N개\n2. 합계: 전체 원소의 총합\n3. 평균: 소수점 둘째 자리까지 반올림 (%.2f)\n4. 최댓값 및 최솟값\n5. 최대 편차 원소: 평균과의 절대 편차(|arr[i] - 평균|)가 가장 큰 원소의 값과 편차 (절대 편차 동률 시 배열 앞쪽 원소 우선, 편차는 소수점 둘째 자리 %.2f)\n\n[입력]\n첫째 줄에 정수의 개수 N이 주어집니다.\n둘째 줄에 N개의 정수가 공백으로 주어집니다. (음수, 0, 양수 가능)\n\n[출력]\n=== 배열 기초 통계 분석표 ===\n원소 개수: {N}개\n합계: {sum}\n평균: {avg}\n최댓값: {max}\n최솟값: {min}\n최대 편차 원소: {outlierVal} (편차: {maxDev})\n\n※ 다양한 데이터(음수 포함, 동일값, 극단값 등)에 대한 입출력은 아래 [예제 1, 2, 3]을 참고하세요.",
+        "template": "import java.util.Scanner;\n\npublic class Solution {\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        // 여기에 1차원 배열 선언 및 통계 로직을 작성하세요\n        \n    }\n}\n",
+        "solution": "import java.util.Scanner;\n\npublic class Solution {\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        int n = sc.nextInt();\n        int[] arr = new int[n];\n        long sum = 0;\n\n        for (int i = 0; i < n; i++) {\n            arr[i] = sc.nextInt();\n            sum += arr[i];\n        }\n\n        int max = arr[0];\n        int min = arr[0];\n        for (int i = 1; i < n; i++) {\n            if (arr[i] > max) max = arr[i];\n            if (arr[i] < min) min = arr[i];\n        }\n\n        double avg = (double) sum / n;\n\n        int outlierVal = arr[0];\n        double maxDev = Math.abs(arr[0] - avg);\n        for (int i = 1; i < n; i++) {\n            double dev = Math.abs(arr[i] - avg);\n            if (dev > maxDev + 1e-9) {\n                maxDev = dev;\n                outlierVal = arr[i];\n            }\n        }\n\n        System.out.println(\"=== 배열 기초 통계 분석표 ===\");\n        System.out.printf(\"원소 개수: %d개\\n\", n);\n        System.out.printf(\"합계: %d\\n\", sum);\n        System.out.printf(\"평균: %.2f\\n\", avg);\n        System.out.printf(\"최댓값: %d\\n\", max);\n        System.out.printf(\"최솟값: %d\\n\", min);\n        System.out.printf(\"최대 편차 원소: %d (편차: %.2f)\\n\", outlierVal, maxDev);\n    }\n}\n",
+        "hint": "1. int[] arr = new int[n]; 로 배열을 생성하고 for 루프로 원소를 입력받으며 합계(sum)를 누적합니다.\n2. double avg = (double) sum / n; 으로 평균을 구합니다.\n3. Math.abs(arr[i] - avg)를 계산하여 가장 큰 편차를 가진 원소(outlierVal)를 찾습니다. 편차가 더 클 때만(>) 갱신하여 동률 시 앞선 원소가 유지되게 합니다.",
+        "cs_knowledge": "🖥️ [CS 핵심 지식: 1차원 정적 연속 배열(Contiguous Memory Allocation)과 O(1) 임의 접근]\n배열(Array)은 동일한 타입의 데이터 요소들을 물리적 메모리 상에 빈틈없이 '연속된 공간(Contiguous Block)'으로 할당하는 가장 기초적인 선형 자료구조입니다.\n배열의 i번째 요소의 메모리 주소는 '시작 주소 + (i × 요소의 바이트 크기)'라는 단순한 곱셈 연산으로 즉시 계산되므로, 인덱스를 통한 원소 접근 시간 복잡도는 항상 O(1)입니다.\n또한 메모리가 연속적으로 배치되어 있어 CPU가 다음 데이터를 미리 캐시로 가져오는 '공간 지역성(Spatial Locality)' 효과를 극대화할 수 있습니다.",
+        "logic_guide": "📘 [단계별 로직 구성 순서 & 초보자 가이드]\n1단계: Scanner로 N을 입력받고 크기 N인 배열 생성\n   int n = sc.nextInt();\n   int[] arr = new int[n];\n2단계: for 루프로 N개의 정수를 읽어 배열에 채우고 sum 누적\n3단계: 배열을 순회하며 max와 min 갱신\n4단계: avg = (double) sum / n 계산 후, 다시 순회하며 Math.abs(arr[i] - avg)의 최댓값과 해당 원소값 기록\n5단계: 서식에 맞춰 printf로 결과 출력",
+        "testcases": [
+            {
+                "input": "5\n12 85 43 90 27",
+                "expected": "=== 배열 기초 통계 분석표 ===\n원소 개수: 5개\n합계: 257\n평균: 51.40\n최댓값: 90\n최솟값: 12\n최대 편차 원소: 12 (편차: 39.40)",
+                "is_hidden": false
+            },
+            {
+                "input": "4\n10 10 10 10",
+                "expected": "=== 배열 기초 통계 분석표 ===\n원소 개수: 4개\n합계: 40\n평균: 10.00\n최댓값: 10\n최솟값: 10\n최대 편차 원소: 10 (편차: 0.00)",
+                "is_hidden": false
+            },
+            {
+                "input": "6\n-10 -5 0 5 10 100",
+                "expected": "=== 배열 기초 통계 분석표 ===\n원소 개수: 6개\n합계: 100\n평균: 16.67\n최댓값: 100\n최솟값: -10\n최대 편차 원소: 100 (편차: 83.33)",
+                "is_hidden": false
+            },
+            {
+                "input": "3\n1 2 3",
+                "expected": "=== 배열 기초 통계 분석표 ===\n원소 개수: 3개\n합계: 6\n평균: 2.00\n최댓값: 3\n최솟값: 1\n최대 편차 원소: 1 (편차: 1.00)",
+                "is_hidden": true
+            },
+            {
+                "input": "5\n-50 -20 -30 -10 -40",
+                "expected": "=== 배열 기초 통계 분석표 ===\n원소 개수: 5개\n합계: -150\n평균: -30.00\n최댓값: -10\n최솟값: -50\n최대 편차 원소: -50 (편차: 20.00)",
+                "is_hidden": true
+            },
+            {
+                "input": "4\n10 30 10 30",
+                "expected": "=== 배열 기초 통계 분석표 ===\n원소 개수: 4개\n합계: 80\n평균: 20.00\n최댓값: 30\n최솟값: 10\n최대 편차 원소: 10 (편차: 10.00)",
+                "is_hidden": true
+            },
+            {
+                "input": "5\n100000 200000 300000 400000 500000",
+                "expected": "=== 배열 기초 통계 분석표 ===\n원소 개수: 5개\n합계: 1500000\n평균: 300000.00\n최댓값: 500000\n최솟값: 100000\n최대 편차 원소: 100000 (편차: 200000.00)",
+                "is_hidden": true
+            },
+            {
+                "input": "5\n-1000 0 10 20 30",
+                "expected": "=== 배열 기초 통계 분석표 ===\n원소 개수: 5개\n합계: -940\n평균: -188.00\n최댓값: 30\n최솟값: -1000\n최대 편차 원소: -1000 (편차: 812.00)",
+                "is_hidden": true
+            },
+            {
+                "input": "10\n15 22 8 45 67 3 99 12 54 33",
+                "expected": "=== 배열 기초 통계 분석표 ===\n원소 개수: 10개\n합계: 358\n평균: 35.80\n최댓값: 99\n최솟값: 3\n최대 편차 원소: 99 (편차: 63.20)",
+                "is_hidden": true
+            },
+            {
+                "input": "7\n0 0 0 0 0 0 100",
+                "expected": "=== 배열 기초 통계 분석표 ===\n원소 개수: 7개\n합계: 100\n평균: 14.29\n최댓값: 100\n최솟값: 0\n최대 편차 원소: 100 (편차: 85.71)",
+                "is_hidden": true
+            }
+        ],
+        "samples": [
+            {
+                "input": "5\n12 85 43 90 27",
+                "output": "=== 배열 기초 통계 분석표 ===\n원소 개수: 5개\n합계: 257\n평균: 51.40\n최댓값: 90\n최솟값: 12\n최대 편차 원소: 12 (편차: 39.40)"
+            },
+            {
+                "input": "4\n10 10 10 10",
+                "output": "=== 배열 기초 통계 분석표 ===\n원소 개수: 4개\n합계: 40\n평균: 10.00\n최댓값: 10\n최솟값: 10\n최대 편차 원소: 10 (편차: 0.00)"
+            },
+            {
+                "input": "6\n-10 -5 0 5 10 100",
+                "output": "=== 배열 기초 통계 분석표 ===\n원소 개수: 6개\n합계: 100\n평균: 16.67\n최댓값: 100\n최솟값: -10\n최대 편차 원소: 100 (편차: 83.33)"
+            }
+        ],
         "sample_input": "5\n12 85 43 90 27",
-        "sample_output": "=== 배열 기초 통계 분석표 ===\n원소 개수: 5개\n합계: 257\n평균: 51.40\n최댓값: 90\n최솟값: 12",
-        "expected": "=== 배열 기초 통계 분석표 ===\n원소 개수: 5개\n합계: 257\n평균: 51.40\n최댓값: 90\n최솟값: 12",
-        "hint": "1. int[] arr = new int[n]; 로 배열을 생성하고 for문으로 입력을 채웁니다.\n2. sum 변수에 누적하고, max와 min은 arr[0]으로 초기화한 뒤 배열을 순회하며 갱신합니다.\n3. 평균은 (double) sum / n 형변환 후 %.2f 로 서식 출력합니다."
+        "sample_output": "=== 배열 기초 통계 분석표 ===\n원소 개수: 5개\n합계: 257\n평균: 51.40\n최댓값: 90\n최솟값: 12\n최대 편차 원소: 12 (편차: 39.40)",
+        "expected": "=== 배열 기초 통계 분석표 ===\n원소 개수: 5개\n합계: 257\n평균: 51.40\n최댓값: 90\n최솟값: 12\n최대 편차 원소: 12 (편차: 39.40)"
     },
     {
         "id": "day03_하2",
         "day": 3,
         "subject": "Java",
         "difficulty": "하",
-        "title": "학생 점수 역순 출력 및 합격자 수 (ReverseScoreFilter)",
-        "desc": "학생 수 N과 N명의 점수, 그리고 기준 커트라인 점수 C를 입력받아 배열에 저장하세요.\n입력된 점수들을 역순(마지막 입력부터 첫 번째 입력 순서)으로 공백으로 구분하여 출력하고, 기준점수 C 이상을 득점한 합격자 수를 계산하여 출력하세요.\n\n[입력]\n첫째 줄에 학생 수 N(1~20)이 주어집니다.\n둘째 줄에 N개의 점수가 공백으로 주어집니다.\n셋째 줄에 기준 점수 C가 주어집니다.\n(예:\n5\n70 85 60 95 80\n75)",
-        "template": "import java.util.Scanner;\n\npublic class Solution {\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        // 여기에 코드를 작성하세요\n        \n    }\n}",
-        "solution": "import java.util.Scanner;\n\npublic class Solution {\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        int n = sc.nextInt();\n        int[] scores = new int[n];\n\n        for (int i = 0; i < n; i++) {\n            scores[i] = sc.nextInt();\n        }\n\n        int cutoff = sc.nextInt();\n        int passCount = 0;\n\n        StringBuilder sb = new StringBuilder();\n        for (int i = n - 1; i >= 0; i--) {\n            sb.append(scores[i]);\n            if (i > 0) sb.append(\" \");\n            if (scores[i] >= cutoff) passCount++;\n        }\n\n        System.out.println(\"=== 점수 역순 조회 및 합격 판정 ===\");\n        System.out.println(\"역순 점수: \" + sb.toString());\n        System.out.printf(\"기준 점수: %d점 이상\\n\", cutoff);\n        System.out.printf(\"합격자 수: %d명 (총 %d명 중)\\n\", passCount, n);\n    }\n}",
+        "title": "서버 접속 로그 IP 빈도수 집계 & 최다 접속 IP 추적기 (IpFrequencyCounter)",
+        "desc": "웹 서버로 유입된 총 요청 수 N(1 <= N <= 100)과, 각 요청의 클라이언트 IP 호스트 식별 번호(1~20 사이의 정수) N개가 순서대로 주어집니다.\n1차원 카운팅 배열(int[] freq = new int[21])을 선언하여 각 호스트 번호별 유입 빈도수를 집계하세요.\n\n[요구 분석 항목]\n1. 1번부터 20번 호스트 중 유입된 적이 있는(빈도수 >= 1) 호스트들의 번호와 요청 수를 번호 오름차순으로 출력하세요.\n2. 총 유효 요청 건수 N을 출력하세요.\n3. 가장 많은 요청을 보낸 최다 접속 호스트 번호와 요청 수를 출력하세요. (최다 요청 호스트가 여러 개인 경우 번호가 가장 작은 호스트 출력)\n\n[입력]\n첫째 줄에 총 요청 수 N이 주어집니다.\n둘째 줄에 N개의 호스트 식별 번호(1~20)가 공백으로 주어집니다.\n\n[출력]\n=== 서버 접속 IP 빈도 분석표 ===\n[호스트별 요청 현황]\nIP #{번호}: {빈도수}회\n...\n---------------------------------\n총 유효 요청: {N}건\n최다 접속 호스트: IP #{최다번호} ({최다빈도}회)\n\n※ 단일 IP 요청, 동률 최다 요청 등 다양한 케이스는 아래 [예제 1, 2, 3]을 참고하세요.",
+        "template": "import java.util.Scanner;\n\npublic class Solution {\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        // 여기에 카운팅 배열(int[] freq = new int[21])을 활용한 집계 로직을 작성하세요\n        \n    }\n}\n",
+        "solution": "import java.util.Scanner;\n\npublic class Solution {\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        int n = sc.nextInt();\n        int[] freq = new int[21];\n\n        for (int i = 0; i < n; i++) {\n            int host = sc.nextInt();\n            if (host >= 1 && host <= 20) {\n                freq[host]++;\n            }\n        }\n\n        int maxHost = 1;\n        int maxCount = 0;\n        for (int i = 1; i <= 20; i++) {\n            if (freq[i] > maxCount) {\n                maxCount = freq[i];\n                maxHost = i;\n            }\n        }\n\n        System.out.println(\"=== 서버 접속 IP 빈도 분석표 ===\");\n        System.out.println(\"[호스트별 요청 현황]\");\n        for (int i = 1; i <= 20; i++) {\n            if (freq[i] > 0) {\n                System.out.printf(\"IP #%d: %d회\\n\", i, freq[i]);\n            }\n        }\n        System.out.println(\"---------------------------------\");\n        System.out.printf(\"총 유효 요청: %d건\\n\", n);\n        System.out.printf(\"최다 접속 호스트: IP #%d (%d회)\\n\", maxHost, maxCount);\n    }\n}\n",
+        "hint": "1. 호스트 번호가 1~20이므로 크기 21인 배열 `int[] freq = new int[21];`를 선언하면 인덱스를 호스트 번호 그대로 사용할 수 있습니다.\n2. 입력받은 host에 대해 `freq[host]++;`로 빈도를 누적합니다.\n3. 1부터 20까지 순회하며 `freq[i] > maxCount`인 경우 `maxCount`와 `maxHost`를 갱신합니다. 엄격한 초과(`>`) 비교를 사용하면 동률 시 번호가 더 작은 호스트가 자연스럽게 유지됩니다.",
+        "cs_knowledge": "🖥️ [CS 핵심 지식: 직접 번지 테이블(Direct Addressing Table)과 카운팅(Counting) 정렬]\n데이터 값의 범위가 1~20처럼 작고 제한적인 경우, 복잡한 검색 트리나 해시 함수 없이 데이터 값을 배열의 '인덱스(Index)'로 직접 사용하는 기법을 '직접 번지 테이블(Direct Addressing Table)'이라고 부릅니다.\n키 충돌(Collision)이 전혀 발생하지 않으며 조회 및 갱신 시간 복잡도가 완벽한 O(1)입니다.\n이 기법은 카운팅 정렬(Counting Sort)의 핵심 원리이자, 대규모 서버의 IP 블랙리스트 필터링, 웹 트래픽 히트맵 집계 등 실무 시스템에서 매우 자주 사용됩니다.",
+        "logic_guide": "📘 [단계별 로직 구성 순서 & 초보자 가이드]\n1단계: 크기 21인 카운트 배열 선언\n   int[] freq = new int[21];\n2단계: N번 반복하며 정수를 읽어 freq[host]++ 수행\n3단계: 1부터 20까지 순회하면서 freq[i] > 0인 항목만 `IP #i: freq[i]회` 형식으로 출력\n4단계: 최다 요청 호스트(maxHost, maxCount)를 추적하여 하단 종합 정보 출력",
+        "testcases": [
+            {
+                "input": "8\n7 2 7 5 7 2 2 7",
+                "expected": "=== 서버 접속 IP 빈도 분석표 ===\n[호스트별 요청 현황]\nIP #2: 3회\nIP #5: 1회\nIP #7: 4회\n---------------------------------\n총 유효 요청: 8건\n최다 접속 호스트: IP #7 (4회)",
+                "is_hidden": false
+            },
+            {
+                "input": "5\n3 3 3 3 3",
+                "expected": "=== 서버 접속 IP 빈도 분석표 ===\n[호스트별 요청 현황]\nIP #3: 5회\n---------------------------------\n총 유효 요청: 5건\n최다 접속 호스트: IP #3 (5회)",
+                "is_hidden": false
+            },
+            {
+                "input": "6\n4 2 4 2 1 1",
+                "expected": "=== 서버 접속 IP 빈도 분석표 ===\n[호스트별 요청 현황]\nIP #1: 2회\nIP #2: 2회\nIP #4: 2회\n---------------------------------\n총 유효 요청: 6건\n최다 접속 호스트: IP #1 (2회)",
+                "is_hidden": false
+            },
+            {
+                "input": "1\n15",
+                "expected": "=== 서버 접속 IP 빈도 분석표 ===\n[호스트별 요청 현황]\nIP #15: 1회\n---------------------------------\n총 유효 요청: 1건\n최다 접속 호스트: IP #15 (1회)",
+                "is_hidden": true
+            },
+            {
+                "input": "10\n1 2 3 4 5 6 7 8 9 10",
+                "expected": "=== 서버 접속 IP 빈도 분석표 ===\n[호스트별 요청 현황]\nIP #1: 1회\nIP #2: 1회\nIP #3: 1회\nIP #4: 1회\nIP #5: 1회\nIP #6: 1회\nIP #7: 1회\nIP #8: 1회\nIP #9: 1회\nIP #10: 1회\n---------------------------------\n총 유효 요청: 10건\n최다 접속 호스트: IP #1 (1회)",
+                "is_hidden": true
+            },
+            {
+                "input": "7\n20 20 20 1 1 1 2",
+                "expected": "=== 서버 접속 IP 빈도 분석표 ===\n[호스트별 요청 현황]\nIP #1: 3회\nIP #2: 1회\nIP #20: 3회\n---------------------------------\n총 유효 요청: 7건\n최다 접속 호스트: IP #1 (3회)",
+                "is_hidden": true
+            },
+            {
+                "input": "12\n5 5 5 10 10 10 15 15 15 20 20 20",
+                "expected": "=== 서버 접속 IP 빈도 분석표 ===\n[호스트별 요청 현황]\nIP #5: 3회\nIP #10: 3회\nIP #15: 3회\nIP #20: 3회\n---------------------------------\n총 유효 요청: 12건\n최다 접속 호스트: IP #5 (3회)",
+                "is_hidden": true
+            },
+            {
+                "input": "4\n19 18 19 18",
+                "expected": "=== 서버 접속 IP 빈도 분석표 ===\n[호스트별 요청 현황]\nIP #18: 2회\nIP #19: 2회\n---------------------------------\n총 유효 요청: 4건\n최다 접속 호스트: IP #18 (2회)",
+                "is_hidden": true
+            },
+            {
+                "input": "15\n7 7 7 7 7 1 2 3 4 5 6 8 9 10 11",
+                "expected": "=== 서버 접속 IP 빈도 분석표 ===\n[호스트별 요청 현황]\nIP #1: 1회\nIP #2: 1회\nIP #3: 1회\nIP #4: 1회\nIP #5: 1회\nIP #6: 1회\nIP #7: 5회\nIP #8: 1회\nIP #9: 1회\nIP #10: 1회\nIP #11: 1회\n---------------------------------\n총 유효 요청: 15건\n최다 접속 호스트: IP #7 (5회)",
+                "is_hidden": true
+            },
+            {
+                "input": "20\n1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20",
+                "expected": "=== 서버 접속 IP 빈도 분석표 ===\n[호스트별 요청 현황]\nIP #1: 1회\nIP #2: 1회\nIP #3: 1회\nIP #4: 1회\nIP #5: 1회\nIP #6: 1회\nIP #7: 1회\nIP #8: 1회\nIP #9: 1회\nIP #10: 1회\nIP #11: 1회\nIP #12: 1회\nIP #13: 1회\nIP #14: 1회\nIP #15: 1회\nIP #16: 1회\nIP #17: 1회\nIP #18: 1회\nIP #19: 1회\nIP #20: 1회\n---------------------------------\n총 유효 요청: 20건\n최다 접속 호스트: IP #1 (1회)",
+                "is_hidden": true
+            }
+        ],
+        "samples": [
+            {
+                "input": "8\n7 2 7 5 7 2 2 7",
+                "output": "=== 서버 접속 IP 빈도 분석표 ===\n[호스트별 요청 현황]\nIP #2: 3회\nIP #5: 1회\nIP #7: 4회\n---------------------------------\n총 유효 요청: 8건\n최다 접속 호스트: IP #7 (4회)"
+            },
+            {
+                "input": "5\n3 3 3 3 3",
+                "output": "=== 서버 접속 IP 빈도 분석표 ===\n[호스트별 요청 현황]\nIP #3: 5회\n---------------------------------\n총 유효 요청: 5건\n최다 접속 호스트: IP #3 (5회)"
+            },
+            {
+                "input": "6\n4 2 4 2 1 1",
+                "output": "=== 서버 접속 IP 빈도 분석표 ===\n[호스트별 요청 현황]\nIP #1: 2회\nIP #2: 2회\nIP #4: 2회\n---------------------------------\n총 유효 요청: 6건\n최다 접속 호스트: IP #1 (2회)"
+            }
+        ],
+        "sample_input": "8\n7 2 7 5 7 2 2 7",
+        "sample_output": "=== 서버 접속 IP 빈도 분석표 ===\n[호스트별 요청 현황]\nIP #2: 3회\nIP #5: 1회\nIP #7: 4회\n---------------------------------\n총 유효 요청: 8건\n최다 접속 호스트: IP #7 (4회)",
+        "expected": "=== 서버 접속 IP 빈도 분석표 ===\n[호스트별 요청 현황]\nIP #2: 3회\nIP #5: 1회\nIP #7: 4회\n---------------------------------\n총 유효 요청: 8건\n최다 접속 호스트: IP #7 (4회)"
+    },
+    {
+        "id": "day03_하3",
+        "day": 3,
+        "subject": "Java",
+        "difficulty": "하",
+        "title": "학생 점수 역순 조회 및 커트라인 합격 필터링 (ReverseScoreFilter)",
+        "desc": "학생 수 N(1 <= N <= 30)과 N명의 시험 점수(0~100 정수), 그리고 합격 기준 커트라인 점수 C를 입력받아 배열에 저장하세요.\n\n[요구 분석 항목]\n1. 입력된 점수들을 역순(마지막 학생부터 첫 번째 학생 순서)으로 공백으로 구분하여 한 줄에 출력하세요.\n2. 커트라인 점수 C 이상을 득점한 합격자 수를 계산하세요.\n3. 전체 학생 대비 최종 합격률을 소수점 첫째 자리까지(%.1f%%) 계산하여 출력하세요. (합격자가 0명이면 0.0%)\n\n[입력]\n첫째 줄에 학생 수 N이 주어집니다.\n둘째 줄에 N개의 점수가 공백으로 주어집니다.\n셋째 줄에 기준 점수 C가 주어집니다.\n\n[출력]\n=== 점수 역순 조회 및 합격 판정 ===\n역순 점수: {역순으로 나열된 점수들}\n기준 점수: {C}점 이상\n합격자 수: {passCount}명 (총 {N}명 중)\n최종 합격률: {passRate}%\n\n※ 전원 합격, 전원 탈락, 1명 입력 등 다양한 케이스는 아래 [예제 1, 2, 3]을 참고하세요.",
+        "template": "import java.util.Scanner;\n\npublic class Solution {\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        // 여기에 배열 역순 순회 및 커트라인 필터링 로직을 작성하세요\n        \n    }\n}\n",
+        "solution": "import java.util.Scanner;\n\npublic class Solution {\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        int n = sc.nextInt();\n        int[] scores = new int[n];\n\n        for (int i = 0; i < n; i++) {\n            scores[i] = sc.nextInt();\n        }\n        int cutoff = sc.nextInt();\n\n        int passCount = 0;\n        System.out.println(\"=== 점수 역순 조회 및 합격 판정 ===\");\n        System.out.print(\"역순 점수: \");\n        for (int i = n - 1; i >= 0; i--) {\n            System.out.print(scores[i]);\n            if (i > 0) System.out.print(\" \");\n            if (scores[i] >= cutoff) {\n                passCount++;\n            }\n        }\n        System.out.println();\n\n        double passRate = (passCount * 100.0) / n;\n        System.out.printf(\"기준 점수: %d점 이상\\n\", cutoff);\n        System.out.printf(\"합격자 수: %d명 (총 %d명 중)\\n\", passCount, n);\n        System.out.printf(\"최종 합격률: %.1f%%\\n\", passRate);\n    }\n}\n",
+        "hint": "1. 배열의 역순 순회는 `for (int i = n - 1; i >= 0; i--)` 구문을 사용합니다.\n2. 인덱스 바운드에 주의하세요! 크기 N인 배열의 마지막 인덱스는 N이 아닌 N - 1 입니다.\n3. 합격률 계산 시 정수 나눗셈 방지를 위해 `(passCount * 100.0) / n` 실수를 사용하세요.",
+        "cs_knowledge": "🖥️ [CS 핵심 지식: 배열의 순방향 vs 역방향 순회와 인덱스 바운드 관리]\n자바를 비롯한 대부분의 현대 프로그래밍 언어에서 배열 인덱스는 0부터 시작하는 '제로 베이스드 인덱싱(Zero-based Indexing)'을 사용합니다.\n크기가 N인 배열의 유효 인덱스 범위는 [0, N - 1]이며, N번째 인덱스에 접근하려고 하면 JVM은 즉시 `ArrayIndexOutOfBoundsException` 런타임 예외를 발생시키며 프로그램을 비정상 종료합니다.\n역순 순회(Reverse Traversal)는 스택(Stack)의 후입선출(LIFO) 동작을 흉내 내거나, 최근에 추가된 최신 로그부터 역추적 분석할 때 기본이 되는 제어 패턴입니다.",
+        "logic_guide": "📘 [단계별 로직 구성 순서 & 초보자 가이드]\n1단계: N 입력 및 scores 배열 생성 후 입력값 채우기\n2단계: 커트라인 점수 cutoff 입력받기\n3단계: for (int i = n - 1; i >= 0; i--) 로 역순 순회하며 요소 출력\n4단계: 순회 중 scores[i] >= cutoff 이면 passCount 1 증가\n5단계: passRate = (passCount * 100.0) / n 계산 후 종합 리포트 출력",
+        "testcases": [
+            {
+                "input": "5\n70 85 60 95 80\n75",
+                "expected": "=== 점수 역순 조회 및 합격 판정 ===\n역순 점수: 80 95 60 85 70\n기준 점수: 75점 이상\n합격자 수: 3명 (총 5명 중)\n최종 합격률: 60.0%",
+                "is_hidden": false
+            },
+            {
+                "input": "4\n50 55 58 59\n60",
+                "expected": "=== 점수 역순 조회 및 합격 판정 ===\n역순 점수: 59 58 55 50\n기준 점수: 60점 이상\n합격자 수: 0명 (총 4명 중)\n최종 합격률: 0.0%",
+                "is_hidden": false
+            },
+            {
+                "input": "3\n100 100 100\n90",
+                "expected": "=== 점수 역순 조회 및 합격 판정 ===\n역순 점수: 100 100 100\n기준 점수: 90점 이상\n합격자 수: 3명 (총 3명 중)\n최종 합격률: 100.0%",
+                "is_hidden": false
+            },
+            {
+                "input": "1\n88\n80",
+                "expected": "=== 점수 역순 조회 및 합격 판정 ===\n역순 점수: 88\n기준 점수: 80점 이상\n합격자 수: 1명 (총 1명 중)\n최종 합격률: 100.0%",
+                "is_hidden": true
+            },
+            {
+                "input": "1\n50\n70",
+                "expected": "=== 점수 역순 조회 및 합격 판정 ===\n역순 점수: 50\n기준 점수: 70점 이상\n합격자 수: 0명 (총 1명 중)\n최종 합격률: 0.0%",
+                "is_hidden": true
+            },
+            {
+                "input": "6\n90 80 70 60 50 40\n70",
+                "expected": "=== 점수 역순 조회 및 합격 판정 ===\n역순 점수: 40 50 60 70 80 90\n기준 점수: 70점 이상\n합격자 수: 3명 (총 6명 중)\n최종 합격률: 50.0%",
+                "is_hidden": true
+            },
+            {
+                "input": "5\n0 0 0 0 0\n0",
+                "expected": "=== 점수 역순 조회 및 합격 판정 ===\n역순 점수: 0 0 0 0 0\n기준 점수: 0점 이상\n합격자 수: 5명 (총 5명 중)\n최종 합격률: 100.0%",
+                "is_hidden": true
+            },
+            {
+                "input": "5\n0 0 0 0 0\n1",
+                "expected": "=== 점수 역순 조회 및 합격 판정 ===\n역순 점수: 0 0 0 0 0\n기준 점수: 1점 이상\n합격자 수: 0명 (총 5명 중)\n최종 합격률: 0.0%",
+                "is_hidden": true
+            },
+            {
+                "input": "8\n75 75 75 75 75 75 75 75\n75",
+                "expected": "=== 점수 역순 조회 및 합격 판정 ===\n역순 점수: 75 75 75 75 75 75 75 75\n기준 점수: 75점 이상\n합격자 수: 8명 (총 8명 중)\n최종 합격률: 100.0%",
+                "is_hidden": true
+            },
+            {
+                "input": "7\n45 92 63 88 51 77 100\n65",
+                "expected": "=== 점수 역순 조회 및 합격 판정 ===\n역순 점수: 100 77 51 88 63 92 45\n기준 점수: 65점 이상\n합격자 수: 4명 (총 7명 중)\n최종 합격률: 57.1%",
+                "is_hidden": true
+            }
+        ],
+        "samples": [
+            {
+                "input": "5\n70 85 60 95 80\n75",
+                "output": "=== 점수 역순 조회 및 합격 판정 ===\n역순 점수: 80 95 60 85 70\n기준 점수: 75점 이상\n합격자 수: 3명 (총 5명 중)\n최종 합격률: 60.0%"
+            },
+            {
+                "input": "4\n50 55 58 59\n60",
+                "output": "=== 점수 역순 조회 및 합격 판정 ===\n역순 점수: 59 58 55 50\n기준 점수: 60점 이상\n합격자 수: 0명 (총 4명 중)\n최종 합격률: 0.0%"
+            },
+            {
+                "input": "3\n100 100 100\n90",
+                "output": "=== 점수 역순 조회 및 합격 판정 ===\n역순 점수: 100 100 100\n기준 점수: 90점 이상\n합격자 수: 3명 (총 3명 중)\n최종 합격률: 100.0%"
+            }
+        ],
         "sample_input": "5\n70 85 60 95 80\n75",
-        "sample_output": "=== 점수 역순 조회 및 합격 판정 ===\n역순 점수: 80 95 60 85 70\n기준 점수: 75점 이상\n합격자 수: 3명 (총 5명 중)",
-        "expected": "=== 점수 역순 조회 및 합격 판정 ===\n역순 점수: 80 95 60 85 70\n기준 점수: 75점 이상\n합격자 수: 3명 (총 5명 중)",
-        "hint": "1. int[] scores = new int[n]; 에 점수를 입력받습니다.\n2. 역순 순회는 `for (int i = n - 1; i >= 0; i--)` 로 인덱스를 줄여가며 출력합니다.\n3. 순회하면서 `scores[i] >= cutoff` 인 경우 `passCount++` 합니다."
+        "sample_output": "=== 점수 역순 조회 및 합격 판정 ===\n역순 점수: 80 95 60 85 70\n기준 점수: 75점 이상\n합격자 수: 3명 (총 5명 중)\n최종 합격률: 60.0%",
+        "expected": "=== 점수 역순 조회 및 합격 판정 ===\n역순 점수: 80 95 60 85 70\n기준 점수: 75점 이상\n합격자 수: 3명 (총 5명 중)\n최종 합격률: 60.0%"
     },
     {
         "id": "day03_중1",
         "day": 3,
         "subject": "Java",
         "difficulty": "중",
-        "title": "편의점 주간 요일별 매출 및 목표 달성 분석기 (WeeklySalesAnalyzer)",
-        "desc": "월요일부터 일요일까지 7일간의 편의점 일일 매출액을 입력받아 배열에 저장하세요.\n- 요일 이름: 월, 화, 수, 목, 금, 토, 일\n- 주간 총매출, 일평균 매출(정수 단위 반올림), 최고 매출을 기록한 요일과 매출액, 평균 매출 이상을 기록한 일수를 순서대로 출력하세요.\n\n[입력]\n7개의 정수가 공백으로 주어집니다.\n(예: 850000 920000 780000 890000 1200000 1450000 1300000)",
-        "template": "import java.util.Scanner;\n\npublic class Solution {\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        // 여기에 코드를 작성하세요\n        \n    }\n}",
-        "solution": "import java.util.Scanner;\n\npublic class Solution {\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        String[] days = {\"월요일\", \"화요일\", \"수요일\", \"목요일\", \"금요일\", \"토요일\", \"일요일\"};\n        int[] sales = new int[7];\n\n        int total = 0;\n        int maxIdx = 0;\n\n        for (int i = 0; i < 7; i++) {\n            sales[i] = sc.nextInt();\n            total += sales[i];\n            if (sales[i] > sales[maxIdx]) {\n                maxIdx = i;\n            }\n        }\n\n        int avg = (int) Math.round((double) total / 7);\n\n        int aboveAvgCount = 0;\n        for (int s : sales) {\n            if (s >= avg) aboveAvgCount++;\n        }\n\n        System.out.println(\"=== 주간 매출 정밀 분석표 ===\");\n        System.out.printf(\"주간 총매출: %,d원\\n\", total);\n        System.out.printf(\"일평균 매출: %,d원\\n\", avg);\n        System.out.printf(\"최고 매출 요일: %s (%,d원)\\n\", days[maxIdx], sales[maxIdx]);\n        System.out.printf(\"평균 이상 달성 일수: %d일\\n\", aboveAvgCount);\n    }\n}",
+        "title": "편의점 주간 매출 데이터 분석 및 3일 이동평균(Moving Average) 계산기 (WeeklySalesAnalyzer)",
+        "desc": "월요일부터 일요일까지 7일간의 편의점 일일 매출액(0 이상의 정수)을 입력받아 1차원 배열에 저장하세요.\n\n[요구 분석 항목]\n1. 주간 총매출 및 일평균 매출(정수 단위 반올림 Math.round 사용, 천 단위 쉼표 %,d원)\n2. 최고 매출 요일과 금액, 최저 매출 요일과 금액 (동률 시 앞선 요일 우선, 요일명: 월요일, 화요일, ..., 일요일)\n3. 수요일부터 일요일까지 각 요일의 '최근 3일간 이동평균(3-Day Moving Average, 정수 단위 반올림)'을 순서대로 계산하여 출력하세요.\n   - 수요일 이동평균: (월 + 화 + 수) / 3.0\n   - 목요일 이동평균: (화 + 수 + 목) / 3.0\n   - 금요일 이동평균: (수 + 목 + 금) / 3.0\n   - 토요일 이동평균: (목 + 금 + 토) / 3.0\n   - 일요일 이동평균: (금 + 토 + 일) / 3.0\n\n[입력]\n첫째 줄에 7개의 정수가 공백으로 주어집니다.\n\n[출력]\n=== 주간 매출 및 이동평균 분석표 ===\n주간 총매출: {총액}원\n일평균 매출: {평균}원\n최고 매출 요일: {최고요일} ({금액}원)\n최저 매출 요일: {최저요일} ({금액}원)\n---------------------------------\n[3일 이동평균 현황]\n수요일: {금액}원 (월~수 평균)\n목요일: {금액}원 (화~목 평균)\n금요일: {금액}원 (수~금 평균)\n토요일: {금액}원 (목~토 평균)\n일요일: {금액}원 (금~일 평균)\n\n※ 주말 집중형, 평일 집중형 등 다양한 매출 패턴은 아래 [예제 1, 2, 3]을 참고하세요.",
+        "template": "import java.util.Scanner;\n\npublic class Solution {\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        // 여기에 7일 매출 통계 및 3일 슬라이딩 윈도우 이동평균 로직을 작성하세요\n        \n    }\n}\n",
+        "solution": "import java.util.Scanner;\n\npublic class Solution {\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        String[] dayNames = {\"월요일\", \"화요일\", \"수요일\", \"목요일\", \"금요일\", \"토요일\", \"일요일\"};\n        long[] sales = new long[7];\n        long total = 0;\n\n        for (int i = 0; i < 7; i++) {\n            sales[i] = sc.nextLong();\n            total += sales[i];\n        }\n\n        int maxIdx = 0;\n        int minIdx = 0;\n        for (int i = 1; i < 7; i++) {\n            if (sales[i] > sales[maxIdx]) maxIdx = i;\n            if (sales[i] < sales[minIdx]) minIdx = i;\n        }\n\n        long dailyAvg = Math.round((double) total / 7.0);\n\n        System.out.println(\"=== 주간 매출 및 이동평균 분석표 ===\");\n        System.out.printf(\"주간 총매출: %,d원\\n\", total);\n        System.out.printf(\"일평균 매출: %,d원\\n\", dailyAvg);\n        System.out.printf(\"최고 매출 요일: %s (%,d원)\\n\", dayNames[maxIdx], sales[maxIdx]);\n        System.out.printf(\"최저 매출 요일: %s (%,d원)\\n\", dayNames[minIdx], sales[minIdx]);\n        System.out.println(\"---------------------------------\");\n        System.out.println(\"[3일 이동평균 현황]\");\n\n        String[] rangeLabels = {\"월~수\", \"화~목\", \"수~금\", \"목~토\", \"금~일\"};\n        for (int i = 2; i < 7; i++) {\n            double windowSum = sales[i - 2] + sales[i - 1] + sales[i];\n            long ma = Math.round(windowSum / 3.0);\n            System.out.printf(\"%s: %,d원 (%s 평균)\\n\", dayNames[i], ma, rangeLabels[i - 2]);\n        }\n    }\n}\n",
+        "hint": "1. String[] dayNames = {\"월요일\", ...}; 배열을 만들어 인덱스 0~6에 요일명을 매핑합니다.\n2. 일평균은 Math.round((double) total / 7.0) 으로 정수 반올림합니다.\n3. 3일 이동평균은 for (int i = 2; i < 7; i++) 루프에서 (sales[i-2] + sales[i-1] + sales[i]) / 3.0 을 Math.round 로 감싸서 출력합니다.",
+        "cs_knowledge": "🖥️ [CS 핵심 지식: 시계열 데이터(Time-Series Data) 처리와 슬라이딩 윈도우(Sliding Window)]\n주식 가격, 서버 CPU 사용량, 센서 데이터처럼 시간의 흐름에 따라 연속적으로 발생하는 데이터를 '시계열 데이터(Time-Series Data)'라고 부릅니다.\n단기적인 노이즈를 제거하고 추세를 파악하기 위해 고정된 크기 K개의 최근 데이터 평균을 연속해서 구하는 기법을 '이동평균(Moving Average)'이라 합니다.\n알고리즘 분야에서는 이를 '슬라이딩 윈도우(Sliding Window)' 패턴이라 부르며, 윈도우가 한 칸 전진할 때 '새 원소 추가 + 맨 앞 원소 제거' 연산으로 O(1) 시간에 갱신하는 것이 핵심 최적화 기법입니다.",
+        "logic_guide": "📘 [단계별 로직 구성 순서 & 초보자 가이드]\n1단계: 요일 이름 문자열 배열과 크기 7의 sales 배열 선언\n2단계: 7개의 매출을 입력받으며 total 누적, maxIdx/minIdx 탐색\n3단계: 일평균 dailyAvg 계산 및 기본 통계 출력\n4단계: i=2부터 i=6까지 순회하며 (sales[i-2] + sales[i-1] + sales[i]) / 3.0 의 Math.round 계산\n5단계: 서식에 맞춰 %,d원 형식으로 5일간의 이동평균 출력",
+        "testcases": [
+            {
+                "input": "850000 920000 780000 890000 1200000 1450000 1300000",
+                "expected": "=== 주간 매출 및 이동평균 분석표 ===\n주간 총매출: 7,390,000원\n일평균 매출: 1,055,714원\n최고 매출 요일: 토요일 (1,450,000원)\n최저 매출 요일: 수요일 (780,000원)\n---------------------------------\n[3일 이동평균 현황]\n수요일: 850,000원 (월~수 평균)\n목요일: 863,333원 (화~목 평균)\n금요일: 956,667원 (수~금 평균)\n토요일: 1,180,000원 (목~토 평균)\n일요일: 1,316,667원 (금~일 평균)",
+                "is_hidden": false
+            },
+            {
+                "input": "1000000 1000000 1000000 1000000 1000000 1000000 1000000",
+                "expected": "=== 주간 매출 및 이동평균 분석표 ===\n주간 총매출: 7,000,000원\n일평균 매출: 1,000,000원\n최고 매출 요일: 월요일 (1,000,000원)\n최저 매출 요일: 월요일 (1,000,000원)\n---------------------------------\n[3일 이동평균 현황]\n수요일: 1,000,000원 (월~수 평균)\n목요일: 1,000,000원 (화~목 평균)\n금요일: 1,000,000원 (수~금 평균)\n토요일: 1,000,000원 (목~토 평균)\n일요일: 1,000,000원 (금~일 평균)",
+                "is_hidden": false
+            },
+            {
+                "input": "500000 300000 200000 100000 800000 2500000 3000000",
+                "expected": "=== 주간 매출 및 이동평균 분석표 ===\n주간 총매출: 7,400,000원\n일평균 매출: 1,057,143원\n최고 매출 요일: 일요일 (3,000,000원)\n최저 매출 요일: 목요일 (100,000원)\n---------------------------------\n[3일 이동평균 현황]\n수요일: 333,333원 (월~수 평균)\n목요일: 200,000원 (화~목 평균)\n금요일: 366,667원 (수~금 평균)\n토요일: 1,133,333원 (목~토 평균)\n일요일: 2,100,000원 (금~일 평균)",
+                "is_hidden": false
+            },
+            {
+                "input": "0 0 0 0 0 0 0",
+                "expected": "=== 주간 매출 및 이동평균 분석표 ===\n주간 총매출: 0원\n일평균 매출: 0원\n최고 매출 요일: 월요일 (0원)\n최저 매출 요일: 월요일 (0원)\n---------------------------------\n[3일 이동평균 현황]\n수요일: 0원 (월~수 평균)\n목요일: 0원 (화~목 평균)\n금요일: 0원 (수~금 평균)\n토요일: 0원 (목~토 평균)\n일요일: 0원 (금~일 평균)",
+                "is_hidden": true
+            },
+            {
+                "input": "1234567 2345678 3456789 4567890 5678901 6789012 7890123",
+                "expected": "=== 주간 매출 및 이동평균 분석표 ===\n주간 총매출: 31,962,960원\n일평균 매출: 4,566,137원\n최고 매출 요일: 일요일 (7,890,123원)\n최저 매출 요일: 월요일 (1,234,567원)\n---------------------------------\n[3일 이동평균 현황]\n수요일: 2,345,678원 (월~수 평균)\n목요일: 3,456,786원 (화~목 평균)\n금요일: 4,567,860원 (수~금 평균)\n토요일: 5,678,601원 (목~토 평균)\n일요일: 6,786,012원 (금~일 평균)",
+                "is_hidden": true
+            },
+            {
+                "input": "2000000 1800000 1500000 1200000 900000 600000 300000",
+                "expected": "=== 주간 매출 및 이동평균 분석표 ===\n주간 총매출: 8,300,000원\n일평균 매출: 1,185,714원\n최고 매출 요일: 월요일 (2,000,000원)\n최저 매출 요일: 일요일 (300,000원)\n---------------------------------\n[3일 이동평균 현황]\n수요일: 1,766,667원 (월~수 평균)\n목요일: 1,500,000원 (화~목 평균)\n금요일: 1,200,000원 (수~금 평균)\n토요일: 900,000원 (목~토 평균)\n일요일: 600,000원 (금~일 평균)",
+                "is_hidden": true
+            },
+            {
+                "input": "500000 500000 500000 1500000 1500000 1500000 500000",
+                "expected": "=== 주간 매출 및 이동평균 분석표 ===\n주간 총매출: 6,500,000원\n일평균 매출: 928,571원\n최고 매출 요일: 목요일 (1,500,000원)\n최저 매출 요일: 월요일 (500,000원)\n---------------------------------\n[3일 이동평균 현황]\n수요일: 500,000원 (월~수 평균)\n목요일: 833,333원 (화~목 평균)\n금요일: 1,166,667원 (수~금 평균)\n토요일: 1,500,000원 (목~토 평균)\n일요일: 1,166,667원 (금~일 평균)",
+                "is_hidden": true
+            },
+            {
+                "input": "100 200 400 800 1600 3200 6400",
+                "expected": "=== 주간 매출 및 이동평균 분석표 ===\n주간 총매출: 12,700원\n일평균 매출: 1,814원\n최고 매출 요일: 일요일 (6,400원)\n최저 매출 요일: 월요일 (100원)\n---------------------------------\n[3일 이동평균 현황]\n수요일: 233원 (월~수 평균)\n목요일: 467원 (화~목 평균)\n금요일: 933원 (수~금 평균)\n토요일: 1,867원 (목~토 평균)\n일요일: 3,733원 (금~일 평균)",
+                "is_hidden": true
+            },
+            {
+                "input": "999999 0 999999 0 999999 0 999999",
+                "expected": "=== 주간 매출 및 이동평균 분석표 ===\n주간 총매출: 3,999,996원\n일평균 매출: 571,428원\n최고 매출 요일: 월요일 (999,999원)\n최저 매출 요일: 화요일 (0원)\n---------------------------------\n[3일 이동평균 현황]\n수요일: 666,666원 (월~수 평균)\n목요일: 333,333원 (화~목 평균)\n금요일: 666,666원 (수~금 평균)\n토요일: 333,333원 (목~토 평균)\n일요일: 666,666원 (금~일 평균)",
+                "is_hidden": true
+            },
+            {
+                "input": "350000 420000 390000 510000 880000 1250000 1100000",
+                "expected": "=== 주간 매출 및 이동평균 분석표 ===\n주간 총매출: 4,900,000원\n일평균 매출: 700,000원\n최고 매출 요일: 토요일 (1,250,000원)\n최저 매출 요일: 월요일 (350,000원)\n---------------------------------\n[3일 이동평균 현황]\n수요일: 386,667원 (월~수 평균)\n목요일: 440,000원 (화~목 평균)\n금요일: 593,333원 (수~금 평균)\n토요일: 880,000원 (목~토 평균)\n일요일: 1,076,667원 (금~일 평균)",
+                "is_hidden": true
+            }
+        ],
+        "samples": [
+            {
+                "input": "850000 920000 780000 890000 1200000 1450000 1300000",
+                "output": "=== 주간 매출 및 이동평균 분석표 ===\n주간 총매출: 7,390,000원\n일평균 매출: 1,055,714원\n최고 매출 요일: 토요일 (1,450,000원)\n최저 매출 요일: 수요일 (780,000원)\n---------------------------------\n[3일 이동평균 현황]\n수요일: 850,000원 (월~수 평균)\n목요일: 863,333원 (화~목 평균)\n금요일: 956,667원 (수~금 평균)\n토요일: 1,180,000원 (목~토 평균)\n일요일: 1,316,667원 (금~일 평균)"
+            },
+            {
+                "input": "1000000 1000000 1000000 1000000 1000000 1000000 1000000",
+                "output": "=== 주간 매출 및 이동평균 분석표 ===\n주간 총매출: 7,000,000원\n일평균 매출: 1,000,000원\n최고 매출 요일: 월요일 (1,000,000원)\n최저 매출 요일: 월요일 (1,000,000원)\n---------------------------------\n[3일 이동평균 현황]\n수요일: 1,000,000원 (월~수 평균)\n목요일: 1,000,000원 (화~목 평균)\n금요일: 1,000,000원 (수~금 평균)\n토요일: 1,000,000원 (목~토 평균)\n일요일: 1,000,000원 (금~일 평균)"
+            },
+            {
+                "input": "500000 300000 200000 100000 800000 2500000 3000000",
+                "output": "=== 주간 매출 및 이동평균 분석표 ===\n주간 총매출: 7,400,000원\n일평균 매출: 1,057,143원\n최고 매출 요일: 일요일 (3,000,000원)\n최저 매출 요일: 목요일 (100,000원)\n---------------------------------\n[3일 이동평균 현황]\n수요일: 333,333원 (월~수 평균)\n목요일: 200,000원 (화~목 평균)\n금요일: 366,667원 (수~금 평균)\n토요일: 1,133,333원 (목~토 평균)\n일요일: 2,100,000원 (금~일 평균)"
+            }
+        ],
         "sample_input": "850000 920000 780000 890000 1200000 1450000 1300000",
-        "sample_output": "=== 주간 매출 정밀 분석표 ===\n주간 총매출: 7,390,000원\n일평균 매출: 1,055,714원\n최고 매출 요일: 토요일 (1,450,000원)\n평균 이상 달성 일수: 3일",
-        "expected": "=== 주간 매출 정밀 분석표 ===\n주간 총매출: 7,390,000원\n일평균 매출: 1,055,714원\n최고 매출 요일: 토요일 (1,450,000원)\n평균 이상 달성 일수: 3일",
-        "hint": "1. `String[] days = {\"월요일\", ...};` 요일명 배열을 선언하고 인덱스를 매핑합니다.\n2. 매출 최대치 갱신 시 `maxIdx = i;`로 최대 매출이 발생한 요일 인덱스를 함께 기억합니다."
+        "sample_output": "=== 주간 매출 및 이동평균 분석표 ===\n주간 총매출: 7,390,000원\n일평균 매출: 1,055,714원\n최고 매출 요일: 토요일 (1,450,000원)\n최저 매출 요일: 수요일 (780,000원)\n---------------------------------\n[3일 이동평균 현황]\n수요일: 850,000원 (월~수 평균)\n목요일: 863,333원 (화~목 평균)\n금요일: 956,667원 (수~금 평균)\n토요일: 1,180,000원 (목~토 평균)\n일요일: 1,316,667원 (금~일 평균)",
+        "expected": "=== 주간 매출 및 이동평균 분석표 ===\n주간 총매출: 7,390,000원\n일평균 매출: 1,055,714원\n최고 매출 요일: 토요일 (1,450,000원)\n최저 매출 요일: 수요일 (780,000원)\n---------------------------------\n[3일 이동평균 현황]\n수요일: 850,000원 (월~수 평균)\n목요일: 863,333원 (화~목 평균)\n금요일: 956,667원 (수~금 평균)\n토요일: 1,180,000원 (목~토 평균)\n일요일: 1,316,667원 (금~일 평균)"
     },
     {
         "id": "day03_중2",
         "day": 3,
         "subject": "Java",
         "difficulty": "중",
-        "title": "2차원 행렬(3x3) 행별/열별 합계 계산기 (MatrixRowColSum)",
-        "desc": "3행 3열의 2차원 정수 배열에 들어갈 9개의 정수를 행 우선(row-major) 순서로 입력받아 2차원 배열에 저장하세요.\n각 행의 합계(1행, 2행, 3행)와 각 열의 합계(1열, 2열, 3열), 그리고 행렬 전체 총합을 서식에 맞게 출력하세요.\n\n[입력]\n9개의 정수가 공백 또는 줄바꿈으로 주어집니다.\n(예:\n1 2 3\n4 5 6\n7 8 9)",
-        "template": "import java.util.Scanner;\n\npublic class Solution {\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        // 여기에 코드를 작성하세요\n        \n    }\n}",
-        "solution": "import java.util.Scanner;\n\npublic class Solution {\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        int[][] matrix = new int[3][3];\n\n        int totalSum = 0;\n        int[] rowSum = new int[3];\n        int[] colSum = new int[3];\n\n        for (int i = 0; i < 3; i++) {\n            for (int j = 0; j < 3; j++) {\n                matrix[i][j] = sc.nextInt();\n                totalSum += matrix[i][j];\n                rowSum[i] += matrix[i][j];\n                colSum[j] += matrix[i][j];\n            }\n        }\n\n        System.out.println(\"=== 3x3 행렬 집계표 ===\");\n        for (int i = 0; i < 3; i++) {\n            System.out.printf(\"%d행 합계: %d\\n\", i + 1, rowSum[i]);\n        }\n        System.out.println(\"---------------------------------\");\n        for (int j = 0; j < 3; j++) {\n            System.out.printf(\"%d열 합계: %d\\n\", j + 1, colSum[j]);\n        }\n        System.out.println(\"---------------------------------\");\n        System.out.printf(\"행렬 전체 총합: %d\\n\", totalSum);\n    }\n}",
-        "sample_input": "1 2 3\n4 5 6\n7 8 9",
-        "sample_output": "=== 3x3 행렬 집계표 ===\n1행 합계: 6\n2행 합계: 15\n3행 합계: 24\n---------------------------------\n1열 합계: 12\n2열 합계: 15\n3열 합계: 18\n---------------------------------\n행렬 전체 총합: 45",
-        "expected": "=== 3x3 행렬 집계표 ===\n1행 합계: 6\n2행 합계: 15\n3행 합계: 24\n---------------------------------\n1열 합계: 12\n2열 합계: 15\n3열 합계: 18\n---------------------------------\n행렬 전체 총합: 45",
-        "hint": "1. `int[][] matrix = new int[3][3];` 이중 for문으로 값을 읽습니다.\n2. `rowSum[i] += val;` 와 `colSum[j] += val;` 로 행과 열의 누적합을 동시에 계산할 수 있습니다."
+        "title": "2차원 행렬(Matrix) 행별/열별 집계 및 대각합 계산기 (MatrixRowColSum)",
+        "desc": "행의 개수 R(2 <= R <= 5)과 열의 개수 C(2 <= C <= 5)를 입력받고, R x C 개의 정수를 행 우선(Row-Major) 순서로 입력받아 2차원 배열(int[R][C])에 저장하세요.\n\n[요구 분석 항목]\n1. 각 행(1행 ~ R행)의 합계와 평균 (소수점 첫째 자리 %.1f)\n2. 각 열(1열 ~ C열)의 합계와 평균 (소수점 첫째 자리 %.1f)\n3. 행렬 전체 총합\n4. 주 대각선 합계: R == C (정방행렬)인 경우 좌상단(0,0)부터 우하단(R-1,C-1)까지의 주 대각선 원소 합계 출력. R != C인 경우 '정방행렬 아님' 출력.\n\n[입력]\n첫째 줄에 R과 C가 공백으로 주어집니다.\n다음 R개 줄에 걸쳐 각 줄마다 C개의 정수가 공백으로 주어집니다.\n\n[출력]\n=== {R}x{C} 행렬 종합 집계표 ===\n[행별 통계]\n1행: 합계 {sum} | 평균 {avg}\n...\n---------------------------------\n[열별 통계]\n1열: 합계 {sum} | 평균 {avg}\n...\n---------------------------------\n행렬 전체 총합: {totalSum}\n주 대각선 합계: {diagSum 또는 '정방행렬 아님'}\n\n※ 정방행렬(3x3)과 비정방행렬(2x4 등)에 대한 예시는 아래 [예제 1, 2, 3]을 참고하세요.",
+        "template": "import java.util.Scanner;\n\npublic class Solution {\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        // 여기에 2차원 배열 선언, 행/열/대각선 집계 로직을 작성하세요\n        \n    }\n}\n",
+        "solution": "import java.util.Scanner;\n\npublic class Solution {\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        int r = sc.nextInt();\n        int c = sc.nextInt();\n        int[][] matrix = new int[r][c];\n\n        long totalSum = 0;\n        long[] rowSum = new long[r];\n        long[] colSum = new long[c];\n\n        for (int i = 0; i < r; i++) {\n            for (int j = 0; j < c; j++) {\n                matrix[i][j] = sc.nextInt();\n                totalSum += matrix[i][j];\n                rowSum[i] += matrix[i][j];\n                colSum[j] += matrix[i][j];\n            }\n        }\n\n        System.out.printf(\"=== %dx%d 행렬 종합 집계표 ===\\n\", r, c);\n        System.out.println(\"[행별 통계]\");\n        for (int i = 0; i < r; i++) {\n            double rowAvg = (double) rowSum[i] / c;\n            System.out.printf(\"%d행: 합계 %d | 평균 %.1f\\n\", i + 1, rowSum[i], rowAvg);\n        }\n        System.out.println(\"---------------------------------\");\n        System.out.println(\"[열별 통계]\");\n        for (int j = 0; j < c; j++) {\n            double colAvg = (double) colSum[j] / r;\n            System.out.printf(\"%d열: 합계 %d | 평균 %.1f\\n\", j + 1, colSum[j], colAvg);\n        }\n        System.out.println(\"---------------------------------\");\n        System.out.printf(\"행렬 전체 총합: %d\\n\", totalSum);\n\n        if (r == c) {\n            long diagSum = 0;\n            for (int i = 0; i < r; i++) {\n                diagSum += matrix[i][i];\n            }\n            System.out.printf(\"주 대각선 합계: %d\\n\", diagSum);\n        } else {\n            System.out.println(\"주 대각선 합계: 정방행렬 아님\");\n        }\n    }\n}\n",
+        "hint": "1. 2차원 배열 선언: `int[][] matrix = new int[r][c];`\n2. 입력받을 때 `rowSum[i] += val;` 과 `colSum[j] += val;` 로 행/열 합계를 동시에 누적하면 간결합니다.\n3. 행의 평균은 `c(열의 개수)`로 나누고, 열의 평균은 `r(행의 개수)`로 나누어야 함에 주의하세요!",
+        "cs_knowledge": "🖥️ [CS 핵심 지식: Row-Major Order(행 우선 순서)와 CPU 캐시 라인(64-Byte) 친화성]\nC, C++, Java 등의 언어는 2차원 배열을 메모리에 저장할 때 첫 번째 행의 원소들을 연속 배치한 후, 그 뒤에 두 번째 행의 원소들을 붙여 배치하는 '행 우선 순서(Row-Major Order)' 방식을 따릅니다.\nCPU가 메모리에서 데이터를 가져올 때 단일 변수가 아닌 64바이트 '캐시 라인(Cache Line)' 단위로 통째로 가져오기 때문에, 이중 루프를 `for(i) for(j) matrix[i][j]` 순으로 도는 것이 `for(j) for(i) matrix[i][j]` 순으로 도는 것보다 수십 배 이상 빠릅니다.\n이를 무시하고 열 우선 순회를 돌면 매번 캐시 미스(Cache Miss)가 발생하여 심각한 성능 저하가 초래됩니다.",
+        "logic_guide": "📘 [단계별 로직 구성 순서 & 초보자 가이드]\n1단계: R, C를 입력받고 rowSum[R], colSum[C] 누적 배열 선언\n2단계: 이중 for문으로 matrix[i][j]를 채우며 totalSum, rowSum[i], colSum[j] 동시 누적\n3단계: 행별 합계 및 rowSum[i]/c 평균 출력\n4단계: 열별 합계 및 colSum[j]/r 평균 출력\n5단계: 전체 합계 출력 및 R == C 조건 검사하여 주 대각선(matrix[i][i]) 합계 또는 '정방행렬 아님' 출력",
+        "testcases": [
+            {
+                "input": "3 3\n1 2 3\n4 5 6\n7 8 9",
+                "expected": "=== 3x3 행렬 종합 집계표 ===\n[행별 통계]\n1행: 합계 6 | 평균 2.0\n2행: 합계 15 | 평균 5.0\n3행: 합계 24 | 평균 8.0\n---------------------------------\n[열별 통계]\n1열: 합계 12 | 평균 4.0\n2열: 합계 15 | 평균 5.0\n3열: 합계 18 | 평균 6.0\n---------------------------------\n행렬 전체 총합: 45\n주 대각선 합계: 15",
+                "is_hidden": false
+            },
+            {
+                "input": "2 4\n10 20 30 40\n50 60 70 80",
+                "expected": "=== 2x4 행렬 종합 집계표 ===\n[행별 통계]\n1행: 합계 100 | 평균 25.0\n2행: 합계 260 | 평균 65.0\n---------------------------------\n[열별 통계]\n1열: 합계 60 | 평균 30.0\n2열: 합계 80 | 평균 40.0\n3열: 합계 100 | 평균 50.0\n4열: 합계 120 | 평균 60.0\n---------------------------------\n행렬 전체 총합: 360\n주 대각선 합계: 정방행렬 아님",
+                "is_hidden": false
+            },
+            {
+                "input": "4 4\n1 0 0 0\n0 1 0 0\n0 0 1 0\n0 0 0 1",
+                "expected": "=== 4x4 행렬 종합 집계표 ===\n[행별 통계]\n1행: 합계 1 | 평균 0.3\n2행: 합계 1 | 평균 0.3\n3행: 합계 1 | 평균 0.3\n4행: 합계 1 | 평균 0.3\n---------------------------------\n[열별 통계]\n1열: 합계 1 | 평균 0.3\n2열: 합계 1 | 평균 0.3\n3열: 합계 1 | 평균 0.3\n4열: 합계 1 | 평균 0.3\n---------------------------------\n행렬 전체 총합: 4\n주 대각선 합계: 4",
+                "is_hidden": false
+            },
+            {
+                "input": "2 2\n5 10\n15 20",
+                "expected": "=== 2x2 행렬 종합 집계표 ===\n[행별 통계]\n1행: 합계 15 | 평균 7.5\n2행: 합계 35 | 평균 17.5\n---------------------------------\n[열별 통계]\n1열: 합계 20 | 평균 10.0\n2열: 합계 30 | 평균 15.0\n---------------------------------\n행렬 전체 총합: 50\n주 대각선 합계: 25",
+                "is_hidden": true
+            },
+            {
+                "input": "3 2\n1 2\n3 4\n5 6",
+                "expected": "=== 3x2 행렬 종합 집계표 ===\n[행별 통계]\n1행: 합계 3 | 평균 1.5\n2행: 합계 7 | 평균 3.5\n3행: 합계 11 | 평균 5.5\n---------------------------------\n[열별 통계]\n1열: 합계 9 | 평균 3.0\n2열: 합계 12 | 평균 4.0\n---------------------------------\n행렬 전체 총합: 21\n주 대각선 합계: 정방행렬 아님",
+                "is_hidden": true
+            },
+            {
+                "input": "5 5\n1 2 3 4 5\n6 7 8 9 10\n11 12 13 14 15\n16 17 18 19 20\n21 22 23 24 25",
+                "expected": "=== 5x5 행렬 종합 집계표 ===\n[행별 통계]\n1행: 합계 15 | 평균 3.0\n2행: 합계 40 | 평균 8.0\n3행: 합계 65 | 평균 13.0\n4행: 합계 90 | 평균 18.0\n5행: 합계 115 | 평균 23.0\n---------------------------------\n[열별 통계]\n1열: 합계 55 | 평균 11.0\n2열: 합계 60 | 평균 12.0\n3열: 합계 65 | 평균 13.0\n4열: 합계 70 | 평균 14.0\n5열: 합계 75 | 평균 15.0\n---------------------------------\n행렬 전체 총합: 325\n주 대각선 합계: 65",
+                "is_hidden": true
+            },
+            {
+                "input": "2 5\n0 0 0 0 0\n1 1 1 1 1",
+                "expected": "=== 2x5 행렬 종합 집계표 ===\n[행별 통계]\n1행: 합계 0 | 평균 0.0\n2행: 합계 5 | 평균 1.0\n---------------------------------\n[열별 통계]\n1열: 합계 1 | 평균 0.5\n2열: 합계 1 | 평균 0.5\n3열: 합계 1 | 평균 0.5\n4열: 합계 1 | 평균 0.5\n5열: 합계 1 | 평균 0.5\n---------------------------------\n행렬 전체 총합: 5\n주 대각선 합계: 정방행렬 아님",
+                "is_hidden": true
+            },
+            {
+                "input": "4 2\n-5 5\n-10 10\n-15 15\n-20 20",
+                "expected": "=== 4x2 행렬 종합 집계표 ===\n[행별 통계]\n1행: 합계 0 | 평균 0.0\n2행: 합계 0 | 평균 0.0\n3행: 합계 0 | 평균 0.0\n4행: 합계 0 | 평균 0.0\n---------------------------------\n[열별 통계]\n1열: 합계 -50 | 평균 -12.5\n2열: 합계 50 | 평균 12.5\n---------------------------------\n행렬 전체 총합: 0\n주 대각선 합계: 정방행렬 아님",
+                "is_hidden": true
+            },
+            {
+                "input": "3 3\n-1 -2 -3\n-4 -5 -6\n-7 -8 -9",
+                "expected": "=== 3x3 행렬 종합 집계표 ===\n[행별 통계]\n1행: 합계 -6 | 평균 -2.0\n2행: 합계 -15 | 평균 -5.0\n3행: 합계 -24 | 평균 -8.0\n---------------------------------\n[열별 통계]\n1열: 합계 -12 | 평균 -4.0\n2열: 합계 -15 | 평균 -5.0\n3열: 합계 -18 | 평균 -6.0\n---------------------------------\n행렬 전체 총합: -45\n주 대각선 합계: -15",
+                "is_hidden": true
+            },
+            {
+                "input": "3 4\n100 200 300 400\n500 600 700 800\n900 1000 1100 1200",
+                "expected": "=== 3x4 행렬 종합 집계표 ===\n[행별 통계]\n1행: 합계 1000 | 평균 250.0\n2행: 합계 2600 | 평균 650.0\n3행: 합계 4200 | 평균 1050.0\n---------------------------------\n[열별 통계]\n1열: 합계 1500 | 평균 500.0\n2열: 합계 1800 | 평균 600.0\n3열: 합계 2100 | 평균 700.0\n4열: 합계 2400 | 평균 800.0\n---------------------------------\n행렬 전체 총합: 7800\n주 대각선 합계: 정방행렬 아님",
+                "is_hidden": true
+            }
+        ],
+        "samples": [
+            {
+                "input": "3 3\n1 2 3\n4 5 6\n7 8 9",
+                "output": "=== 3x3 행렬 종합 집계표 ===\n[행별 통계]\n1행: 합계 6 | 평균 2.0\n2행: 합계 15 | 평균 5.0\n3행: 합계 24 | 평균 8.0\n---------------------------------\n[열별 통계]\n1열: 합계 12 | 평균 4.0\n2열: 합계 15 | 평균 5.0\n3열: 합계 18 | 평균 6.0\n---------------------------------\n행렬 전체 총합: 45\n주 대각선 합계: 15"
+            },
+            {
+                "input": "2 4\n10 20 30 40\n50 60 70 80",
+                "output": "=== 2x4 행렬 종합 집계표 ===\n[행별 통계]\n1행: 합계 100 | 평균 25.0\n2행: 합계 260 | 평균 65.0\n---------------------------------\n[열별 통계]\n1열: 합계 60 | 평균 30.0\n2열: 합계 80 | 평균 40.0\n3열: 합계 100 | 평균 50.0\n4열: 합계 120 | 평균 60.0\n---------------------------------\n행렬 전체 총합: 360\n주 대각선 합계: 정방행렬 아님"
+            },
+            {
+                "input": "4 4\n1 0 0 0\n0 1 0 0\n0 0 1 0\n0 0 0 1",
+                "output": "=== 4x4 행렬 종합 집계표 ===\n[행별 통계]\n1행: 합계 1 | 평균 0.3\n2행: 합계 1 | 평균 0.3\n3행: 합계 1 | 평균 0.3\n4행: 합계 1 | 평균 0.3\n---------------------------------\n[열별 통계]\n1열: 합계 1 | 평균 0.3\n2열: 합계 1 | 평균 0.3\n3열: 합계 1 | 평균 0.3\n4열: 합계 1 | 평균 0.3\n---------------------------------\n행렬 전체 총합: 4\n주 대각선 합계: 4"
+            }
+        ],
+        "sample_input": "3 3\n1 2 3\n4 5 6\n7 8 9",
+        "sample_output": "=== 3x3 행렬 종합 집계표 ===\n[행별 통계]\n1행: 합계 6 | 평균 2.0\n2행: 합계 15 | 평균 5.0\n3행: 합계 24 | 평균 8.0\n---------------------------------\n[열별 통계]\n1열: 합계 12 | 평균 4.0\n2열: 합계 15 | 평균 5.0\n3열: 합계 18 | 평균 6.0\n---------------------------------\n행렬 전체 총합: 45\n주 대각선 합계: 15",
+        "expected": "=== 3x3 행렬 종합 집계표 ===\n[행별 통계]\n1행: 합계 6 | 평균 2.0\n2행: 합계 15 | 평균 5.0\n3행: 합계 24 | 평균 8.0\n---------------------------------\n[열별 통계]\n1열: 합계 12 | 평균 4.0\n2열: 합계 15 | 평균 5.0\n3열: 합계 18 | 평균 6.0\n---------------------------------\n행렬 전체 총합: 45\n주 대각선 합계: 15"
     },
     {
-        "id": "day03_상",
+        "id": "day03_중3",
+        "day": 3,
+        "subject": "Java",
+        "difficulty": "중",
+        "title": "원형 큐(Circular Queue) / 링 버퍼(Ring Buffer) 패킷 큐 시뮬레이터 (RingBufferSimulator)",
+        "desc": "고정된 크기 K(2 <= K <= 10)의 1차원 정수 배열을 활용하여 선입선출(FIFO) 링 버퍼(Ring Buffer / Circular Queue)를 구현하세요.\n총 M(1 <= M <= 30)개의 명령어가 순서대로 주어지며, 다음 규칙에 따라 처리합니다:\n\n[명령어 규격]\n1. ENQ <id>: 패킷 ID(양의 정수)를 큐에 추가합니다.\n   - 큐에 빈 공간이 있는 경우: 버퍼의 tail 위치에 패킷을 저장하고 tail을 다음 위치((tail + 1) % K)로 이동합니다. 카운트를 1 증가시키고 `[ENQ] 패킷 {id} 수신 (버퍼: {count}/{K})`를 출력합니다.\n   - 버퍼가 가득 찬 경우(count == K): 패킷을 버퍼에 넣지 못하고 `[DROP] 버퍼 풀: 패킷 {id} 유실`을 출력합니다.\n2. DEQ: 큐에서 가장 오래된 패킷을 꺼내 처리합니다.\n   - 큐에 패킷이 있는 경우: head 위치의 패킷을 꺼내고 head를 다음 위치((head + 1) % K)로 이동합니다. 카운트를 1 감소시키고 `[PROCESS] 패킷 {id} 처리 완료 (버퍼: {count}/{K})`를 출력합니다.\n   - 큐가 비어있는 경우(count == 0): `[EMPTY] 버퍼 언더플로우: 처리할 패킷 없음`을 출력합니다.\n\n[입력]\n첫째 줄에 버퍼 크기 K가 주어집니다.\n둘째 줄에 명령어 개수 M이 주어집니다.\n다음 M개 줄에 걸쳐 명령어가 한 줄에 하나씩 주어집니다. (예: `ENQ 101` 또는 `DEQ`)\n\n[출력]\n=== 링 버퍼(Ring Buffer) 시뮬레이션 ===\n(명령어 처리 로그)\n---------------------------------\n최종 잔여 패킷 ({count}개): [{FIFO 순서로 나열된 패킷 ID 목록}]\n(잔여 패킷이 없으면 '최종 잔여 패킷 (0개): []' 출력)\n\n※ 오버플로우(DROP), 언더플로우(EMPTY), 순환 회전 등 다양한 시나리오는 아래 [예제 1, 2, 3]을 참고하세요.",
+        "template": "import java.util.Scanner;\n\npublic class Solution {\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        // 여기에 head, tail, count와 모듈로(%) 연산을 이용한 링 버퍼를 구현하세요\n        \n    }\n}\n",
+        "solution": "import java.util.Scanner;\nimport java.util.ArrayList;\n\npublic class Solution {\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        if (!sc.hasNextInt()) return;\n        int k = sc.nextInt();\n        int m = sc.nextInt();\n\n        int[] buffer = new int[k];\n        int head = 0;\n        int tail = 0;\n        int count = 0;\n\n        System.out.println(\"=== 링 버퍼(Ring Buffer) 시뮬레이션 ===\");\n\n        for (int step = 0; step < m; step++) {\n            String cmd = sc.next();\n            if (cmd.equals(\"ENQ\")) {\n                int id = sc.nextInt();\n                if (count == k) {\n                    System.out.printf(\"[DROP] 버퍼 풀: 패킷 %d 유실\\n\", id);\n                } else {\n                    buffer[tail] = id;\n                    tail = (tail + 1) % k;\n                    count++;\n                    System.out.printf(\"[ENQ] 패킷 %d 수신 (버퍼: %d/%d)\\n\", id, count, k);\n                }\n            } else if (cmd.equals(\"DEQ\")) {\n                if (count == 0) {\n                    System.out.println(\"[EMPTY] 버퍼 언더플로우: 처리할 패킷 없음\");\n                } else {\n                    int processedId = buffer[head];\n                    head = (head + 1) % k;\n                    count--;\n                    System.out.printf(\"[PROCESS] 패킷 %d 처리 완료 (버퍼: %d/%d)\\n\", processedId, count, k);\n                }\n            }\n        }\n\n        System.out.println(\"---------------------------------\");\n        StringBuilder sb = new StringBuilder();\n        int cur = head;\n        for (int i = 0; i < count; i++) {\n            sb.append(buffer[cur]);\n            if (i < count - 1) sb.append(\", \");\n            cur = (cur + 1) % k;\n        }\n        System.out.printf(\"최종 잔여 패킷 (%d개): [%s]\\n\", count, sb.toString());\n    }\n}\n",
+        "hint": "1. 링 버퍼는 고정 배열 `int[] buffer = new int[k];`에 `head`(읽을 위치), `tail`(쓸 위치), `count`(현재 원소 개수) 3개 변수로 상태를 관리합니다.\n2. 인덱스 전진 시 `(tail + 1) % k` 처럼 모듈로 연산자를 사용하여 끝에 도달하면 0번 인덱스로 자연스럽게 순환하도록 합니다.\n3. 최종 잔여 패킷 출력 시 `head` 위치부터 시작하여 `count`번 만큼 `cur = (cur + 1) % k`로 전진하며 원소를 수집합니다.",
+        "cs_knowledge": "🖥️ [CS 핵심 지식: 네트워크 카드(NIC) 링 버퍼와 생산자-소비자(Producer-Consumer) 패턴]\n네트워크 인터페이스 카드(NIC)는 초당 수백만 개의 패킷이 도착할 때 메모리를 매번 동적 할당하지 않고, 미리 정해진 고정 크기의 '링 버퍼(Ring Buffer)'를 순환 재활용합니다.\n패킷을 수신하는 하드웨어(생산자)는 tail을 전진시키고, OS 커널 네트워크 스택(소비자)은 head를 전진시키며 처리합니다.\n서버 CPU가 과부하되어 패킷 처리 속도가 수신 속도를 따라가지 못하면 버퍼가 가득 차게 되며, 이때 발생하는 현상이 바로 '패킷 드랍(Packet Drop/Loss)'입니다.\n리눅스 명령어 `ifconfig`나 `netstat`에서 보이는 'dropped packets' 지표가 바로 이 링 버퍼 오버플로우의 결과입니다.",
+        "logic_guide": "📘 [단계별 로직 구성 순서 & 초보자 가이드]\n1단계: 버퍼 크기 K와 명령어 수 M 입력받고 int[K] 배열 및 head, tail, count = 0 선언\n2단계: M번 반복하며 cmd = sc.next() 읽기\n3단계: ENQ인 경우 id 읽고, count == K이면 DROP 메시지, 아니면 buffer[tail]=id, tail=(tail+1)%K, count++ 후 로그 출력\n4단계: DEQ인 경우 count == 0이면 EMPTY 메시지, 아니면 buffer[head] 꺼내고 head=(head+1)%K, count-- 후 로그 출력\n5단계: head부터 count개만큼 순환 순회하여 최종 잔여 패킷 리스트 출력",
+        "testcases": [
+            {
+                "input": "3\n6\nENQ 101\nENQ 102\nDEQ\nENQ 103\nENQ 104\nENQ 105",
+                "expected": "=== 링 버퍼(Ring Buffer) 시뮬레이션 ===\n[ENQ] 패킷 101 수신 (버퍼: 1/3)\n[ENQ] 패킷 102 수신 (버퍼: 2/3)\n[PROCESS] 패킷 101 처리 완료 (버퍼: 1/3)\n[ENQ] 패킷 103 수신 (버퍼: 2/3)\n[ENQ] 패킷 104 수신 (버퍼: 3/3)\n[DROP] 버퍼 풀: 패킷 105 유실\n---------------------------------\n최종 잔여 패킷 (3개): [102, 103, 104]",
+                "is_hidden": false
+            },
+            {
+                "input": "2\n4\nDEQ\nENQ 501\nDEQ\nDEQ",
+                "expected": "=== 링 버퍼(Ring Buffer) 시뮬레이션 ===\n[EMPTY] 버퍼 언더플로우: 처리할 패킷 없음\n[ENQ] 패킷 501 수신 (버퍼: 1/2)\n[PROCESS] 패킷 501 처리 완료 (버퍼: 0/2)\n[EMPTY] 버퍼 언더플로우: 처리할 패킷 없음\n---------------------------------\n최종 잔여 패킷 (0개): []",
+                "is_hidden": false
+            },
+            {
+                "input": "4\n6\nENQ 1\nENQ 2\nENQ 3\nENQ 4\nDEQ\nDEQ",
+                "expected": "=== 링 버퍼(Ring Buffer) 시뮬레이션 ===\n[ENQ] 패킷 1 수신 (버퍼: 1/4)\n[ENQ] 패킷 2 수신 (버퍼: 2/4)\n[ENQ] 패킷 3 수신 (버퍼: 3/4)\n[ENQ] 패킷 4 수신 (버퍼: 4/4)\n[PROCESS] 패킷 1 처리 완료 (버퍼: 3/4)\n[PROCESS] 패킷 2 처리 완료 (버퍼: 2/4)\n---------------------------------\n최종 잔여 패킷 (2개): [3, 4]",
+                "is_hidden": false
+            },
+            {
+                "input": "2\n6\nENQ 10\nENQ 20\nENQ 30\nDEQ\nENQ 40\nDEQ",
+                "expected": "=== 링 버퍼(Ring Buffer) 시뮬레이션 ===\n[ENQ] 패킷 10 수신 (버퍼: 1/2)\n[ENQ] 패킷 20 수신 (버퍼: 2/2)\n[DROP] 버퍼 풀: 패킷 30 유실\n[PROCESS] 패킷 10 처리 완료 (버퍼: 1/2)\n[ENQ] 패킷 40 수신 (버퍼: 2/2)\n[PROCESS] 패킷 20 처리 완료 (버퍼: 1/2)\n---------------------------------\n최종 잔여 패킷 (1개): [40]",
+                "is_hidden": true
+            },
+            {
+                "input": "5\n2\nENQ 999\nDEQ",
+                "expected": "=== 링 버퍼(Ring Buffer) 시뮬레이션 ===\n[ENQ] 패킷 999 수신 (버퍼: 1/5)\n[PROCESS] 패킷 999 처리 완료 (버퍼: 0/5)\n---------------------------------\n최종 잔여 패킷 (0개): []",
+                "is_hidden": true
+            },
+            {
+                "input": "3\n8\nENQ 1\nENQ 2\nDEQ\nDEQ\nDEQ\nENQ 3\nENQ 4\nENQ 5",
+                "expected": "=== 링 버퍼(Ring Buffer) 시뮬레이션 ===\n[ENQ] 패킷 1 수신 (버퍼: 1/3)\n[ENQ] 패킷 2 수신 (버퍼: 2/3)\n[PROCESS] 패킷 1 처리 완료 (버퍼: 1/3)\n[PROCESS] 패킷 2 처리 완료 (버퍼: 0/3)\n[EMPTY] 버퍼 언더플로우: 처리할 패킷 없음\n[ENQ] 패킷 3 수신 (버퍼: 1/3)\n[ENQ] 패킷 4 수신 (버퍼: 2/3)\n[ENQ] 패킷 5 수신 (버퍼: 3/3)\n---------------------------------\n최종 잔여 패킷 (3개): [3, 4, 5]",
+                "is_hidden": true
+            },
+            {
+                "input": "2\n5\nENQ 1\nENQ 2\nENQ 3\nENQ 4\nENQ 5",
+                "expected": "=== 링 버퍼(Ring Buffer) 시뮬레이션 ===\n[ENQ] 패킷 1 수신 (버퍼: 1/2)\n[ENQ] 패킷 2 수신 (버퍼: 2/2)\n[DROP] 버퍼 풀: 패킷 3 유실\n[DROP] 버퍼 풀: 패킷 4 유실\n[DROP] 버퍼 풀: 패킷 5 유실\n---------------------------------\n최종 잔여 패킷 (2개): [1, 2]",
+                "is_hidden": true
+            },
+            {
+                "input": "4\n8\nENQ 11\nENQ 12\nENQ 13\nENQ 14\nDEQ\nDEQ\nDEQ\nDEQ",
+                "expected": "=== 링 버퍼(Ring Buffer) 시뮬레이션 ===\n[ENQ] 패킷 11 수신 (버퍼: 1/4)\n[ENQ] 패킷 12 수신 (버퍼: 2/4)\n[ENQ] 패킷 13 수신 (버퍼: 3/4)\n[ENQ] 패킷 14 수신 (버퍼: 4/4)\n[PROCESS] 패킷 11 처리 완료 (버퍼: 3/4)\n[PROCESS] 패킷 12 처리 완료 (버퍼: 2/4)\n[PROCESS] 패킷 13 처리 완료 (버퍼: 1/4)\n[PROCESS] 패킷 14 처리 완료 (버퍼: 0/4)\n---------------------------------\n최종 잔여 패킷 (0개): []",
+                "is_hidden": true
+            },
+            {
+                "input": "5\n7\nENQ 10\nENQ 20\nENQ 30\nDEQ\nENQ 40\nENQ 50\nENQ 60",
+                "expected": "=== 링 버퍼(Ring Buffer) 시뮬레이션 ===\n[ENQ] 패킷 10 수신 (버퍼: 1/5)\n[ENQ] 패킷 20 수신 (버퍼: 2/5)\n[ENQ] 패킷 30 수신 (버퍼: 3/5)\n[PROCESS] 패킷 10 처리 완료 (버퍼: 2/5)\n[ENQ] 패킷 40 수신 (버퍼: 3/5)\n[ENQ] 패킷 50 수신 (버퍼: 4/5)\n[ENQ] 패킷 60 수신 (버퍼: 5/5)\n---------------------------------\n최종 잔여 패킷 (5개): [20, 30, 40, 50, 60]",
+                "is_hidden": true
+            },
+            {
+                "input": "10\n5\nENQ 100\nENQ 200\nENQ 300\nENQ 400\nENQ 500",
+                "expected": "=== 링 버퍼(Ring Buffer) 시뮬레이션 ===\n[ENQ] 패킷 100 수신 (버퍼: 1/10)\n[ENQ] 패킷 200 수신 (버퍼: 2/10)\n[ENQ] 패킷 300 수신 (버퍼: 3/10)\n[ENQ] 패킷 400 수신 (버퍼: 4/10)\n[ENQ] 패킷 500 수신 (버퍼: 5/10)\n---------------------------------\n최종 잔여 패킷 (5개): [100, 200, 300, 400, 500]",
+                "is_hidden": true
+            }
+        ],
+        "samples": [
+            {
+                "input": "3\n6\nENQ 101\nENQ 102\nDEQ\nENQ 103\nENQ 104\nENQ 105",
+                "output": "=== 링 버퍼(Ring Buffer) 시뮬레이션 ===\n[ENQ] 패킷 101 수신 (버퍼: 1/3)\n[ENQ] 패킷 102 수신 (버퍼: 2/3)\n[PROCESS] 패킷 101 처리 완료 (버퍼: 1/3)\n[ENQ] 패킷 103 수신 (버퍼: 2/3)\n[ENQ] 패킷 104 수신 (버퍼: 3/3)\n[DROP] 버퍼 풀: 패킷 105 유실\n---------------------------------\n최종 잔여 패킷 (3개): [102, 103, 104]"
+            },
+            {
+                "input": "2\n4\nDEQ\nENQ 501\nDEQ\nDEQ",
+                "output": "=== 링 버퍼(Ring Buffer) 시뮬레이션 ===\n[EMPTY] 버퍼 언더플로우: 처리할 패킷 없음\n[ENQ] 패킷 501 수신 (버퍼: 1/2)\n[PROCESS] 패킷 501 처리 완료 (버퍼: 0/2)\n[EMPTY] 버퍼 언더플로우: 처리할 패킷 없음\n---------------------------------\n최종 잔여 패킷 (0개): []"
+            },
+            {
+                "input": "4\n6\nENQ 1\nENQ 2\nENQ 3\nENQ 4\nDEQ\nDEQ",
+                "output": "=== 링 버퍼(Ring Buffer) 시뮬레이션 ===\n[ENQ] 패킷 1 수신 (버퍼: 1/4)\n[ENQ] 패킷 2 수신 (버퍼: 2/4)\n[ENQ] 패킷 3 수신 (버퍼: 3/4)\n[ENQ] 패킷 4 수신 (버퍼: 4/4)\n[PROCESS] 패킷 1 처리 완료 (버퍼: 3/4)\n[PROCESS] 패킷 2 처리 완료 (버퍼: 2/4)\n---------------------------------\n최종 잔여 패킷 (2개): [3, 4]"
+            }
+        ],
+        "sample_input": "3\n6\nENQ 101\nENQ 102\nDEQ\nENQ 103\nENQ 104\nENQ 105",
+        "sample_output": "=== 링 버퍼(Ring Buffer) 시뮬레이션 ===\n[ENQ] 패킷 101 수신 (버퍼: 1/3)\n[ENQ] 패킷 102 수신 (버퍼: 2/3)\n[PROCESS] 패킷 101 처리 완료 (버퍼: 1/3)\n[ENQ] 패킷 103 수신 (버퍼: 2/3)\n[ENQ] 패킷 104 수신 (버퍼: 3/3)\n[DROP] 버퍼 풀: 패킷 105 유실\n---------------------------------\n최종 잔여 패킷 (3개): [102, 103, 104]",
+        "expected": "=== 링 버퍼(Ring Buffer) 시뮬레이션 ===\n[ENQ] 패킷 101 수신 (버퍼: 1/3)\n[ENQ] 패킷 102 수신 (버퍼: 2/3)\n[PROCESS] 패킷 101 처리 완료 (버퍼: 1/3)\n[ENQ] 패킷 103 수신 (버퍼: 2/3)\n[ENQ] 패킷 104 수신 (버퍼: 3/3)\n[DROP] 버퍼 풀: 패킷 105 유실\n---------------------------------\n최종 잔여 패킷 (3개): [102, 103, 104]"
+    },
+    {
+        "id": "day03_상1",
         "day": 3,
         "subject": "Java",
         "difficulty": "상",
-        "title": "좌석 예약 현황판 및 연속 좌석 탐색기 (CinemaSeatManager)",
-        "desc": "영화관 4행 5열(총 20석)의 좌석 상태(1: 예약됨, 0: 빈 좌석)와 예약 희망 인원 수 K(1~4)를 입력받으세요.\n- 전체 빈 좌석(0)의 총 개수를 계산하세요.\n- K명의 관람객이 한 행에서 연속으로 나란히 앉을 수 있는 행(Row) 번호(1행~4행)를 찾아 출력하세요.\n- 가능한 행이 여러 개이면 쉼표로 연결하여 출력하고, 가능한 행이 없으면 '예약 불가'를 출력하세요.\n\n[입력]\n첫 4개 줄에 각 행의 5개 좌석 상태(0 또는 1)가 공백으로 주어집니다.\n다섯째 줄에 예약 희망 인원 수 K가 주어집니다.\n(예:\n0 1 0 0 0\n1 1 1 0 1\n0 0 0 0 1\n1 0 1 0 1\n3)",
-        "template": "import java.util.Scanner;\n\npublic class Solution {\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        // 여기에 코드를 작성하세요\n        \n    }\n}",
-        "solution": "import java.util.Scanner;\nimport java.util.ArrayList;\n\npublic class Solution {\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        int[][] seats = new int[4][5];\n        int totalEmpty = 0;\n\n        for (int i = 0; i < 4; i++) {\n            for (int j = 0; j < 5; j++) {\n                seats[i][j] = sc.nextInt();\n                if (seats[i][j] == 0) totalEmpty++;\n            }\n        }\n\n        int k = sc.nextInt();\n        ArrayList<Integer> validRows = new ArrayList<>();\n\n        for (int i = 0; i < 4; i++) {\n            int consecutive = 0;\n            boolean found = false;\n            for (int j = 0; j < 5; j++) {\n                if (seats[i][j] == 0) {\n                    consecutive++;\n                    if (consecutive >= k) {\n                        found = true;\n                        break;\n                    }\n                } else {\n                    consecutive = 0;\n                }\n            }\n            if (found) {\n                validRows.add(i + 1);\n            }\n        }\n\n        System.out.println(\"=== CGV 좌석 배정 분석 보고서 ===\");\n        System.out.printf(\"총 좌석 수: 20석 (빈 좌석: %d석, 예약됨: %d석)\\n\", totalEmpty, 20 - totalEmpty);\n        System.out.printf(\"예약 희망 인원: %d명\\n\", k);\n        System.out.println(\"---------------------------------\");\n        if (validRows.isEmpty()) {\n            System.out.println(\"연속 좌석 예약 가능 행: 예약 불가\");\n        } else {\n            StringBuilder sb = new StringBuilder();\n            for (int idx = 0; idx < validRows.size(); idx++) {\n                sb.append(validRows.get(idx)).append(\"행\");\n                if (idx < validRows.size() - 1) sb.append(\", \");\n            }\n            System.out.printf(\"연속 좌석 예약 가능 행: %s\\n\", sb.toString());\n        }\n    }\n}",
-        "sample_input": "0 1 0 0 0\n1 1 1 0 1\n0 0 0 0 1\n1 0 1 0 1\n3",
-        "sample_output": "=== CGV 좌석 배정 분석 보고서 ===\n총 좌석 수: 20석 (빈 좌석: 11석, 예약됨: 9석)\n예약 희망 인원: 3명\n---------------------------------\n연속 좌석 예약 가능 행: 1행, 3행",
-        "expected": "=== CGV 좌석 배정 분석 보고서 ===\n총 좌석 수: 20석 (빈 좌석: 11석, 예약됨: 9석)\n예약 희망 인원: 3명\n---------------------------------\n연속 좌석 예약 가능 행: 1행, 3행",
-        "hint": "1. 4x5 2차원 배열을 순회하며 빈 좌석(0)의 개수를 셉니다.\n2. 각 행별로 연속된 0의 개수(`consecutive`)를 세다가 1을 만나면 0으로 리셋합니다.\n3. `consecutive >= k`가 되는 행을 리스트에 담아 서식에 맞춰 출력합니다."
+        "title": "영화관 좌석 예약 현황판 및 연속 좌석 최적 탐색기 (CinemaSeatManager)",
+        "desc": "R행 C열(2 <= R <= 8, 3 <= C <= 10) 크기의 영화관 좌석 배치도(1: 예약됨, 0: 빈 좌석)와 예약 희망 일행 수 K(1 <= K <= C)가 주어집니다.\n일행 K명이 한 행에서 좌우로 나란히 앉을 수 있는 최적의 연속 좌석 구간을 탐색하세요.\n\n[요구 분석 항목]\n1. 상영관 기본 정보: 총 좌석 수, 빈 좌석 수, 예약된 좌석 수\n2. 연속 좌석 탐색: 각 행(1행 ~ R행)에서 좌우로 연속된 0(빈 좌석)이 K개 이상인 구간들을 모두 찾습니다.\n   - 한 행에 길이가 K 이상인 구간이 존재하면, 해당 행에서 '화면 정중앙 열((C + 1) / 2.0)'과의 편차가 가장 작은 길이 K인 최적 구간 [start열~end열]을 1개 결정합니다.\n   - 구간의 중심 = (start열 + end열) / 2.0 (1-indexed 열 번호 기준)\n   - 중앙 편차 = |구간 중심 - 화면 정중앙 열| (소수점 첫째 자리 %.1f)\n   - 한 행 내에서 편차 동률 시 왼쪽 열(작은 start열) 우선\n3. 추천 최적 좌석:\n   - 연속 좌석이 가능한 행들 중 전체에서 중앙 편차가 가장 작은 구간을 최종 추천 좌석으로 선정합니다. (행 간 편차 동률 시 위쪽 행(작은 행 번호) 우선)\n   - 연속 좌석이 가능한 행이 하나도 없다면 '[연속 좌석 예약 가능 현황]' 아래에 '연속 좌석 예약 불가: 분할 예매 필요'를 출력하고, '추천 최적 좌석: 없음'을 출력합니다.\n\n[입력]\n첫째 줄에 행 수 R과 열 수 C가 공백으로 주어집니다.\n다음 R개 줄에 걸쳐 각 줄마다 C개의 좌석 상태(0 또는 1)가 공백으로 주어집니다.\n마지막 줄에 예약 희망 인원 수 K가 주어집니다.\n\n[출력]\n=== CGV 상영관 좌석 배정 분석 보고서 ===\n총 좌석: {총좌석}석 (빈 좌석: {빈좌석}석, 예약됨: {예약좌석}석)\n예약 희망 인원: {K}명\n---------------------------------\n[연속 좌석 예약 가능 현황]\n{행}행: {start}열~{end}열 (중앙 편차: {편차})\n...\n---------------------------------\n추천 최적 좌석: {행}행 {start}열~{end}열 (또는 '추천 최적 좌석: 없음')\n\n※ 만석, 여러 행 가능, 정중앙 배치 등 다양한 예시는 아래 [예제 1, 2, 3]을 참고하세요.",
+        "template": "import java.util.Scanner;\n\npublic class Solution {\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        // 여기에 2차원 좌석 배열 순회 및 연속 빈좌석 최적 구간 탐색 알고리즘을 작성하세요\n        \n    }\n}\n",
+        "solution": "import java.util.Scanner;\nimport java.util.ArrayList;\n\npublic class Solution {\n    static class SeatOption {\n        int row;\n        int startCol;\n        int endCol;\n        double dev;\n\n        SeatOption(int row, int startCol, int endCol, double dev) {\n            this.row = row;\n            this.startCol = startCol;\n            this.endCol = endCol;\n            this.dev = dev;\n        }\n    }\n\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        if (!sc.hasNextInt()) return;\n        int r = sc.nextInt();\n        int c = sc.nextInt();\n\n        int[][] seats = new int[r][c];\n        int totalEmpty = 0;\n        for (int i = 0; i < r; i++) {\n            for (int j = 0; j < c; j++) {\n                seats[i][j] = sc.nextInt();\n                if (seats[i][j] == 0) totalEmpty++;\n            }\n        }\n        int k = sc.nextInt();\n\n        double screenCenter = (c + 1) / 2.0;\n        ArrayList<SeatOption> rowBestList = new ArrayList<>();\n\n        for (int i = 0; i < r; i++) {\n            SeatOption bestInRow = null;\n            for (int start = 0; start <= c - k; start++) {\n                boolean allEmpty = true;\n                for (int len = 0; len < k; len++) {\n                    if (seats[i][start + len] != 0) {\n                        allEmpty = false;\n                        break;\n                    }\n                }\n                if (allEmpty) {\n                    int startCol1 = start + 1;\n                    int endCol1 = start + k;\n                    double blockCenter = (startCol1 + endCol1) / 2.0;\n                    double dev = Math.abs(blockCenter - screenCenter);\n\n                    if (bestInRow == null || dev < bestInRow.dev - 1e-9) {\n                        bestInRow = new SeatOption(i + 1, startCol1, endCol1, dev);\n                    }\n                }\n            }\n            if (bestInRow != null) {\n                rowBestList.add(bestInRow);\n            }\n        }\n\n        System.out.println(\"=== CGV 상영관 좌석 배정 분석 보고서 ===\");\n        System.out.printf(\"총 좌석: %d석 (빈 좌석: %d석, 예약됨: %d석)\\n\", r * c, totalEmpty, (r * c) - totalEmpty);\n        System.out.printf(\"예약 희망 인원: %d명\\n\", k);\n        System.out.println(\"---------------------------------\");\n        System.out.println(\"[연속 좌석 예약 가능 현황]\");\n\n        if (rowBestList.isEmpty()) {\n            System.out.println(\"연속 좌석 예약 불가: 분할 예매 필요\");\n            System.out.println(\"---------------------------------\");\n            System.out.println(\"추천 최적 좌석: 없음\");\n        } else {\n            SeatOption overallBest = rowBestList.get(0);\n            for (SeatOption opt : rowBestList) {\n                System.out.printf(\"%d행: %d열~%d열 (중앙 편차: %.1f)\\n\", opt.row, opt.startCol, opt.endCol, opt.dev);\n                if (opt.dev < overallBest.dev - 1e-9) {\n                    overallBest = opt;\n                }\n            }\n            System.out.println(\"---------------------------------\");\n            System.out.printf(\"추천 최적 좌석: %d행 %d열~%d열\\n\", overallBest.row, overallBest.startCol, overallBest.endCol);\n        }\n    }\n}\n",
+        "hint": "1. 화면 중심 열은 `(c + 1) / 2.0` 실수입니다. (예: c=5이면 (5+1)/2.0 = 3.0, c=4이면 2.5)\n2. 각 행에서 `start`를 0부터 `c - k`까지 이동하며 `seats[i][start ~ start+k-1]`이 모두 0인지 검사합니다.\n3. 구간 중심은 `(start + 1 + start + k) / 2.0` 이며 편차는 `Math.abs(구간중심 - 화면중심)` 입니다.\n4. 행별 최적 구간을 먼저 찾고, 그 중 전체 편차가 최소인 구간을 최종 추천 좌석으로 선정합니다.",
+        "cs_knowledge": "🖥️ [CS 핵심 지식: 연속 메모리 할당(Contiguous Allocation)과 메모리 외부 단편화(External Fragmentation)]\n운영체제가 프로세스에 메모리를 할당할 때, 전체 빈 메모리 총량이 충분하더라도 연속된 공간이 부족하여 할당에 실패하는 현상을 '외부 단편화(External Fragmentation)'라고 합니다.\n영화관 좌석 예약에서 빈 좌석이 10석이나 남아있는데 3명이 나란히 앉을 수 없는 상황이 바로 외부 단편화의 대표적 사례입니다.\n이 문제에서 사용하는 연속 빈 공간 탐색 알고리즘은 운영체제의 '최초 적합(First-Fit)', '최적 적합(Best-Fit)' 메모리 배치 기법의 기본 원리와 정확히 일치합니다.",
+        "logic_guide": "📘 [단계별 로직 구성 순서 & 초보자 가이드]\n1단계: R, C 좌석 2차원 배열 입력받고 totalEmpty 카운트\n2단계: K 입력받기 및 screenCenter = (c + 1) / 2.0 계산\n3단계: 각 행(i)을 돌며 길이 K인 연속 0 구간을 찾고, 그 중 Math.abs(중심 - screenCenter)가 가장 작은 구간을 해당 행의 대표 후보로 선정\n4단계: 후보가 없으면 '연속 좌석 예약 불가' 및 '추천 최적 좌석: 없음' 출력\n5단계: 후보가 있으면 행별 현황 출력 후 전체에서 편차가 최소인 구간을 추천 최적 좌석으로 출력",
+        "testcases": [
+            {
+                "input": "4 5\n0 1 0 0 0\n1 1 1 0 1\n0 0 0 0 1\n1 0 1 0 1\n3",
+                "expected": "=== CGV 상영관 좌석 배정 분석 보고서 ===\n총 좌석: 20석 (빈 좌석: 11석, 예약됨: 9석)\n예약 희망 인원: 3명\n---------------------------------\n[연속 좌석 예약 가능 현황]\n1행: 3열~5열 (중앙 편차: 1.0)\n3행: 2열~4열 (중앙 편차: 0.0)\n---------------------------------\n추천 최적 좌석: 3행 2열~4열",
+                "is_hidden": false
+            },
+            {
+                "input": "3 4\n1 1 1 1\n1 0 1 0\n0 1 0 1\n2",
+                "expected": "=== CGV 상영관 좌석 배정 분석 보고서 ===\n총 좌석: 12석 (빈 좌석: 4석, 예약됨: 8석)\n예약 희망 인원: 2명\n---------------------------------\n[연속 좌석 예약 가능 현황]\n연속 좌석 예약 불가: 분할 예매 필요\n---------------------------------\n추천 최적 좌석: 없음",
+                "is_hidden": false
+            },
+            {
+                "input": "3 5\n0 0 0 0 0\n1 0 0 0 1\n1 1 0 1 1\n3",
+                "expected": "=== CGV 상영관 좌석 배정 분석 보고서 ===\n총 좌석: 15석 (빈 좌석: 9석, 예약됨: 6석)\n예약 희망 인원: 3명\n---------------------------------\n[연속 좌석 예약 가능 현황]\n1행: 2열~4열 (중앙 편차: 0.0)\n2행: 2열~4열 (중앙 편차: 0.0)\n---------------------------------\n추천 최적 좌석: 1행 2열~4열",
+                "is_hidden": false
+            },
+            {
+                "input": "2 3\n0 0 0\n0 0 0\n1",
+                "expected": "=== CGV 상영관 좌석 배정 분석 보고서 ===\n총 좌석: 6석 (빈 좌석: 6석, 예약됨: 0석)\n예약 희망 인원: 1명\n---------------------------------\n[연속 좌석 예약 가능 현황]\n1행: 2열~2열 (중앙 편차: 0.0)\n2행: 2열~2열 (중앙 편차: 0.0)\n---------------------------------\n추천 최적 좌석: 1행 2열~2열",
+                "is_hidden": true
+            },
+            {
+                "input": "2 3\n1 1 1\n1 1 1\n1",
+                "expected": "=== CGV 상영관 좌석 배정 분석 보고서 ===\n총 좌석: 6석 (빈 좌석: 0석, 예약됨: 6석)\n예약 희망 인원: 1명\n---------------------------------\n[연속 좌석 예약 가능 현황]\n연속 좌석 예약 불가: 분할 예매 필요\n---------------------------------\n추천 최적 좌석: 없음",
+                "is_hidden": true
+            },
+            {
+                "input": "4 6\n1 0 0 0 0 1\n0 0 1 1 0 0\n0 0 0 1 1 1\n1 1 0 0 0 0\n4",
+                "expected": "=== CGV 상영관 좌석 배정 분석 보고서 ===\n총 좌석: 24석 (빈 좌석: 15석, 예약됨: 9석)\n예약 희망 인원: 4명\n---------------------------------\n[연속 좌석 예약 가능 현황]\n1행: 2열~5열 (중앙 편차: 0.0)\n4행: 3열~6열 (중앙 편차: 1.0)\n---------------------------------\n추천 최적 좌석: 1행 2열~5열",
+                "is_hidden": true
+            },
+            {
+                "input": "3 4\n0 0 1 1\n1 0 0 1\n1 1 0 0\n2",
+                "expected": "=== CGV 상영관 좌석 배정 분석 보고서 ===\n총 좌석: 12석 (빈 좌석: 6석, 예약됨: 6석)\n예약 희망 인원: 2명\n---------------------------------\n[연속 좌석 예약 가능 현황]\n1행: 1열~2열 (중앙 편차: 1.0)\n2행: 2열~3열 (중앙 편차: 0.0)\n3행: 3열~4열 (중앙 편차: 1.0)\n---------------------------------\n추천 최적 좌석: 2행 2열~3열",
+                "is_hidden": true
+            },
+            {
+                "input": "5 5\n1 0 0 0 1\n0 0 0 0 0\n1 1 1 1 1\n0 0 1 0 0\n0 0 0 0 0\n5",
+                "expected": "=== CGV 상영관 좌석 배정 분석 보고서 ===\n총 좌석: 25석 (빈 좌석: 17석, 예약됨: 8석)\n예약 희망 인원: 5명\n---------------------------------\n[연속 좌석 예약 가능 현황]\n2행: 1열~5열 (중앙 편차: 0.0)\n5행: 1열~5열 (중앙 편차: 0.0)\n---------------------------------\n추천 최적 좌석: 2행 1열~5열",
+                "is_hidden": true
+            },
+            {
+                "input": "4 8\n1 0 0 0 0 0 0 1\n0 0 1 0 0 0 0 0\n1 1 1 1 0 0 0 0\n0 0 0 0 1 1 1 1\n4",
+                "expected": "=== CGV 상영관 좌석 배정 분석 보고서 ===\n총 좌석: 32석 (빈 좌석: 21석, 예약됨: 11석)\n예약 희망 인원: 4명\n---------------------------------\n[연속 좌석 예약 가능 현황]\n1행: 3열~6열 (중앙 편차: 0.0)\n2행: 4열~7열 (중앙 편차: 1.0)\n3행: 5열~8열 (중앙 편차: 2.0)\n4행: 1열~4열 (중앙 편차: 2.0)\n---------------------------------\n추천 최적 좌석: 1행 3열~6열",
+                "is_hidden": true
+            },
+            {
+                "input": "2 4\n0 1 1 0\n1 0 0 1\n2",
+                "expected": "=== CGV 상영관 좌석 배정 분석 보고서 ===\n총 좌석: 8석 (빈 좌석: 4석, 예약됨: 4석)\n예약 희망 인원: 2명\n---------------------------------\n[연속 좌석 예약 가능 현황]\n2행: 2열~3열 (중앙 편차: 0.0)\n---------------------------------\n추천 최적 좌석: 2행 2열~3열",
+                "is_hidden": true
+            }
+        ],
+        "samples": [
+            {
+                "input": "4 5\n0 1 0 0 0\n1 1 1 0 1\n0 0 0 0 1\n1 0 1 0 1\n3",
+                "output": "=== CGV 상영관 좌석 배정 분석 보고서 ===\n총 좌석: 20석 (빈 좌석: 11석, 예약됨: 9석)\n예약 희망 인원: 3명\n---------------------------------\n[연속 좌석 예약 가능 현황]\n1행: 3열~5열 (중앙 편차: 1.0)\n3행: 2열~4열 (중앙 편차: 0.0)\n---------------------------------\n추천 최적 좌석: 3행 2열~4열"
+            },
+            {
+                "input": "3 4\n1 1 1 1\n1 0 1 0\n0 1 0 1\n2",
+                "output": "=== CGV 상영관 좌석 배정 분석 보고서 ===\n총 좌석: 12석 (빈 좌석: 4석, 예약됨: 8석)\n예약 희망 인원: 2명\n---------------------------------\n[연속 좌석 예약 가능 현황]\n연속 좌석 예약 불가: 분할 예매 필요\n---------------------------------\n추천 최적 좌석: 없음"
+            },
+            {
+                "input": "3 5\n0 0 0 0 0\n1 0 0 0 1\n1 1 0 1 1\n3",
+                "output": "=== CGV 상영관 좌석 배정 분석 보고서 ===\n총 좌석: 15석 (빈 좌석: 9석, 예약됨: 6석)\n예약 희망 인원: 3명\n---------------------------------\n[연속 좌석 예약 가능 현황]\n1행: 2열~4열 (중앙 편차: 0.0)\n2행: 2열~4열 (중앙 편차: 0.0)\n---------------------------------\n추천 최적 좌석: 1행 2열~4열"
+            }
+        ],
+        "sample_input": "4 5\n0 1 0 0 0\n1 1 1 0 1\n0 0 0 0 1\n1 0 1 0 1\n3",
+        "sample_output": "=== CGV 상영관 좌석 배정 분석 보고서 ===\n총 좌석: 20석 (빈 좌석: 11석, 예약됨: 9석)\n예약 희망 인원: 3명\n---------------------------------\n[연속 좌석 예약 가능 현황]\n1행: 3열~5열 (중앙 편차: 1.0)\n3행: 2열~4열 (중앙 편차: 0.0)\n---------------------------------\n추천 최적 좌석: 3행 2열~4열",
+        "expected": "=== CGV 상영관 좌석 배정 분석 보고서 ===\n총 좌석: 20석 (빈 좌석: 11석, 예약됨: 9석)\n예약 희망 인원: 3명\n---------------------------------\n[연속 좌석 예약 가능 현황]\n1행: 3열~5열 (중앙 편차: 1.0)\n3행: 2열~4열 (중앙 편차: 0.0)\n---------------------------------\n추천 최적 좌석: 3행 2열~4열"
     },
     {
-        "id": "day03_도전",
+        "id": "day03_상2",
+        "day": 3,
+        "subject": "Java",
+        "difficulty": "상",
+        "title": "2차원 이미지 비트맵 90도 회전 & 3x3 박스 블러 필터 연산기 (MatrixRotationBlur)",
+        "desc": "N x N 크기(3 <= N <= 7)의 2차원 그레이스케일 픽셀 값(0~255 정수) 행렬을 입력받아 그래픽스 이미지 회전 및 블러 필터 파이프라인을 시뮬레이션하세요.\n\n[파이프라인 단계별 규칙]\n1. 1단계: 90도 시계방향 회전 (90-Degree Clockwise Rotation)\n   - 원본 행렬 A(r, c)를 시계 방향으로 90도 회전한 행렬 R을 생성합니다.\n   - 회전 변환 공식: R[c][N - 1 - r] = A[r][c]\n2. 2단계: 3x3 박스 블러 필터 적용 (Box Blur Convolution)\n   - 회전된 행렬 R에 대해 3x3 박스 블러 필터를 적용한 새 행렬 B를 생성합니다.\n   - 테두리(가장자리) 픽셀(행 인덱스 0 또는 N-1, 열 인덱스 0 또는 N-1): 주변 픽셀이 부족하므로 블러 연산 없이 회전된 원본 픽셀 값(R[i][j])을 그대로 유지합니다.\n   - 내부 픽셀(1 <= i, j <= N-2): 자신을 포함한 3x3 영역(총 9개 픽셀)의 합을 9로 나눈 정수(소수점 버림 `sum / 9`)를 취합니다.\n\n[입력]\n첫째 줄에 행렬 크기 N이 주어집니다.\n다음 N개 줄에 걸쳐 각 줄마다 N개의 픽셀 정수(0~255)가 공백으로 주어집니다.\n\n[출력]\n=== [1단계] 90도 시계방향 회전 비트맵 ===\n(N행 N열의 회전된 행렬 출력, 각 행의 원소는 공백으로 구분)\n---------------------------------\n=== [2단계] 3x3 박스 블러 필터 적용 결과 ===\n(N행 N열의 블러 필터 적용 행렬 출력, 각 행의 원소는 공백으로 구분)\n\n※ 3x3 최소 크기, 4x4, 단일 색상 등 다양한 케이스는 아래 [예제 1, 2, 3]을 참고하세요.",
+        "template": "import java.util.Scanner;\n\npublic class Solution {\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        // 여기에 2차원 행렬 90도 회전 및 3x3 컨볼루션 블러 필터 로직을 작성하세요\n        \n    }\n}\n",
+        "solution": "import java.util.Scanner;\n\npublic class Solution {\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        if (!sc.hasNextInt()) return;\n        int n = sc.nextInt();\n        int[][] a = new int[n][n];\n\n        for (int i = 0; i < n; i++) {\n            for (int j = 0; j < n; j++) {\n                a[i][j] = sc.nextInt();\n            }\n        }\n\n        int[][] rotated = new int[n][n];\n        for (int i = 0; i < n; i++) {\n            for (int j = 0; j < n; j++) {\n                rotated[j][n - 1 - i] = a[i][j];\n            }\n        }\n\n        int[][] blurred = new int[n][n];\n        for (int i = 0; i < n; i++) {\n            for (int j = 0; j < n; j++) {\n                if (i == 0 || i == n - 1 || j == 0 || j == n - 1) {\n                    blurred[i][j] = rotated[i][j];\n                } else {\n                    int sum = 0;\n                    for (int di = -1; di <= 1; di++) {\n                        for (int dj = -1; dj <= 1; dj++) {\n                            sum += rotated[i + di][j + dj];\n                        }\n                    }\n                    blurred[i][j] = sum / 9;\n                }\n            }\n        }\n\n        System.out.println(\"=== [1단계] 90도 시계방향 회전 비트맵 ===\");\n        for (int i = 0; i < n; i++) {\n            for (int j = 0; j < n; j++) {\n                System.out.print(rotated[i][j]);\n                if (j < n - 1) System.out.print(\" \");\n            }\n            System.out.println();\n        }\n        System.out.println(\"---------------------------------\");\n        System.out.println(\"=== [2단계] 3x3 박스 블러 필터 적용 결과 ===\");\n        for (int i = 0; i < n; i++) {\n            for (int j = 0; j < n; j++) {\n                System.out.print(blurred[i][j]);\n                if (j < n - 1) System.out.print(\" \");\n            }\n            System.out.println();\n        }\n    }\n}\n",
+        "hint": "1. 90도 시계방향 회전 공식: 원본의 (i, j) 원소는 회전 행렬의 (j, n - 1 - i) 위치로 이동합니다.\n2. 블러 필터 적용 시 회전된 행렬(rotated)을 바탕으로 새 배열(blurred)을 채워야 합니다.\n3. 테두리(i==0 || i==n-1 || j==0 || j==n-1)는 그대로 복사하고, 내부 픽셀은 di=-1~1, dj=-1~1 중첩 루프로 9개 합을 구해 9로 나눕니다.",
+        "cs_knowledge": "🖥️ [CS 핵심 지식: 컴퓨터 그래픽스 픽셀 버퍼와 2D 공간 필터링 컨볼루션(Convolution)]\n디지털 이미지는 2차원 픽셀 배열로 표현되며, 이미지 회전과 필터링은 GPU 셰이더 및 포토샵, OpenCV 등의 핵심 연산입니다.\n박스 블러(Box Blur)는 주변 픽셀들의 가중 평균을 구하여 고주파(High-frequency) 노이즈를 부드럽게 감쇄시키는 대표적인 저역 통과 필터(Low-Pass Filter)입니다.\n이 3x3 윈도우를 한 칸씩 이동하며 곱하고 더하는 연산 구조가 바로 현대 딥러닝 인공지능의 시각 지능을 지탱하는 '합성곱 신경망(Convolutional Neural Network, CNN)'의 모태입니다.",
+        "logic_guide": "📘 [단계별 로직 구성 순서 & 초보자 가이드]\n1단계: N 입력 및 a[N][N] 2차원 배열 입력받기\n2단계: rotated[j][n - 1 - i] = a[i][j] 로 90도 회전 행렬 완성\n3단계: blurred[N][N] 선언 후 테두리는 rotated 값 그대로 복사, 내부는 3x3 9개 원소 합 / 9 계산\n4단계: 1단계 회전 비트맵 출력\n5단계: 구분선 출력 후 2단계 블러 필터 비트맵 출력",
+        "testcases": [
+            {
+                "input": "4\n1 2 3 4\n5 6 7 8\n9 10 11 12\n13 14 15 16",
+                "expected": "=== [1단계] 90도 시계방향 회전 비트맵 ===\n13 9 5 1\n14 10 6 2\n15 11 7 3\n16 12 8 4\n---------------------------------\n=== [2단계] 3x3 박스 블러 필터 적용 결과 ===\n13 9 5 1\n14 10 6 2\n15 11 7 3\n16 12 8 4",
+                "is_hidden": false
+            },
+            {
+                "input": "3\n10 20 30\n40 50 60\n70 80 90",
+                "expected": "=== [1단계] 90도 시계방향 회전 비트맵 ===\n70 40 10\n80 50 20\n90 60 30\n---------------------------------\n=== [2단계] 3x3 박스 블러 필터 적용 결과 ===\n70 40 10\n80 50 20\n90 60 30",
+                "is_hidden": false
+            },
+            {
+                "input": "5\n0 0 0 0 0\n0 255 255 255 0\n0 255 255 255 0\n0 255 255 255 0\n0 0 0 0 0",
+                "expected": "=== [1단계] 90도 시계방향 회전 비트맵 ===\n0 0 0 0 0\n0 255 255 255 0\n0 255 255 255 0\n0 255 255 255 0\n0 0 0 0 0\n---------------------------------\n=== [2단계] 3x3 박스 블러 필터 적용 결과 ===\n0 0 0 0 0\n0 113 170 113 0\n0 170 255 170 0\n0 113 170 113 0\n0 0 0 0 0",
+                "is_hidden": false
+            },
+            {
+                "input": "3\n100 100 100\n100 100 100\n100 100 100",
+                "expected": "=== [1단계] 90도 시계방향 회전 비트맵 ===\n100 100 100\n100 100 100\n100 100 100\n---------------------------------\n=== [2단계] 3x3 박스 블러 필터 적용 결과 ===\n100 100 100\n100 100 100\n100 100 100",
+                "is_hidden": true
+            },
+            {
+                "input": "3\n0 0 0\n0 90 0\n0 0 0",
+                "expected": "=== [1단계] 90도 시계방향 회전 비트맵 ===\n0 0 0\n0 90 0\n0 0 0\n---------------------------------\n=== [2단계] 3x3 박스 블러 필터 적용 결과 ===\n0 0 0\n0 10 0\n0 0 0",
+                "is_hidden": true
+            },
+            {
+                "input": "4\n255 0 255 0\n0 255 0 255\n255 0 255 0\n0 255 0 255",
+                "expected": "=== [1단계] 90도 시계방향 회전 비트맵 ===\n0 255 0 255\n255 0 255 0\n0 255 0 255\n255 0 255 0\n---------------------------------\n=== [2단계] 3x3 박스 블러 필터 적용 결과 ===\n0 255 0 255\n255 113 141 0\n0 141 113 255\n255 0 255 0",
+                "is_hidden": true
+            },
+            {
+                "input": "5\n10 20 30 40 50\n60 70 80 90 100\n110 120 130 140 150\n160 170 180 190 200\n210 220 230 240 250",
+                "expected": "=== [1단계] 90도 시계방향 회전 비트맵 ===\n210 160 110 60 10\n220 170 120 70 20\n230 180 130 80 30\n240 190 140 90 40\n250 200 150 100 50\n---------------------------------\n=== [2단계] 3x3 박스 블러 필터 적용 결과 ===\n210 160 110 60 10\n220 170 120 70 20\n230 180 130 80 30\n240 190 140 90 40\n250 200 150 100 50",
+                "is_hidden": true
+            },
+            {
+                "input": "6\n1 1 1 1 1 1\n2 2 2 2 2 2\n3 3 3 3 3 3\n4 4 4 4 4 4\n5 5 5 5 5 5\n6 6 6 6 6 6",
+                "expected": "=== [1단계] 90도 시계방향 회전 비트맵 ===\n6 5 4 3 2 1\n6 5 4 3 2 1\n6 5 4 3 2 1\n6 5 4 3 2 1\n6 5 4 3 2 1\n6 5 4 3 2 1\n---------------------------------\n=== [2단계] 3x3 박스 블러 필터 적용 결과 ===\n6 5 4 3 2 1\n6 5 4 3 2 1\n6 5 4 3 2 1\n6 5 4 3 2 1\n6 5 4 3 2 1\n6 5 4 3 2 1",
+                "is_hidden": true
+            },
+            {
+                "input": "3\n1 2 3\n4 5 6\n7 8 9",
+                "expected": "=== [1단계] 90도 시계방향 회전 비트맵 ===\n7 4 1\n8 5 2\n9 6 3\n---------------------------------\n=== [2단계] 3x3 박스 블러 필터 적용 결과 ===\n7 4 1\n8 5 2\n9 6 3",
+                "is_hidden": true
+            },
+            {
+                "input": "4\n50 60 70 80\n90 100 110 120\n130 140 150 160\n170 180 190 200",
+                "expected": "=== [1단계] 90도 시계방향 회전 비트맵 ===\n170 130 90 50\n180 140 100 60\n190 150 110 70\n200 160 120 80\n---------------------------------\n=== [2단계] 3x3 박스 블러 필터 적용 결과 ===\n170 130 90 50\n180 140 100 60\n190 150 110 70\n200 160 120 80",
+                "is_hidden": true
+            }
+        ],
+        "samples": [
+            {
+                "input": "4\n1 2 3 4\n5 6 7 8\n9 10 11 12\n13 14 15 16",
+                "output": "=== [1단계] 90도 시계방향 회전 비트맵 ===\n13 9 5 1\n14 10 6 2\n15 11 7 3\n16 12 8 4\n---------------------------------\n=== [2단계] 3x3 박스 블러 필터 적용 결과 ===\n13 9 5 1\n14 10 6 2\n15 11 7 3\n16 12 8 4"
+            },
+            {
+                "input": "3\n10 20 30\n40 50 60\n70 80 90",
+                "output": "=== [1단계] 90도 시계방향 회전 비트맵 ===\n70 40 10\n80 50 20\n90 60 30\n---------------------------------\n=== [2단계] 3x3 박스 블러 필터 적용 결과 ===\n70 40 10\n80 50 20\n90 60 30"
+            },
+            {
+                "input": "5\n0 0 0 0 0\n0 255 255 255 0\n0 255 255 255 0\n0 255 255 255 0\n0 0 0 0 0",
+                "output": "=== [1단계] 90도 시계방향 회전 비트맵 ===\n0 0 0 0 0\n0 255 255 255 0\n0 255 255 255 0\n0 255 255 255 0\n0 0 0 0 0\n---------------------------------\n=== [2단계] 3x3 박스 블러 필터 적용 결과 ===\n0 0 0 0 0\n0 113 170 113 0\n0 170 255 170 0\n0 113 170 113 0\n0 0 0 0 0"
+            }
+        ],
+        "sample_input": "4\n1 2 3 4\n5 6 7 8\n9 10 11 12\n13 14 15 16",
+        "sample_output": "=== [1단계] 90도 시계방향 회전 비트맵 ===\n13 9 5 1\n14 10 6 2\n15 11 7 3\n16 12 8 4\n---------------------------------\n=== [2단계] 3x3 박스 블러 필터 적용 결과 ===\n13 9 5 1\n14 10 6 2\n15 11 7 3\n16 12 8 4",
+        "expected": "=== [1단계] 90도 시계방향 회전 비트맵 ===\n13 9 5 1\n14 10 6 2\n15 11 7 3\n16 12 8 4\n---------------------------------\n=== [2단계] 3x3 박스 블러 필터 적용 결과 ===\n13 9 5 1\n14 10 6 2\n15 11 7 3\n16 12 8 4"
+    },
+    {
+        "id": "day03_도전1",
         "day": 3,
         "subject": "Java",
         "difficulty": "도전",
-        "title": "N x N 달팽이(소용돌이) 배열 채우기 및 대각선 합계 (SpiralMatrix)",
-        "desc": "홀수 N(3, 5, 7 중 하나)을 입력받아, N x N 크기의 2차원 배열에 1부터 N^2까지의 숫자를 시계 방향 소용돌이(우 -> 하 -> 좌 -> 상) 형태로 채워 넣으세요.\n- 채워진 2차원 배열을 서식에 맞게 출력하세요.\n- 중심(Center) 좌표(1부터 시작하는 행, 열)의 원소 값과 주 대각선(X자 대각선)에 위치한 모든 원소들의 총합을 계산하여 출력하세요.\n\n[입력]\n홀수 N (3, 5, 7)\n(예: 5)",
-        "template": "import java.util.Scanner;\n\npublic class Solution {\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        // 여기에 코드를 작성하세요\n        \n    }\n}",
-        "solution": "import java.util.Scanner;\n\npublic class Solution {\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        int n = sc.nextInt();\n        int[][] matrix = new int[n][n];\n\n        // 우, 하, 좌, 상 방향 벡터\n        int[] dr = {0, 1, 0, -1};\n        int[] dc = {1, 0, -1, 0};\n\n        int r = 0, c = 0, dir = 0;\n        for (int val = 1; val <= n * n; val++) {\n            matrix[r][c] = val;\n            int nr = r + dr[dir];\n            int nc = c + dc[dir];\n\n            if (nr < 0 || nr >= n || nc < 0 || nc >= n || matrix[nr][nc] != 0) {\n                dir = (dir + 1) % 4;\n                nr = r + dr[dir];\n                nc = c + dc[dir];\n            }\n            r = nr;\n            c = nc;\n        }\n\n        System.out.printf(\"=== %dx%d 달팽이 소용돌이 배열 ===\\n\", n, n);\n        for (int i = 0; i < n; i++) {\n            for (int j = 0; j < n; j++) {\n                System.out.printf(\"%2d\", matrix[i][j]);\n                if (j < n - 1) System.out.print(\" \");\n            }\n            System.out.println();\n        }\n\n        int centerR = n / 2;\n        int centerC = n / 2;\n        int centerVal = matrix[centerR][centerC];\n\n        int diagonalSum = 0;\n        for (int i = 0; i < n; i++) {\n            diagonalSum += matrix[i][i];\n            if (i != n - 1 - i) {\n                diagonalSum += matrix[i][n - 1 - i];\n            }\n        }\n\n        System.out.println(\"---------------------------------\");\n        System.out.printf(\"중심 좌표 (%d행 %d열) 원소: %d\\n\", centerR + 1, centerC + 1, centerVal);\n        System.out.printf(\"대각선(X자) 원소 합계: %d\\n\", diagonalSum);\n    }\n}",
+        "title": "N x N 달팽이(소용돌이) 배열 생성기 & 주 대각선 분석기 (SpiralMatrix)",
+        "desc": "정수 N(2 <= N <= 8)을 입력받아, N x N 크기의 2차원 배열에 1부터 N^2까지의 자연수를 시계 방향 소용돌이(우 -> 하 -> 좌 -> 상) 형태로 채워 넣으세요.\n\n[요구 분석 항목]\n1. N x N 달팽이 소용돌이 배열 출력:\n   - 각 숫자는 2자리 너비 우측 정렬(`%2d`)로 출력하며, 같은 행의 숫자 사이에는 공백 1개를 둡니다.\n2. 중심 원소 분석:\n   - N이 홀수인 경우: 정중앙 1개 좌표(1-indexed 행, 열)의 원소 값을 출력합니다. (예: 5x5이면 3행 3열)\n   - N이 짝수인 경우: 정중앙에 위치한 4개 원소의 평균을 소수점 첫째 자리까지(%.1f) 계산하여 출력합니다. (예: 4x4이면 2~3행, 2~3열의 4개 값 평균)\n3. 대각선(X자) 고유 원소 합계:\n   - 좌상단->우하단 주 대각선과 우상단->좌하단 부 대각선에 위치한 모든 고유(Unique) 원소들의 총합을 출력하세요.\n   - 홀수 크기 행렬의 정중앙 교차점 원소는 중복해서 더해지지 않아야 합니다.\n\n[입력]\n첫째 줄에 정수 N(2 <= N <= 8)이 주어집니다.\n\n[출력]\n=== {N}x{N} 달팽이 소용돌이 배열 ===\n(배열 내용 출력)\n---------------------------------\n중심 좌표 ({r}행 {c}열) 원소: {val} (홀수인 경우)\n중심 4개 원소 평균: {avg} (짝수인 경우)\n대각선(X자) 고유 원소 합계: {diagSum}\n\n※ 홀수(3, 5), 짝수(2, 4) 등 다양한 크기는 아래 [예제 1, 2, 3]을 참고하세요.",
+        "template": "import java.util.Scanner;\n\npublic class Solution {\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        // 여기에 방향 벡터(dr, dc)를 활용한 2차원 소용돌이 시뮬레이션을 구현하세요\n        \n    }\n}\n",
+        "solution": "import java.util.Scanner;\n\npublic class Solution {\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        if (!sc.hasNextInt()) return;\n        int n = sc.nextInt();\n        int[][] matrix = new int[n][n];\n\n        // 우, 하, 좌, 상\n        int[] dr = {0, 1, 0, -1};\n        int[] dc = {1, 0, -1, 0};\n\n        int r = 0, c = 0, dir = 0;\n        for (int val = 1; val <= n * n; val++) {\n            matrix[r][c] = val;\n            if (val == n * n) break;\n\n            int nr = r + dr[dir];\n            int nc = c + dc[dir];\n\n            if (nr < 0 || nr >= n || nc < 0 || nc >= n || matrix[nr][nc] != 0) {\n                dir = (dir + 1) % 4;\n                nr = r + dr[dir];\n                nc = c + dc[dir];\n            }\n            r = nr;\n            c = nc;\n        }\n\n        System.out.printf(\"=== %dx%d 달팽이 소용돌이 배열 ===\\n\", n, n);\n        for (int i = 0; i < n; i++) {\n            for (int j = 0; j < n; j++) {\n                System.out.printf(\"%2d\", matrix[i][j]);\n                if (j < n - 1) System.out.print(\" \");\n            }\n            System.out.println();\n        }\n        System.out.println(\"---------------------------------\");\n\n        if (n % 2 == 1) {\n            int centerR = n / 2;\n            int centerC = n / 2;\n            System.out.printf(\"중심 좌표 (%d행 %d열) 원소: %d\\n\", centerR + 1, centerC + 1, matrix[centerR][centerC]);\n        } else {\n            int r1 = n / 2 - 1, r2 = n / 2;\n            int c1 = n / 2 - 1, c2 = n / 2;\n            double centerAvg = (matrix[r1][c1] + matrix[r1][c2] + matrix[r2][c1] + matrix[r2][c2]) / 4.0;\n            System.out.printf(\"중심 4개 원소 평균: %.1f\\n\", centerAvg);\n        }\n\n        long diagSum = 0;\n        for (int i = 0; i < n; i++) {\n            diagSum += matrix[i][i];\n            if (i != n - 1 - i) {\n                diagSum += matrix[i][n - 1 - i];\n            }\n        }\n        System.out.printf(\"대각선(X자) 고유 원소 합계: %d\\n\", diagSum);\n    }\n}\n",
+        "hint": "1. 방향 벡터 `int[] dr = {0, 1, 0, -1}; int[] dc = {1, 0, -1, 0};`를 선언하고 `dir`을 0부터 시작합니다.\n2. 다음 이동할 좌표 `(nr, nc)`가 배열 범위를 벗어나거나 이미 값이 채워져(`matrix[nr][nc] != 0`) 있으면 `dir = (dir + 1) % 4`로 방향을 90도 회전합니다.\n3. X자 대각선 합산 시 `if (i != n - 1 - i)` 조건을 두어 홀수 중심 원소가 중복 합산되지 않도록 방지합니다.",
+        "cs_knowledge": "🖥️ [CS 핵심 지식: 2차원 공간 시뮬레이션 방향 벡터(dr, dc)와 경계/방문 판정]\n달팽이 배열 문제는 2차원 격자(Grid) 상에서 에이전트가 장애물이나 경계를 만났을 때 회전하며 탐색하는 '시뮬레이션(Simulation)' 및 '구현(Implementation)'의 대표 문제입니다.\n하드코딩된 if문 대신 방향 벡터(Direction Vector: dr, dc)와 모듈로 연산(`(dir + 1) % 4`)을 활용하면 동서남북 4방향 회전 로직을 단 3줄로 우아하게 추상화할 수 있습니다.\n이 기법은 로봇 청소기 이동 알고리즘, 게임 캐릭터 충돌 감지, 미로 탐색(DFS/BFS) 등 컴퓨터 사이언스 전반에서 가장 빈번하게 사용되는 핵심 구현 테크닉입니다.",
+        "logic_guide": "📘 [단계별 로직 구성 순서 & 초보자 가이드]\n1단계: N 입력 및 matrix[N][N] 배열 생성\n2단계: dr={0, 1, 0, -1}, dc={1, 0, -1, 0} 방향 벡터 선언\n3단계: val=1부터 N*N까지 matrix[r][c]=val 채우기, 다음 위치 검사 후 회전\n4단계: %2d 서식으로 소용돌이 배열 출력\n5단계: N이 홀수이면 단일 중심 원소 출력, 짝수이면 중앙 4개 원소 평균 출력\n6단계: i != n - 1 - i 중복 방지 조건으로 X자 대각선 고유 원소 총합 출력",
+        "testcases": [
+            {
+                "input": "5",
+                "expected": "=== 5x5 달팽이 소용돌이 배열 ===\n 1  2  3  4  5\n16 17 18 19  6\n15 24 25 20  7\n14 23 22 21  8\n13 12 11 10  9\n---------------------------------\n중심 좌표 (3행 3열) 원소: 25\n대각선(X자) 고유 원소 합계: 133",
+                "is_hidden": false
+            },
+            {
+                "input": "4",
+                "expected": "=== 4x4 달팽이 소용돌이 배열 ===\n 1  2  3  4\n12 13 14  5\n11 16 15  6\n10  9  8  7\n---------------------------------\n중심 4개 원소 평균: 14.5\n대각선(X자) 고유 원소 합계: 80",
+                "is_hidden": false
+            },
+            {
+                "input": "3",
+                "expected": "=== 3x3 달팽이 소용돌이 배열 ===\n 1  2  3\n 8  9  4\n 7  6  5\n---------------------------------\n중심 좌표 (2행 2열) 원소: 9\n대각선(X자) 고유 원소 합계: 25",
+                "is_hidden": false
+            },
+            {
+                "input": "2",
+                "expected": "=== 2x2 달팽이 소용돌이 배열 ===\n 1  2\n 4  3\n---------------------------------\n중심 4개 원소 평균: 2.5\n대각선(X자) 고유 원소 합계: 10",
+                "is_hidden": true
+            },
+            {
+                "input": "6",
+                "expected": "=== 6x6 달팽이 소용돌이 배열 ===\n 1  2  3  4  5  6\n20 21 22 23 24  7\n19 32 33 34 25  8\n18 31 36 35 26  9\n17 30 29 28 27 10\n16 15 14 13 12 11\n---------------------------------\n중심 4개 원소 평균: 34.5\n대각선(X자) 고유 원소 합계: 274",
+                "is_hidden": true
+            },
+            {
+                "input": "7",
+                "expected": "=== 7x7 달팽이 소용돌이 배열 ===\n 1  2  3  4  5  6  7\n24 25 26 27 28 29  8\n23 40 41 42 43 30  9\n22 39 48 49 44 31 10\n21 38 47 46 45 32 11\n20 37 36 35 34 33 12\n19 18 17 16 15 14 13\n---------------------------------\n중심 좌표 (4행 4열) 원소: 49\n대각선(X자) 고유 원소 합계: 389",
+                "is_hidden": true
+            },
+            {
+                "input": "8",
+                "expected": "=== 8x8 달팽이 소용돌이 배열 ===\n 1  2  3  4  5  6  7  8\n28 29 30 31 32 33 34  9\n27 48 49 50 51 52 35 10\n26 47 60 61 62 53 36 11\n25 46 59 64 63 54 37 12\n24 45 58 57 56 55 38 13\n23 44 43 42 41 40 39 14\n22 21 20 19 18 17 16 15\n---------------------------------\n중심 4개 원소 평균: 62.5\n대각선(X자) 고유 원소 합계: 656",
+                "is_hidden": true
+            },
+            {
+                "input": "3",
+                "expected": "=== 3x3 달팽이 소용돌이 배열 ===\n 1  2  3\n 8  9  4\n 7  6  5\n---------------------------------\n중심 좌표 (2행 2열) 원소: 9\n대각선(X자) 고유 원소 합계: 25",
+                "is_hidden": true
+            },
+            {
+                "input": "5",
+                "expected": "=== 5x5 달팽이 소용돌이 배열 ===\n 1  2  3  4  5\n16 17 18 19  6\n15 24 25 20  7\n14 23 22 21  8\n13 12 11 10  9\n---------------------------------\n중심 좌표 (3행 3열) 원소: 25\n대각선(X자) 고유 원소 합계: 133",
+                "is_hidden": true
+            },
+            {
+                "input": "4",
+                "expected": "=== 4x4 달팽이 소용돌이 배열 ===\n 1  2  3  4\n12 13 14  5\n11 16 15  6\n10  9  8  7\n---------------------------------\n중심 4개 원소 평균: 14.5\n대각선(X자) 고유 원소 합계: 80",
+                "is_hidden": true
+            }
+        ],
+        "samples": [
+            {
+                "input": "5",
+                "output": "=== 5x5 달팽이 소용돌이 배열 ===\n 1  2  3  4  5\n16 17 18 19  6\n15 24 25 20  7\n14 23 22 21  8\n13 12 11 10  9\n---------------------------------\n중심 좌표 (3행 3열) 원소: 25\n대각선(X자) 고유 원소 합계: 133"
+            },
+            {
+                "input": "4",
+                "output": "=== 4x4 달팽이 소용돌이 배열 ===\n 1  2  3  4\n12 13 14  5\n11 16 15  6\n10  9  8  7\n---------------------------------\n중심 4개 원소 평균: 14.5\n대각선(X자) 고유 원소 합계: 80"
+            },
+            {
+                "input": "3",
+                "output": "=== 3x3 달팽이 소용돌이 배열 ===\n 1  2  3\n 8  9  4\n 7  6  5\n---------------------------------\n중심 좌표 (2행 2열) 원소: 9\n대각선(X자) 고유 원소 합계: 25"
+            }
+        ],
         "sample_input": "5",
-        "sample_output": "=== 5x5 달팽이 소용돌이 배열 ===\n 1  2  3  4  5\n16 17 18 19  6\n15 24 25 20  7\n14 23 22 21  8\n13 12 11 10  9\n---------------------------------\n중심 좌표 (3행 3열) 원소: 25\n대각선(X자) 원소 합계: 133",
-        "expected": "=== 5x5 달팽이 소용돌이 배열 ===\n 1  2  3  4  5\n16 17 18 19  6\n15 24 25 20  7\n14 23 22 21  8\n13 12 11 10  9\n---------------------------------\n중심 좌표 (3행 3열) 원소: 25\n대각선(X자) 원소 합계: 133",
-        "hint": "1. 방향 벡터 `dr = {0, 1, 0, -1}`, `dc = {1, 0, -1, 0}`를 선언합니다.\n2. 다음 위치가 배열 범위를 벗어나거나 이미 숫자가 채워진 경우 `dir = (dir + 1) % 4`로 방향을 90도 회전합니다.\n3. X자 대각선 합 계산 시 중심 원소가 두 번 더해지지 않도록 중복 처리를 주의합니다."
+        "sample_output": "=== 5x5 달팽이 소용돌이 배열 ===\n 1  2  3  4  5\n16 17 18 19  6\n15 24 25 20  7\n14 23 22 21  8\n13 12 11 10  9\n---------------------------------\n중심 좌표 (3행 3열) 원소: 25\n대각선(X자) 고유 원소 합계: 133",
+        "expected": "=== 5x5 달팽이 소용돌이 배열 ===\n 1  2  3  4  5\n16 17 18 19  6\n15 24 25 20  7\n14 23 22 21  8\n13 12 11 10  9\n---------------------------------\n중심 좌표 (3행 3열) 원소: 25\n대각선(X자) 고유 원소 합계: 133"
+    },
+    {
+        "id": "day03_도전2",
+        "day": 3,
+        "subject": "Java",
+        "difficulty": "도전",
+        "title": "희소 행렬(Sparse Matrix) 압축 표현(CSR 포맷) 및 벡터 곱 (SparseMatrixCompressor)",
+        "desc": "대부분의 원소가 0인 R x C 크기(2 <= R, C <= 6)의 희소 행렬(Sparse Matrix) A와, 크기 C인 열 벡터 v가 주어집니다.\n이 행렬을 대규모 AI/빅데이터 처리에 필수적인 **CSR(Compressed Sparse Row) 포맷**으로 압축하고, 압축된 배열만을 순회하여 행렬-벡터 곱(A * v = y)을 수행하세요.\n\n[CSR 압축 및 연산 규격]\n1. CSR 3대 배열 생성 (행 우선 순서):\n   - `values`: 0이 아닌 유효 원소 값들을 순서대로 저장한 1차원 리스트\n   - `col_indices`: values의 각 원소가 원본 행렬에서 위치했던 열 인덱스(0-indexed)\n   - `row_ptr`: 크기 R + 1 인 1차원 배열. row_ptr[i]는 i번째 행의 0이 아닌 원소들이 values에서 시작되는 인덱스를 저장. (row_ptr[0] = 0, row_ptr[R] = values의 총 원소 수)\n2. 압축률 계산:\n   - 0인 원소의 개수 / (R * C) * 100.0 (소수점 첫째 자리 %.1f%%)\n3. 행렬-벡터 곱(Matrix-Vector Multiplication):\n   - 결과 벡터 y의 크기는 R입니다.\n   - i번째 행의 계산은 `for (int k = row_ptr[i]; k < row_ptr[i + 1]; k++)` 로 values[k]와 v[col_indices[k]]를 곱하여 누적합니다. (0인 원소는 계산에 전혀 참여하지 않음!)\n\n[입력]\n첫째 줄에 R과 C가 공백으로 주어집니다.\n다음 R개 줄에 걸쳐 각 줄마다 C개의 정수가 공백으로 주어집니다. (희소 행렬 A)\n마지막 줄에 C개의 정수가 공백으로 주어집니다. (입력 벡터 v)\n\n[출력]\n=== 희소 행렬 CSR 압축 및 벡터 곱 분석표 ===\n원본 크기: {R}x{C} ({R*C}개 원소)\n유효(Non-Zero) 원소 수: {values.size()}개 (압축률: {압축률}%)\n---------------------------------\n[CSR 압축 구조]\nvalues: [{values 목록}]\ncol_indices: [{col_indices 목록}]\nrow_ptr: [{row_ptr 목록}]\n---------------------------------\n입력 벡터: [{v 목록}]\n행렬-벡터 곱 결과: [{y 목록}]\n\n※ 0이 많은 희소 행렬, 단위 행렬 등 다양한 케이스는 아래 [예제 1, 2, 3]을 참고하세요.",
+        "template": "import java.util.Scanner;\n\npublic class Solution {\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        // 여기에 CSR 압축(values, col_indices, row_ptr) 및 행렬-벡터 곱 로직을 작성하세요\n        \n    }\n}\n",
+        "solution": "import java.util.Scanner;\nimport java.util.ArrayList;\n\npublic class Solution {\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        if (!sc.hasNextInt()) return;\n        int r = sc.nextInt();\n        int c = sc.nextInt();\n\n        int[][] a = new int[r][c];\n        for (int i = 0; i < r; i++) {\n            for (int j = 0; j < c; j++) {\n                a[i][j] = sc.nextInt();\n            }\n        }\n\n        int[] v = new int[c];\n        for (int j = 0; j < c; j++) {\n            v[j] = sc.nextInt();\n        }\n\n        ArrayList<Integer> values = new ArrayList<>();\n        ArrayList<Integer> colIndices = new ArrayList<>();\n        int[] rowPtr = new int[r + 1];\n\n        rowPtr[0] = 0;\n        for (int i = 0; i < r; i++) {\n            for (int j = 0; j < c; j++) {\n                if (a[i][j] != 0) {\n                    values.add(a[i][j]);\n                    colIndices.add(j);\n                }\n            }\n            rowPtr[i + 1] = values.size();\n        }\n\n        int nnz = values.size();\n        int totalElements = r * c;\n        int zeroCount = totalElements - nnz;\n        double compressRate = (zeroCount * 100.0) / totalElements;\n\n        int[] y = new int[r];\n        for (int i = 0; i < r; i++) {\n            int sum = 0;\n            for (int k = rowPtr[i]; k < rowPtr[i + 1]; k++) {\n                int val = values.get(k);\n                int col = colIndices.get(k);\n                sum += val * v[col];\n            }\n            y[i] = sum;\n        }\n\n        System.out.println(\"=== 희소 행렬 CSR 압축 및 벡터 곱 분석표 ===\");\n        System.out.printf(\"원본 크기: %dx%d (%d개 원소)\\n\", r, c, totalElements);\n        System.out.printf(\"유효(Non-Zero) 원소 수: %d개 (압축률: %.1f%%)\\n\", nnz, compressRate);\n        System.out.println(\"---------------------------------\");\n        System.out.println(\"[CSR 압축 구조]\");\n        System.out.println(\"values: \" + values);\n        System.out.println(\"col_indices: \" + colIndices);\n        System.out.print(\"row_ptr: [\");\n        for (int i = 0; i <= r; i++) {\n            System.out.print(rowPtr[i]);\n            if (i < r) System.out.print(\", \");\n        }\n        System.out.println(\"]\");\n        System.out.println(\"---------------------------------\");\n        System.out.print(\"입력 벡터: [\");\n        for (int j = 0; j < c; j++) {\n            System.out.print(v[j]);\n            if (j < c - 1) System.out.print(\", \");\n        }\n        System.out.println(\"]\");\n        System.out.print(\"행렬-벡터 곱 결과: [\");\n        for (int i = 0; i < r; i++) {\n            System.out.print(y[i]);\n            if (i < r - 1) System.out.print(\", \");\n        }\n        System.out.println(\"]\");\n    }\n}\n",
+        "hint": "1. 0이 아닌 원소를 만날 때마다 `values.add(val);`와 `colIndices.add(j);`를 수행합니다.\n2. 각 행 i가 끝날 때마다 `rowPtr[i + 1] = values.size();`로 누적 원소 수를 기록합니다.\n3. 행렬-벡터 곱은 i번째 행에 대해 `for (int k = rowPtr[i]; k < rowPtr[i+1]; k++)` 루프를 돌며 `sum += values.get(k) * v[colIndices.get(k)];`로 O(Non-Zero) 시간에 계산합니다.",
+        "cs_knowledge": "🖥️ [CS 핵심 지식: AI/그래프 연산의 필수 자료구조 CSR(Compressed Sparse Row)]\n소셜 네트워크 친구 관계 그래프(수억 명 x 수억 명)나 추천 시스템 사용자-아이템 평점 행렬 등 실무 대규모 데이터는 99.9% 이상이 0으로 가득 찬 '희소 행렬(Sparse Matrix)'입니다.\n이를 일반 2차원 배열로 저장하면 테라바이트급 메모리가 낭비되므로, 0이 아닌 값만 세 개의 1차원 배열로 압축 보관하는 'CSR(Compressed Sparse Row)' 형식을 사용합니다.\nSciPy, PyTorch, TensorFlow 등의 AI 프레임워크는 내부적으로 이 CSR 구조를 바탕으로 0을 건너뛰는 초고속 행렬 연산을 수행합니다.",
+        "logic_guide": "📘 [단계별 로직 구성 순서 & 초보자 가이드]\n1단계: R, C 및 a[R][C] 행렬과 v[C] 벡터 입력받기\n2단계: ArrayList<Integer> values, colIndices 선언 및 int[R+1] rowPtr 선언\n3단계: 이중 루프를 돌며 a[i][j] != 0 일 때 values, colIndices 추가, 행 종료 시 rowPtr[i+1] = values.size()\n4단계: rowPtr 범위를 순회하며 i번째 행의 유효 원소들만 v[col]과 곱해 y[i] 누적\n5단계: 서식에 맞춰 원본 크기, 압축률, 3대 배열, 곱 결과 벡터 출력",
+        "testcases": [
+            {
+                "input": "4 4\n0 5 0 0\n8 0 0 0\n0 0 0 0\n0 0 3 6\n1 2 3 4",
+                "expected": "=== 희소 행렬 CSR 압축 및 벡터 곱 분석표 ===\n원본 크기: 4x4 (16개 원소)\n유효(Non-Zero) 원소 수: 4개 (압축률: 75.0%)\n---------------------------------\n[CSR 압축 구조]\nvalues: [5, 8, 3, 6]\ncol_indices: [1, 0, 2, 3]\nrow_ptr: [0, 1, 2, 2, 4]\n---------------------------------\n입력 벡터: [1, 2, 3, 4]\n행렬-벡터 곱 결과: [10, 8, 0, 33]",
+                "is_hidden": false
+            },
+            {
+                "input": "3 3\n1 0 0\n0 1 0\n0 0 1\n10 20 30",
+                "expected": "=== 희소 행렬 CSR 압축 및 벡터 곱 분석표 ===\n원본 크기: 3x3 (9개 원소)\n유효(Non-Zero) 원소 수: 3개 (압축률: 66.7%)\n---------------------------------\n[CSR 압축 구조]\nvalues: [1, 1, 1]\ncol_indices: [0, 1, 2]\nrow_ptr: [0, 1, 2, 3]\n---------------------------------\n입력 벡터: [10, 20, 30]\n행렬-벡터 곱 결과: [10, 20, 30]",
+                "is_hidden": false
+            },
+            {
+                "input": "2 3\n0 0 0\n0 0 0\n5 10 15",
+                "expected": "=== 희소 행렬 CSR 압축 및 벡터 곱 분석표 ===\n원본 크기: 2x3 (6개 원소)\n유효(Non-Zero) 원소 수: 0개 (압축률: 100.0%)\n---------------------------------\n[CSR 압축 구조]\nvalues: []\ncol_indices: []\nrow_ptr: [0, 0, 0]\n---------------------------------\n입력 벡터: [5, 10, 15]\n행렬-벡터 곱 결과: [0, 0]",
+                "is_hidden": false
+            },
+            {
+                "input": "3 3\n1 2 3\n4 5 6\n7 8 9\n1 1 1",
+                "expected": "=== 희소 행렬 CSR 압축 및 벡터 곱 분석표 ===\n원본 크기: 3x3 (9개 원소)\n유효(Non-Zero) 원소 수: 9개 (압축률: 0.0%)\n---------------------------------\n[CSR 압축 구조]\nvalues: [1, 2, 3, 4, 5, 6, 7, 8, 9]\ncol_indices: [0, 1, 2, 0, 1, 2, 0, 1, 2]\nrow_ptr: [0, 3, 6, 9]\n---------------------------------\n입력 벡터: [1, 1, 1]\n행렬-벡터 곱 결과: [6, 15, 24]",
+                "is_hidden": true
+            },
+            {
+                "input": "2 4\n7 0 0 9\n0 4 0 0\n2 3 5 7",
+                "expected": "=== 희소 행렬 CSR 압축 및 벡터 곱 분석표 ===\n원본 크기: 2x4 (8개 원소)\n유효(Non-Zero) 원소 수: 3개 (압축률: 62.5%)\n---------------------------------\n[CSR 압축 구조]\nvalues: [7, 9, 4]\ncol_indices: [0, 3, 1]\nrow_ptr: [0, 2, 3]\n---------------------------------\n입력 벡터: [2, 3, 5, 7]\n행렬-벡터 곱 결과: [77, 12]",
+                "is_hidden": true
+            },
+            {
+                "input": "4 2\n1 2\n0 0\n3 4\n0 5\n10 20",
+                "expected": "=== 희소 행렬 CSR 압축 및 벡터 곱 분석표 ===\n원본 크기: 4x2 (8개 원소)\n유효(Non-Zero) 원소 수: 5개 (압축률: 37.5%)\n---------------------------------\n[CSR 압축 구조]\nvalues: [1, 2, 3, 4, 5]\ncol_indices: [0, 1, 0, 1, 1]\nrow_ptr: [0, 2, 2, 4, 5]\n---------------------------------\n입력 벡터: [10, 20]\n행렬-벡터 곱 결과: [50, 0, 110, 100]",
+                "is_hidden": true
+            },
+            {
+                "input": "3 4\n0 0 0 1\n0 0 2 0\n0 3 0 0\n4 3 2 1",
+                "expected": "=== 희소 행렬 CSR 압축 및 벡터 곱 분석표 ===\n원본 크기: 3x4 (12개 원소)\n유효(Non-Zero) 원소 수: 3개 (압축률: 75.0%)\n---------------------------------\n[CSR 압축 구조]\nvalues: [1, 2, 3]\ncol_indices: [3, 2, 1]\nrow_ptr: [0, 1, 2, 3]\n---------------------------------\n입력 벡터: [4, 3, 2, 1]\n행렬-벡터 곱 결과: [1, 4, 9]",
+                "is_hidden": true
+            },
+            {
+                "input": "4 3\n5 0 0\n0 0 0\n0 0 7\n0 9 0\n2 4 6",
+                "expected": "=== 희소 행렬 CSR 압축 및 벡터 곱 분석표 ===\n원본 크기: 4x3 (12개 원소)\n유효(Non-Zero) 원소 수: 3개 (압축률: 75.0%)\n---------------------------------\n[CSR 압축 구조]\nvalues: [5, 7, 9]\ncol_indices: [0, 2, 1]\nrow_ptr: [0, 1, 1, 2, 3]\n---------------------------------\n입력 벡터: [2, 4, 6]\n행렬-벡터 곱 결과: [10, 0, 42, 36]",
+                "is_hidden": true
+            },
+            {
+                "input": "2 2\n0 0\n0 1\n5 10",
+                "expected": "=== 희소 행렬 CSR 압축 및 벡터 곱 분석표 ===\n원본 크기: 2x2 (4개 원소)\n유효(Non-Zero) 원소 수: 1개 (압축률: 75.0%)\n---------------------------------\n[CSR 압축 구조]\nvalues: [1]\ncol_indices: [1]\nrow_ptr: [0, 0, 1]\n---------------------------------\n입력 벡터: [5, 10]\n행렬-벡터 곱 결과: [0, 10]",
+                "is_hidden": true
+            },
+            {
+                "input": "5 5\n10 0 0 0 0\n0 0 20 0 0\n0 0 0 0 30\n0 40 0 0 0\n0 0 0 50 0\n1 2 3 4 5",
+                "expected": "=== 희소 행렬 CSR 압축 및 벡터 곱 분석표 ===\n원본 크기: 5x5 (25개 원소)\n유효(Non-Zero) 원소 수: 5개 (압축률: 80.0%)\n---------------------------------\n[CSR 압축 구조]\nvalues: [10, 20, 30, 40, 50]\ncol_indices: [0, 2, 4, 1, 3]\nrow_ptr: [0, 1, 2, 3, 4, 5]\n---------------------------------\n입력 벡터: [1, 2, 3, 4, 5]\n행렬-벡터 곱 결과: [10, 60, 150, 80, 200]",
+                "is_hidden": true
+            }
+        ],
+        "samples": [
+            {
+                "input": "4 4\n0 5 0 0\n8 0 0 0\n0 0 0 0\n0 0 3 6\n1 2 3 4",
+                "output": "=== 희소 행렬 CSR 압축 및 벡터 곱 분석표 ===\n원본 크기: 4x4 (16개 원소)\n유효(Non-Zero) 원소 수: 4개 (압축률: 75.0%)\n---------------------------------\n[CSR 압축 구조]\nvalues: [5, 8, 3, 6]\ncol_indices: [1, 0, 2, 3]\nrow_ptr: [0, 1, 2, 2, 4]\n---------------------------------\n입력 벡터: [1, 2, 3, 4]\n행렬-벡터 곱 결과: [10, 8, 0, 33]"
+            },
+            {
+                "input": "3 3\n1 0 0\n0 1 0\n0 0 1\n10 20 30",
+                "output": "=== 희소 행렬 CSR 압축 및 벡터 곱 분석표 ===\n원본 크기: 3x3 (9개 원소)\n유효(Non-Zero) 원소 수: 3개 (압축률: 66.7%)\n---------------------------------\n[CSR 압축 구조]\nvalues: [1, 1, 1]\ncol_indices: [0, 1, 2]\nrow_ptr: [0, 1, 2, 3]\n---------------------------------\n입력 벡터: [10, 20, 30]\n행렬-벡터 곱 결과: [10, 20, 30]"
+            },
+            {
+                "input": "2 3\n0 0 0\n0 0 0\n5 10 15",
+                "output": "=== 희소 행렬 CSR 압축 및 벡터 곱 분석표 ===\n원본 크기: 2x3 (6개 원소)\n유효(Non-Zero) 원소 수: 0개 (압축률: 100.0%)\n---------------------------------\n[CSR 압축 구조]\nvalues: []\ncol_indices: []\nrow_ptr: [0, 0, 0]\n---------------------------------\n입력 벡터: [5, 10, 15]\n행렬-벡터 곱 결과: [0, 0]"
+            }
+        ],
+        "sample_input": "4 4\n0 5 0 0\n8 0 0 0\n0 0 0 0\n0 0 3 6\n1 2 3 4",
+        "sample_output": "=== 희소 행렬 CSR 압축 및 벡터 곱 분석표 ===\n원본 크기: 4x4 (16개 원소)\n유효(Non-Zero) 원소 수: 4개 (압축률: 75.0%)\n---------------------------------\n[CSR 압축 구조]\nvalues: [5, 8, 3, 6]\ncol_indices: [1, 0, 2, 3]\nrow_ptr: [0, 1, 2, 2, 4]\n---------------------------------\n입력 벡터: [1, 2, 3, 4]\n행렬-벡터 곱 결과: [10, 8, 0, 33]",
+        "expected": "=== 희소 행렬 CSR 압축 및 벡터 곱 분석표 ===\n원본 크기: 4x4 (16개 원소)\n유효(Non-Zero) 원소 수: 4개 (압축률: 75.0%)\n---------------------------------\n[CSR 압축 구조]\nvalues: [5, 8, 3, 6]\ncol_indices: [1, 0, 2, 3]\nrow_ptr: [0, 1, 2, 2, 4]\n---------------------------------\n입력 벡터: [1, 2, 3, 4]\n행렬-벡터 곱 결과: [10, 8, 0, 33]"
     },
     {
         "id": "day04_하1",
@@ -2336,3 +3076,7 @@ const PROBLEMS = [
         "hint": "1. `new Proxy(target, { set(target, prop, val) { ... } })`는 객체의 속성 할당 연산을 가로챕니다(Intercept).\n2. 속성 변경 감지 즉시 `listeners.forEach(fn => fn(target))`를 실행함으로써 현대 프론트엔드 프레임워크의 반응성(Reactivity)을 구현할 수 있습니다."
     }
 ];
+
+if (typeof module !== 'undefined' && module.exports) {
+    module.exports = PROBLEMS;
+}
