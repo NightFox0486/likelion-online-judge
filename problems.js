@@ -1,6 +1,5 @@
-// 멋쟁이사자처럼 9기 전체 16일차 실습 문제 데이터셋 (3시간 맞춤형 94제)
-// 각 일차별 상/중/하/도전 난이도 필수 포함 및 초보자 힌트 탑재
-// 1일차 6제 / 2일차 10제 / 3일차 10제 고도화 완료 (CS 핵심 지식 및 로직 가이드, 3개 예제 탑재)
+// 멋쟁이사자처럼 9기 전체 16일차 실습 문제 데이터셋
+// 각 일차별 상/중/하 난이도 필수 포함 및 초보자 힌트 탑재
 
 const PROBLEMS = [
     {
@@ -1386,6 +1385,89 @@ const PROBLEMS = [
         "expected": "=== 배열 기초 통계 분석표 ===\n원소 개수: 5개\n합계: 257\n평균: 51.40\n최댓값: 90\n최솟값: 12\n최대 편차 원소: 12 (편차: 39.40)"
     },
     {
+        "id": "day03_하1_심화",
+        "day": 3,
+        "subject": "Java",
+        "difficulty": "하",
+        "tab_label": "[하] 1번 - 심화",
+        "title": "정수 배열 기초 통계 분석 및 이상치(Outlier) 탐색기 [Stream 심화] (ArrayStatisticsStream)",
+        "desc": "정수 N(3 <= N <= 30)과 N개의 정수를 입력받아 1차원 정수 배열(int[])에 저장한 후, 자바 8+ 모던 스트림 문법인 `Arrays.stream()`을 활용하여 기초 통계(합계, 평균, 최댓값, 최솟값)와 이상치(Outlier)를 계산하세요.\n\n[요구 분석 항목]\n1. 원소 개수: N개\n2. 합계: `Arrays.stream(arr).sum()` 활용\n3. 평균: `Arrays.stream(arr).average().orElse(0.0)` 활용 (소수점 둘째 자리 %.2f)\n4. 최댓값: `Arrays.stream(arr).max().getAsInt()` 활용\n5. 최솟값: `Arrays.stream(arr).min().getAsInt()` 활용\n6. 최대 편차 원소: 평균과의 절대 편차(|arr[i] - 평균|)가 가장 큰 원소의 값과 편차 (절대 편차 동률 시 배열 앞쪽 원소 우선, 편차는 소수점 둘째 자리 %.2f)\n\n[입력]\n첫째 줄에 정수의 개수 N이 주어집니다.\n둘째 줄에 N개의 정수가 공백으로 주어집니다. (음수, 0, 양수 가능)\n\n[출력]\n=== 배열 기초 통계 분석표 ===\n원소 개수: {N}개\n합계: {sum}\n평균: {avg}\n최댓값: {max}\n최솟값: {min}\n최대 편차 원소: {outlierVal} (편차: {maxDev})\n\n※ 다양한 데이터(음수 포함, 동일값, 극단값 등)에 대한 입출력은 아래 [예제 1, 2, 3]을 참고하세요.",
+        "template": "import java.util.Scanner;\nimport java.util.Arrays;\n\npublic class Solution {\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        // 여기에 코드를 작성하세요 (Arrays.stream()을 활용하세요)\n        \n    }\n}\n",
+        "solution": "import java.util.Scanner;\nimport java.util.Arrays;\n\npublic class Solution {\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        if (!sc.hasNextInt()) return;\n        int n = sc.nextInt();\n        int[] arr = new int[n];\n\n        for (int i = 0; i < n; i++) {\n            arr[i] = sc.nextInt();\n        }\n\n        long sum = Arrays.stream(arr).asLongStream().sum();\n        double avg = Arrays.stream(arr).average().orElse(0.0);\n        int max = Arrays.stream(arr).max().getAsInt();\n        int min = Arrays.stream(arr).min().getAsInt();\n\n        int outlierVal = arr[0];\n        double maxDev = Math.abs(arr[0] - avg);\n        for (int i = 1; i < n; i++) {\n            double dev = Math.abs(arr[i] - avg);\n            if (dev > maxDev + 1e-9) {\n                maxDev = dev;\n                outlierVal = arr[i];\n            }\n        }\n\n        System.out.println(\"=== 배열 기초 통계 분석표 ===\");\n        System.out.printf(\"원소 개수: %d개\\n\", n);\n        System.out.printf(\"합계: %d\\n\", sum);\n        System.out.printf(\"평균: %.2f\\n\", avg);\n        System.out.printf(\"최댓값: %d\\n\", max);\n        System.out.printf(\"최솟값: %d\\n\", min);\n        System.out.printf(\"최대 편차 원소: %d (편차: %.2f)\\n\", outlierVal, maxDev);\n    }\n}\n",
+        "sample_input": "5\n12 85 43 90 27",
+        "sample_output": "=== 배열 기초 통계 분석표 ===\n원소 개수: 5개\n합계: 257\n평균: 51.40\n최댓값: 90\n최솟값: 12\n최대 편차 원소: 12 (편차: 39.40)",
+        "expected": "=== 배열 기초 통계 분석표 ===\n원소 개수: 5개\n합계: 257\n평균: 51.40\n최댓값: 90\n최솟값: 12\n최대 편차 원소: 12 (편차: 39.40)",
+        "samples": [
+            {
+                "input": "5\n12 85 43 90 27",
+                "output": "=== 배열 기초 통계 분석표 ===\n원소 개수: 5개\n합계: 257\n평균: 51.40\n최댓값: 90\n최솟값: 12\n최대 편차 원소: 12 (편차: 39.40)"
+            },
+            {
+                "input": "4\n10 10 10 10",
+                "output": "=== 배열 기초 통계 분석표 ===\n원소 개수: 4개\n합계: 40\n평균: 10.00\n최댓값: 10\n최솟값: 10\n최대 편차 원소: 10 (편차: 0.00)"
+            },
+            {
+                "input": "6\n-10 -5 0 5 10 100",
+                "output": "=== 배열 기초 통계 분석표 ===\n원소 개수: 6개\n합계: 100\n평균: 16.67\n최댓값: 100\n최솟값: -10\n최대 편차 원소: 100 (편차: 83.33)"
+            }
+        ],
+        "testcases": [
+            {
+                "input": "5\n12 85 43 90 27",
+                "expected": "=== 배열 기초 통계 분석표 ===\n원소 개수: 5개\n합계: 257\n평균: 51.40\n최댓값: 90\n최솟값: 12\n최대 편차 원소: 12 (편차: 39.40)",
+                "is_hidden": false
+            },
+            {
+                "input": "4\n10 10 10 10",
+                "expected": "=== 배열 기초 통계 분석표 ===\n원소 개수: 4개\n합계: 40\n평균: 10.00\n최댓값: 10\n최솟값: 10\n최대 편차 원소: 10 (편차: 0.00)",
+                "is_hidden": false
+            },
+            {
+                "input": "6\n-10 -5 0 5 10 100",
+                "expected": "=== 배열 기초 통계 분석표 ===\n원소 개수: 6개\n합계: 100\n평균: 16.67\n최댓값: 100\n최솟값: -10\n최대 편차 원소: 100 (편차: 83.33)",
+                "is_hidden": false
+            },
+            {
+                "input": "3\n1 2 3",
+                "expected": "=== 배열 기초 통계 분석표 ===\n원소 개수: 3개\n합계: 6\n평균: 2.00\n최댓값: 3\n최솟값: 1\n최대 편차 원소: 1 (편차: 1.00)",
+                "is_hidden": true
+            },
+            {
+                "input": "5\n-50 -20 -30 -10 -40",
+                "expected": "=== 배열 기초 통계 분석표 ===\n원소 개수: 5개\n합계: -150\n평균: -30.00\n최댓값: -10\n최솟값: -50\n최대 편차 원소: -50 (편차: 20.00)",
+                "is_hidden": true
+            },
+            {
+                "input": "4\n10 30 10 30",
+                "expected": "=== 배열 기초 통계 분석표 ===\n원소 개수: 4개\n합계: 80\n평균: 20.00\n최댓값: 30\n최솟값: 10\n최대 편차 원소: 10 (편차: 10.00)",
+                "is_hidden": true
+            },
+            {
+                "input": "5\n100000 200000 300000 400000 500000",
+                "expected": "=== 배열 기초 통계 분석표 ===\n원소 개수: 5개\n합계: 1500000\n평균: 300000.00\n최댓값: 500000\n최솟값: 100000\n최대 편차 원소: 100000 (편차: 200000.00)",
+                "is_hidden": true
+            },
+            {
+                "input": "5\n-1000 0 10 20 30",
+                "expected": "=== 배열 기초 통계 분석표 ===\n원소 개수: 5개\n합계: -940\n평균: -188.00\n최댓값: 30\n최솟값: -1000\n최대 편차 원소: -1000 (편차: 812.00)",
+                "is_hidden": true
+            },
+            {
+                "input": "10\n15 22 8 45 67 3 99 12 54 33",
+                "expected": "=== 배열 기초 통계 분석표 ===\n원소 개수: 10개\n합계: 358\n평균: 35.80\n최댓값: 99\n최솟값: 3\n최대 편차 원소: 99 (편차: 63.20)",
+                "is_hidden": true
+            },
+            {
+                "input": "7\n0 0 0 0 0 0 100",
+                "expected": "=== 배열 기초 통계 분석표 ===\n원소 개수: 7개\n합계: 100\n평균: 14.29\n최댓값: 100\n최솟값: 0\n최대 편차 원소: 100 (편차: 85.71)",
+                "is_hidden": true
+            }
+        ],
+        "hint": "1. `import java.util.Arrays;`를 선언합니다.\n2. `Arrays.stream(arr).sum()`으로 배열의 총합을 루프 없이 단 한 줄로 구합니다.\n3. `Arrays.stream(arr).max().getAsInt()`와 `Arrays.stream(arr).min().getAsInt()`로 최댓값/최솟값을 추출합니다.\n4. `Arrays.stream(arr).average().orElse(0.0)`으로 평균값을 안전하게 double로 획득합니다.",
+        "cs_knowledge": "🖥️ [CS 핵심 지식: 함수형 프로그래밍(Functional Programming)과 Stream API]\n자바 8에 도입된 Stream API는 선언형(Declarative) 스타일로 데이터를 다루는 함수형 프로그래밍 패러다임을 지원합니다.\n- 외부 반복(명시적 for 루프) 대신 내부 반복(Internal Iteration)을 수행하여 가독성과 유지보수성을 극대화합니다.\n- `OptionalInt`, `OptionalDouble` 컨테이너 객체를 반환하여 NullPointerException을 원천 방지합니다.\n- 멀티코어 환경에서 `parallelStream()`을 호출하기만 하면 복잡한 스레드 동기화 코드 없이도 병렬 데이터 처리가 가능합니다.",
+        "logic_guide": "📘 [단계별 로직 구성 순서 & 초보자 가이드]\n1단계: Scanner로 N 및 배열 arr 입력\n2단계: Arrays.stream(arr)을 활용한 통계 집계\n   long sum = Arrays.stream(arr).asLongStream().sum();\n   double avg = Arrays.stream(arr).average().orElse(0.0);\n   int max = Arrays.stream(arr).max().getAsInt();\n   int min = Arrays.stream(arr).min().getAsInt();\n\n3단계: 평균(avg)과의 최대 절대 편차(Math.abs) 원소 탐색\n4단계: 규격에 맞춰 통계 분석표 출력"
+    },
+    {
         "id": "day03_하2",
         "day": 3,
         "subject": "Java",
@@ -1548,6 +1630,89 @@ const PROBLEMS = [
         "sample_input": "5\n70 85 60 95 80\n75",
         "sample_output": "=== 점수 역순 조회 및 합격 판정 ===\n역순 점수: 80 95 60 85 70\n기준 점수: 75점 이상\n합격자 수: 3명 (총 5명 중)\n최종 합격률: 60.0%",
         "expected": "=== 점수 역순 조회 및 합격 판정 ===\n역순 점수: 80 95 60 85 70\n기준 점수: 75점 이상\n합격자 수: 3명 (총 5명 중)\n최종 합격률: 60.0%"
+    },
+    {
+        "id": "day03_하3_심화",
+        "day": 3,
+        "subject": "Java",
+        "difficulty": "하",
+        "tab_label": "[하] 3번 - 심화",
+        "title": "학생 점수 역순 조회 및 커트라인 합격 필터링 [스택 심화] (ReverseScoreFilterStack)",
+        "desc": "학생 수 N(1 <= N <= 30)과 N명의 시험 점수(0~100 정수), 그리고 합격 기준 커트라인 점수 C를 입력받아 표준 자바 자료구조인 스택(Stack<Integer>)을 활용하여 역순으로 조회하고 합격 여부를 판정하세요.\n\n[요구 분석 항목]\n1. N개의 점수를 순서대로 입력받아 Stack<Integer>에 push() 메서드로 순차적으로 저장하세요.\n2. 스택이 빌 때까지(!stack.isEmpty()) pop() 메서드로 가장 최근에 들어간 점수부터 하나씩 꺼내어 역순으로 공백으로 구분하여 한 줄에 출력하세요.\n3. 커트라인 점수 C 이상을 득점한 합격자 수를 계산하세요.\n4. 전체 학생 대비 최종 합격률을 소수점 첫째 자리까지(%.1f%%) 계산하여 출력하세요. (합격자가 0명이면 0.0%)\n\n[입력]\n첫째 줄에 학생 수 N이 주어집니다.\n둘째 줄에 N개의 점수가 공백으로 주어집니다.\n셋째 줄에 기준 점수 C가 주어집니다.\n\n[출력]\n=== 점수 역순 조회 및 합격 판정 ===\n역순 점수: {스택에서 pop한 역순 점수들}\n기준 점수: {C}점 이상\n합격자 수: {passCount}명 (총 {N}명 중)\n최종 합격률: {passRate}%\n\n※ 전원 합격, 전원 탈락, 1명 입력 등 다양한 케이스는 아래 [예제 1, 2, 3]을 참고하세요.",
+        "template": "import java.util.Scanner;\nimport java.util.Stack;\n\npublic class Solution {\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        // 여기에 코드를 작성하세요 (Stack<Integer>을 활용하세요)\n        \n    }\n}\n",
+        "solution": "import java.util.Scanner;\nimport java.util.Stack;\n\npublic class Solution {\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        if (!sc.hasNextInt()) return;\n        int n = sc.nextInt();\n        Stack<Integer> stack = new Stack<>();\n\n        for (int i = 0; i < n; i++) {\n            stack.push(sc.nextInt());\n        }\n        int cutoff = sc.nextInt();\n\n        int passCount = 0;\n        System.out.println(\"=== 점수 역순 조회 및 합격 판정 ===\");\n        System.out.print(\"역순 점수: \");\n        while (!stack.isEmpty()) {\n            int score = stack.pop();\n            System.out.print(score);\n            if (!stack.isEmpty()) System.out.print(\" \");\n            if (score >= cutoff) {\n                passCount++;\n            }\n        }\n        System.out.println();\n\n        double passRate = (passCount * 100.0) / n;\n        System.out.printf(\"기준 점수: %d점 이상\\n\", cutoff);\n        System.out.printf(\"합격자 수: %d명 (총 %d명 중)\\n\", passCount, n);\n        System.out.printf(\"최종 합격률: %.1f%%\\n\", passRate);\n    }\n}\n",
+        "sample_input": "5\n70 85 60 95 80\n75",
+        "sample_output": "=== 점수 역순 조회 및 합격 판정 ===\n역순 점수: 80 95 60 85 70\n기준 점수: 75점 이상\n합격자 수: 3명 (총 5명 중)\n최종 합격률: 60.0%",
+        "expected": "=== 점수 역순 조회 및 합격 판정 ===\n역순 점수: 80 95 60 85 70\n기준 점수: 75점 이상\n합격자 수: 3명 (총 5명 중)\n최종 합격률: 60.0%",
+        "samples": [
+            {
+                "input": "5\n70 85 60 95 80\n75",
+                "output": "=== 점수 역순 조회 및 합격 판정 ===\n역순 점수: 80 95 60 85 70\n기준 점수: 75점 이상\n합격자 수: 3명 (총 5명 중)\n최종 합격률: 60.0%"
+            },
+            {
+                "input": "4\n50 55 58 59\n60",
+                "output": "=== 점수 역순 조회 및 합격 판정 ===\n역순 점수: 59 58 55 50\n기준 점수: 60점 이상\n합격자 수: 0명 (총 4명 중)\n최종 합격률: 0.0%"
+            },
+            {
+                "input": "3\n100 100 100\n90",
+                "output": "=== 점수 역순 조회 및 합격 판정 ===\n역순 점수: 100 100 100\n기준 점수: 90점 이상\n합격자 수: 3명 (총 3명 중)\n최종 합격률: 100.0%"
+            }
+        ],
+        "testcases": [
+            {
+                "input": "5\n70 85 60 95 80\n75",
+                "expected": "=== 점수 역순 조회 및 합격 판정 ===\n역순 점수: 80 95 60 85 70\n기준 점수: 75점 이상\n합격자 수: 3명 (총 5명 중)\n최종 합격률: 60.0%",
+                "is_hidden": false
+            },
+            {
+                "input": "4\n50 55 58 59\n60",
+                "expected": "=== 점수 역순 조회 및 합격 판정 ===\n역순 점수: 59 58 55 50\n기준 점수: 60점 이상\n합격자 수: 0명 (총 4명 중)\n최종 합격률: 0.0%",
+                "is_hidden": false
+            },
+            {
+                "input": "3\n100 100 100\n90",
+                "expected": "=== 점수 역순 조회 및 합격 판정 ===\n역순 점수: 100 100 100\n기준 점수: 90점 이상\n합격자 수: 3명 (총 3명 중)\n최종 합격률: 100.0%",
+                "is_hidden": false
+            },
+            {
+                "input": "1\n88\n80",
+                "expected": "=== 점수 역순 조회 및 합격 판정 ===\n역순 점수: 88\n기준 점수: 80점 이상\n합격자 수: 1명 (총 1명 중)\n최종 합격률: 100.0%",
+                "is_hidden": true
+            },
+            {
+                "input": "1\n50\n70",
+                "expected": "=== 점수 역순 조회 및 합격 판정 ===\n역순 점수: 50\n기준 점수: 70점 이상\n합격자 수: 0명 (총 1명 중)\n최종 합격률: 0.0%",
+                "is_hidden": true
+            },
+            {
+                "input": "6\n90 80 70 60 50 40\n70",
+                "expected": "=== 점수 역순 조회 및 합격 판정 ===\n역순 점수: 40 50 60 70 80 90\n기준 점수: 70점 이상\n합격자 수: 3명 (총 6명 중)\n최종 합격률: 50.0%",
+                "is_hidden": true
+            },
+            {
+                "input": "5\n0 0 0 0 0\n0",
+                "expected": "=== 점수 역순 조회 및 합격 판정 ===\n역순 점수: 0 0 0 0 0\n기준 점수: 0점 이상\n합격자 수: 5명 (총 5명 중)\n최종 합격률: 100.0%",
+                "is_hidden": true
+            },
+            {
+                "input": "5\n0 0 0 0 0\n1",
+                "expected": "=== 점수 역순 조회 및 합격 판정 ===\n역순 점수: 0 0 0 0 0\n기준 점수: 1점 이상\n합격자 수: 0명 (총 5명 중)\n최종 합격률: 0.0%",
+                "is_hidden": true
+            },
+            {
+                "input": "8\n75 75 75 75 75 75 75 75\n75",
+                "expected": "=== 점수 역순 조회 및 합격 판정 ===\n역순 점수: 75 75 75 75 75 75 75 75\n기준 점수: 75점 이상\n합격자 수: 8명 (총 8명 중)\n최종 합격률: 100.0%",
+                "is_hidden": true
+            },
+            {
+                "input": "7\n45 92 63 88 51 77 100\n65",
+                "expected": "=== 점수 역순 조회 및 합격 판정 ===\n역순 점수: 100 77 51 88 63 92 45\n기준 점수: 65점 이상\n합격자 수: 4명 (총 7명 중)\n최종 합격률: 57.1%",
+                "is_hidden": true
+            }
+        ],
+        "hint": "1. java.util.Stack 클래스를 import하고 `Stack<Integer> stack = new Stack<>();`을 선언합니다.\n2. 입력값을 `stack.push(sc.nextInt());`로 스택에 하나씩 삽입합니다.\n3. `while (!stack.isEmpty())` 루프로 `int score = stack.pop();`을 수행하면 마지막에 들어간 데이터부터 역순으로 꺼내어집니다.\n4. 꺼낸 점수가 cutoff 이상일 때 passCount를 증가시키고, `(passCount * 100.0) / n`으로 합격률을 계산합니다.",
+        "cs_knowledge": "🖥️ [CS 핵심 지식: LIFO(Last-In, First-Out) 스택 자료구조와 JVM 호출 스택(Call Stack)]\n스택(Stack)은 '가장 나중에 들어간 데이터가 가장 먼저 나오는' LIFO(후입선출) 원칙을 따르는 대표적인 선형 자료구조입니다.\n- push(item): 데이터를 스택의 맨 위(Top)에 삽입합니다. (시간 복잡도 O(1))\n- pop(): 스택 맨 위(Top)의 데이터를 꺼내어 반환하고 제거합니다. (시간 복잡도 O(1))\n- peek(): 데이터를 제거하지 않고 맨 위의 데이터만 확인합니다. (시간 복잡도 O(1))\n- isEmpty(): 스택이 비어있는지 판별합니다.\n컴퓨터 아키텍처와 JVM에서는 메서드 호출 시 로컬 변수와 복귀 주소를 저장하는 '호출 스택(Call Stack)' 영역으로 이를 구현하며, 웹 브라우저의 '뒤로 가기', 텍스트 편집기의 '실행 취소(Ctrl+Z)' 기능도 스택의 LIFO 원리로 구현됩니다.",
+        "logic_guide": "📘 [단계별 로직 구성 순서 & 초보자 가이드]\n1단계: Stack<Integer> 선언 및 데이터 푸시(push)\n   Stack<Integer> stack = new Stack<>();\n   for (int i = 0; i < n; i++) stack.push(sc.nextInt());\n\n2단계: 커트라인 점수 cutoff 입력받기\n   int cutoff = sc.nextInt();\n\n3단계: while (!stack.isEmpty()) 루프로 팝(pop)하며 역순 출력\n   int score = stack.pop();\n   System.out.print(score);\n   if (score >= cutoff) passCount++;\n\n4단계: 합격자 비율 산출 및 결과 출력\n   double passRate = (passCount * 100.0) / n;\n   System.out.printf(\"기준 점수: %d점 이상\\n\", cutoff);\n   System.out.printf(\"합격자 수: %d명 (총 %d명 중)\\n\", passCount, n);\n   System.out.printf(\"최종 합격률: %.1f%%\\n\", passRate);"
     },
     {
         "id": "day03_중1",
@@ -1796,6 +1961,89 @@ const PROBLEMS = [
         "expected": "=== 링 버퍼(Ring Buffer) 시뮬레이션 ===\n[ENQ] 패킷 101 수신 (버퍼: 1/3)\n[ENQ] 패킷 102 수신 (버퍼: 2/3)\n[PROCESS] 패킷 101 처리 완료 (버퍼: 1/3)\n[ENQ] 패킷 103 수신 (버퍼: 2/3)\n[ENQ] 패킷 104 수신 (버퍼: 3/3)\n[DROP] 버퍼 풀: 패킷 105 유실\n---------------------------------\n최종 잔여 패킷 (3개): [102, 103, 104]"
     },
     {
+        "id": "day03_중3_심화",
+        "day": 3,
+        "subject": "Java",
+        "difficulty": "중",
+        "tab_label": "[중] 3번 - 심화",
+        "title": "원형 큐(Circular Queue) 패킷 큐 시뮬레이터 [Queue 심화] (RingBufferSimulatorQueue)",
+        "desc": "고정된 크기 K(2 <= K <= 10)의 용량을 가진 선입선출(FIFO) 패킷 큐를 자바 표준 컬렉션 인터페이스인 `Queue<Integer>`(LinkedList 구현체)를 활용하여 시뮬레이션하세요.\n총 M(1 <= M <= 30)개의 명령어가 순서대로 주어지며, 다음 규칙에 따라 처리합니다:\n\n[명령어 규격]\n1. ENQ <id>: 패킷 ID(양의 정수)를 큐에 추가합니다.\n   - 큐에 빈 공간이 있는 경우(queue.size() < K): `queue.offer(id)`로 패킷을 큐에 삽입하고 `[ENQ] 패킷 {id} 수신 (버퍼: {size}/{K})`를 출력합니다.\n   - 버퍼가 가득 찬 경우(queue.size() == K): 패킷을 큐에 넣지 못하고 `[DROP] 버퍼 풀: 패킷 {id} 유실`을 출력합니다.\n2. DEQ: 큐에서 가장 먼저 들어온 패킷을 꺼내 처리합니다.\n   - 큐에 패킷이 있는 경우(!queue.isEmpty()): `int processedId = queue.poll()`로 꺼내고 `[PROCESS] 패킷 {processedId} 처리 완료 (버퍼: {size}/{K})`를 출력합니다.\n   - 큐가 비어있는 경우(queue.isEmpty()): `[EMPTY] 버퍼 언더플로우: 처리할 패킷 없음`을 출력합니다.\n\n[입력]\n첫째 줄에 버퍼 크기 K가 주어집니다.\n둘째 줄에 명령어 개수 M이 주어집니다.\n다음 M개 줄에 걸쳐 명령어가 한 줄에 하나씩 주어집니다. (예: `ENQ 101` 또는 `DEQ`)\n\n[출력]\n=== 링 버퍼(Ring Buffer) 시뮬레이션 ===\n(명령어 처리 로그)\n---------------------------------\n최종 잔여 패킷 ({count}개): [{FIFO 순서로 나열된 패킷 ID 목록}]\n(잔여 패킷이 없으면 '최종 잔여 패킷 (0개): []' 출력)\n\n※ 오버플로우(DROP), 언더플로우(EMPTY), FIFO 순서 유지 등 다양한 시나리오는 아래 [예제 1, 2, 3]을 참고하세요.",
+        "template": "import java.util.Scanner;\nimport java.util.Queue;\nimport java.util.LinkedList;\n\npublic class Solution {\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        // 여기에 코드를 작성하세요 (Queue<Integer> queue = new LinkedList<>()를 활용하세요)\n        \n    }\n}\n",
+        "solution": "import java.util.Scanner;\nimport java.util.Queue;\nimport java.util.LinkedList;\n\npublic class Solution {\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        if (!sc.hasNextInt()) return;\n        int k = sc.nextInt();\n        int m = sc.nextInt();\n\n        Queue<Integer> queue = new LinkedList<>();\n\n        System.out.println(\"=== 링 버퍼(Ring Buffer) 시뮬레이션 ===\");\n\n        for (int step = 0; step < m; step++) {\n            String cmd = sc.next();\n            if (cmd.equals(\"ENQ\")) {\n                int id = sc.nextInt();\n                if (queue.size() == k) {\n                    System.out.printf(\"[DROP] 버퍼 풀: 패킷 %d 유실\\n\", id);\n                } else {\n                    queue.offer(id);\n                    System.out.printf(\"[ENQ] 패킷 %d 수신 (버퍼: %d/%d)\\n\", id, queue.size(), k);\n                }\n            } else if (cmd.equals(\"DEQ\")) {\n                if (queue.isEmpty()) {\n                    System.out.println(\"[EMPTY] 버퍼 언더플로우: 처리할 패킷 없음\");\n                } else {\n                    int processedId = queue.poll();\n                    System.out.printf(\"[PROCESS] 패킷 %d 처리 완료 (버퍼: %d/%d)\\n\", processedId, queue.size(), k);\n                }\n            }\n        }\n\n        System.out.println(\"---------------------------------\");\n        StringBuilder sb = new StringBuilder();\n        int count = queue.size();\n        int i = 0;\n        for (int id : queue) {\n            sb.append(id);\n            if (i < count - 1) sb.append(\", \");\n            i++;\n        }\n        System.out.printf(\"최종 잔여 패킷 (%d개): [%s]\\n\", count, sb.toString());\n    }\n}\n",
+        "sample_input": "3\n6\nENQ 101\nENQ 102\nDEQ\nENQ 103\nENQ 104\nENQ 105",
+        "sample_output": "=== 링 버퍼(Ring Buffer) 시뮬레이션 ===\n[ENQ] 패킷 101 수신 (버퍼: 1/3)\n[ENQ] 패킷 102 수신 (버퍼: 2/3)\n[PROCESS] 패킷 101 처리 완료 (버퍼: 1/3)\n[ENQ] 패킷 103 수신 (버퍼: 2/3)\n[ENQ] 패킷 104 수신 (버퍼: 3/3)\n[DROP] 버퍼 풀: 패킷 105 유실\n---------------------------------\n최종 잔여 패킷 (3개): [102, 103, 104]",
+        "expected": "=== 링 버퍼(Ring Buffer) 시뮬레이션 ===\n[ENQ] 패킷 101 수신 (버퍼: 1/3)\n[ENQ] 패킷 102 수신 (버퍼: 2/3)\n[PROCESS] 패킷 101 처리 완료 (버퍼: 1/3)\n[ENQ] 패킷 103 수신 (버퍼: 2/3)\n[ENQ] 패킷 104 수신 (버퍼: 3/3)\n[DROP] 버퍼 풀: 패킷 105 유실\n---------------------------------\n최종 잔여 패킷 (3개): [102, 103, 104]",
+        "samples": [
+            {
+                "input": "3\n6\nENQ 101\nENQ 102\nDEQ\nENQ 103\nENQ 104\nENQ 105",
+                "output": "=== 링 버퍼(Ring Buffer) 시뮬레이션 ===\n[ENQ] 패킷 101 수신 (버퍼: 1/3)\n[ENQ] 패킷 102 수신 (버퍼: 2/3)\n[PROCESS] 패킷 101 처리 완료 (버퍼: 1/3)\n[ENQ] 패킷 103 수신 (버퍼: 2/3)\n[ENQ] 패킷 104 수신 (버퍼: 3/3)\n[DROP] 버퍼 풀: 패킷 105 유실\n---------------------------------\n최종 잔여 패킷 (3개): [102, 103, 104]"
+            },
+            {
+                "input": "2\n4\nDEQ\nENQ 501\nDEQ\nDEQ",
+                "output": "=== 링 버퍼(Ring Buffer) 시뮬레이션 ===\n[EMPTY] 버퍼 언더플로우: 처리할 패킷 없음\n[ENQ] 패킷 501 수신 (버퍼: 1/2)\n[PROCESS] 패킷 501 처리 완료 (버퍼: 0/2)\n[EMPTY] 버퍼 언더플로우: 처리할 패킷 없음\n---------------------------------\n최종 잔여 패킷 (0개): []"
+            },
+            {
+                "input": "4\n6\nENQ 1\nENQ 2\nENQ 3\nENQ 4\nDEQ\nDEQ",
+                "output": "=== 링 버퍼(Ring Buffer) 시뮬레이션 ===\n[ENQ] 패킷 1 수신 (버퍼: 1/4)\n[ENQ] 패킷 2 수신 (버퍼: 2/4)\n[ENQ] 패킷 3 수신 (버퍼: 3/4)\n[ENQ] 패킷 4 수신 (버퍼: 4/4)\n[PROCESS] 패킷 1 처리 완료 (버퍼: 3/4)\n[PROCESS] 패킷 2 처리 완료 (버퍼: 2/4)\n---------------------------------\n최종 잔여 패킷 (2개): [3, 4]"
+            }
+        ],
+        "testcases": [
+            {
+                "input": "3\n6\nENQ 101\nENQ 102\nDEQ\nENQ 103\nENQ 104\nENQ 105",
+                "expected": "=== 링 버퍼(Ring Buffer) 시뮬레이션 ===\n[ENQ] 패킷 101 수신 (버퍼: 1/3)\n[ENQ] 패킷 102 수신 (버퍼: 2/3)\n[PROCESS] 패킷 101 처리 완료 (버퍼: 1/3)\n[ENQ] 패킷 103 수신 (버퍼: 2/3)\n[ENQ] 패킷 104 수신 (버퍼: 3/3)\n[DROP] 버퍼 풀: 패킷 105 유실\n---------------------------------\n최종 잔여 패킷 (3개): [102, 103, 104]",
+                "is_hidden": false
+            },
+            {
+                "input": "2\n4\nDEQ\nENQ 501\nDEQ\nDEQ",
+                "expected": "=== 링 버퍼(Ring Buffer) 시뮬레이션 ===\n[EMPTY] 버퍼 언더플로우: 처리할 패킷 없음\n[ENQ] 패킷 501 수신 (버퍼: 1/2)\n[PROCESS] 패킷 501 처리 완료 (버퍼: 0/2)\n[EMPTY] 버퍼 언더플로우: 처리할 패킷 없음\n---------------------------------\n최종 잔여 패킷 (0개): []",
+                "is_hidden": false
+            },
+            {
+                "input": "4\n6\nENQ 1\nENQ 2\nENQ 3\nENQ 4\nDEQ\nDEQ",
+                "expected": "=== 링 버퍼(Ring Buffer) 시뮬레이션 ===\n[ENQ] 패킷 1 수신 (버퍼: 1/4)\n[ENQ] 패킷 2 수신 (버퍼: 2/4)\n[ENQ] 패킷 3 수신 (버퍼: 3/4)\n[ENQ] 패킷 4 수신 (버퍼: 4/4)\n[PROCESS] 패킷 1 처리 완료 (버퍼: 3/4)\n[PROCESS] 패킷 2 처리 완료 (버퍼: 2/4)\n---------------------------------\n최종 잔여 패킷 (2개): [3, 4]",
+                "is_hidden": false
+            },
+            {
+                "input": "2\n6\nENQ 10\nENQ 20\nENQ 30\nDEQ\nENQ 40\nDEQ",
+                "expected": "=== 링 버퍼(Ring Buffer) 시뮬레이션 ===\n[ENQ] 패킷 10 수신 (버퍼: 1/2)\n[ENQ] 패킷 20 수신 (버퍼: 2/2)\n[DROP] 버퍼 풀: 패킷 30 유실\n[PROCESS] 패킷 10 처리 완료 (버퍼: 1/2)\n[ENQ] 패킷 40 수신 (버퍼: 2/2)\n[PROCESS] 패킷 20 처리 완료 (버퍼: 1/2)\n---------------------------------\n최종 잔여 패킷 (1개): [40]",
+                "is_hidden": true
+            },
+            {
+                "input": "5\n2\nENQ 999\nDEQ",
+                "expected": "=== 링 버퍼(Ring Buffer) 시뮬레이션 ===\n[ENQ] 패킷 999 수신 (버퍼: 1/5)\n[PROCESS] 패킷 999 처리 완료 (버퍼: 0/5)\n---------------------------------\n최종 잔여 패킷 (0개): []",
+                "is_hidden": true
+            },
+            {
+                "input": "3\n8\nENQ 1\nENQ 2\nDEQ\nDEQ\nDEQ\nENQ 3\nENQ 4\nENQ 5",
+                "expected": "=== 링 버퍼(Ring Buffer) 시뮬레이션 ===\n[ENQ] 패킷 1 수신 (버퍼: 1/3)\n[ENQ] 패킷 2 수신 (버퍼: 2/3)\n[PROCESS] 패킷 1 처리 완료 (버퍼: 1/3)\n[PROCESS] 패킷 2 처리 완료 (버퍼: 0/3)\n[EMPTY] 버퍼 언더플로우: 처리할 패킷 없음\n[ENQ] 패킷 3 수신 (버퍼: 1/3)\n[ENQ] 패킷 4 수신 (버퍼: 2/3)\n[ENQ] 패킷 5 수신 (버퍼: 3/3)\n---------------------------------\n최종 잔여 패킷 (3개): [3, 4, 5]",
+                "is_hidden": true
+            },
+            {
+                "input": "2\n5\nENQ 1\nENQ 2\nENQ 3\nENQ 4\nENQ 5",
+                "expected": "=== 링 버퍼(Ring Buffer) 시뮬레이션 ===\n[ENQ] 패킷 1 수신 (버퍼: 1/2)\n[ENQ] 패킷 2 수신 (버퍼: 2/2)\n[DROP] 버퍼 풀: 패킷 3 유실\n[DROP] 버퍼 풀: 패킷 4 유실\n[DROP] 버퍼 풀: 패킷 5 유실\n---------------------------------\n최종 잔여 패킷 (2개): [1, 2]",
+                "is_hidden": true
+            },
+            {
+                "input": "4\n8\nENQ 11\nENQ 12\nENQ 13\nENQ 14\nDEQ\nDEQ\nDEQ\nDEQ",
+                "expected": "=== 링 버퍼(Ring Buffer) 시뮬레이션 ===\n[ENQ] 패킷 11 수신 (버퍼: 1/4)\n[ENQ] 패킷 12 수신 (버퍼: 2/4)\n[ENQ] 패킷 13 수신 (버퍼: 3/4)\n[ENQ] 패킷 14 수신 (버퍼: 4/4)\n[PROCESS] 패킷 11 처리 완료 (버퍼: 3/4)\n[PROCESS] 패킷 12 처리 완료 (버퍼: 2/4)\n[PROCESS] 패킷 13 처리 완료 (버퍼: 1/4)\n[PROCESS] 패킷 14 처리 완료 (버퍼: 0/4)\n---------------------------------\n최종 잔여 패킷 (0개): []",
+                "is_hidden": true
+            },
+            {
+                "input": "5\n7\nENQ 10\nENQ 20\nENQ 30\nDEQ\nENQ 40\nENQ 50\nENQ 60",
+                "expected": "=== 링 버퍼(Ring Buffer) 시뮬레이션 ===\n[ENQ] 패킷 10 수신 (버퍼: 1/5)\n[ENQ] 패킷 20 수신 (버퍼: 2/5)\n[ENQ] 패킷 30 수신 (버퍼: 3/5)\n[PROCESS] 패킷 10 처리 완료 (버퍼: 2/5)\n[ENQ] 패킷 40 수신 (버퍼: 3/5)\n[ENQ] 패킷 50 수신 (버퍼: 4/5)\n[ENQ] 패킷 60 수신 (버퍼: 5/5)\n---------------------------------\n최종 잔여 패킷 (5개): [20, 30, 40, 50, 60]",
+                "is_hidden": true
+            },
+            {
+                "input": "10\n5\nENQ 100\nENQ 200\nENQ 300\nENQ 400\nENQ 500",
+                "expected": "=== 링 버퍼(Ring Buffer) 시뮬레이션 ===\n[ENQ] 패킷 100 수신 (버퍼: 1/10)\n[ENQ] 패킷 200 수신 (버퍼: 2/10)\n[ENQ] 패킷 300 수신 (버퍼: 3/10)\n[ENQ] 패킷 400 수신 (버퍼: 4/10)\n[ENQ] 패킷 500 수신 (버퍼: 5/10)\n---------------------------------\n최종 잔여 패킷 (5개): [100, 200, 300, 400, 500]",
+                "is_hidden": true
+            }
+        ],
+        "hint": "1. `import java.util.Queue; import java.util.LinkedList;`를 선언하고 `Queue<Integer> queue = new LinkedList<>();`로 큐 인스턴스를 생성합니다.\n2. `queue.offer(id)`: 큐의 맨 뒤(Tail)에 새 패킷을 삽입합니다. (큐 크기 제한 K에 도달했는지 사전에 `queue.size() == k` 검사 필요)\n3. `queue.poll()`: 큐의 맨 앞(Head)에서 가장 오래된 요소를 꺼내어 반환하고 제거합니다. (`queue.isEmpty()` 검사 필수)\n4. 향상된 for문 `for (int id : queue)`를 사용하여 남아있는 패킷들을 FIFO 순서대로 순회할 수 있습니다.",
+        "cs_knowledge": "🖥️ [CS 핵심 지식: FIFO(First-In, First-Out) 큐 인터페이스와 자바 컬렉션 구현체]\n큐(Queue)는 먼저 삽입된 데이터가 가장 먼저 처리되는 FIFO 원칙을 따르는 필수 선형 자료구조입니다.\n- offer(e) / add(e): 큐의 뒤(Rear)에 원소 추가 (시간 복잡도 O(1))\n- poll() / remove(): 큐의 앞(Front)에서 원소 추출 및 제거 (시간 복잡도 O(1))\n- peek() / element(): 원소를 제거하지 않고 앞의 데이터만 확인\n- 자바에서는 `Queue`가 인터페이스로 정의되어 있으며, 주로 이중 연결 리스트인 `LinkedList`나 배열 기반 `ArrayDeque`를 구현체로 사용합니다.\n네트워크 라우터의 패킷 버퍼, 운영체제의 CPU 프로세스 스케줄링 큐, 프린터 인쇄 대기열 등 다양한 시스템에서 광범위하게 활용됩니다.",
+        "logic_guide": "📘 [단계별 로직 구성 순서 & 초보자 가이드]\n1단계: 용량 K 및 명령어 수 M 입력\n2단계: Queue<Integer> queue = new LinkedList<>() 선언\n3단계: M번 루프를 돌며 명령어 판별\n   - \"ENQ\"인 경우:\n     if (queue.size() == k) -> DROP 출력\n     else -> queue.offer(id) 후 [ENQ] 출력\n   - \"DEQ\"인 경우:\n     if (queue.isEmpty()) -> EMPTY 출력\n     else -> int pid = queue.poll() 후 [PROCESS] 출력\n4단계: StringBuilder와 for (int id : queue)로 최종 잔여 패킷 출력"
+    },
+    {
         "id": "day03_상1",
         "day": 3,
         "subject": "Java",
@@ -1883,11 +2131,11 @@ const PROBLEMS = [
         "subject": "Java",
         "difficulty": "상",
         "title": "2차원 이미지 비트맵 90도 회전 & 3x3 박스 블러 필터 연산기 (MatrixRotationBlur)",
-        "desc": "N x N 크기(3 <= N <= 7)의 2차원 그레이스케일 픽셀 값(0~255 정수) 행렬을 입력받아 그래픽스 이미지 회전 및 블러 필터 파이프라인을 시뮬레이션하세요.\n\n[파이프라인 단계별 규칙]\n1. 1단계: 90도 시계방향 회전 (90-Degree Clockwise Rotation)\n   - 원본 행렬 A(r, c)를 시계 방향으로 90도 회전한 행렬 R을 생성합니다.\n   - 회전 변환 공식: R[c][N - 1 - r] = A[r][c]\n2. 2단계: 3x3 박스 블러 필터 적용 (Box Blur Convolution)\n   - 회전된 행렬 R에 대해 3x3 박스 블러 필터를 적용한 새 행렬 B를 생성합니다.\n   - 테두리(가장자리) 픽셀(행 인덱스 0 또는 N-1, 열 인덱스 0 또는 N-1): 주변 픽셀이 부족하므로 블러 연산 없이 회전된 원본 픽셀 값(R[i][j])을 그대로 유지합니다.\n   - 내부 픽셀(1 <= i, j <= N-2): 자신을 포함한 3x3 영역(총 9개 픽셀)의 합을 9로 나눈 정수(소수점 버림 `sum / 9`)를 취합니다.\n\n[입력]\n첫째 줄에 행렬 크기 N이 주어집니다.\n다음 N개 줄에 걸쳐 각 줄마다 N개의 픽셀 정수(0~255)가 공백으로 주어집니다.\n\n[출력]\n=== [1단계] 90도 시계방향 회전 비트맵 ===\n(N행 N열의 회전된 행렬 출력, 각 행의 원소는 공백으로 구분)\n---------------------------------\n=== [2단계] 3x3 박스 블러 필터 적용 결과 ===\n(N행 N열의 블러 필터 적용 행렬 출력, 각 행의 원소는 공백으로 구분)\n\n※ 3x3 최소 크기, 4x4, 단일 색상 등 다양한 케이스는 아래 [예제 1, 2, 3]을 참고하세요.",
+        "desc": "N x N 크기(3 <= N <= 7)의 2차원 그레이스케일 픽셀 값(0~255 정수) 행렬을 입력받아 그래픽스 이미지 회전 및 3x3 박스 블러 필터(Box Blur Filter) 파이프라인을 시뮬레이션하세요.\n\n[블러 필터(Box Blur Filter)란?]\n- 사진의 자글자글한 잡음(노이즈)을 제거하거나 이미지를 부드럽게 흐리게 만드는 대표적인 영상 처리 필터입니다.\n- 특정 픽셀 (i, j)의 색상을 결정할 때, 자기 자신과 인접한 상하좌우 및 대각선 8방향(총 3x3=9개 픽셀)의 평균값을 취하여 급격한 밝기 변화를 부드럽게 완화시킵니다.\n\n[파이프라인 단계별 연산 규칙]\n1. 1단계: 90도 시계방향 회전 (90-Degree Clockwise Rotation)\n   - 원본 행렬 A(r, c)를 시계 방향으로 90도 회전한 행렬 R을 생성합니다.\n   - 2D 회전 공식: `R[c][N - 1 - r] = A[r][c]`\n2. 2단계: 3x3 박스 블러 필터 적용 (Box Blur Convolution)\n   - 1단계에서 회전된 행렬 R에 대해 3x3 박스 블러 필터를 적용한 새 행렬 B를 생성합니다.\n   - 테두리(가장자리) 픽셀(행 인덱스 0 또는 N-1, 열 인덱스 0 또는 N-1): 주변 8방향 이웃 픽셀 중 일부가 격자 밖으로 벗어나 부족하므로, 블러 연산 없이 회전된 원본 픽셀 값(R[i][j])을 그대로 유지(Pass-through)합니다.\n   - 내부 픽셀(1 <= i, j <= N-2): 중심 픽셀 (i, j)를 기준으로 3x3 영역(총 9개 픽셀)의 산술 평균인 정수 나눗셈 `sum / 9` (소수점 버림)를 새 픽셀 값으로 결정합니다.\n\n[입력]\n첫째 줄에 행렬 크기 N이 주어집니다.\n다음 N개 줄에 걸쳐 각 줄마다 N개의 픽셀 정수(0~255)가 공백으로 주어집니다.\n\n[출력]\n=== [1단계] 90도 시계방향 회전 비트맵 ===\n(N행 N열의 회전된 행렬 출력, 각 행의 원소는 공백으로 구분)\n---------------------------------\n=== [2단계] 3x3 박스 블러 필터 적용 결과 ===\n(N행 N열의 블러 필터 적용 행렬 출력, 각 행의 원소는 공백으로 구분)\n\n※ 3x3 중심 단일 점광원 블러, 4x4, 5x5 계단식 블러 등 다양한 시나리오는 아래 [예제 1, 2, 3]을 참고하세요.",
         "template": "import java.util.Scanner;\n\npublic class Solution {\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        // 여기에 2차원 행렬 90도 회전 및 3x3 컨볼루션 블러 필터 로직을 작성하세요\n        \n    }\n}\n",
         "solution": "import java.util.Scanner;\n\npublic class Solution {\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        if (!sc.hasNextInt()) return;\n        int n = sc.nextInt();\n        int[][] a = new int[n][n];\n\n        for (int i = 0; i < n; i++) {\n            for (int j = 0; j < n; j++) {\n                a[i][j] = sc.nextInt();\n            }\n        }\n\n        int[][] rotated = new int[n][n];\n        for (int i = 0; i < n; i++) {\n            for (int j = 0; j < n; j++) {\n                rotated[j][n - 1 - i] = a[i][j];\n            }\n        }\n\n        int[][] blurred = new int[n][n];\n        for (int i = 0; i < n; i++) {\n            for (int j = 0; j < n; j++) {\n                if (i == 0 || i == n - 1 || j == 0 || j == n - 1) {\n                    blurred[i][j] = rotated[i][j];\n                } else {\n                    int sum = 0;\n                    for (int di = -1; di <= 1; di++) {\n                        for (int dj = -1; dj <= 1; dj++) {\n                            sum += rotated[i + di][j + dj];\n                        }\n                    }\n                    blurred[i][j] = sum / 9;\n                }\n            }\n        }\n\n        System.out.println(\"=== [1단계] 90도 시계방향 회전 비트맵 ===\");\n        for (int i = 0; i < n; i++) {\n            for (int j = 0; j < n; j++) {\n                System.out.print(rotated[i][j]);\n                if (j < n - 1) System.out.print(\" \");\n            }\n            System.out.println();\n        }\n        System.out.println(\"---------------------------------\");\n        System.out.println(\"=== [2단계] 3x3 박스 블러 필터 적용 결과 ===\");\n        for (int i = 0; i < n; i++) {\n            for (int j = 0; j < n; j++) {\n                System.out.print(blurred[i][j]);\n                if (j < n - 1) System.out.print(\" \");\n            }\n            System.out.println();\n        }\n    }\n}\n",
-        "hint": "1. 90도 시계방향 회전 공식: 원본의 (i, j) 원소는 회전 행렬의 (j, n - 1 - i) 위치로 이동합니다.\n2. 블러 필터 적용 시 회전된 행렬(rotated)을 바탕으로 새 배열(blurred)을 채워야 합니다.\n3. 테두리(i==0 || i==n-1 || j==0 || j==n-1)는 그대로 복사하고, 내부 픽셀은 di=-1~1, dj=-1~1 중첩 루프로 9개 합을 구해 9로 나눕니다.",
-        "cs_knowledge": "🖥️ [CS 핵심 지식: 컴퓨터 그래픽스 픽셀 버퍼와 2D 공간 필터링 컨볼루션(Convolution)]\n디지털 이미지는 2차원 픽셀 배열로 표현되며, 이미지 회전과 필터링은 GPU 셰이더 및 포토샵, OpenCV 등의 핵심 연산입니다.\n박스 블러(Box Blur)는 주변 픽셀들의 가중 평균을 구하여 고주파(High-frequency) 노이즈를 부드럽게 감쇄시키는 대표적인 저역 통과 필터(Low-Pass Filter)입니다.\n이 3x3 윈도우를 한 칸씩 이동하며 곱하고 더하는 연산 구조가 바로 현대 딥러닝 인공지능의 시각 지능을 지탱하는 '합성곱 신경망(Convolutional Neural Network, CNN)'의 모태입니다.",
+        "hint": "1. 90도 시계방향 회전 공식: 원본 A[r][c]를 rotated[c][N - 1 - r]에 매핑합니다.\n2. 블러 필터 계산: 회전된 행렬(rotated)을 바탕으로 새 행렬(blurred)을 만듭니다.\n3. 테두리(i == 0 || i == n - 1 || j == 0 || j == n - 1)는 rotated[i][j]를 그대로 복사합니다.\n4. 내부 픽셀(1 <= i, j <= n - 2)은 di = -1~1, dj = -1~1 중첩 루프로 9개 이웃 픽셀 합(sum)을 구해 `sum / 9`를 대입합니다.",
+        "cs_knowledge": "🖥️ [CS 핵심 지식: 컴퓨터 그래픽스 픽셀 버퍼와 블러 필터(Blur Filter)를 실무에서 사용하는 이유]\n\n1. 블러 필터(Box / Gaussian Blur)를 왜 사용하는가?\n   ① 센서 노이즈 및 고주파 잡음 제거 (Denoising):\n      - 카메라 센서로 사진을 촬영할 때 빛이 부족하면 픽셀 하나가 튀는 '자글자글한 잡음(Salt-and-Pepper Noise / 고주파 성분)'이 생깁니다.\n      - 블러 필터는 튀는 픽셀의 값을 주변 8개 이웃 픽셀과 섞어 평균화함으로써 잡음을 효과적으로 지워냅니다.\n   ② 컴퓨터 비전(CV) 전처리 필수 과정:\n      - 자율주행차나 스마트 팩토리에서 물체 윤곽선(Edge)을 감지하기 전에, 노이즈로 인한 거짓 경계선(False Edge) 검출을 방지하기 위해 블러 처리를 먼저 수행합니다.\n   ③ 사용자 경험(UI/UX) 효과:\n      - 스마트폰 모달 창이나 배경 화면에서 뒤쪽 화면을 흐리게(Glassmorphism / Backdrop Blur) 처리하여 텍스트 가독성을 높일 때 GPU 셰이더로 블러를 실시간 연산합니다.\n\n2. 2D 공간 컨볼루션(Convolution) 원리:\n   - 본 문제에서 구현한 '3x3 윈도우를 한 칸씩 이동하며 주변 9개 값의 평균을 계산하는 연산'이 바로 컴퓨터 비전과 영상 처리의 기초인 '공간 컨볼루션(2D Convolution)'입니다.\n   - 이 기초 2D 윈도우 순회 메커니즘이 현대 딥러닝 인공지능의 시각 지능 모델인 합성곱 신경망(Convolutional Neural Network, CNN)의 직접적인 모태입니다.",
         "logic_guide": "📘 [단계별 로직 구성 순서 & 초보자 가이드]\n1단계: N 입력 및 a[N][N] 2차원 배열 입력받기\n2단계: rotated[j][n - 1 - i] = a[i][j] 로 90도 회전 행렬 완성\n3단계: blurred[N][N] 선언 후 테두리는 rotated 값 그대로 복사, 내부는 3x3 9개 원소 합 / 9 계산\n4단계: 1단계 회전 비트맵 출력\n5단계: 구분선 출력 후 2단계 블러 필터 비트맵 출력",
         "testcases": [
             {
@@ -1896,8 +2144,8 @@ const PROBLEMS = [
                 "is_hidden": false
             },
             {
-                "input": "3\n10 20 30\n40 50 60\n70 80 90",
-                "expected": "=== [1단계] 90도 시계방향 회전 비트맵 ===\n70 40 10\n80 50 20\n90 60 30\n---------------------------------\n=== [2단계] 3x3 박스 블러 필터 적용 결과 ===\n70 40 10\n80 50 20\n90 60 30",
+                "input": "3\n0 0 0\n0 90 0\n0 0 0",
+                "expected": "=== [1단계] 90도 시계방향 회전 비트맵 ===\n0 0 0\n0 90 0\n0 0 0\n---------------------------------\n=== [2단계] 3x3 박스 블러 필터 적용 결과 ===\n0 0 0\n0 10 0\n0 0 0",
                 "is_hidden": false
             },
             {
@@ -1947,8 +2195,8 @@ const PROBLEMS = [
                 "output": "=== [1단계] 90도 시계방향 회전 비트맵 ===\n13 9 5 1\n14 10 6 2\n15 11 7 3\n16 12 8 4\n---------------------------------\n=== [2단계] 3x3 박스 블러 필터 적용 결과 ===\n13 9 5 1\n14 10 6 2\n15 11 7 3\n16 12 8 4"
             },
             {
-                "input": "3\n10 20 30\n40 50 60\n70 80 90",
-                "output": "=== [1단계] 90도 시계방향 회전 비트맵 ===\n70 40 10\n80 50 20\n90 60 30\n---------------------------------\n=== [2단계] 3x3 박스 블러 필터 적용 결과 ===\n70 40 10\n80 50 20\n90 60 30"
+                "input": "3\n0 0 0\n0 90 0\n0 0 0",
+                "output": "=== [1단계] 90도 시계방향 회전 비트맵 ===\n0 0 0\n0 90 0\n0 0 0\n---------------------------------\n=== [2단계] 3x3 박스 블러 필터 적용 결과 ===\n0 0 0\n0 10 0\n0 0 0"
             },
             {
                 "input": "5\n0 0 0 0 0\n0 255 255 255 0\n0 255 255 255 0\n0 255 255 255 0\n0 0 0 0 0",
@@ -2135,7 +2383,75 @@ const PROBLEMS = [
         "sample_input": "홍길동 110-123-456 10000 5000 8000",
         "sample_output": "=== 계좌 거래 내역서 ===\n입금 성공: 5,000원 (현재 잔액: 15,000원)\n출금 성공: 8,000원 (현재 잔액: 7,000원)\n---------------------------------\n계좌번호: 110-123-456 | 예금주: 홍길동 | 최종 잔액: 7,000원",
         "expected": "=== 계좌 거래 내역서 ===\n입금 성공: 5,000원 (현재 잔액: 15,000원)\n출금 성공: 8,000원 (현재 잔액: 7,000원)\n---------------------------------\n계좌번호: 110-123-456 | 예금주: 홍길동 | 최종 잔액: 7,000원",
-        "hint": "1. 클래스 내에 필드(owner, accountNo, balance)와 생성자를 선언합니다.\n2. deposit(int amount)은 잔액을 늘려주고 현재 잔액을 출력합니다.\n3. withdraw(int amount)는 잔액과 비교하여 출금 가능 여부를 판별합니다."
+        "hint": "1. 클래스 내에 필드(owner, accountNo, balance)와 생성자를 선언합니다.\n2. deposit(int amount)은 잔액을 늘려주고 현재 잔액을 출력합니다.\n3. withdraw(int amount)는 잔액과 비교하여 출금 가능 여부를 판별합니다.",
+        "testcases": [
+            {
+                "input": "홍길동 110-123-456 10000 5000 8000",
+                "expected": "=== 계좌 거래 내역서 ===\n입금 성공: 5,000원 (현재 잔액: 15,000원)\n출금 성공: 8,000원 (현재 잔액: 7,000원)\n---------------------------------\n계좌번호: 110-123-456 | 예금주: 홍길동 | 최종 잔액: 7,000원",
+                "is_hidden": false
+            },
+            {
+                "input": "이영희 220-987-654 50000 20000 80000",
+                "expected": "=== 계좌 거래 내역서 ===\n입금 성공: 20,000원 (현재 잔액: 70,000원)\n출금 실패: 잔액이 부족합니다.\n---------------------------------\n계좌번호: 220-987-654 | 예금주: 이영희 | 최종 잔액: 70,000원",
+                "is_hidden": false
+            },
+            {
+                "input": "박철수 333-111-222 0 100000 100000",
+                "expected": "=== 계좌 거래 내역서 ===\n입금 성공: 100,000원 (현재 잔액: 100,000원)\n출금 성공: 100,000원 (현재 잔액: 0원)\n---------------------------------\n계좌번호: 333-111-222 | 예금주: 박철수 | 최종 잔액: 0원",
+                "is_hidden": false
+            },
+            {
+                "input": "김멋사 444-555-666 5000 0 10000",
+                "expected": "=== 계좌 거래 내역서 ===\n입금 성공: 0원 (현재 잔액: 5,000원)\n출금 실패: 잔액이 부족합니다.\n---------------------------------\n계좌번호: 444-555-666 | 예금주: 김멋사 | 최종 잔액: 5,000원",
+                "is_hidden": true
+            },
+            {
+                "input": "최자바 777-888-999 1000000 500000 300000",
+                "expected": "=== 계좌 거래 내역서 ===\n입금 성공: 500,000원 (현재 잔액: 1,500,000원)\n출금 성공: 300,000원 (현재 잔액: 1,200,000원)\n---------------------------------\n계좌번호: 777-888-999 | 예금주: 최자바 | 최종 잔액: 1,200,000원",
+                "is_hidden": true
+            },
+            {
+                "input": "정파이 123-456-789 25000 5000 30000",
+                "expected": "=== 계좌 거래 내역서 ===\n입금 성공: 5,000원 (현재 잔액: 30,000원)\n출금 성공: 30,000원 (현재 잔액: 0원)\n---------------------------------\n계좌번호: 123-456-789 | 예금주: 정파이 | 최종 잔액: 0원",
+                "is_hidden": true
+            },
+            {
+                "input": "강클라우드 999-000-111 10000 0 0",
+                "expected": "=== 계좌 거래 내역서 ===\n입금 성공: 0원 (현재 잔액: 10,000원)\n출금 성공: 0원 (현재 잔액: 10,000원)\n---------------------------------\n계좌번호: 999-000-111 | 예금주: 강클라우드 | 최종 잔액: 10,000원",
+                "is_hidden": true
+            },
+            {
+                "input": "한인공 555-666-777 500000 250000 750001",
+                "expected": "=== 계좌 거래 내역서 ===\n입금 성공: 250,000원 (현재 잔액: 750,000원)\n출금 실패: 잔액이 부족합니다.\n---------------------------------\n계좌번호: 555-666-777 | 예금주: 한인공 | 최종 잔액: 750,000원",
+                "is_hidden": true
+            },
+            {
+                "input": "윤개발 321-654-987 10 90 50",
+                "expected": "=== 계좌 거래 내역서 ===\n입금 성공: 90원 (현재 잔액: 100원)\n출금 성공: 50원 (현재 잔액: 50원)\n---------------------------------\n계좌번호: 321-654-987 | 예금주: 윤개발 | 최종 잔액: 50원",
+                "is_hidden": true
+            },
+            {
+                "input": "오풀스택 888-777-666 77777 22223 99999",
+                "expected": "=== 계좌 거래 내역서 ===\n입금 성공: 22,223원 (현재 잔액: 100,000원)\n출금 성공: 99,999원 (현재 잔액: 1원)\n---------------------------------\n계좌번호: 888-777-666 | 예금주: 오풀스택 | 최종 잔액: 1원",
+                "is_hidden": true
+            }
+        ],
+        "samples": [
+            {
+                "input": "홍길동 110-123-456 10000 5000 8000",
+                "output": "=== 계좌 거래 내역서 ===\n입금 성공: 5,000원 (현재 잔액: 15,000원)\n출금 성공: 8,000원 (현재 잔액: 7,000원)\n---------------------------------\n계좌번호: 110-123-456 | 예금주: 홍길동 | 최종 잔액: 7,000원"
+            },
+            {
+                "input": "이영희 220-987-654 50000 20000 80000",
+                "output": "=== 계좌 거래 내역서 ===\n입금 성공: 20,000원 (현재 잔액: 70,000원)\n출금 실패: 잔액이 부족합니다.\n---------------------------------\n계좌번호: 220-987-654 | 예금주: 이영희 | 최종 잔액: 70,000원"
+            },
+            {
+                "input": "박철수 333-111-222 0 100000 100000",
+                "output": "=== 계좌 거래 내역서 ===\n입금 성공: 100,000원 (현재 잔액: 100,000원)\n출금 성공: 100,000원 (현재 잔액: 0원)\n---------------------------------\n계좌번호: 333-111-222 | 예금주: 박철수 | 최종 잔액: 0원"
+            }
+        ],
+        "cs_knowledge": "🖥️ [CS 핵심 지식: 객체 지향 프로그래밍(OOP)과 캡슐화(Encapsulation)]\n객체 지향 프로그래밍(OOP)은 상태(State, 필드)와 행동(Behavior, 메서드)을 하나의 단위인 '클래스(Class)'로 묶고 이를 실체화한 '객체(Object/인스턴스)'들이 상호작용하도록 설계하는 패러다임입니다.\n- 클래스(Class): 설계도 (예: Account 클래스)\n- 인스턴스(Instance): 힙(Heap) 메모리에 할당된 실체 (new Account(...))\n- 캡슐화(Encapsulation): 외부에서 데이터(잔액 등)를 직접 무분별하게 변경하지 못하도록 메서드(deposit, withdraw)를 통해서만 안전하게 상태를 변경하도록 검증 로직을 내장하는 기법입니다.",
+        "logic_guide": "📘 [단계별 로직 구성 순서 & 초보자 가이드]\n1단계: Account 클래스 설계\n   - 필드 선언: String owner, String accountNo, int balance;\n   - 생성자(Constructor): public Account(String owner, String accountNo, int balance) { this.owner = owner; ... }\n   - deposit(int amount): balance += amount; 서식 출력\n   - withdraw(int amount): balance < amount이면 \"출금 실패: 잔액이 부족합니다.\" 출력 후 false 반환, 충분하면 잔액 차감 및 출력 후 true 반환\n   - printInfo(): 최종 계좌 정보 출력\n\n2단계: Solution 클래스 main 메서드 구현\n   - Scanner로 예금주, 계좌번호, 초기잔액, 입금액, 출금액 입력받기\n   - Account acc = new Account(...) 객체 생성\n   - acc.deposit(depAmount), acc.withdraw(withAmount) 호출\n   - acc.printInfo() 호출하여 최종 잔액 출력"
     },
     {
         "id": "day04_중1",
@@ -2149,7 +2465,75 @@ const PROBLEMS = [
         "sample_input": "김철수 92 85 88",
         "sample_output": "=== 학생 성적 통지표 ===\n성명: 김철수\n국어: 92점 | 영어: 85점 | 수학: 88점\n---------------------------------\n총점: 265점\n평균: 88.33점\n학점 등급: B등급",
         "expected": "=== 학생 성적 통지표 ===\n성명: 김철수\n국어: 92점 | 영어: 85점 | 수학: 88점\n---------------------------------\n총점: 265점\n평균: 88.33점\n학점 등급: B등급",
-        "hint": "1. Student 클래스에 kor, eng, math 점수를 저장하고 getTotal(), getAverage() 메서드를 정의합니다.\n2. 평균은 정수 나눗셈 대신 `getTotal() / 3.0`을 사용하여 실수로 계산합니다.\n3. getGrade()에서 평균 점수 기준으로 if-else 분기를 통해 A~F를 반환합니다."
+        "hint": "1. Student 클래스에 kor, eng, math 점수를 저장하고 getTotal(), getAverage() 메서드를 정의합니다.\n2. 평균은 정수 나눗셈 대신 `getTotal() / 3.0`을 사용하여 실수로 계산합니다.\n3. getGrade()에서 평균 점수 기준으로 if-else 분기를 통해 A~F를 반환합니다.",
+        "testcases": [
+            {
+                "input": "김철수 92 85 88",
+                "expected": "=== 학생 성적 통지표 ===\n성명: 김철수\n국어: 92점 | 영어: 85점 | 수학: 88점\n---------------------------------\n총점: 265점\n평균: 88.33점\n학점 등급: B등급",
+                "is_hidden": false
+            },
+            {
+                "input": "이영희 100 95 98",
+                "expected": "=== 학생 성적 통지표 ===\n성명: 이영희\n국어: 100점 | 영어: 95점 | 수학: 98점\n---------------------------------\n총점: 293점\n평균: 97.67점\n학점 등급: A등급",
+                "is_hidden": false
+            },
+            {
+                "input": "박민수 55 60 45",
+                "expected": "=== 학생 성적 통지표 ===\n성명: 박민수\n국어: 55점 | 영어: 60점 | 수학: 45점\n---------------------------------\n총점: 160점\n평균: 53.33점\n학점 등급: F등급",
+                "is_hidden": false
+            },
+            {
+                "input": "최수재 90 90 90",
+                "expected": "=== 학생 성적 통지표 ===\n성명: 최수재\n국어: 90점 | 영어: 90점 | 수학: 90점\n---------------------------------\n총점: 270점\n평균: 90.00점\n학점 등급: A등급",
+                "is_hidden": true
+            },
+            {
+                "input": "정보통 80 80 80",
+                "expected": "=== 학생 성적 통지표 ===\n성명: 정보통\n국어: 80점 | 영어: 80점 | 수학: 80점\n---------------------------------\n총점: 240점\n평균: 80.00점\n학점 등급: B등급",
+                "is_hidden": true
+            },
+            {
+                "input": "강노력 70 70 70",
+                "expected": "=== 학생 성적 통지표 ===\n성명: 강노력\n국어: 70점 | 영어: 70점 | 수학: 70점\n---------------------------------\n총점: 210점\n평균: 70.00점\n학점 등급: C등급",
+                "is_hidden": true
+            },
+            {
+                "input": "송턱걸이 60 60 60",
+                "expected": "=== 학생 성적 통지표 ===\n성명: 송턱걸이\n국어: 60점 | 영어: 60점 | 수학: 60점\n---------------------------------\n총점: 180점\n평균: 60.00점\n학점 등급: D등급",
+                "is_hidden": true
+            },
+            {
+                "input": "한재수 59 59 59",
+                "expected": "=== 학생 성적 통지표 ===\n성명: 한재수\n국어: 59점 | 영어: 59점 | 수학: 59점\n---------------------------------\n총점: 177점\n평균: 59.00점\n학점 등급: F등급",
+                "is_hidden": true
+            },
+            {
+                "input": "윤만점 100 100 100",
+                "expected": "=== 학생 성적 통지표 ===\n성명: 윤만점\n국어: 100점 | 영어: 100점 | 수학: 100점\n---------------------------------\n총점: 300점\n평균: 100.00점\n학점 등급: A등급",
+                "is_hidden": true
+            },
+            {
+                "input": "오영점 0 0 0",
+                "expected": "=== 학생 성적 통지표 ===\n성명: 오영점\n국어: 0점 | 영어: 0점 | 수학: 0점\n---------------------------------\n총점: 0점\n평균: 0.00점\n학점 등급: F등급",
+                "is_hidden": true
+            }
+        ],
+        "samples": [
+            {
+                "input": "김철수 92 85 88",
+                "output": "=== 학생 성적 통지표 ===\n성명: 김철수\n국어: 92점 | 영어: 85점 | 수학: 88점\n---------------------------------\n총점: 265점\n평균: 88.33점\n학점 등급: B등급"
+            },
+            {
+                "input": "이영희 100 95 98",
+                "output": "=== 학생 성적 통지표 ===\n성명: 이영희\n국어: 100점 | 영어: 95점 | 수학: 98점\n---------------------------------\n총점: 293점\n평균: 97.67점\n학점 등급: A등급"
+            },
+            {
+                "input": "박민수 55 60 45",
+                "output": "=== 학생 성적 통지표 ===\n성명: 박민수\n국어: 55점 | 영어: 60점 | 수학: 45점\n---------------------------------\n총점: 160점\n평균: 53.33점\n학점 등급: F등급"
+            }
+        ],
+        "cs_knowledge": "🖥️ [CS 핵심 지식: 인스턴스 메서드와 정보 은닉 및 계산된 속성]\n객체는 단순히 수동적인 데이터 보관소(DTO)가 아니라, 자신의 데이터를 가공하여 유의미한 정보를 외부에 제공하는 능동적인 주체여야 합니다.\n- getTotal(), getAverage(), getGrade()와 같이 객체 내부의 국·영·수 필드를 기반으로 총점, 평균, 등급을 연산하는 메서드를 제공함으로써, 외부 코드가 계산 공식에 직접 의존하지 않도록 캡슐화합니다.\n- 실수 연산 시 정수 나눗셈(`/ 3`)은 소수점이 버려지므로 `3.0` 또는 `(double) 3`으로 나누어야 부동소수점 정확도가 유지됩니다.",
+        "logic_guide": "📘 [단계별 로직 구성 순서 & 초보자 가이드]\n1단계: Student 클래스 설계\n   - 필드: String name, int kor, int eng, math;\n   - 생성자: 4개 값을 받아 this 키워드로 인스턴스 변수 초기화\n   - getTotal(): kor + eng + math 반환\n   - getAverage(): getTotal() / 3.0 반환\n   - getGrade(): 평균에 따라 90이상 'A', 80이상 'B', 70이상 'C', 60이상 'D', 미만 'F' 반환\n\n2단계: Solution 클래스 main 메서드 구현\n   - Scanner로 이름과 3과목 점수를 읽고 Student 객체 생성\n   - 서식에 맞추어 성명, 각 과목 점수 출력\n   - s.getTotal(), String.format(\"%.2f\", s.getAverage()), s.getGrade()를 출력"
     },
     {
         "id": "day04_중2",
@@ -2163,7 +2547,75 @@ const PROBLEMS = [
         "sample_input": "아메리카노 4500 3 1",
         "sample_output": "=== 스타카페 주문 명세서 ===\n메뉴: 아메리카노 (단가: 4,500원)\n주문 수량: 3잔\n회원 등급: VIP 회원\n---------------------------------\n주문 합계: 13,500원\nVIP 특별 할인(10%): -1,350원\n최종 결제 금액: 12,150원\n적립 포인트(5%): 607P",
         "expected": "=== 스타카페 주문 명세서 ===\n메뉴: 아메리카노 (단가: 4,500원)\n주문 수량: 3잔\n회원 등급: VIP 회원\n---------------------------------\n주문 합계: 13,500원\nVIP 특별 할인(10%): -1,350원\n최종 결제 금액: 12,150원\n적립 포인트(5%): 607P",
-        "hint": "1. getSubtotal()은 단가 * 수량입니다.\n2. getDiscount()는 isVip가 true일 때 10%를 계산하여 반환합니다.\n3. 최종 결제액과 적립 포인트는 형변환(int)을 활용해 계산합니다."
+        "hint": "1. getSubtotal()은 단가 * 수량입니다.\n2. getDiscount()는 isVip가 true일 때 10%를 계산하여 반환합니다.\n3. 최종 결제액과 적립 포인트는 형변환(int)을 활용해 계산합니다.",
+        "testcases": [
+            {
+                "input": "아메리카노 4500 3 1",
+                "expected": "=== 스타카페 주문 명세서 ===\n메뉴: 아메리카노 (단가: 4,500원)\n주문 수량: 3잔\n회원 등급: VIP 회원\n---------------------------------\n주문 합계: 13,500원\nVIP 특별 할인(10%): -1,350원\n최종 결제 금액: 12,150원\n적립 포인트(5%): 607P",
+                "is_hidden": false
+            },
+            {
+                "input": "카페라떼 5000 2 0",
+                "expected": "=== 스타카페 주문 명세서 ===\n메뉴: 카페라떼 (단가: 5,000원)\n주문 수량: 2잔\n회원 등급: 일반 고객\n---------------------------------\n주문 합계: 10,000원\n최종 결제 금액: 10,000원\n적립 포인트(1%): 100P",
+                "is_hidden": false
+            },
+            {
+                "input": "자몽허니블랙티 5800 1 1",
+                "expected": "=== 스타카페 주문 명세서 ===\n메뉴: 자몽허니블랙티 (단가: 5,800원)\n주문 수량: 1잔\n회원 등급: VIP 회원\n---------------------------------\n주문 합계: 5,800원\nVIP 특별 할인(10%): -580원\n최종 결제 금액: 5,220원\n적립 포인트(5%): 261P",
+                "is_hidden": false
+            },
+            {
+                "input": "콜드브루 4800 5 0",
+                "expected": "=== 스타카페 주문 명세서 ===\n메뉴: 콜드브루 (단가: 4,800원)\n주문 수량: 5잔\n회원 등급: 일반 고객\n---------------------------------\n주문 합계: 24,000원\n최종 결제 금액: 24,000원\n적립 포인트(1%): 240P",
+                "is_hidden": true
+            },
+            {
+                "input": "카라멜마키아또 5900 10 1",
+                "expected": "=== 스타카페 주문 명세서 ===\n메뉴: 카라멜마키아또 (단가: 5,900원)\n주문 수량: 10잔\n회원 등급: VIP 회원\n---------------------------------\n주문 합계: 59,000원\nVIP 특별 할인(10%): -5,900원\n최종 결제 금액: 53,100원\n적립 포인트(5%): 2,655P",
+                "is_hidden": true
+            },
+            {
+                "input": "에스프레소 3500 1 0",
+                "expected": "=== 스타카페 주문 명세서 ===\n메뉴: 에스프레소 (단가: 3,500원)\n주문 수량: 1잔\n회원 등급: 일반 고객\n---------------------------------\n주문 합계: 3,500원\n최종 결제 금액: 3,500원\n적립 포인트(1%): 35P",
+                "is_hidden": true
+            },
+            {
+                "input": "제주말차라떼 6300 4 1",
+                "expected": "=== 스타카페 주문 명세서 ===\n메뉴: 제주말차라떼 (단가: 6,300원)\n주문 수량: 4잔\n회원 등급: VIP 회원\n---------------------------------\n주문 합계: 25,200원\nVIP 특별 할인(10%): -2,520원\n최종 결제 금액: 22,680원\n적립 포인트(5%): 1,134P",
+                "is_hidden": true
+            },
+            {
+                "input": "바닐라라떼 5500 2 1",
+                "expected": "=== 스타카페 주문 명세서 ===\n메뉴: 바닐라라떼 (단가: 5,500원)\n주문 수량: 2잔\n회원 등급: VIP 회원\n---------------------------------\n주문 합계: 11,000원\nVIP 특별 할인(10%): -1,100원\n최종 결제 금액: 9,900원\n적립 포인트(5%): 495P",
+                "is_hidden": true
+            },
+            {
+                "input": "딸기라떼 6500 3 0",
+                "expected": "=== 스타카페 주문 명세서 ===\n메뉴: 딸기라떼 (단가: 6,500원)\n주문 수량: 3잔\n회원 등급: 일반 고객\n---------------------------------\n주문 합계: 19,500원\n최종 결제 금액: 19,500원\n적립 포인트(1%): 195P",
+                "is_hidden": true
+            },
+            {
+                "input": "디카페인아메리카노 4800 20 1",
+                "expected": "=== 스타카페 주문 명세서 ===\n메뉴: 디카페인아메리카노 (단가: 4,800원)\n주문 수량: 20잔\n회원 등급: VIP 회원\n---------------------------------\n주문 합계: 96,000원\nVIP 특별 할인(10%): -9,600원\n최종 결제 금액: 86,400원\n적립 포인트(5%): 4,320P",
+                "is_hidden": true
+            }
+        ],
+        "samples": [
+            {
+                "input": "아메리카노 4500 3 1",
+                "output": "=== 스타카페 주문 명세서 ===\n메뉴: 아메리카노 (단가: 4,500원)\n주문 수량: 3잔\n회원 등급: VIP 회원\n---------------------------------\n주문 합계: 13,500원\nVIP 특별 할인(10%): -1,350원\n최종 결제 금액: 12,150원\n적립 포인트(5%): 607P"
+            },
+            {
+                "input": "카페라떼 5000 2 0",
+                "output": "=== 스타카페 주문 명세서 ===\n메뉴: 카페라떼 (단가: 5,000원)\n주문 수량: 2잔\n회원 등급: 일반 고객\n---------------------------------\n주문 합계: 10,000원\n최종 결제 금액: 10,000원\n적립 포인트(1%): 100P"
+            },
+            {
+                "input": "자몽허니블랙티 5800 1 1",
+                "output": "=== 스타카페 주문 명세서 ===\n메뉴: 자몽허니블랙티 (단가: 5,800원)\n주문 수량: 1잔\n회원 등급: VIP 회원\n---------------------------------\n주문 합계: 5,800원\nVIP 특별 할인(10%): -580원\n최종 결제 금액: 5,220원\n적립 포인트(5%): 261P"
+            }
+        ],
+        "cs_knowledge": "🖥️ [CS 핵심 지식: 도메인 비즈니스 로직 캡슐화와 객체 책임 분리]\n현업 이커머스/POS 백엔드 시스템에서는 할인 정책(Discount Policy)과 적립 정책(Point Reward Policy)이 고객의 멤버십 등급(일반, VIP)에 따라 다르게 적용됩니다.\n- CafeOrder 클래스가 주문 메뉴, 수량, 회원 등급 정보를 보관하고, getDiscount(), getFinalPrice(), getPoints()와 같은 비즈니스 연산 책임을 스스로 수행합니다.\n- 이를 '정보 전문가 패턴(Information Expert Pattern)'이라고 하며, 데이터를 가장 잘 알고 있는 객체가 해당 데이터를 다루는 책임을 가지는 것이 객체 지향 설계의 핵심입니다.",
+        "logic_guide": "📘 [단계별 로직 구성 순서 & 초보자 가이드]\n1단계: CafeOrder 클래스 설계\n   - 필드: String menuName, int unitPrice, int quantity, boolean isVip;\n   - getSubtotal(): unitPrice * quantity\n   - getDiscount(): isVip가 true면 (int)(getSubtotal() * 0.1), 아니면 0\n   - getFinalPrice(): getSubtotal() - getDiscount()\n   - getPoints(): isVip면 결제액 * 0.05, 아니면 결제액 * 0.01\n\n2단계: Solution 클래스 main 메서드 구현\n   - Scanner로 menu, price, qty, isVip(1: true, 0: false) 입력받기\n   - CafeOrder order = new CafeOrder(...) 인스턴스화\n   - 서식에 맞추어 주문 상세 및 할인, 최종 결제액, 적립 포인트 출력"
     },
     {
         "id": "day04_상",
@@ -2177,7 +2629,75 @@ const PROBLEMS = [
         "sample_input": "P01 노트북 1200000 10\nP02 무선마우스 30000 5\n5 8",
         "sample_output": "=== 물류 창고 재고 현황판 ===\n[출고 완료] 노트북 5개 출고 성공 (남은 재고: 5개)\n[출고 실패] 무선마우스 출고 불가: 재고 부족 (현재 재고: 5개, 요청: 8개)\n---------------------------------\n코드: P01 | 품명: 노트북 | 단가: 1,200,000원 | 재고: 5개 | 재고 평가액: 6,000,000원\n코드: P02 | 품명: 무선마우스 | 단가: 30,000원 | 재고: 5개 | 재고 평가액: 150,000원\n---------------------------------\n창고 총 재고 평가액: 6,150,000원",
         "expected": "=== 물류 창고 재고 현황판 ===\n[출고 완료] 노트북 5개 출고 성공 (남은 재고: 5개)\n[출고 실패] 무선마우스 출고 불가: 재고 부족 (현재 재고: 5개, 요청: 8개)\n---------------------------------\n코드: P01 | 품명: 노트북 | 단가: 1,200,000원 | 재고: 5개 | 재고 평가액: 6,000,000원\n코드: P02 | 품명: 무선마우스 | 단가: 30,000원 | 재고: 5개 | 재고 평가액: 150,000원\n---------------------------------\n창고 총 재고 평가액: 6,150,000원",
-        "hint": "1. Item 클래스에 code, name, price, stock 속성을 두고 releaseStock(int qty) 메서드로 출고 가능 여부를 if문으로 검사합니다.\n2. 출고 성공 시에는 stock에서 qty를 차감하고, 부족 시 차감하지 않고 에러를 출력합니다.\n3. 단가 * 재고수는 금액이 커질 수 있으므로 long 형변환을 고려합니다."
+        "hint": "1. Item 클래스에 code, name, price, stock 속성을 두고 releaseStock(int qty) 메서드로 출고 가능 여부를 if문으로 검사합니다.\n2. 출고 성공 시에는 stock에서 qty를 차감하고, 부족 시 차감하지 않고 에러를 출력합니다.\n3. 단가 * 재고수는 금액이 커질 수 있으므로 long 형변환을 고려합니다.",
+        "testcases": [
+            {
+                "input": "P01 노트북 1200000 10\nP02 무선마우스 30000 5\n5 8",
+                "expected": "=== 물류 창고 재고 현황판 ===\n[출고 완료] 노트북 5개 출고 성공 (남은 재고: 5개)\n[출고 실패] 무선마우스 출고 불가: 재고 부족 (현재 재고: 5개, 요청: 8개)\n---------------------------------\n코드: P01 | 품명: 노트북 | 단가: 1,200,000원 | 재고: 5개 | 재고 평가액: 6,000,000원\n코드: P02 | 품명: 무선마우스 | 단가: 30,000원 | 재고: 5개 | 재고 평가액: 150,000원\n---------------------------------\n창고 총 재고 평가액: 6,150,000원",
+                "is_hidden": false
+            },
+            {
+                "input": "A10 모니터 350000 20\nA20 기계식키보드 89000 15\n10 15",
+                "expected": "=== 물류 창고 재고 현황판 ===\n[출고 완료] 모니터 10개 출고 성공 (남은 재고: 10개)\n[출고 완료] 기계식키보드 15개 출고 성공 (남은 재고: 0개)\n---------------------------------\n코드: A10 | 품명: 모니터 | 단가: 350,000원 | 재고: 10개 | 재고 평가액: 3,500,000원\n코드: A20 | 품명: 기계식키보드 | 단가: 89,000원 | 재고: 0개 | 재고 평가액: 0원\n---------------------------------\n창고 총 재고 평가액: 3,500,000원",
+                "is_hidden": false
+            },
+            {
+                "input": "B01 태블릿 800000 5\nB02 스타일러스펜 45000 3\n6 2",
+                "expected": "=== 물류 창고 재고 현황판 ===\n[출고 실패] 태블릿 출고 불가: 재고 부족 (현재 재고: 5개, 요청: 6개)\n[출고 완료] 스타일러스펜 2개 출고 성공 (남은 재고: 1개)\n---------------------------------\n코드: B01 | 품명: 태블릿 | 단가: 800,000원 | 재고: 5개 | 재고 평가액: 4,000,000원\n코드: B02 | 품명: 스타일러스펜 | 단가: 45,000원 | 재고: 1개 | 재고 평가액: 45,000원\n---------------------------------\n창고 총 재고 평가액: 4,045,000원",
+                "is_hidden": false
+            },
+            {
+                "input": "C01 외장하드 120000 8\nC02 USB메모리 15000 50\n8 50",
+                "expected": "=== 물류 창고 재고 현황판 ===\n[출고 완료] 외장하드 8개 출고 성공 (남은 재고: 0개)\n[출고 완료] USB메모리 50개 출고 성공 (남은 재고: 0개)\n---------------------------------\n코드: C01 | 품명: 외장하드 | 단가: 120,000원 | 재고: 0개 | 재고 평가액: 0원\n코드: C02 | 품명: USB메모리 | 단가: 15,000원 | 재고: 0개 | 재고 평가액: 0원\n---------------------------------\n창고 총 재고 평가액: 0원",
+                "is_hidden": true
+            },
+            {
+                "input": "D01 게이밍헤드셋 95000 12\nD02 웹캠 65000 7\n0 0",
+                "expected": "=== 물류 창고 재고 현황판 ===\n[출고 완료] 게이밍헤드셋 0개 출고 성공 (남은 재고: 12개)\n[출고 완료] 웹캠 0개 출고 성공 (남은 재고: 7개)\n---------------------------------\n코드: D01 | 품명: 게이밍헤드셋 | 단가: 95,000원 | 재고: 12개 | 재고 평가액: 1,140,000원\n코드: D02 | 품명: 웹캠 | 단가: 65,000원 | 재고: 7개 | 재고 평가액: 455,000원\n---------------------------------\n창고 총 재고 평가액: 1,595,000원",
+                "is_hidden": true
+            },
+            {
+                "input": "E01 스마트워치 400000 10\nE02 무선충전기 25000 10\n10 11",
+                "expected": "=== 물류 창고 재고 현황판 ===\n[출고 완료] 스마트워치 10개 출고 성공 (남은 재고: 0개)\n[출고 실패] 무선충전기 출고 불가: 재고 부족 (현재 재고: 10개, 요청: 11개)\n---------------------------------\n코드: E01 | 품명: 스마트워치 | 단가: 400,000원 | 재고: 0개 | 재고 평가액: 0원\n코드: E02 | 품명: 무선충전기 | 단가: 25,000원 | 재고: 10개 | 재고 평가액: 250,000원\n---------------------------------\n창고 총 재고 평가액: 250,000원",
+                "is_hidden": true
+            },
+            {
+                "input": "F01 블루투스스피커 75000 4\nF02 보조배터리 22000 6\n5 7",
+                "expected": "=== 물류 창고 재고 현황판 ===\n[출고 실패] 블루투스스피커 출고 불가: 재고 부족 (현재 재고: 4개, 요청: 5개)\n[출고 실패] 보조배터리 출고 불가: 재고 부족 (현재 재고: 6개, 요청: 7개)\n---------------------------------\n코드: F01 | 품명: 블루투스스피커 | 단가: 75,000원 | 재고: 4개 | 재고 평가액: 300,000원\n코드: F02 | 품명: 보조배터리 | 단가: 22,000원 | 재고: 6개 | 재고 평가액: 132,000원\n---------------------------------\n창고 총 재고 평가액: 432,000원",
+                "is_hidden": true
+            },
+            {
+                "input": "G01 그래픽카드 1500000 3\nG02 CPU쿨러 48000 10\n1 9",
+                "expected": "=== 물류 창고 재고 현황판 ===\n[출고 완료] 그래픽카드 1개 출고 성공 (남은 재고: 2개)\n[출고 완료] CPU쿨러 9개 출고 성공 (남은 재고: 1개)\n---------------------------------\n코드: G01 | 품명: 그래픽카드 | 단가: 1,500,000원 | 재고: 2개 | 재고 평가액: 3,000,000원\n코드: G02 | 품명: CPU쿨러 | 단가: 48,000원 | 재고: 1개 | 재고 평가액: 48,000원\n---------------------------------\n창고 총 재고 평가액: 3,048,000원",
+                "is_hidden": true
+            },
+            {
+                "input": "H01 RAM16G 60000 30\nH02 SSD1TB 110000 20\n30 0",
+                "expected": "=== 물류 창고 재고 현황판 ===\n[출고 완료] RAM16G 30개 출고 성공 (남은 재고: 0개)\n[출고 완료] SSD1TB 0개 출고 성공 (남은 재고: 20개)\n---------------------------------\n코드: H01 | 품명: RAM16G | 단가: 60,000원 | 재고: 0개 | 재고 평가액: 0원\n코드: H02 | 품명: SSD1TB | 단가: 110,000원 | 재고: 20개 | 재고 평가액: 2,200,000원\n---------------------------------\n창고 총 재고 평가액: 2,200,000원",
+                "is_hidden": true
+            },
+            {
+                "input": "K01 게이밍체어 250000 5\nK02 데스크패드 12000 40\n1 35",
+                "expected": "=== 물류 창고 재고 현황판 ===\n[출고 완료] 게이밍체어 1개 출고 성공 (남은 재고: 4개)\n[출고 완료] 데스크패드 35개 출고 성공 (남은 재고: 5개)\n---------------------------------\n코드: K01 | 품명: 게이밍체어 | 단가: 250,000원 | 재고: 4개 | 재고 평가액: 1,000,000원\n코드: K02 | 품명: 데스크패드 | 단가: 12,000원 | 재고: 5개 | 재고 평가액: 60,000원\n---------------------------------\n창고 총 재고 평가액: 1,060,000원",
+                "is_hidden": true
+            }
+        ],
+        "samples": [
+            {
+                "input": "P01 노트북 1200000 10\nP02 무선마우스 30000 5\n5 8",
+                "output": "=== 물류 창고 재고 현황판 ===\n[출고 완료] 노트북 5개 출고 성공 (남은 재고: 5개)\n[출고 실패] 무선마우스 출고 불가: 재고 부족 (현재 재고: 5개, 요청: 8개)\n---------------------------------\n코드: P01 | 품명: 노트북 | 단가: 1,200,000원 | 재고: 5개 | 재고 평가액: 6,000,000원\n코드: P02 | 품명: 무선마우스 | 단가: 30,000원 | 재고: 5개 | 재고 평가액: 150,000원\n---------------------------------\n창고 총 재고 평가액: 6,150,000원"
+            },
+            {
+                "input": "A10 모니터 350000 20\nA20 기계식키보드 89000 15\n10 15",
+                "output": "=== 물류 창고 재고 현황판 ===\n[출고 완료] 모니터 10개 출고 성공 (남은 재고: 10개)\n[출고 완료] 기계식키보드 15개 출고 성공 (남은 재고: 0개)\n---------------------------------\n코드: A10 | 품명: 모니터 | 단가: 350,000원 | 재고: 10개 | 재고 평가액: 3,500,000원\n코드: A20 | 품명: 기계식키보드 | 단가: 89,000원 | 재고: 0개 | 재고 평가액: 0원\n---------------------------------\n창고 총 재고 평가액: 3,500,000원"
+            },
+            {
+                "input": "B01 태블릿 800000 5\nB02 스타일러스펜 45000 3\n6 2",
+                "output": "=== 물류 창고 재고 현황판 ===\n[출고 실패] 태블릿 출고 불가: 재고 부족 (현재 재고: 5개, 요청: 6개)\n[출고 완료] 스타일러스펜 2개 출고 성공 (남은 재고: 1개)\n---------------------------------\n코드: B01 | 품명: 태블릿 | 단가: 800,000원 | 재고: 5개 | 재고 평가액: 4,000,000원\n코드: B02 | 품명: 스타일러스펜 | 단가: 45,000원 | 재고: 1개 | 재고 평가액: 45,000원\n---------------------------------\n창고 총 재고 평가액: 4,045,000원"
+            }
+        ],
+        "cs_knowledge": "🖥️ [CS 핵심 지식: 도메인 엔티티(Entity)의 유효성 검증 및 재고 불변성 보장]\nERP나 WMS(창고관리시스템)에서 재고(Inventory)는 자산과 직결되므로 절대로 음수(Negative Stock)가 되어서는 안 됩니다.\n- releaseStock(int qty) 메서드는 출고 요청 수량이 현재 재고(stock)보다 많은지 사전에 엄격히 검증(Validation)합니다.\n- 부족할 경우 상태를 변경하지 않고 실패(false)를 반환함으로써 '데이터 무결성(Data Integrity)'을 보장합니다.\n- 단가(price)와 수량(stock)의 곱은 수치가 커질 경우 정수 오버플로우를 유발할 수 있으므로 `(long) price * stock` 형변환을 적용합니다.",
+        "logic_guide": "📘 [단계별 로직 구성 순서 & 초보자 가이드]\n1단계: Item 클래스 설계\n   - 필드: String code, String name, int price, int stock;\n   - releaseStock(int qty):\n     if (qty > stock) -> 출고 불가 메시지 출력 후 false\n     else -> stock -= qty 후 성공 메시지 출력 및 true\n   - getStockValue(): (long) price * stock 반환\n   - printStatus(): 상품 코드, 품명, 단가, 현재 재고, 재고 평가액 서식 출력\n\n2단계: Solution 클래스 main 메서드 구현\n   - Scanner로 첫째 줄(item1), 둘째 줄(item2) 정보 입력받아 2개 Item 인스턴스 생성\n   - 셋째 줄에서 req1, req2를 입력받아 각 객체의 releaseStock() 호출\n   - 각 객체의 printStatus() 호출 및 창고 총 재고 평가액(item1 + item2) 합산 출력"
     },
     {
         "id": "day04_도전",
@@ -2191,7 +2711,75 @@ const PROBLEMS = [
         "sample_input": "홍길동 50000 이영희 20000 30000",
         "sample_output": "=== 은행 계좌 간 이체 트랜잭션 시스템 ===\n[이체 요청] 홍길동 -> 이영희 (송금액: 30,000원 | 이체 수수료: 500원)\n>> 이체 트랜잭션 승인 완료!\n---------------------------------\n[출금 계좌] 예금주: 홍길동 | 차감액: 30,500원 | 최종 잔액: 19,500원\n[입금 계좌] 예금주: 이영희 | 수취액: 30,000원 | 최종 잔액: 50,000원",
         "expected": "=== 은행 계좌 간 이체 트랜잭션 시스템 ===\n[이체 요청] 홍길동 -> 이영희 (송금액: 30,000원 | 이체 수수료: 500원)\n>> 이체 트랜잭션 승인 완료!\n---------------------------------\n[출금 계좌] 예금주: 홍길동 | 차감액: 30,500원 | 최종 잔액: 19,500원\n[입금 계좌] 예금주: 이영희 | 수취액: 30,000원 | 최종 잔액: 50,000원",
-        "hint": "1. 메서드의 매개변수로 다른 객체(`Account target`)의 참조를 전달받아 객체 간 메시지 전송(협력)을 구현합니다.\n2. 수수료 = `Math.max(500, (int) (amount * 0.01))` 로 1%와 500원 중 큰 값을 적용합니다.\n3. 출금 계좌의 잔액이 충분할 때만 `this.balance -= (amount + fee)` 및 `target.balance += amount`를 수행하여 트랜잭션 원자성을 보장합니다."
+        "hint": "1. 메서드의 매개변수로 다른 객체(`Account target`)의 참조를 전달받아 객체 간 메시지 전송(협력)을 구현합니다.\n2. 수수료 = `Math.max(500, (int) (amount * 0.01))` 로 1%와 500원 중 큰 값을 적용합니다.\n3. 출금 계좌의 잔액이 충분할 때만 `this.balance -= (amount + fee)` 및 `target.balance += amount`를 수행하여 트랜잭션 원자성을 보장합니다.",
+        "testcases": [
+            {
+                "input": "홍길동 50000 이영희 20000 30000",
+                "expected": "=== 은행 계좌 간 이체 트랜잭션 시스템 ===\n[이체 요청] 홍길동 -> 이영희 (송금액: 30,000원 | 이체 수수료: 500원)\n>> 이체 트랜잭션 승인 완료!\n---------------------------------\n[출금 계좌] 예금주: 홍길동 | 차감액: 30,500원 | 최종 잔액: 19,500원\n[입금 계좌] 예금주: 이영희 | 수취액: 30,000원 | 최종 잔액: 50,000원",
+                "is_hidden": false
+            },
+            {
+                "input": "김철수 10000 박민수 5000 9600",
+                "expected": "=== 은행 계좌 간 이체 트랜잭션 시스템 ===\n[이체 실패] 잔액 부족으로 이체 트랜잭션이 취소되었습니다. (부족액: 100원)\n---------------------------------\n[출금 계좌] 예금주: 김철수 | 차감액: 0원 | 최종 잔액: 10,000원\n[입금 계좌] 예금주: 박민수 | 수취액: 0원 | 최종 잔액: 5,000원",
+                "is_hidden": false
+            },
+            {
+                "input": "최자바 1000000 정클라우드 500000 200000",
+                "expected": "=== 은행 계좌 간 이체 트랜잭션 시스템 ===\n[이체 요청] 최자바 -> 정클라우드 (송금액: 200,000원 | 이체 수수료: 2,000원)\n>> 이체 트랜잭션 승인 완료!\n---------------------------------\n[출금 계좌] 예금주: 최자바 | 차감액: 202,000원 | 최종 잔액: 798,000원\n[입금 계좌] 예금주: 정클라우드 | 수취액: 200,000원 | 최종 잔액: 700,000원",
+                "is_hidden": false
+            },
+            {
+                "input": "강송금 30000 조수취 10000 30000",
+                "expected": "=== 은행 계좌 간 이체 트랜잭션 시스템 ===\n[이체 실패] 잔액 부족으로 이체 트랜잭션이 취소되었습니다. (부족액: 500원)\n---------------------------------\n[출금 계좌] 예금주: 강송금 | 차감액: 0원 | 최종 잔액: 30,000원\n[입금 계좌] 예금주: 조수취 | 수취액: 0원 | 최종 잔액: 10,000원",
+                "is_hidden": true
+            },
+            {
+                "input": "윤테스트 50500 송완료 0 50000",
+                "expected": "=== 은행 계좌 간 이체 트랜잭션 시스템 ===\n[이체 요청] 윤테스트 -> 송완료 (송금액: 50,000원 | 이체 수수료: 500원)\n>> 이체 트랜잭션 승인 완료!\n---------------------------------\n[출금 계좌] 예금주: 윤테스트 | 차감액: 50,500원 | 최종 잔액: 0원\n[입금 계좌] 예금주: 송완료 | 수취액: 50,000원 | 최종 잔액: 50,000원",
+                "is_hidden": true
+            },
+            {
+                "input": "한잔액 100000 배성공 50000 80000",
+                "expected": "=== 은행 계좌 간 이체 트랜잭션 시스템 ===\n[이체 요청] 한잔액 -> 배성공 (송금액: 80,000원 | 이체 수수료: 800원)\n>> 이체 트랜잭션 승인 완료!\n---------------------------------\n[출금 계좌] 예금주: 한잔액 | 차감액: 80,800원 | 최종 잔액: 19,200원\n[입금 계좌] 예금주: 배성공 | 수취액: 80,000원 | 최종 잔액: 130,000원",
+                "is_hidden": true
+            },
+            {
+                "input": "문부족 5000 류확인 20000 5000",
+                "expected": "=== 은행 계좌 간 이체 트랜잭션 시스템 ===\n[이체 실패] 잔액 부족으로 이체 트랜잭션이 취소되었습니다. (부족액: 500원)\n---------------------------------\n[출금 계좌] 예금주: 문부족 | 차감액: 0원 | 최종 잔액: 5,000원\n[입금 계좌] 예금주: 류확인 | 수취액: 0원 | 최종 잔액: 20,000원",
+                "is_hidden": true
+            },
+            {
+                "input": "오정확 15000 신입금 30000 10000",
+                "expected": "=== 은행 계좌 간 이체 트랜잭션 시스템 ===\n[이체 요청] 오정확 -> 신입금 (송금액: 10,000원 | 이체 수수료: 500원)\n>> 이체 트랜잭션 승인 완료!\n---------------------------------\n[출금 계좌] 예금주: 오정확 | 차감액: 10,500원 | 최종 잔액: 4,500원\n[입금 계좌] 예금주: 신입금 | 수취액: 10,000원 | 최종 잔액: 40,000원",
+                "is_hidden": true
+            },
+            {
+                "input": "임대박 20000000 권부자 10000000 5000000",
+                "expected": "=== 은행 계좌 간 이체 트랜잭션 시스템 ===\n[이체 요청] 임대박 -> 권부자 (송금액: 5,000,000원 | 이체 수수료: 50,000원)\n>> 이체 트랜잭션 승인 완료!\n---------------------------------\n[출금 계좌] 예금주: 임대박 | 차감액: 5,050,000원 | 최종 잔액: 14,950,000원\n[입금 계좌] 예금주: 권부자 | 수취액: 5,000,000원 | 최종 잔액: 15,000,000원",
+                "is_hidden": true
+            },
+            {
+                "input": "장마지막 500 안수수료 500 1",
+                "expected": "=== 은행 계좌 간 이체 트랜잭션 시스템 ===\n[이체 실패] 잔액 부족으로 이체 트랜잭션이 취소되었습니다. (부족액: 1원)\n---------------------------------\n[출금 계좌] 예금주: 장마지막 | 차감액: 0원 | 최종 잔액: 500원\n[입금 계좌] 예금주: 안수수료 | 수취액: 0원 | 최종 잔액: 500원",
+                "is_hidden": true
+            }
+        ],
+        "samples": [
+            {
+                "input": "홍길동 50000 이영희 20000 30000",
+                "output": "=== 은행 계좌 간 이체 트랜잭션 시스템 ===\n[이체 요청] 홍길동 -> 이영희 (송금액: 30,000원 | 이체 수수료: 500원)\n>> 이체 트랜잭션 승인 완료!\n---------------------------------\n[출금 계좌] 예금주: 홍길동 | 차감액: 30,500원 | 최종 잔액: 19,500원\n[입금 계좌] 예금주: 이영희 | 수취액: 30,000원 | 최종 잔액: 50,000원"
+            },
+            {
+                "input": "김철수 10000 박민수 5000 9600",
+                "output": "=== 은행 계좌 간 이체 트랜잭션 시스템 ===\n[이체 실패] 잔액 부족으로 이체 트랜잭션이 취소되었습니다. (부족액: 100원)\n---------------------------------\n[출금 계좌] 예금주: 김철수 | 차감액: 0원 | 최종 잔액: 10,000원\n[입금 계좌] 예금주: 박민수 | 수취액: 0원 | 최종 잔액: 5,000원"
+            },
+            {
+                "input": "최자바 1000000 정클라우드 500000 200000",
+                "output": "=== 은행 계좌 간 이체 트랜잭션 시스템 ===\n[이체 요청] 최자바 -> 정클라우드 (송금액: 200,000원 | 이체 수수료: 2,000원)\n>> 이체 트랜잭션 승인 완료!\n---------------------------------\n[출금 계좌] 예금주: 최자바 | 차감액: 202,000원 | 최종 잔액: 798,000원\n[입금 계좌] 예금주: 정클라우드 | 수취액: 200,000원 | 최종 잔액: 700,000원"
+            }
+        ],
+        "cs_knowledge": "🖥️ [CS 핵심 지식: 객체 간 메시지 전송(협력)과 트랜잭션 원자성(Atomicity)]\n객체 지향 프로그래밍의 정수는 한 객체가 다른 객체의 메서드를 호출하거나 상태를 갱신하며 협력하는 것입니다.\n- transferTo(Account target, int amount) 메서드는 대상 계좌(target)를 파라미터로 받아 두 계좌 사이의 이체를 조율합니다.\n- 트랜잭션의 핵심 원칙 중 하나인 원자성(Atomicity, All-or-Nothing)에 따라, 출금 계좌의 잔액이 (송금액 + 수수료)보다 부족하면 중간에 출금만 되고 입금이 안 되는 비정상 상태를 방지하고 트랜잭션 전체를 즉시 중단(Rollback)합니다.",
+        "logic_guide": "📘 [단계별 로직 구성 순서 & 초보자 가이드]\n1단계: Account 클래스 설계\n   - 필드: String owner, int balance;\n   - transferTo(Account target, int amount):\n     1) 수수료 계산: fee = Math.max(500, (int)(amount * 0.01))\n     2) 필요 총액: totalNeeded = amount + fee\n     3) 잔액 검사: if (balance < totalNeeded) -> 부족액 계산 후 실패 메시지 출력 및 false 반환\n     4) 잔액 갱신: balance -= totalNeeded; target.balance += amount;\n     5) 성공 메시지 출력 후 true 반환\n\n2단계: Solution 클래스 main 메서드 구현\n   - Scanner로 sender, receiver 정보 및 이체 희망액 읽기\n   - Account sender, receiver 인스턴스 생성\n   - boolean success = sender.transferTo(receiver, transferAmt);\n   - 성공 여부에 따라 차감액/수취액 및 양 계좌의 최종 잔액 서식 출력"
     },
     {
         "id": "day05_하1",
